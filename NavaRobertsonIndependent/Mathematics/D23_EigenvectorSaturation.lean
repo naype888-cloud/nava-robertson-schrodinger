@@ -75,7 +75,7 @@ theorem defectGramEn_eq_zero_iff {d : ℕ} (A B : Hd d →ₗ[ℂ] Hd d) (ψ : H
     have hn : ‖inner ℂ (centrado B ψ) (centrado A ψ)‖ = ‖centrado B ψ‖ * ‖centrado A ψ‖ := by
       rw [norm_inner_symm, mul_comm]
       exact ((sq_eq_sq₀ (by positivity) (norm_nonneg _)).mp (by rw [mul_pow]; exact h)).symm
-    rcases ((norm_inner_eq_norm_tfae ℂ _ _).out 0 2).mp hn with hw | ⟨r, hr⟩
+    rcases ((norm_inner_eq_norm_tfae ℂ _ _).out 1 3).mp hn with hw | ⟨r, hr⟩
     · left
       unfold varianza
       rw [hw, norm_zero]

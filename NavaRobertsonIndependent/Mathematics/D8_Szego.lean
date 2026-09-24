@@ -131,9 +131,8 @@ private theorem CoherenceConstantSq_regularizada_tendsto :
         atTop (𝓝 ((2 : ℝ) * 1)) :=
       tendsto_const_nhds.mul hratio
     convert htworatio.div hcos (by norm_num : (1 : ℝ) ≠ 0) using 1
-    · ext d
-      simp [Pi.div_apply]
-    · norm_num
+    ext d
+    simp
   convert hfactor.mul hbracket using 1
   · ext d
     ring_nf
