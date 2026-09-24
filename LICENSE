@@ -1,0 +1,122 @@
+NRS Noncommercial License 1.0.0
+Nava-Robertson-Schrödinger Elemental Dimensional Uncertainty Inequality (NRS)
+
+Copyright (c) 2026 Eduardo Nava Hernandez (https://github.com/naype888-cloud)
+
+This license is modeled on the structure of the PolyForm Noncommercial
+License 1.0.0 (https://polyformproject.org/licenses/noncommercial/1.0.0/),
+with terms adapted and an additional permission written specifically for
+this repository. It is not a verbatim reproduction of that document.
+
+--------------------------------------------------------------------------
+
+## 1. Acceptance
+
+To get any license under these terms, you must agree to them as both
+strict obligations and conditions to all licenses granted below.
+
+## 2. Grant
+
+The licensor grants you a copyright and patent license to use, study,
+copy, modify, and redistribute the software (in source or compiled form,
+in whole or in part), and to make and redistribute changes and new works
+based on it, for any **Permitted Purpose** defined in Section 3.
+
+## 3. Permitted Purpose
+
+A "Permitted Purpose" is any of the following:
+
+a. **Noncommercial use of any kind** — personal study, teaching,
+   academic research, hobby or amateur projects, or any use without
+   anticipated commercial application.
+
+b. **Use by nonprofit or public institutions** — charitable
+   organizations, educational institutions, public research
+   organizations, public health/safety organizations, environmental
+   organizations, or government institutions, regardless of how that
+   institution is funded.
+
+c. **Humanitarian use** — any use directed at public benefit rather
+   than private financial gain.
+
+d. **Contribution to open source formal-verification projects.**
+   Reproducing, adapting, porting, or redistributing this software (in
+   whole or in part) as a contribution to, or dependency of, any project
+   distributed under an OSI-approved open source license — including,
+   without limitation, Mathlib, Physlib, the Lean 4 core/stdlib, or any
+   other open source proof assistant, theorem prover, or formal
+   verification library — is a Permitted Purpose. This holds even if the
+   upstream project is used, funded, or sponsored by a commercial
+   organization, as long as the redistribution itself remains under an
+   open source license and is not the basis of a separately sold,
+   closed, or proprietary product.
+
+## 4. Excluded Purpose — Commercial Use
+
+Any use **not** covered by Section 3 is a "Commercial Purpose" and is
+**not** licensed under these terms. A Commercial Purpose includes,
+without limitation, incorporating this software or its direct output
+(in whole or in part) into a proprietary, closed-source, or
+commercially-licensed product — for example, a commercial computer
+algebra system, symbolic-computation package, or any other paid software
+— where the software or its output is sold, sublicensed, bundled, or
+otherwise monetized outside of an open source license as described in
+Section 3(d). Use for a Commercial Purpose requires a separate written
+commercial license from the licensor, obtained in advance.
+
+## 5. Notices
+
+Any copy you distribute, in whole or in part, must include this license
+text (or a link to it in the repository) and the copyright notice above.
+
+## 6. Fair Use
+
+You may have "fair use" or equivalent statutory rights under applicable
+law. These terms do not limit them.
+
+## 7. No Sublicensing
+
+These terms do not allow you to sublicense or transfer your license to
+anyone else, and do not prevent the licensor from granting licenses to
+anyone else on different terms.
+
+## 8. Patent Defense
+
+If you make a written claim that this software infringes a patent, your
+patent license under these terms ends immediately. If your employer
+makes such a claim, your patent license ends immediately for work done
+on your employer's behalf.
+
+## 9. Violations and Termination
+
+On the first written notice of a violation of these terms, your license
+continues if you come into full compliance and correct past violations
+within 32 days of that notice. Otherwise, all licenses granted to you
+under these terms end immediately. Use for a Commercial Purpose without
+a separate written license from the licensor is a violation from the
+moment it begins.
+
+## 10. No Warranty, No Liability
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+## 11. Definitions
+
+"The licensor" is Eduardo Nava Hernandez. "The software" is this
+repository's content (the NRS package: Lean 4 source, proofs, and
+accompanying documentation). "You" is the individual or entity using
+the software. "Your employer" includes any organization you work for
+and any organization under common control with it.
+
+--------------------------------------------------------------------------
+
+## Commercial licensing
+
+To license this software for a Commercial Purpose (Section 4) —
+including embedding it or its results in a proprietary product such as
+a commercial computer algebra system — contact the licensor to arrange
+a separate commercial license.

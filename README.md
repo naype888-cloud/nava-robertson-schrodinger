@@ -5,6 +5,15 @@ external academic review. The package is self-contained at the project level:
 Lake fetches the exact Mathlib revision recorded in `lake-manifest.json`; it does
 not depend on PhyslibAlpha or on the BACQM source tree.
 
+## License
+
+[NRS Noncommercial License 1.0.0](LICENSE) — free for noncommercial,
+academic, humanitarian and public-institution use, and free to reuse as a
+contribution to any open source formal-verification project (Mathlib,
+Physlib, Lean 4, or any other). Incorporating this software or its output
+into a proprietary/commercial product requires a separate commercial
+license — see [LICENSE](LICENSE) §4.
+
 The package is organised in layers that do not mix. Each layer says what it
 proves and what it assumes.
 
