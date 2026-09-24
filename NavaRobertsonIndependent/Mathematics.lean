@@ -13,7 +13,7 @@ import NavaRobertsonIndependent.Mathematics.D11_MinimalAreaQuantum
 import NavaRobertsonIndependent.Mathematics.D12_FiniteScalarCommutator
 import NavaRobertsonIndependent.Mathematics.D13_FirstCombinatorialRupture
 import NavaRobertsonIndependent.Mathematics.D14_SzegoGapExcess
-import NavaRobertsonIndependent.ForMathlib.SumInvSinSq
+import NavaRobertsonIndependent.Mathematics.SumInvSinSq
 import NavaRobertsonIndependent.Mathematics.D16_ClosedSurfaceTransport
 import NavaRobertsonIndependent.Mathematics.D16b_GaussBonnetBridge
 import NavaRobertsonIndependent.Mathematics.D17_IntrinsicTransportDefect
@@ -64,9 +64,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 `D1` Cauchy–Gram → `D2` Robertson–Schrödinger → `D3` path graph → `D5` maximal
 tension → `D6` Fiedler → `D7` Niven → `D8` Szegő → `D9` monotonicity → `D10`
 certificate → `D17`–`D23` instantiation with the concrete operators and
-saturation of eigenvectors. `D11`–`D16b`, `D24` and `ForMathlib` are side results
+saturation of eigenvectors. `D11`–`D16b`, `D24` and `SumInvSinSq` are side results
 (dimensionless area quantum `δ_geom(4)²`, finite cosecant-square identity via
-Chebyshev roots in `ForMathlib/SumInvSinSq`, transport to closed surfaces, and the
+Chebyshev roots in `SumInvSinSq`, transport to closed surfaces, and the
 gap `C_∞ − C_Nava(4)`).
 
 **The quantum is dimensional** (`D25`): the path-graph family `H₂, H₃, H₄, …` is the

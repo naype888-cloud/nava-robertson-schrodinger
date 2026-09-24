@@ -65,7 +65,7 @@ bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2`.
 - `D26a_OmegaDesdePi`: `omegaPi = (1 − 1/C∞)·e^{−1/C∞} = 0.04954367888809…`, a
   function of `π` only, with `0.049543679` certified as its 9-digit rounding
   from both sides (`decimal_desde_pi`).
-- `ForMathlib/SumInvSinSq`: the finite cosecant-square identity
+- `SumInvSinSq`: the finite cosecant-square identity
   `Σ csc²(kπ/N) = (N²−1)/3` through Chebyshev roots, with the cotangent
   corollaries (v14: the former duplicate `D15` was removed).
 - `D17_DefectoIntrinsecoTransporte`: observer-free algebraic interface for any
