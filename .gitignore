@@ -1,0 +1,7 @@
+# Lake build cache and fetched dependencies (Mathlib, etc.) — reproducible via
+# `lake update && lake exe cache get`, not meant to be committed.
+.lake/
+
+# Local Lean/editor artifacts
+build/
+.DS_Store
