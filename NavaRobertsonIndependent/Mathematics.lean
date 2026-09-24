@@ -31,11 +31,13 @@ import NavaRobertsonIndependent.Mathematics.D25_DimensionalQuantum
 import NavaRobertsonIndependent.Mathematics.D26a_OmegaFromPi
 import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
 import NavaRobertsonIndependent.Mathematics.D28b_OllivierCurvature
+import NavaRobertsonIndependent.Mathematics.PhyslibBridge
 
 /-!
 # Layer 1 — Mathematics
 
-This is the mathematical theorem, stated over Mathlib and nothing else. No
+This is the mathematical theorem, stated over Mathlib. The only other import is
+physlib's algebraic uncertainty framework, used by `PhyslibBridge` alone. No
 physical constant, no unit, no laboratory anchor and no physical hypothesis
 appears anywhere in the import closure of this module. The dependency is
 one-way: this layer does not import `Physics`, and that is checked by
@@ -58,6 +60,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * for `d ≥ 4`, `δ_geom` is strictly increasing, with global minimum `δ_geom(4)`
   and strict upper bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2` (`D8`, `D9`);
 * the ambient inequality is proved from Cauchy–Gram (`D1`, `D2`).
+* the inequality at `ψ*` is physlib's `robertson_schrodinger` instantiated at the
+  vector state of `ψ*` with `T_d`, `P_d` as observables, term by term, and it is
+  strict there for `d ≥ 4` (`PhyslibBridge`).
 
 ## Order of the chain
 

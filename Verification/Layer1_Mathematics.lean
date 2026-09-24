@@ -55,3 +55,5 @@ open Lean
 #print axioms CuantoDimensional.cuanto_dimensional
 #print axioms CuantoDimensional.sin_cuanto_en_d3
 #print axioms OmegaDesdePi.decimal_desde_pi
+#print axioms PhyslibBridge.robertson_schrodinger_eq_D21
+#print axioms PhyslibBridge.physlib_robertson_schrodinger_strict

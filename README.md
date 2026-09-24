@@ -2,8 +2,8 @@
 
 Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
 external academic review. The package is self-contained at the project level:
-Lake fetches the exact Mathlib revision recorded in `lake-manifest.json`; it does
-not depend on PhyslibAlpha or on the BACQM source tree.
+Lake fetches the exact Mathlib and physlib revisions recorded in
+`lake-manifest.json`; it does not depend on the BACQM source tree.
 
 ## License
 
@@ -14,13 +14,15 @@ Physlib, Lean 4, or any other). Incorporating this software or its output
 into a proprietary/commercial product requires a separate commercial
 license — see [LICENSE](LICENSE) §4.
 
-The package is a single layer: the theorem, over Mathlib only, no constant,
-no unit, no physical input. Nothing in it depends on a choice of physical
+The package is a single layer: the theorem, over Mathlib, no constant,
+no unit, no physical input. `PhyslibBridge` additionally imports physlib's
+algebraic uncertainty framework to show that the inequality at `ψ*` is
+physlib's `robertson_schrodinger`, instantiated. Nothing in it depends on a choice of physical
 interpretation.
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | The theorem, over Mathlib only. No constant, no unit, no physical input. | Lean theorems. |
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | The theorem, over Mathlib (plus physlib in `PhyslibBridge`). No constant, no unit, no physical input. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
 computes the import closure of the package and fails if it contains a
@@ -38,8 +40,8 @@ lake build NavaRobertsonIndependent.Mathematics   # same target, explicit
 lake env lean Verification/Layer1_Mathematics.lean    # boundary + axioms
 ```
 
-The pinned toolchain is Lean `v4.33.0`, and Mathlib is pinned to commit
-`db584cd6d46c92f209a44c0f1c829460d327499d`. All headline theorems depend only
+The pinned toolchain is Lean `v4.34.0`; Mathlib is pinned to tag `v4.34.0` and
+physlib to commit `1c81053a2ec6542f0de013c163e5db5091cf5b3c`. All headline theorems depend only
 on the three standard axioms `propext`, `Classical.choice` and `Quot.sound`;
 the package has no `sorry`.
 
