@@ -40,10 +40,12 @@ import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 /-!
 # Layer 1 — Mathematics
 
-This is the mathematical theorem, stated over Mathlib. The only other import is
-physlib's algebraic uncertainty framework, used by `PhyslibBridge` alone. No
-physical constant, no unit, no laboratory anchor and no physical hypothesis
-appears anywhere in the import closure of this module. The dependency is
+This is the theorem on discrete space: `T_d:P_d` is how one moves in it (position on the
+sites of a row, transport only between neighbours), and the cube of `D37` is its `x, y, z`.
+It is stated over Mathlib; the only other import is physlib's algebraic uncertainty
+framework, used by `PhyslibBridge` alone. No SI constant, no unit and no laboratory anchor
+appears anywhere in the import closure of this module: the size of a cell in metres is
+Layer 2. The dependency is
 one-way: this layer does not import `Physics`, and that is checked by
 `Verification/Layer1_Mathematics.lean`.
 
@@ -111,5 +113,5 @@ observer/measurement postulates (`D29`–`D31`) are Layer 4 (`Ontology`); neithe
 is imported here.
 
 The word "quantum" in `D11` means the algebraic quantum `δ_geom(4)²`, a pure
-number. The physical scale attached to it lives in Layer 2.
+number; its size in metres (the cell `L_sbpk`) is Layer 2.
 -/

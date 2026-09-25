@@ -14,11 +14,13 @@ Physlib, Lean 4, or any other). Incorporating this software or its output
 into a proprietary/commercial product requires a separate commercial
 license — see [LICENSE](LICENSE) §4.
 
-The package is a single layer: the theorem, over Mathlib, no constant,
-no unit, no physical input. `PhyslibBridge` additionally imports physlib's
-algebraic uncertainty framework to show that the inequality at `ψ*` is
-physlib's `robertson_schrodinger`, instantiated. Nothing in it depends on a choice of physical
-interpretation.
+`T_d:P_d` is how one moves in discrete space: position `P_d` on the sites of a row, transport
+`T_d` only between neighbouring sites (`D3`: the path graph is forced by locality and
+completeness), and on the cube of `D37` one such row per axis — the `x, y, z` of space. The
+package proves the theorem on that space over Mathlib, with no SI constant and no unit: the size
+of a cell in metres and the cosmological consequences are the only things left to other layers.
+`PhyslibBridge` additionally imports physlib's algebraic uncertainty framework to show that the
+inequality at `ψ*` is physlib's `robertson_schrodinger`, instantiated.
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -162,8 +164,9 @@ completeness (no minimal step is missing) is forced to be exactly
 `SimpleGraph.pathGraph d`. `pathGraph` is the Mathlib name for that unique
 object, not a diagram chosen for illustration.
 
-Physical, cosmological and observer/measurement readings of this theorem are
-out of scope for this repository; only the mathematics is claimed here.
+The results are about discrete space itself (`T_d:P_d` per axis, the `x, y, z` cube of `D37`).
+What this repository does not contain is the calibration of a cell in SI units (metres, seconds)
+and the cosmological and observer layers built on top; those live in separate layers.
 
 The root module `NavaRobertsonIndependent.lean` imports
 `NavaRobertsonIndependent.Mathematics` and is the single verification target

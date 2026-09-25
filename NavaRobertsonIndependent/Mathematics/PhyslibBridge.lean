@@ -16,7 +16,7 @@ self-adjoint elements of the C⋆-algebra `Hd d →L[ℂ] Hd d`
 terms of — `variance`, `covariance`, the bracket expectation `ω⟨⁅a,b⁆⟩` — is shown to equal the
 corresponding `D21` quantity at `ψ*`, so the two inequalities coincide term by term.
 
-No physical constant, no unit: this stays entirely inside Layer 1.
+No SI constant, no unit: this stays entirely inside Layer 1.
 -/
 
 noncomputable section
