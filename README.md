@@ -178,6 +178,9 @@ the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator te
 | 20 | 1.088392 | 8.84 % | 23.25° |
 | limit | `√(π²/3 − 2)` ≈ 1.135724 | 13.57 % (never reached) | 28.30° |
 
+A full design for a photonic waveguide array — state preparation, holographic measurement, error
+budget and tolerances — is in [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md).
+
 What would test the bridge: `R = 1` within error for `N = 2, 3`, `R > 1` from `N = 4`, and `R`
 growing with `N` along the table. Since the excess at `N = 4` is below 1 %, longer chains give a
 larger signal and test the growth at the same time. At `N = 4` a second prediction is available:
