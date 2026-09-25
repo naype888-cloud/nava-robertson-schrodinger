@@ -70,3 +70,6 @@ open Lean
 #print axioms AnguloNRS.anguloNRS_cuatro
 #print axioms AnguloNRS.piso_angular
 #print axioms AnguloNRS.piso_angular_cubo
+#print axioms IncertidumbreMinimaCuatro.satura_psiSat
+#print axioms IncertidumbreMinimaCuatro.tension_psiSat
+#print axioms IncertidumbreMinimaCuatro.tension_psiSat_fraccion

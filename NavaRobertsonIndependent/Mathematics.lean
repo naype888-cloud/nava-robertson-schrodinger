@@ -26,6 +26,7 @@ import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 import NavaRobertsonIndependent.Mathematics.D23c_TensionSpectralGap
 import NavaRobertsonIndependent.Mathematics.D23d_BandWidth
 import NavaRobertsonIndependent.Mathematics.D23e_TransportTensionExclusion
+import NavaRobertsonIndependent.Mathematics.D23f_MinUncertaintyTensionFour
 import NavaRobertsonIndependent.Mathematics.D24_GapFourAsymptote
 import NavaRobertsonIndependent.Mathematics.D25_DimensionalQuantum
 import NavaRobertsonIndependent.Mathematics.D26a_OmegaFromPi
@@ -60,6 +61,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
   `d ≥ 4` (`D7` Niven, `D21`, `D22`);
 * the top eigenvalue `2/(d−1)` of `K_d = i[T_d, P_d]` is simple, so the strict
   inequality holds at every unit state attaining it (`D21`);
+* minimum-uncertainty states carry transport but, for `d ≥ 4`, never the maximal tension
+  (`D23`); at `d = 4` an explicit one, with probabilities `(1/8, 3/8, 3/8, 1/8)`, has tension
+  exactly `1/φ = (√5 − 1)/2`, i.e. `3(√5 − 1)/4` of the maximum (`D23f`);
 * for `d ≥ 4`, `δ_geom` is strictly increasing, with global minimum `δ_geom(4)`
   and strict upper bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2` (`D8`, `D9`);
 * the ambient inequality is proved from Cauchy–Gram (`D1`, `D2`).
