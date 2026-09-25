@@ -13,3 +13,6 @@ rev = "1c81053a2ec6542f0de013c163e5db5091cf5b3c"
 
 [[lean_lib]]
 name = "NavaRobertsonIndependent"
+
+[[lean_lib]]
+name = "NavaRobertsonCertificados"
