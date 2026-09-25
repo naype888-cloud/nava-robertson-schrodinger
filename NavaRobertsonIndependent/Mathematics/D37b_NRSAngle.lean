@@ -19,6 +19,12 @@ at the maximal-tension state `ψ*`:
 
 On the cube of `D37` each axis carries its own angle, `θ_NRS(dx)`, `θ_NRS(dy)`, `θ_NRS(dz)`
 (`anguloG_eje_x/y/z`).
+
+**Universal angular floor** (`piso_angular`): for every `d ≥ 4`,
+`θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`, with the exact value
+`θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.44°` (`anguloNRS_cuatro`) and `θ_NRS(4) > 0`.
+No axis with `4` or more sites, however many, brings its two fluctuation vectors closer than
+`θ_NRS(4)`; on the cube this holds on all three axes at once (`piso_angular_cubo`).
 -/
 
 noncomputable section
@@ -131,6 +137,20 @@ theorem anguloNRS_lt_limite {d : ℕ} (hd : 4 ≤ d) :
   · exact one_div_lt_one_div_of_lt (by linarith) hlt
   · rw [div_le_one (by linarith)]; exact hCd
 
+/-- The first opening, in closed form: `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5))`. -/
+theorem anguloNRS_cuatro :
+    anguloNRS 4 = arccos (1 / Real.sqrt ((99 - 42 * Real.sqrt 5) / 5)) := by
+  rw [anguloNRS_eq (by norm_num), CoherenceConstant, CoherenceConstantSq_four_eq]
+
+/-- **Universal angular floor.** Every axis with `4` or more sites opens at least `θ_NRS(4)`,
+and never reaches `arccos (1 / C_∞)`. -/
+theorem piso_angular {d : ℕ} (hd : 4 ≤ d) :
+    0 < anguloNRS 4 ∧ anguloNRS 4 ≤ anguloNRS d ∧
+      anguloNRS d < arccos (1 / CoherenceConstantInf) :=
+  ⟨anguloNRS_pos le_rfl,
+    anguloNRS_strictMonoOn.monotoneOn (show (4 : ℕ) ≤ 4 from le_rfl) hd hd,
+    anguloNRS_lt_limite hd⟩
+
 /-! ## 3. One angle per axis of the cube -/
 
 section Cubo
@@ -181,6 +201,16 @@ theorem angulos_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     anguloG_eje_z (by omega) (by omega)]
   exact ⟨⟨anguloNRS_pos hx, anguloNRS_lt_limite hx⟩, ⟨anguloNRS_pos hy, anguloNRS_lt_limite hy⟩,
     ⟨anguloNRS_pos hz, anguloNRS_lt_limite hz⟩⟩
+
+/-- **The angular floor on the cube.** With `4` or more sites on every axis, each of the three
+axes opens at least `θ_NRS(4)`. -/
+theorem piso_angular_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
+    anguloNRS 4 ≤ anguloG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ∧
+      anguloNRS 4 ≤ anguloG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ∧
+      anguloNRS 4 ≤ anguloG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) := by
+  rw [anguloG_eje_x (by omega) (by omega), anguloG_eje_y (by omega) (by omega),
+    anguloG_eje_z (by omega) (by omega)]
+  exact ⟨(piso_angular hx).2.1, (piso_angular hy).2.1, (piso_angular hz).2.1⟩
 
 end Cubo
 

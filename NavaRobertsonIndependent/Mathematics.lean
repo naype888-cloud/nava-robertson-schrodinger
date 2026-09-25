@@ -72,7 +72,8 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * the gap is an angle: at `ψ*` the fluctuation vectors of `T_d` and `P_d` meet at
   `θ_NRS(d) = arccos (1 / C_Nava(d))`, zero exactly for `d = 2, 3`, positive and strictly
   increasing from `d = 4`, strictly below `arccos (1 / C_∞)`; one such angle per axis of
-  the cube (`D37b`).
+  the cube, and a universal floor `θ_NRS(d) ≥ θ_NRS(4) = arccos (1/√((99 − 42√5)/5)) > 0`
+  for every `d ≥ 4` (`D37b`).
 * the spectrum of the cube is axis by axis: eigenvectors of an axis lift with the same
   eigenvalue, products of eigenvectors add their eigenvalues, and `ψ* ⊗ ψ* ⊗ ψ*` is the
   top of `K_x + K_y + K_z`, eigenvalue `Σ 2/(d_i − 1)`, which no state exceeds (`D37c`).

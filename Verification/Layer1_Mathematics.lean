@@ -67,3 +67,6 @@ open Lean
 #print axioms EspectroCubo.autovector_suma
 #print axioms EspectroCubo.tensionTotal_psiStar
 #print axioms EspectroCubo.tensionTotal_le
+#print axioms AnguloNRS.anguloNRS_cuatro
+#print axioms AnguloNRS.piso_angular
+#print axioms AnguloNRS.piso_angular_cubo
