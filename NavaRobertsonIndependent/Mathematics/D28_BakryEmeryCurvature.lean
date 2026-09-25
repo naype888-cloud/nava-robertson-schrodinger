@@ -5,7 +5,8 @@ import NavaRobertsonIndependent.Mathematics.D3_PathGraph
 
 > **Lectura (v14).** La red es el espacio: la estructura más fina que permite el
 > álgebra, y su gráfica es la de la obstrucción de Robertson. Que sea plana dice que la
-> celda no se curva; la curvatura es efecto de conteo. `D27` (celda estirada, citado abajo) está en `Superseded`; el mecanismo
+> celda no se curva; la curvatura es efecto de conteo. `D27` (celda estirada, citado abajo) está en
+`Superseded`; el mecanismo
 > físico vigente es el conteo de celdas (`D32`).
 
 Responde una pregunta concreta que quedó abierta al cerrar `D27`: ¿puede una

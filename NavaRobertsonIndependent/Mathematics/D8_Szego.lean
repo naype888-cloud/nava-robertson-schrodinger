@@ -146,13 +146,15 @@ theorem limite_szego_CoherenceConstantSq :
 
 /-- LÍMITE DE SZEGŐ: `C_Nava(d) → C_∞ = √((π²-6)/3)`, construido sobre la
 teoría clásica de distribución espectral de Szegő. -/
-theorem limite_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) := by
+theorem limite_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
+    by
   unfold CoherenceConstant CoherenceConstantInf
   exact Real.continuous_sqrt.continuousAt.tendsto.comp limite_szego_CoherenceConstantSq
 
 /-- Nombre citable de la especialización. Es un alias del resultado ya
 demostrado, no una rederivación de la teoría clásica de Toeplitz/Szegő. -/
-theorem limite_nava_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
+theorem limite_nava_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝
+    CoherenceConstantInf) :=
   limite_szego_CoherenceConstant
 
 /-- El defect geométrico converge al defect universal asintótico. -/

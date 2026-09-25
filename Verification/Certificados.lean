@@ -3,7 +3,8 @@ import NavaRobertsonCertificados
 /-!
 # Verification of the separate certificates target
 
-Run with `lake env lean Verification/Certificados.lean` after `lake build NavaRobertsonCertificados`.
+Run with `lake env lean Verification/Certificados.lean` after
+    `lake build NavaRobertsonCertificados`.
 Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 -/
 

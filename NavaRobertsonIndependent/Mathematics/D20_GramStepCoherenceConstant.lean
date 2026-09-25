@@ -34,7 +34,8 @@ noncomputable section
 namespace Gnomon
 
 /-- `C_Nava(d) = 1` exactamente en las seeds `d = 2, 3` (dimensiones `≥ 2`). -/
-theorem CoherenceConstant_eq_one_iff (d : ℕ) (hd : 2 ≤ d) : CoherenceConstant d = 1 ↔ d = 2 ∨ d = 3 := by
+theorem CoherenceConstant_eq_one_iff (d : ℕ) (hd : 2 ≤ d) : CoherenceConstant d = 1 ↔ d = 2 ∨ d = 3
+    := by
   constructor
   · intro h
     by_contra hne

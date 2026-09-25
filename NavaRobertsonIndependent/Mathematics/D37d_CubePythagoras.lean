@@ -26,7 +26,8 @@ namespace PitagorasCubo
 
 /-! ## 1. Fluctuation vectors of a unit state -/
 
-/-- For a symmetric operator and a unit vector, the fluctuation vector is orthogonal to the state. -/
+/-- For a symmetric operator and a unit vector, the fluctuation vector is orthogonal to the state.
+-/
 theorem inner_centradoG_self {d : ℕ} {A : Hd d →ₗ[ℂ] Hd d} (hA : A.IsSymmetric) {ψ : Hd d}
     (hψ : ‖ψ‖ = 1) : inner ℂ ψ (centradoG A ψ) = 0 := by
   have h1 : inner ℂ ψ ψ = 1 := inner_self_of_norm_one hψ
@@ -111,23 +112,27 @@ theorem norm_sq_add_three {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
   rw [norm_add_sq (𝕜 := ℂ), norm_add_sq (𝕜 := ℂ), inner_add_left, hac, hbc, hab]
   simp
 
-/-- **Pythagoras for transport uncertainty.** `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z`. -/
+/-- **Pythagoras for transport uncertainty.** `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z`.
+-/
 theorem pitagoras_T :
     varianzaG (TX dx dy dz + TY dx dy dz + TZ dx dy dz) (PsiStar3D dx dy dz) =
       varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) + varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) +
         varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) := by
   simp only [varianzaG, centradoG_add]
   exact norm_sq_add_three _ _ _ (ortogonal_ejes_xy hx hy hz (TdOp_simetrico dx))
-    (ortogonal_ejes_xz hx hy hz (TdOp_simetrico dx)) (ortogonal_ejes_yz hx hy hz (TdOp_simetrico dy))
+    (ortogonal_ejes_xz hx hy hz (TdOp_simetrico dx)) (ortogonal_ejes_yz hx hy hz (TdOp_simetrico
+        dy))
 
-/-- **Pythagoras for position uncertainty.** `Var(P_x + P_y + P_z) = Var P_x + Var P_y + Var P_z`. -/
+/-- **Pythagoras for position uncertainty.** `Var(P_x + P_y + P_z) = Var P_x + Var P_y + Var P_z`.
+-/
 theorem pitagoras_P :
     varianzaG (PX dx dy dz + PY dx dy dz + PZ dx dy dz) (PsiStar3D dx dy dz) =
       varianzaG (PX dx dy dz) (PsiStar3D dx dy dz) + varianzaG (PY dx dy dz) (PsiStar3D dx dy dz) +
         varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz) := by
   simp only [varianzaG, centradoG_add]
   exact norm_sq_add_three _ _ _ (ortogonal_ejes_xy hx hy hz (PdOp_simetrico dx))
-    (ortogonal_ejes_xz hx hy hz (PdOp_simetrico dx)) (ortogonal_ejes_yz hx hy hz (PdOp_simetrico dy))
+    (ortogonal_ejes_xz hx hy hz (PdOp_simetrico dx)) (ortogonal_ejes_yz hx hy hz (PdOp_simetrico
+        dy))
 
 end Cubo
 
@@ -159,7 +164,8 @@ theorem angulo_total_cubo :
       prod3 y n n + prod3 n y n + prod3 n n y := by
     rw [centradoG_add, centradoG_add, PX, PY, PZ, centrado_X hd hd, centrado_Y hd hd,
       centrado_Z hd hd]; rfl
-  have hin : inner ℂ (prod3 x n n + prod3 n x n + prod3 n n x) (prod3 y n n + prod3 n y n + prod3 n n y) =
+  have hin : inner ℂ (prod3 x n n + prod3 n x n + prod3 n n x) (prod3 y n n + prod3 n y n + prod3 n
+      n y) =
       3 * inner ℂ x y := by
     simp only [inner_add_left, inner_add_right, inner_prod3, hn, hxn, hny]; ring
   have hnT : ‖prod3 x n n + prod3 n x n + prod3 n n x‖ = Real.sqrt 3 * ‖x‖ := by

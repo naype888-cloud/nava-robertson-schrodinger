@@ -104,7 +104,8 @@ theorem covariance_TdObs_PdObs (d : ℕ) (hd : 2 ≤ d) :
 
 /-! ## 4. The commutator term -/
 
-/-- physlib's bracket `⁅T_d, P_d⁆ = -(i/2)[T_d, P_d]` acts as `-(1/2) K_d`, with `K_d = i[T_d, P_d]`. -/
+/-- physlib's bracket `⁅T_d, P_d⁆ = -(i/2)[T_d, P_d]` acts as `-(1/2) K_d`, with
+`K_d = i[T_d, P_d]`. -/
 theorem bracket_TdObs_PdObs_apply (d : ℕ) (v : Hd d) :
     ((⁅TdObs d, PdObs d⁆ : Observable (Hd d →L[ℂ] Hd d)) : Hd d →L[ℂ] Hd d) v =
       (-(1 / 2 : ℂ)) • KdOp d v := by
@@ -152,7 +153,8 @@ theorem D21_of_physlib (d : ℕ) (hd : 2 ≤ d) :
 theorem physlib_robertson_schrodinger_strict (d : ℕ) (hd : 4 ≤ d) :
     covariance (omegaStar d (by omega)) (TdObs d) (PdObs d) ^ 2 +
         (omegaStar d (by omega))⟨⁅TdObs d, PdObs d⁆⟩ ^ 2 <
-      variance (omegaStar d (by omega)) (TdObs d) * variance (omegaStar d (by omega)) (PdObs d) := by
+      variance (omegaStar d (by omega)) (TdObs d) * variance (omegaStar d (by omega)) (PdObs d) :=
+          by
   rw [covariance_TdObs_PdObs, expectation_bracket_TdObs_PdObs, variance_TdObs, variance_PdObs]
   exact desigualdad_estricta hd
 

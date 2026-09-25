@@ -27,13 +27,15 @@ noncomputable section
 
 namespace Gnomon
 
-theorem CoherenceConstant_eq_one_add_geometricGap (d : ℕ) : CoherenceConstant d = 1 + geometricGap d := by
+theorem CoherenceConstant_eq_one_add_geometricGap (d : ℕ) : CoherenceConstant d = 1 + geometricGap d
+    := by
   unfold geometricGap
   ring
 
 end Gnomon
 
-open Gnomon TransportePosicion RNavaVarianzaFiedler EscalonGramCoherenceConstant ConstructorEspectralTP
+open Gnomon TransportePosicion RNavaVarianzaFiedler EscalonGramCoherenceConstant
+    ConstructorEspectralTP
 
 namespace NavaRobertsonSchrodingerEDUI
 
@@ -59,7 +61,8 @@ def covarianza {d : ℕ} (A B : Hd d →ₗ[ℂ] Hd d) (ψ : Hd d) : ℝ :=
 /-- `c` con `⟨ψ*,[T_d,P_d]ψ*⟩ = i·c`. -/
 def commutatorConstant (d : ℕ) : ℝ := -(2 / ((d : ℝ) - 1))
 
-theorem commutatorConstant_half_sq {d : ℕ} (hd : 2 ≤ d) : (commutatorConstant d / 2) ^ 2 = 1 / ((d : ℝ) - 1) ^ 2 := by
+theorem commutatorConstant_half_sq {d : ℕ} (hd : 2 ≤ d) : (commutatorConstant d / 2) ^ 2 = 1 / ((d :
+    ℝ) - 1) ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
@@ -67,7 +70,8 @@ theorem commutatorConstant_half_sq {d : ℕ} (hd : 2 ≤ d) : (commutatorConstan
   unfold commutatorConstant
   field_simp
 
-theorem commutatorConstant_half_sq_pos {d : ℕ} (hd : 2 ≤ d) : 0 < (commutatorConstant d / 2) ^ 2 := by
+theorem commutatorConstant_half_sq_pos {d : ℕ} (hd : 2 ≤ d) : 0 < (commutatorConstant d / 2) ^ 2 :=
+    by
   rw [commutatorConstant_half_sq hd]
   have : (2 : ℝ) ≤ d := by exact_mod_cast hd
   have h1 : (0 : ℝ) < (d : ℝ) - 1 := by linarith
@@ -112,7 +116,8 @@ theorem covarianza_cero {d : ℕ} (hd : 2 ≤ d) :
 
 /-! ## 2. Igualdad exacta con `δ_geom` y gap -/
 
-theorem CoherenceConstantSq_eq_sq {d : ℕ} (hd : 2 ≤ d) : CoherenceConstantSq d = (1 + geometricGap d) ^ 2 := by
+theorem CoherenceConstantSq_eq_sq {d : ℕ} (hd : 2 ≤ d) : CoherenceConstantSq d = (1 + geometricGap
+    d) ^ 2 := by
   have h0 : 0 ≤ CoherenceConstantSq d := by
     rw [← escalon_producto hd]
     exact mul_nonneg (sq_nonneg _) (mul_nonneg (sq_nonneg _) (sq_nonneg _))
@@ -126,7 +131,8 @@ theorem producto_varianzas {d : ℕ} (hd : 2 ≤ d) :
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
     linarith
-  rw [varianza_T hd, varianza_P hd, commutatorConstant_half_sq hd, ← CoherenceConstantSq_eq_sq hd, ← escalon_producto hd]
+  rw [varianza_T hd, varianza_P hd, commutatorConstant_half_sq hd, ← CoherenceConstantSq_eq_sq hd, ←
+      escalon_producto hd]
   field_simp
 
 /-- Gap de Robertson–Schrödinger en función de `δ_geom`. -/
@@ -142,7 +148,8 @@ theorem gap_eq_defectGram {d : ℕ} (hd : 2 ≤ d) :
     varianza (TdOp d) (psiStar d) * varianza (PdOp d) (psiStar d) -
       (covarianza (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2) =
       defectGram d := by
-  rw [escalon_gram hd, gap_eq_geometricGap hd, commutatorConstant_half_sq hd, CoherenceConstantSq_eq_sq hd]
+  rw [escalon_gram hd, gap_eq_geometricGap hd, commutatorConstant_half_sq hd,
+      CoherenceConstantSq_eq_sq hd]
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h

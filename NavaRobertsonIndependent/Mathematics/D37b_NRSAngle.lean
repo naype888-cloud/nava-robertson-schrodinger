@@ -126,7 +126,8 @@ theorem anguloNRS_strictMonoOn : StrictMonoOn anguloNRS {d : ℕ | 4 ≤ d} := b
     have := geometricGap_strictMonoOn_ge_four ha hb hab
     simpa [geometricGap] using this
   rw [anguloNRS_eq (by omega), anguloNRS_eq (by omega)]
-  apply arccos_lt_arccos (by have := one_div_pos.mpr (by linarith : 0 < CoherenceConstant b); linarith)
+  have hb0 : 0 < 1 / CoherenceConstant b := one_div_pos.mpr (by linarith)
+  apply arccos_lt_arccos (by linarith)
   · exact one_div_lt_one_div_of_lt (by linarith) hlt
   · rw [div_le_one (by linarith)]; exact hCa
 

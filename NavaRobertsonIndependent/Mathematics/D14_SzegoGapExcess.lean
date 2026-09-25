@@ -40,12 +40,14 @@ theorem excesoGap_le_four (d : ℕ) (hd : 4 ≤ d) :
   unfold excesoGap
   linarith [CoherenceConstant_four_le d hd]
 
-/-- El exceso se apaga por completo: `CoherenceConstantInf − CoherenceConstant(d) → 0`, acotado arriba
+/-- El exceso se apaga por completo: `CoherenceConstantInf − CoherenceConstant(d) → 0`, acotado
+arriba
 por `excesoGap 4` y llevado a `0` por el límite de Szegő. -/
 theorem excesoGap_tendsto_zero :
     Tendsto (fun d : ℕ => excesoGap d) atTop (𝓝 0) := by
   unfold excesoGap
-  have h : Tendsto (fun d : ℕ => CoherenceConstantInf - CoherenceConstant d) atTop (𝓝 (CoherenceConstantInf - CoherenceConstantInf)) :=
+  have h : Tendsto (fun d : ℕ => CoherenceConstantInf - CoherenceConstant d) atTop (𝓝
+      (CoherenceConstantInf - CoherenceConstantInf)) :=
     limite_szego_CoherenceConstant.const_sub CoherenceConstantInf
   simpa using h
 

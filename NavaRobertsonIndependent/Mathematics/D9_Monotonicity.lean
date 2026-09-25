@@ -6,7 +6,8 @@ import NavaRobertsonIndependent.Mathematics.D8_Szego
 Sin barrido numérico: `CoherenceConstant` (y por tanto `geometricGap`) crece
 estrictamente para toda dimensión `d ≥ 4`. En particular, `d = 4` es
 el mínimo global de la cola `d ≥ 4` y cada valor finito se aproxima a
-`CoherenceConstantInf` estrictamente por debajo (`CoherenceConstant_lt_CoherenceConstantInf`, `geometricGap_lt_deltaInf`).
+`CoherenceConstantInf` estrictamente por debajo (`CoherenceConstant_lt_CoherenceConstantInf`,
+`geometricGap_lt_deltaInf`).
 
 La prueba no supone que `π` sea racional. Las llamadas a `ring`
 certifican únicamente identidades algebraicas formales con `π` como
@@ -273,9 +274,55 @@ private lemma remainder_poly_neg {y p : ℝ}
   have hb_12_10 : 0 ≤ u ^ 12 * (1 - u) ^ 0 * (v ^ 10 * (1 - v) ^ 2) := by positivity
   have hb_12_11 : 0 ≤ u ^ 12 * (1 - u) ^ 0 * (v ^ 11 * (1 - v) ^ 1) := by positivity
   have hb_12_12 : 0 ≤ u ^ 12 * (1 - u) ^ 0 * (v ^ 12 * (1 - v) ^ 0) := by positivity
-  dsimp [u, v] at hb_0_0 hb_0_1 hb_0_2 hb_0_3 hb_0_4 hb_0_5 hb_0_6 hb_0_7 hb_0_8 hb_0_9 hb_0_10 hb_0_11 hb_0_12 hb_1_0 hb_1_1 hb_1_2 hb_1_3 hb_1_4 hb_1_5 hb_1_6 hb_1_7 hb_1_8 hb_1_9 hb_1_10 hb_1_11 hb_1_12 hb_2_0 hb_2_1 hb_2_2 hb_2_3 hb_2_4 hb_2_5 hb_2_6 hb_2_7 hb_2_8 hb_2_9 hb_2_10 hb_2_11 hb_2_12 hb_3_0 hb_3_1 hb_3_2 hb_3_3 hb_3_4 hb_3_5 hb_3_6 hb_3_7 hb_3_8 hb_3_9 hb_3_10 hb_3_11 hb_3_12 hb_4_0 hb_4_1 hb_4_2 hb_4_3 hb_4_4 hb_4_5 hb_4_6 hb_4_7 hb_4_8 hb_4_9 hb_4_10 hb_4_11 hb_4_12 hb_5_0 hb_5_1 hb_5_2 hb_5_3 hb_5_4 hb_5_5 hb_5_6 hb_5_7 hb_5_8 hb_5_9 hb_5_10 hb_5_11 hb_5_12 hb_6_0 hb_6_1 hb_6_2 hb_6_3 hb_6_4 hb_6_5 hb_6_6 hb_6_7 hb_6_8 hb_6_9 hb_6_10 hb_6_11 hb_6_12 hb_7_0 hb_7_1 hb_7_2 hb_7_3 hb_7_4 hb_7_5 hb_7_6 hb_7_7 hb_7_8 hb_7_9 hb_7_10 hb_7_11 hb_7_12 hb_8_0 hb_8_1 hb_8_2 hb_8_3 hb_8_4 hb_8_5 hb_8_6 hb_8_7 hb_8_8 hb_8_9 hb_8_10 hb_8_11 hb_8_12 hb_9_0 hb_9_1 hb_9_2 hb_9_3 hb_9_4 hb_9_5 hb_9_6 hb_9_7 hb_9_8 hb_9_9 hb_9_10 hb_9_11 hb_9_12 hb_10_0 hb_10_1 hb_10_2 hb_10_3 hb_10_4 hb_10_5 hb_10_6 hb_10_7 hb_10_8 hb_10_9 hb_10_10 hb_10_11 hb_10_12 hb_11_0 hb_11_1 hb_11_2 hb_11_3 hb_11_4 hb_11_5 hb_11_6 hb_11_7 hb_11_8 hb_11_9 hb_11_10 hb_11_11 hb_11_12 hb_12_0 hb_12_1 hb_12_2 hb_12_3 hb_12_4 hb_12_5 hb_12_6 hb_12_7 hb_12_8 hb_12_9 hb_12_10 hb_12_11 hb_12_12 ⊢
-  ring_nf at hb_0_0 hb_0_1 hb_0_2 hb_0_3 hb_0_4 hb_0_5 hb_0_6 hb_0_7 hb_0_8 hb_0_9 hb_0_10 hb_0_11 hb_0_12 hb_1_0 hb_1_1 hb_1_2 hb_1_3 hb_1_4 hb_1_5 hb_1_6 hb_1_7 hb_1_8 hb_1_9 hb_1_10 hb_1_11 hb_1_12 hb_2_0 hb_2_1 hb_2_2 hb_2_3 hb_2_4 hb_2_5 hb_2_6 hb_2_7 hb_2_8 hb_2_9 hb_2_10 hb_2_11 hb_2_12 hb_3_0 hb_3_1 hb_3_2 hb_3_3 hb_3_4 hb_3_5 hb_3_6 hb_3_7 hb_3_8 hb_3_9 hb_3_10 hb_3_11 hb_3_12 hb_4_0 hb_4_1 hb_4_2 hb_4_3 hb_4_4 hb_4_5 hb_4_6 hb_4_7 hb_4_8 hb_4_9 hb_4_10 hb_4_11 hb_4_12 hb_5_0 hb_5_1 hb_5_2 hb_5_3 hb_5_4 hb_5_5 hb_5_6 hb_5_7 hb_5_8 hb_5_9 hb_5_10 hb_5_11 hb_5_12 hb_6_0 hb_6_1 hb_6_2 hb_6_3 hb_6_4 hb_6_5 hb_6_6 hb_6_7 hb_6_8 hb_6_9 hb_6_10 hb_6_11 hb_6_12 hb_7_0 hb_7_1 hb_7_2 hb_7_3 hb_7_4 hb_7_5 hb_7_6 hb_7_7 hb_7_8 hb_7_9 hb_7_10 hb_7_11 hb_7_12 hb_8_0 hb_8_1 hb_8_2 hb_8_3 hb_8_4 hb_8_5 hb_8_6 hb_8_7 hb_8_8 hb_8_9 hb_8_10 hb_8_11 hb_8_12 hb_9_0 hb_9_1 hb_9_2 hb_9_3 hb_9_4 hb_9_5 hb_9_6 hb_9_7 hb_9_8 hb_9_9 hb_9_10 hb_9_11 hb_9_12 hb_10_0 hb_10_1 hb_10_2 hb_10_3 hb_10_4 hb_10_5 hb_10_6 hb_10_7 hb_10_8 hb_10_9 hb_10_10 hb_10_11 hb_10_12 hb_11_0 hb_11_1 hb_11_2 hb_11_3 hb_11_4 hb_11_5 hb_11_6 hb_11_7 hb_11_8 hb_11_9 hb_11_10 hb_11_11 hb_11_12 hb_12_0 hb_12_1 hb_12_2 hb_12_3 hb_12_4 hb_12_5 hb_12_6 hb_12_7 hb_12_8 hb_12_9 hb_12_10 hb_12_11 hb_12_12 ⊢
-  linarith [hb_0_0, hb_0_1, hb_0_2, hb_0_3, hb_0_4, hb_0_5, hb_0_6, hb_0_7, hb_0_8, hb_0_9, hb_0_10, hb_0_11, hb_0_12, hb_1_0, hb_1_1, hb_1_2, hb_1_3, hb_1_4, hb_1_5, hb_1_6, hb_1_7, hb_1_8, hb_1_9, hb_1_10, hb_1_11, hb_1_12, hb_2_0, hb_2_1, hb_2_2, hb_2_3, hb_2_4, hb_2_5, hb_2_6, hb_2_7, hb_2_8, hb_2_9, hb_2_10, hb_2_11, hb_2_12, hb_3_0, hb_3_1, hb_3_2, hb_3_3, hb_3_4, hb_3_5, hb_3_6, hb_3_7, hb_3_8, hb_3_9, hb_3_10, hb_3_11, hb_3_12, hb_4_0, hb_4_1, hb_4_2, hb_4_3, hb_4_4, hb_4_5, hb_4_6, hb_4_7, hb_4_8, hb_4_9, hb_4_10, hb_4_11, hb_4_12, hb_5_0, hb_5_1, hb_5_2, hb_5_3, hb_5_4, hb_5_5, hb_5_6, hb_5_7, hb_5_8, hb_5_9, hb_5_10, hb_5_11, hb_5_12, hb_6_0, hb_6_1, hb_6_2, hb_6_3, hb_6_4, hb_6_5, hb_6_6, hb_6_7, hb_6_8, hb_6_9, hb_6_10, hb_6_11, hb_6_12, hb_7_0, hb_7_1, hb_7_2, hb_7_3, hb_7_4, hb_7_5, hb_7_6, hb_7_7, hb_7_8, hb_7_9, hb_7_10, hb_7_11, hb_7_12, hb_8_0, hb_8_1, hb_8_2, hb_8_3, hb_8_4, hb_8_5, hb_8_6, hb_8_7, hb_8_8, hb_8_9, hb_8_10, hb_8_11, hb_8_12, hb_9_0, hb_9_1, hb_9_2, hb_9_3, hb_9_4, hb_9_5, hb_9_6, hb_9_7, hb_9_8, hb_9_9, hb_9_10, hb_9_11, hb_9_12, hb_10_0, hb_10_1, hb_10_2, hb_10_3, hb_10_4, hb_10_5, hb_10_6, hb_10_7, hb_10_8, hb_10_9, hb_10_10, hb_10_11, hb_10_12, hb_11_0, hb_11_1, hb_11_2, hb_11_3, hb_11_4, hb_11_5, hb_11_6, hb_11_7, hb_11_8, hb_11_9, hb_11_10, hb_11_11, hb_11_12, hb_12_0, hb_12_1, hb_12_2, hb_12_3, hb_12_4, hb_12_5, hb_12_6, hb_12_7, hb_12_8, hb_12_9, hb_12_10, hb_12_11, hb_12_12]
+  dsimp [u, v] at hb_0_0 hb_0_1 hb_0_2 hb_0_3 hb_0_4 hb_0_5 hb_0_6 hb_0_7 hb_0_8 hb_0_9 hb_0_10
+                  hb_0_11 hb_0_12 hb_1_0 hb_1_1 hb_1_2 hb_1_3 hb_1_4 hb_1_5 hb_1_6 hb_1_7 hb_1_8
+                  hb_1_9 hb_1_10 hb_1_11 hb_1_12 hb_2_0 hb_2_1 hb_2_2 hb_2_3 hb_2_4 hb_2_5 hb_2_6
+                  hb_2_7 hb_2_8 hb_2_9 hb_2_10 hb_2_11 hb_2_12 hb_3_0 hb_3_1 hb_3_2 hb_3_3 hb_3_4
+                  hb_3_5 hb_3_6 hb_3_7 hb_3_8 hb_3_9 hb_3_10 hb_3_11 hb_3_12 hb_4_0 hb_4_1 hb_4_2
+                  hb_4_3 hb_4_4 hb_4_5 hb_4_6 hb_4_7 hb_4_8 hb_4_9 hb_4_10 hb_4_11 hb_4_12 hb_5_0
+                  hb_5_1 hb_5_2 hb_5_3 hb_5_4 hb_5_5 hb_5_6 hb_5_7 hb_5_8 hb_5_9 hb_5_10 hb_5_11
+                  hb_5_12 hb_6_0 hb_6_1 hb_6_2 hb_6_3 hb_6_4 hb_6_5 hb_6_6 hb_6_7 hb_6_8 hb_6_9
+                  hb_6_10 hb_6_11 hb_6_12 hb_7_0 hb_7_1 hb_7_2 hb_7_3 hb_7_4 hb_7_5 hb_7_6 hb_7_7
+                  hb_7_8 hb_7_9 hb_7_10 hb_7_11 hb_7_12 hb_8_0 hb_8_1 hb_8_2 hb_8_3 hb_8_4 hb_8_5
+                  hb_8_6 hb_8_7 hb_8_8 hb_8_9 hb_8_10 hb_8_11 hb_8_12 hb_9_0 hb_9_1 hb_9_2 hb_9_3
+                  hb_9_4 hb_9_5 hb_9_6 hb_9_7 hb_9_8 hb_9_9 hb_9_10 hb_9_11 hb_9_12 hb_10_0 hb_10_1
+                  hb_10_2 hb_10_3 hb_10_4 hb_10_5 hb_10_6 hb_10_7 hb_10_8 hb_10_9 hb_10_10 hb_10_11
+                  hb_10_12 hb_11_0 hb_11_1 hb_11_2 hb_11_3 hb_11_4 hb_11_5 hb_11_6 hb_11_7 hb_11_8
+                  hb_11_9 hb_11_10 hb_11_11 hb_11_12 hb_12_0 hb_12_1 hb_12_2 hb_12_3 hb_12_4
+                  hb_12_5 hb_12_6 hb_12_7 hb_12_8 hb_12_9 hb_12_10 hb_12_11 hb_12_12 ⊢
+  ring_nf at hb_0_0 hb_0_1 hb_0_2 hb_0_3 hb_0_4 hb_0_5 hb_0_6 hb_0_7 hb_0_8 hb_0_9 hb_0_10 hb_0_11
+             hb_0_12 hb_1_0 hb_1_1 hb_1_2 hb_1_3 hb_1_4 hb_1_5 hb_1_6 hb_1_7 hb_1_8 hb_1_9 hb_1_10
+             hb_1_11 hb_1_12 hb_2_0 hb_2_1 hb_2_2 hb_2_3 hb_2_4 hb_2_5 hb_2_6 hb_2_7 hb_2_8 hb_2_9
+             hb_2_10 hb_2_11 hb_2_12 hb_3_0 hb_3_1 hb_3_2 hb_3_3 hb_3_4 hb_3_5 hb_3_6 hb_3_7 hb_3_8
+             hb_3_9 hb_3_10 hb_3_11 hb_3_12 hb_4_0 hb_4_1 hb_4_2 hb_4_3 hb_4_4 hb_4_5 hb_4_6 hb_4_7
+             hb_4_8 hb_4_9 hb_4_10 hb_4_11 hb_4_12 hb_5_0 hb_5_1 hb_5_2 hb_5_3 hb_5_4 hb_5_5 hb_5_6
+             hb_5_7 hb_5_8 hb_5_9 hb_5_10 hb_5_11 hb_5_12 hb_6_0 hb_6_1 hb_6_2 hb_6_3 hb_6_4 hb_6_5
+             hb_6_6 hb_6_7 hb_6_8 hb_6_9 hb_6_10 hb_6_11 hb_6_12 hb_7_0 hb_7_1 hb_7_2 hb_7_3 hb_7_4
+             hb_7_5 hb_7_6 hb_7_7 hb_7_8 hb_7_9 hb_7_10 hb_7_11 hb_7_12 hb_8_0 hb_8_1 hb_8_2 hb_8_3
+             hb_8_4 hb_8_5 hb_8_6 hb_8_7 hb_8_8 hb_8_9 hb_8_10 hb_8_11 hb_8_12 hb_9_0 hb_9_1 hb_9_2
+             hb_9_3 hb_9_4 hb_9_5 hb_9_6 hb_9_7 hb_9_8 hb_9_9 hb_9_10 hb_9_11 hb_9_12 hb_10_0
+             hb_10_1 hb_10_2 hb_10_3 hb_10_4 hb_10_5 hb_10_6 hb_10_7 hb_10_8 hb_10_9 hb_10_10
+             hb_10_11 hb_10_12 hb_11_0 hb_11_1 hb_11_2 hb_11_3 hb_11_4 hb_11_5 hb_11_6 hb_11_7
+             hb_11_8 hb_11_9 hb_11_10 hb_11_11 hb_11_12 hb_12_0 hb_12_1 hb_12_2 hb_12_3 hb_12_4
+             hb_12_5 hb_12_6 hb_12_7 hb_12_8 hb_12_9 hb_12_10 hb_12_11 hb_12_12 ⊢
+  linarith [hb_0_0, hb_0_1, hb_0_2, hb_0_3, hb_0_4, hb_0_5, hb_0_6, hb_0_7, hb_0_8, hb_0_9,
+            hb_0_10, hb_0_11, hb_0_12, hb_1_0, hb_1_1, hb_1_2, hb_1_3, hb_1_4, hb_1_5, hb_1_6,
+            hb_1_7, hb_1_8, hb_1_9, hb_1_10, hb_1_11, hb_1_12, hb_2_0, hb_2_1, hb_2_2, hb_2_3,
+            hb_2_4, hb_2_5, hb_2_6, hb_2_7, hb_2_8, hb_2_9, hb_2_10, hb_2_11, hb_2_12, hb_3_0,
+            hb_3_1, hb_3_2, hb_3_3, hb_3_4, hb_3_5, hb_3_6, hb_3_7, hb_3_8, hb_3_9, hb_3_10,
+            hb_3_11, hb_3_12, hb_4_0, hb_4_1, hb_4_2, hb_4_3, hb_4_4, hb_4_5, hb_4_6, hb_4_7,
+            hb_4_8, hb_4_9, hb_4_10, hb_4_11, hb_4_12, hb_5_0, hb_5_1, hb_5_2, hb_5_3, hb_5_4,
+            hb_5_5, hb_5_6, hb_5_7, hb_5_8, hb_5_9, hb_5_10, hb_5_11, hb_5_12, hb_6_0, hb_6_1,
+            hb_6_2, hb_6_3, hb_6_4, hb_6_5, hb_6_6, hb_6_7, hb_6_8, hb_6_9, hb_6_10, hb_6_11,
+            hb_6_12, hb_7_0, hb_7_1, hb_7_2, hb_7_3, hb_7_4, hb_7_5, hb_7_6, hb_7_7, hb_7_8,
+            hb_7_9, hb_7_10, hb_7_11, hb_7_12, hb_8_0, hb_8_1, hb_8_2, hb_8_3, hb_8_4, hb_8_5,
+            hb_8_6, hb_8_7, hb_8_8, hb_8_9, hb_8_10, hb_8_11, hb_8_12, hb_9_0, hb_9_1, hb_9_2,
+            hb_9_3, hb_9_4, hb_9_5, hb_9_6, hb_9_7, hb_9_8, hb_9_9, hb_9_10, hb_9_11, hb_9_12,
+            hb_10_0, hb_10_1, hb_10_2, hb_10_3, hb_10_4, hb_10_5, hb_10_6, hb_10_7, hb_10_8,
+            hb_10_9, hb_10_10, hb_10_11, hb_10_12, hb_11_0, hb_11_1, hb_11_2, hb_11_3, hb_11_4,
+            hb_11_5, hb_11_6, hb_11_7, hb_11_8, hb_11_9, hb_11_10, hb_11_11, hb_11_12, hb_12_0,
+            hb_12_1, hb_12_2, hb_12_3, hb_12_4, hb_12_5, hb_12_6, hb_12_7, hb_12_8, hb_12_9,
+            hb_12_10, hb_12_11, hb_12_12]
 
 /-- Continuous angular form of the exact finite coherence squared. -/
 private noncomputable def coherenceSqAngle (x : ℝ) : ℝ :=
@@ -496,7 +543,8 @@ theorem geometricGap_strictMonoOn_ge_four :
   simpa [geometricGap] using CoherenceConstant_strictMonoOn_ge_four ha hb hab
 
 /-- Dimension four is the exact global minimum of finite coherence on the physical tail. -/
-theorem CoherenceConstant_four_le (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant 4 ≤ CoherenceConstant d := by
+theorem CoherenceConstant_four_le (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant 4 ≤ CoherenceConstant d
+    := by
   rcases eq_or_lt_of_le hd with h | h
   · simp [h]
   · have hmem4 : (4 : ℕ) ∈ {d : ℕ | 4 ≤ d} := le_refl 4
@@ -530,7 +578,8 @@ private theorem CoherenceConstant_tail_tendsto :
   exact (Filter.tendsto_add_atTop_iff_nat 4).2 limite_nava_szego_CoherenceConstant
 
 /-- Every finite physical coherence lies strictly below its Nava--Szegő attractor. -/
-theorem CoherenceConstant_lt_CoherenceConstantInf (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant d < CoherenceConstantInf := by
+theorem CoherenceConstant_lt_CoherenceConstantInf (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant d <
+    CoherenceConstantInf := by
   let n := d - 4
   have hdn : n + 4 = d := by dsimp [n]; omega
   have hstep : CoherenceConstant (n + 4) < CoherenceConstant ((n + 1) + 4) :=

@@ -250,20 +250,23 @@ def PsiStar3D : H3D dx dy dz :=
 
 theorem PsiStar3D_eq_eX :
     PsiStar3D dx dy dz =
-      prodAlong (eX dx dy dz) (psiStar dx) (prodAlong (Equiv.refl _) (psiStar dy) (psiStar dz)) := by
+      prodAlong (eX dx dy dz) (psiStar dx) (prodAlong (Equiv.refl _) (psiStar dy) (psiStar dz)) :=
+          by
   ext p
   simp [PsiStar3D, prodAlong_apply, eX, mul_assoc]
 
 theorem PsiStar3D_eq_eY :
     PsiStar3D dx dy dz =
-      prodAlong (eY dx dy dz) (psiStar dy) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dz)) := by
+      prodAlong (eY dx dy dz) (psiStar dy) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dz)) :=
+          by
   ext p
   simp [PsiStar3D, prodAlong_apply, eY]
   ring
 
 theorem PsiStar3D_eq_eZ :
     PsiStar3D dx dy dz =
-      prodAlong (eZ dx dy dz) (psiStar dz) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dy)) := by
+      prodAlong (eZ dx dy dz) (psiStar dz) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dy)) :=
+          by
   ext p
   simp [PsiStar3D, prodAlong_apply, eZ]
   ring
@@ -387,13 +390,16 @@ every axis, the inequality is strict on all three axes at once. -/
 theorem estricta_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 <
-        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz) ∧
+        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz)
+            ∧
     covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dy / 2) ^ 2 <
-        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz) ∧
+        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz)
+            ∧
     covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dz / 2) ^ 2 <
-        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz) := by
+        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz)
+            := by
   refine ⟨?_, ?_, ?_⟩
   · rw [PsiStar3D_eq_eX]; exact estricta_eje (norm_resto (by omega) (by omega)) hx _
   · rw [PsiStar3D_eq_eY]; exact estricta_eje (norm_resto (by omega) (by omega)) hy _

@@ -197,7 +197,8 @@ theorem autovector_no_maxima_tension {d : ℕ} (hd : 4 ≤ d) {ψ : Hd d} (hψ :
     have h4 := re_inner_KdOp d ψ
     rw [hK, show 2 / ((d : ℝ) - 1) = 2 * (1 / ((d : ℝ) - 1)) by ring] at h4
     linarith
-  rw [hIm, commutatorConstant_half_sq (by omega), show (-(1 / ((d : ℝ) - 1))) ^ 2 = 1 / ((d : ℝ) - 1) ^ 2 by
+  rw [hIm, commutatorConstant_half_sq (by omega), show (-(1 / ((d : ℝ) - 1))) ^ 2 = 1 / ((d : ℝ) -
+      1) ^ 2 by
     rw [neg_sq, div_pow, one_pow]] at hstrict
   simp at hstrict
 

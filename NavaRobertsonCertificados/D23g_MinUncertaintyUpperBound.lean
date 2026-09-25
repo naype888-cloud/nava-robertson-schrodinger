@@ -105,7 +105,8 @@ theorem cota_mP_nonneg (h0 : 0 ≤ n0) (h1 : 0 ≤ n1) (h2 : 0 ≤ n2) (h3 : 0 �
             have hz : n1 * n3 * (S n0 n1 n2 n3 - mP n0 n1 n2 n3) ^ 2 = 0 := by rw [hn3]; ring
             have hsq : c1 n0 n1 n2 n3 ^ 2 = 0 := le_antisymm (by linarith) (sq_nonneg _)
             exact pow_eq_zero_iff two_ne_zero |>.mp hsq
-          have hc1' : (S n0 n1 n2 n3 + mP n0 n1 n2 n3) * n0 + (mP n0 n1 n2 n3 + S n0 n1 n2 n3 / 3) * n1 = 0 := hc1
+          have hc1' : (S n0 n1 n2 n3 + mP n0 n1 n2 n3) * n0 + (mP n0 n1 n2 n3 + S n0 n1 n2 n3 / 3) *
+              n1 = 0 := hc1
           rw [hS] at hc1'
           have q0 : 0 ≤ (1 + mP n0 n1 n2 n3) * n0 := mul_nonneg (by linarith) h0
           have q1 : 0 ≤ (mP n0 n1 n2 n3 + 1 / 3) * n1 := mul_nonneg (by linarith) h1

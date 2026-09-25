@@ -136,7 +136,8 @@ theorem sum_range_mul_pow (x : ℂ) (hx : x ≠ 1) :
 
 theorem sum_range_sq_mul_pow (x : ℂ) (hx : x ≠ 1) :
     ∀ n : ℕ, ∑ k ∈ Finset.range n, (k : ℂ)^2 * x ^ k =
-      (((n:ℂ)-1)^2 * x^(n+2) + (1+2*(n:ℂ)-2*(n:ℂ)^2) * x^(n+1) + (n:ℂ)^2 * x^n - x^2 - x) / (x - 1) ^ 3 := by
+      (((n:ℂ)-1)^2 * x^(n+2) + (1+2*(n:ℂ)-2*(n:ℂ)^2) * x^(n+1) + (n:ℂ)^2 * x^n - x^2 - x) / (x - 1)
+          ^ 3 := by
   intro n
   induction n with
   | zero => simp
@@ -285,7 +286,8 @@ theorem sum_range_real (n:ℕ) : ∑ k ∈ Finset.range n, (k:ℝ) = (n:ℝ)*((n
   | zero => simp
   | succ n ih => rw [Finset.sum_range_succ, ih]; push_cast; ring
 
-theorem sum_range_sq_real (n:ℕ) : ∑ k ∈ Finset.range n, (k:ℝ)^2 = (n:ℝ)*((n:ℝ)-1)*(2*(n:ℝ)-1)/6 := by
+theorem sum_range_sq_real (n:ℕ) : ∑ k ∈ Finset.range n, (k:ℝ)^2 = (n:ℝ)*((n:ℝ)-1)*(2*(n:ℝ)-1)/6 :=
+    by
   induction n with
   | zero => simp
   | succ n ih => rw [Finset.sum_range_succ, ih]; push_cast; ring
@@ -318,7 +320,8 @@ theorem sin_sq_sum_eq (d : ℕ) (hd : 1 ≤ d) :
 
 theorem k_sin_sq_sum_eq (d : ℕ) (hd : 1 ≤ d) :
     ∑ k ∈ Finset.range (d+1), (k:ℝ)*Real.sin ((k:ℝ)*theta d)^2 = ((d:ℝ)+1)^2/4 := by
-  have hconv : ∀ k : ℕ, (k:ℝ)*Real.sin ((k:ℝ)*theta d)^2 = (k:ℝ)/2 - (k:ℝ)*Real.cos ((k:ℝ)*phi d)/2 := by
+  have hconv : ∀ k : ℕ, (k:ℝ)*Real.sin ((k:ℝ)*theta d)^2 = (k:ℝ)/2 - (k:ℝ)*Real.cos ((k:ℝ)*phi d)/2
+      := by
     intro k
     have hdbl : Real.cos ((k:ℝ)*phi d) = 1 - 2*Real.sin ((k:ℝ)*theta d)^2 := by
       unfold phi
@@ -341,7 +344,8 @@ theorem k_sin_sq_sum_eq (d : ℕ) (hd : 1 ≤ d) :
 theorem k_sq_sin_sq_sum_eq (d : ℕ) (hd : 1 ≤ d) :
     ∑ k ∈ Finset.range (d+1), (k:ℝ)^2*Real.sin ((k:ℝ)*theta d)^2 =
       ((d:ℝ)+1)*(d:ℝ)*(2*(d:ℝ)+1)/12 - ((d:ℝ)+1)/(2*(1-Real.cos (phi d))) + ((d:ℝ)+1)^2/4 := by
-  have hconv : ∀ k : ℕ, (k:ℝ)^2*Real.sin ((k:ℝ)*theta d)^2 = (k:ℝ)^2/2 - (k:ℝ)^2*Real.cos ((k:ℝ)*phi d)/2 := by
+  have hconv : ∀ k : ℕ, (k:ℝ)^2*Real.sin ((k:ℝ)*theta d)^2 = (k:ℝ)^2/2 - (k:ℝ)^2*Real.cos ((k:ℝ)*phi
+      d)/2 := by
     intro k
     have hdbl : Real.cos ((k:ℝ)*phi d) = 1 - 2*Real.sin ((k:ℝ)*theta d)^2 := by
       unfold phi
@@ -395,7 +399,8 @@ theorem RNavaSq_raw_eq (d : ℕ) (hd : 2 ≤ d) :
       (Real.cos (phi d) * ((d:ℝ)^2+2*(d:ℝ)+3) - ((d:ℝ)^2+2*(d:ℝ)-9))
         / (3*(Real.cos (phi d) - 1)*((d:ℝ)-1)^2) := by
   rw [numRaw_eq d (by omega), denRaw_eq d (by omega)]
-  have hcos_lt : Real.cos (phi d) < 1 := lt_of_le_of_ne (Real.cos_le_one _) (cosphi_ne_one d (by omega))
+  have hcos_lt : Real.cos (phi d) < 1 := lt_of_le_of_ne (Real.cos_le_one _) (cosphi_ne_one d (by
+      omega))
   have hden1 : (1:ℝ) - Real.cos (phi d) ≠ 0 := by nlinarith
   have hden1' : Real.cos (phi d) - 1 ≠ 0 := fun h => hden1 (by linarith)
   have hdm1 : (d:ℝ) - 1 ≠ 0 := by
@@ -481,7 +486,8 @@ theorem RNavaSq_tendsto :
       nlinarith [Nat.cast_nonneg (α := ℝ) d]
     have := htail.const_add (1/3:ℝ)
     simpa using this
-  have hterm2 : Tendsto (fun d : ℕ => 2 / (Real.sin (theta (d+2)))^2 / ((d:ℝ)+1)^2) atTop (𝓝 (2/Real.pi^2)) := by
+  have hterm2 : Tendsto (fun d : ℕ => 2 / (Real.sin (theta (d+2)))^2 / ((d:ℝ)+1)^2) atTop (𝓝
+      (2/Real.pi^2)) := by
     have hth0 : Tendsto (fun d : ℕ => theta (d+2)) atTop (𝓝 0) := by
       have heq : ∀ d : ℕ, theta (d+2) = Real.pi / ((d:ℝ)+3) := by
         intro d; unfold theta Nreal; push_cast; ring_nf
@@ -499,7 +505,8 @@ theorem RNavaSq_tendsto :
         intro d
         have h1 : theta (d+2) = Real.pi/((d:ℝ)+3) := by unfold theta Nreal; push_cast; ring_nf
         rw [h1]; ring
-      have hfe : (fun d : ℕ => theta (d+2)*((d:ℝ)+1)) = (fun d : ℕ => Real.pi*(((d:ℝ)+1)/((d:ℝ)+3))) := funext heq
+      have hfe : (fun d : ℕ => theta (d+2)*((d:ℝ)+1)) = (fun d : ℕ => Real.pi*(((d:ℝ)+1)/((d:ℝ)+3)))
+          := funext heq
       rw [hfe]
       have hratio : Tendsto (fun d : ℕ => ((d:ℝ)+1)/((d:ℝ)+3)) atTop (𝓝 1) := by
         have heq2 : ∀ d : ℕ, ((d:ℝ)+1)/((d:ℝ)+3) = 1 - 2/((d:ℝ)+3) := by
@@ -507,14 +514,16 @@ theorem RNavaSq_tendsto :
           have h3 : ((d:ℝ)+3) ≠ 0 := by positivity
           field_simp
           ring
-        have hfe2 : (fun d : ℕ => ((d:ℝ)+1)/((d:ℝ)+3)) = (fun d : ℕ => 1 - 2/((d:ℝ)+3)) := funext heq2
+        have hfe2 : (fun d : ℕ => ((d:ℝ)+1)/((d:ℝ)+3)) = (fun d : ℕ => 1 - 2/((d:ℝ)+3)) := funext
+            heq2
         rw [hfe2]
         have h3 : Tendsto (fun d : ℕ => (d:ℝ)+3) atTop atTop :=
           tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds
         have := (h3.const_div_atTop (2:ℝ)).const_sub (1:ℝ)
         simpa using this
       simpa using hratio.const_mul Real.pi
-    have hden2 : Tendsto (fun d : ℕ => (Real.sin (theta (d+2)))^2 * ((d:ℝ)+1)^2) atTop (𝓝 (Real.pi^2)) := by
+    have hden2 : Tendsto (fun d : ℕ => (Real.sin (theta (d+2)))^2 * ((d:ℝ)+1)^2) atTop (𝓝
+        (Real.pi^2)) := by
       have heq : ∀ d : ℕ, (Real.sin (theta (d+2)))^2 * ((d:ℝ)+1)^2
           = (theta (d+2) * Real.sinc (theta (d+2)) * ((d:ℝ)+1))^2 := by
         intro d
@@ -526,7 +535,8 @@ theorem RNavaSq_tendsto :
       have hfe : (fun d : ℕ => (Real.sin (theta (d+2)))^2 * ((d:ℝ)+1)^2)
           = (fun d : ℕ => (theta (d+2) * Real.sinc (theta (d+2)) * ((d:ℝ)+1))^2) := funext heq
       rw [hfe]
-      have hinner : Tendsto (fun d : ℕ => theta (d+2) * Real.sinc (theta (d+2)) * ((d:ℝ)+1)) atTop (𝓝 Real.pi) := by
+      have hinner : Tendsto (fun d : ℕ => theta (d+2) * Real.sinc (theta (d+2)) * ((d:ℝ)+1)) atTop
+          (𝓝 Real.pi) := by
         have hm := hsinc1.mul hprod
         rw [show (1:ℝ)*Real.pi = Real.pi by ring] at hm
         have heq3 : ∀ d : ℕ, Real.sinc (theta (d+2)) * (theta (d+2) * ((d:ℝ)+1))
@@ -585,7 +595,8 @@ theorem anguloFiedler_eq_theta (d : ℕ) : anguloFiedler d = theta d := by
 
 theorem vectorFiedlerCrudo_norm_sq (d : ℕ) (j : Fin d) :
     ‖vectorFiedlerCrudo d j‖^2 = Real.sin (((j.val:ℝ)+1) * theta d)^2 := by
-  have h : vectorFiedlerCrudo d j = (-Complex.I)^j.val * (Real.sin (((j.val:ℝ)+1) * anguloFiedler d) : ℂ) := rfl
+  have h : vectorFiedlerCrudo d j = (-Complex.I)^j.val * (Real.sin (((j.val:ℝ)+1) * anguloFiedler d)
+      : ℂ) := rfl
   rw [h, anguloFiedler_eq_theta]
   rw [norm_mul, norm_pow, Complex.norm_real]
   have h1 : ‖(-Complex.I : ℂ)‖ = 1 := by simp
