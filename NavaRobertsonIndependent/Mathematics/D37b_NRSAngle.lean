@@ -25,6 +25,11 @@ On the cube of `D37` each axis carries its own angle, `θ_NRS(dx)`, `θ_NRS(dy)`
 `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.44°` (`anguloNRS_cuatro`) and `θ_NRS(4) > 0`.
 No axis with `4` or more sites, however many, brings its two fluctuation vectors closer than
 `θ_NRS(4)`; on the cube this holds on all three axes at once (`piso_angular_cubo`).
+
+**Finite isotropy** (`anguloNRS_isotropia`, `isotropia_finita_cubo`): two rows, or two axes
+of the cube, with at least `D ≥ 4` sites each have angles differing by less than
+`arccos (1 / C_∞) − θ_NRS(D)`. No infinite lattice is involved: only finite rows and the
+unattained ceiling.
 -/
 
 noncomputable section
@@ -151,6 +156,19 @@ theorem piso_angular {d : ℕ} (hd : 4 ≤ d) :
     anguloNRS_strictMonoOn.monotoneOn (show (4 : ℕ) ≤ 4 from le_rfl) hd hd,
     anguloNRS_lt_limite hd⟩
 
+/-- **Finite isotropy for two rows.** If both rows have at least `D ≥ 4` sites, their angles
+differ by less than `arccos (1 / C_∞) − θ_NRS(D)`: a statement about finite rows only, with the
+unattained ceiling `arccos (1 / C_∞)` as the sole reference. -/
+theorem anguloNRS_isotropia {D a b : ℕ} (hD : 4 ≤ D) (ha : D ≤ a) (hb : D ≤ b) :
+    |anguloNRS a - anguloNRS b| < arccos (1 / CoherenceConstantInf) - anguloNRS D := by
+  have mono := anguloNRS_strictMonoOn.monotoneOn
+  have hDa : anguloNRS D ≤ anguloNRS a := mono (show 4 ≤ D from hD) (show 4 ≤ a by omega) ha
+  have hDb : anguloNRS D ≤ anguloNRS b := mono (show 4 ≤ D from hD) (show 4 ≤ b by omega) hb
+  have la := anguloNRS_lt_limite (show 4 ≤ a by omega)
+  have lb := anguloNRS_lt_limite (show 4 ≤ b by omega)
+  rw [abs_sub_lt_iff]
+  constructor <;> linarith
+
 /-! ## 3. One angle per axis of the cube -/
 
 section Cubo
@@ -211,6 +229,25 @@ theorem piso_angular_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
   rw [anguloG_eje_x (by omega) (by omega), anguloG_eje_y (by omega) (by omega),
     anguloG_eje_z (by omega) (by omega)]
   exact ⟨(piso_angular hx).2.1, (piso_angular hy).2.1, (piso_angular hz).2.1⟩
+
+/-- **Finite isotropy of the cube.** In any cube with at least `D ≥ 4` sites on every axis, the
+angles of any two axes differ by less than `arccos (1 / C_∞) − θ_NRS(D)`. With `D = 100` this is
+about `1.05°`: the three directions agree more closely the more sites each has, with no appeal
+to an infinite lattice. -/
+theorem isotropia_finita_cubo {D : ℕ} (hD : 4 ≤ D) (hx : D ≤ dx) (hy : D ≤ dy) (hz : D ≤ dz) :
+    |anguloG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -
+        anguloG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz)| <
+        arccos (1 / CoherenceConstantInf) - anguloNRS D ∧
+      |anguloG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -
+        anguloG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)| <
+        arccos (1 / CoherenceConstantInf) - anguloNRS D ∧
+      |anguloG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) -
+        anguloG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)| <
+        arccos (1 / CoherenceConstantInf) - anguloNRS D := by
+  rw [anguloG_eje_x (by omega) (by omega), anguloG_eje_y (by omega) (by omega),
+    anguloG_eje_z (by omega) (by omega)]
+  exact ⟨anguloNRS_isotropia hD hx hy, anguloNRS_isotropia hD hx hz,
+    anguloNRS_isotropia hD hy hz⟩
 
 end Cubo
 
