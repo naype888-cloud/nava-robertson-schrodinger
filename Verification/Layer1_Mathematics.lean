@@ -24,7 +24,7 @@ open Lean
   let malos := mods.filter fun m => prohibidos.any (·.isPrefixOf m)
   let propios := mods.filter fun m => `NavaRobertsonIndependent |>.isPrefixOf m
   if malos.isEmpty then
-    IO.println s!"OK: Layer 1 imports no physics, cosmology or ontology module ({propios.size} package modules in the closure)"
+    IO.println s!"OK: Layer 1 imports no physics/cosmology/ontology module ({propios.size} modules)"
   else
     throwError s!"BOUNDARY VIOLATION: {malos}"
 
@@ -87,3 +87,4 @@ open Lean
 #print axioms ConoDeLuz.cono_de_luz_estado
 #print axioms ConoDeLuz.borde_del_cono_ne_zero
 #print axioms ConoDeLuz.cono_de_luz_cubo
+#print axioms LiebRobinson.lieb_robinson

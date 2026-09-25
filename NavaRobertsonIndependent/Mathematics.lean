@@ -39,6 +39,7 @@ import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
 import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 import NavaRobertsonIndependent.Mathematics.D37f_LightCone
+import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
@@ -51,7 +52,8 @@ anchor appears anywhere in the import closure of this module.
 
 **Declared physical bridge** (a premise, not a theorem): `T_d:P_d` is motion in discrete space —
 `P_d` position on the cells of a row, `T_d` transport between neighbouring cells — and the three
-factors of the cube are the directions `x, y, z`. The size of a cell in SI units is Layer 2. The dependency is
+factors of the cube are the directions `x, y, z`. The size of a cell in SI units is Layer 2. The
+    dependency is
 one-way: this layer does not import `Physics`, and that is checked by
 `Verification/Layer1_Mathematics.lean`.
 

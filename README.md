@@ -69,7 +69,10 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   `[−1, 1]` (the particle in a box), so it only connects neighbours; counting time in steps of
   transport, `(T_d^k) i j = 0` whenever `|i − j| > k`, and the edge is reached exactly,
   `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone is the
-  octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`).
+  octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`);
+* **Lieb–Robinson bound**: in continuous time, `U(t) = exp(−i t T_d)` satisfies
+  `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}` with `r = |i − j|` — outside the cone the amplitude decays
+  faster than any exponential in the distance (`D37g`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -336,6 +339,8 @@ unit and no constant to it.
   on the path `cono_de_luz`, `cono_de_luz_estado` (no signal outruns the cone) and
   `borde_del_cono` / `borde_del_cono_ne_zero` (the edge is reached); on the cube
   `cono_de_luz_cubo` for `T_x + T_y + T_z` with the lattice distance.
+- `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entrada_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
+  (`norm_entry_pow_le`), and the bound `lieb_robinson`.
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
