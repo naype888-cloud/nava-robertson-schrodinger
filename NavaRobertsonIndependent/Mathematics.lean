@@ -38,14 +38,17 @@ import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 
 /-!
-# Layer 1 — NRS (one row) and NRS³ (the `x, y, z` cube)
+# Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
 
-This is the theorem on discrete space: `T_d:P_d` is how one moves in it (position on the
-sites of a row, transport only between neighbours), and the cube of `D37` is its `x, y, z`.
-It is stated over Mathlib; the only other import is physlib's algebraic uncertainty
-framework, used by `PhyslibBridge` alone. No SI constant, no unit and no laboratory anchor
-appears anywhere in the import closure of this module: the size of a cell in metres is
-Layer 2. The dependency is
+The theorems are about the operators `T_d` (normalized adjacency of the path graph) and `P_d`
+(equispaced diagonal) on `ℂ^d`, and their lifts to the product of three path graphs (`D37`).
+They are stated over Mathlib; the only other import is physlib's algebraic uncertainty
+framework, used by `PhyslibBridge` alone. No physical constant, no unit and no laboratory
+anchor appears anywhere in the import closure of this module.
+
+**Declared physical bridge** (a premise, not a theorem): `T_d:P_d` is motion in discrete space —
+`P_d` position on the cells of a row, `T_d` transport between neighbouring cells — and the three
+factors of the cube are the directions `x, y, z`. The size of a cell in SI units is Layer 2. The dependency is
 one-way: this layer does not import `Physics`, and that is checked by
 `Verification/Layer1_Mathematics.lean`.
 

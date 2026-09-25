@@ -232,7 +232,7 @@ theorem piso_angular_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
 
 /-- **Finite isotropy of the cube.** In any cube with at least `D ≥ 4` sites on every axis, the
 angles of any two axes differ by less than `arccos (1 / C_∞) − θ_NRS(D)`. With `D = 100` this is
-about `1.05°`: the three directions agree more closely the more sites each has, with no appeal
+about `1.05°`: the three axes agree more closely the more sites each has, with no appeal
 to an infinite lattice. -/
 theorem isotropia_finita_cubo {D : ℕ} (hD : 4 ≤ D) (hx : D ≤ dx) (hy : D ≤ dy) (hz : D ≤ dz) :
     |anguloG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -

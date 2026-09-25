@@ -4,8 +4,9 @@ import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 /-!
 # D37 — The path graph in three axes: `(T, P)` per axis and NRS on each
 
-The cube is discrete space in three directions, the `x, y, z` of space: a site is a triple of
-coordinates, and one moves from a site to a neighbour along a single axis at a time.
+The cube is the Cartesian product of three path graphs: a site is a triple of coordinates and
+adjacency changes a single coordinate by one step. (Under the declared physical bridge of
+`Mathematics.lean`, its three factors are the directions `x, y, z` of discrete space.)
 `D4` fixes the site of the cube, `Sitio3D dx dy dz = Fin dx × Fin dy × Fin dz`, and shows
 that the elementary step changes exactly one coordinate (the diagonal is never minimal).
 This file puts the operators on that cube: one pair `(T, P)` per axis, each acting as the

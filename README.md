@@ -4,12 +4,14 @@ Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
 external academic review. Lake fetches the exact Mathlib and physlib revisions recorded in
 `lake-manifest.json`; the package does not depend on the BACQM source tree.
 
-`T_d:P_d` is how one moves in discrete space: position `P_d` on the `d` sites of a row,
-transport `T_d` only between neighbouring sites (the path graph, forced by locality and
-completeness, `D3`). **NRS** is the base theorem on one row. **NRS³** is its evolution to
-three-dimensional space: the cube `dx × dy × dz`, one row per axis — the `x, y, z` of space.
-Everything is proved over Mathlib (and physlib for `PhyslibBridge`) with no SI constant and no unit; only the size of a cell in
-metres and the cosmological layers are left outside this repository.
+On `H_d = ℂ^d`, let `P_d` be the diagonal operator with equispaced eigenvalues in `[−1, 1]` and
+`T_d = A_d/ρ_d` the normalized adjacency operator of the path graph on `d` vertices
+(`ρ_d = 2 cos(π/(d+1))`); the path graph is the only graph compatible with ordered locality and
+completeness (`D3`). **NRS** is the Robertson–Schrödinger inequality for the pair `(T_d, P_d)`,
+computed exactly. **NRS³** is its extension to the Cartesian product of three path graphs, the
+cube `dx × dy × dz`, with one such pair per factor. All statements are theorems in Lean 4 over
+Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
+reading is a separate, declared bridge (see *Declared physical bridge* below).
 
 ## The two theorems
 
@@ -28,8 +30,8 @@ From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d =
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
 (`D23f`; upper bound `D23g` in the separate target).
 
-**NRS³ — three-dimensional space (the cube `dx × dy × dz`).** One pair `(T, P)` per axis
-(`D37`):
+**NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
+factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
 
 * pairs on different axes commute — only `T` and `P` of the same axis collide;
 * at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
@@ -43,12 +45,30 @@ minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never 
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No SI constant, no unit. | Lean theorems. |
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
 | Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
 computes the import closure of the package and fails if it contains a
 module outside `NavaRobertsonIndependent.Mathematics`.
+
+## Declared physical bridge
+
+The theorems above are mathematics. Their physical content rests on one declared
+identification, which is a premise and not a Lean theorem:
+
+* **`T_d:P_d` is motion in discrete space.** `P_d` is position on the `d` cells of a row and
+  `T_d` is transport, which only connects neighbouring cells.
+* **The cube of `D37` is three-dimensional space.** Its three factors are the directions
+  `x, y, z`; a site is a cell with three coordinates, and motion changes one coordinate by one
+  cell at a time (`D4`: the diagonal is never the minimal step).
+
+Under this bridge, NRS and NRS³ are statements about discrete space: in every direction with at
+least `4` cells the state of maximal tension carries an irreducible angle between position and
+transport (at least `≈ 7.44°`, below `≈ 28.30°`), and the three directions agree more closely the
+more cells each has. What this repository does not contain is the size of a cell in SI units
+(metres, seconds) and the cosmological and observer layers; those are separate layers with their
+own declared hypotheses.
 
 ## License
 
@@ -209,9 +229,9 @@ completeness (no minimal step is missing) is forced to be exactly
 `SimpleGraph.pathGraph d`. `pathGraph` is the Mathlib name for that unique
 object, not a diagram chosen for illustration.
 
-The results are about discrete space itself (`T_d:P_d` per axis, the `x, y, z` cube of `D37`).
-What this repository does not contain is the calibration of a cell in SI units (metres, seconds)
-and the cosmological and observer layers built on top; those live in separate layers.
+Every formal claim in this repository is a theorem about the operators `T_d`, `P_d` on `ℂ^d`
+and their lifts to the product of three path graphs. The physical identification is the
+declared bridge above; it is stated, not proved, and nothing in the Lean code depends on it.
 
 The root module `NavaRobertsonIndependent.lean` imports
 `NavaRobertsonIndependent.Mathematics` and is the single verification target
