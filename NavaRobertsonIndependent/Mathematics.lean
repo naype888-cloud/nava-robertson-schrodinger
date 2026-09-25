@@ -38,7 +38,7 @@ import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 
 /-!
-# Layer 1 — Mathematics
+# Layer 1 — NRS (one row) and NRS³ (the `x, y, z` cube)
 
 This is the theorem on discrete space: `T_d:P_d` is how one moves in it (position on the
 sites of a row, transport only between neighbours), and the cube of `D37` is its `x, y, z`.

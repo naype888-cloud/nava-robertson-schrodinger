@@ -1,7 +1,7 @@
 import NavaRobertsonIndependent.Mathematics
 
 /-!
-# Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty Inequality
+# NRS and NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
 Single verification target of the package: the theorem on discrete space (`T_d:P_d` per
 axis, the `x, y, z` cube of `D37`), proved over Mathlib with no SI unit and no constant.

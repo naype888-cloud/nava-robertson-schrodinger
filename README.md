@@ -1,9 +1,54 @@
-# Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty Inequality
+# NRS and NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
 Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
-external academic review. The package is self-contained at the project level:
-Lake fetches the exact Mathlib and physlib revisions recorded in
-`lake-manifest.json`; it does not depend on the BACQM source tree.
+external academic review. Lake fetches the exact Mathlib and physlib revisions recorded in
+`lake-manifest.json`; the package does not depend on the BACQM source tree.
+
+`T_d:P_d` is how one moves in discrete space: position `P_d` on the `d` sites of a row,
+transport `T_d` only between neighbouring sites (the path graph, forced by locality and
+completeness, `D3`). **NRS** is the base theorem on one row. **NRS³** is its evolution to
+three-dimensional space: the cube `dx × dy × dz`, one row per axis — the `x, y, z` of space.
+Everything is proved over Mathlib (and physlib for `PhyslibBridge`) with no SI constant and no unit; only the size of a cell in
+metres and the cosmological layers are left outside this repository.
+
+## The two theorems
+
+**NRS — base theorem (one row, `d` sites).** At the state of maximal tension `ψ*`,
+
+    σ_T · σ_P = C_Nava(d) · ½ |⟨[T_d, P_d]⟩|,      ½ |⟨[T_d, P_d]⟩| = 1/(d−1),
+
+with `C_Nava(d) = 1` exactly for `d = 2, 3` (Robertson–Schrödinger saturates) and
+`C_Nava(d) > 1` for every `d ≥ 4` (the algebraic quantum), strictly increasing from `d = 4`
+and strictly below `C_∞ = √(π²/3 − 2)`, which no `d` attains (`D8`, `D9`, `D20`, `D21`).
+Equivalently, the fluctuation vectors of `T_d` and `P_d` meet at the angle
+`θ_NRS(d) = arccos (1/C_Nava(d))`: `0°` for `d = 2, 3`, exactly
+`arccos (1/√((99 − 42√5)/5)) ≈ 7.44°` at `d = 4`, rising towards `≈ 28.30°` (`D37b`).
+The inequality is physlib's `robertson_schrodinger`, instantiated (`PhyslibBridge`).
+From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d = 4` the
+minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
+(`D23f`; upper bound `D23g` in the separate target).
+
+**NRS³ — three-dimensional space (the cube `dx × dy × dz`).** One pair `(T, P)` per axis
+(`D37`):
+
+* pairs on different axes commute — only `T` and `P` of the same axis collide;
+* at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
+  only with `2` or `3` sites and is strict from `4` on, on all three axes at once;
+* each axis carries its own angle, at least `θ_NRS(4) ≈ 7.44°` and below `≈ 28.30°` (`D37b`);
+* **finite isotropy**: if every axis has at least `D` sites, the angles of any two axes differ
+  by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
+  finite cubes only (`D37b`);
+* the spectrum is axis by axis: eigenvalues add, and `Ψ*` is the top of
+  `K_x + K_y + K_z` with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds (`D37c`).
+
+| Layer | Build target | What it is | Status |
+|---|---|---|---|
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No SI constant, no unit. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates. | Lean theorems. |
+
+This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
+computes the import closure of the package and fails if it contains a
+module outside `NavaRobertsonIndependent.Mathematics`.
 
 ## License
 
@@ -13,22 +58,6 @@ contribution to any open source formal-verification project (Mathlib,
 Physlib, Lean 4, or any other). Incorporating this software or its output
 into a proprietary/commercial product requires a separate commercial
 license — see [LICENSE](LICENSE) §4.
-
-`T_d:P_d` is how one moves in discrete space: position `P_d` on the sites of a row, transport
-`T_d` only between neighbouring sites (`D3`: the path graph is forced by locality and
-completeness), and on the cube of `D37` one such row per axis — the `x, y, z` of space. The
-package proves the theorem on that space over Mathlib, with no SI constant and no unit: the size
-of a cell in metres and the cosmological consequences are the only things left to other layers.
-`PhyslibBridge` additionally imports physlib's algebraic uncertainty framework to show that the
-inequality at `ψ*` is physlib's `robertson_schrodinger`, instantiated.
-
-| Layer | Build target | What it is | Status |
-|---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | The theorem, over Mathlib (plus physlib in `PhyslibBridge`). No constant, no unit, no physical input. | Lean theorems. |
-
-This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
-computes the import closure of the package and fails if it contains a
-module outside `NavaRobertsonIndependent.Mathematics`.
 
 ## Reproduce the verification
 
@@ -64,15 +93,7 @@ lake build NavaRobertsonCertificados
 lake env lean Verification/Certificados.lean          # axioms
 ```
 
-## The theorem
-
-The Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty Inequality for
-the pair `(T_d, P_d)` on the path graph with `d` vertices, on `H_d = ℂ^d`. At the
-state of maximal tension `ψ*`, the Robertson–Schrödinger gap is
-`(c/2)² δ_geom (2 + δ_geom)` with `δ_geom(d) = C_Nava(d) − 1`; it vanishes
-exactly for `d ∈ {2, 3}` and is strictly positive for `d ≥ 4`. For `d ≥ 4`,
-`δ_geom` is strictly increasing, with global minimum `δ_geom(4)` and strict upper
-bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2`.
+## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
   finite-path operators, Fiedler/Niven obstruction, Szegő limit, monotonicity,
@@ -123,6 +144,16 @@ bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2`.
   (`C_Nava(d) − C_Nava(4) → Δ`). A corollary of `D8` and `D9`; it depends only on
   `π`.
 
+- `D23f_MinUncertaintyTensionFour`: an explicit minimum-uncertainty state of `H₄`, with
+  probabilities `(1/8, 3/8, 3/8, 1/8)`, satisfying `T₄ψ = c·P₄ψ` and carrying tension exactly
+  `1/φ = (√5 − 1)/2`, i.e. `3(√5 − 1)/4` of the maximum `2/3`. Its upper bound — no
+  minimum-uncertainty state of `H₄` goes higher — is `D23g` in the separate target
+  `NavaRobertsonCertificados`.
+- `PhyslibBridge`: `T_d`, `P_d` as physlib `Observable`s and `ψ*` as a vector state; variance,
+  covariance and commutator term coincide with `D21`'s, so the NRS inequality is physlib's
+  `robertson_schrodinger` instantiated (`robertson_schrodinger_eq_D21`), strict for `d ≥ 4`
+  (`physlib_robertson_schrodinger_strict`).
+
 - `D28_CurvaturaBakryEmery`: the discrete Bakry-Émery curvature of the
   interior of the path graph satisfies `CD(0,2)`, sharp, via an exact
   polynomial identity (the discrete Bochner-Weitzenböck formula,
@@ -149,6 +180,20 @@ bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2`.
 The word "quantum" in `D11_CuantoMinimoArea` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
 unit and no constant to it.
+
+
+## NRS³ — modules
+
+- `D4_WhyNotDiagonal`: the site of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
+  changes one coordinate by one site (lengths `1 < √2 < √3`: the diagonal is never minimal).
+- `D37_PathGraph3D`: one pair `(T, P)` per axis (`liftAlong`, `prodAlong`), commuting across
+  axes (`conmutador_ejes_distintos_*`); NRS on each axis (`saturacion_cubo`, `estricta_cubo`).
+- `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_anguloNRS`), zero only at
+  `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`piso_angular`), below
+  `arccos (1/C_∞)`; one angle per axis of the cube (`angulos_cubo`, `piso_angular_cubo`);
+  finite isotropy (`anguloNRS_isotropia`, `isotropia_finita_cubo`).
+- `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
+  maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
 ## Scope of the formal claims
 
