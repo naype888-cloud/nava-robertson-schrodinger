@@ -173,8 +173,8 @@ the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator te
 What would test the bridge: `R = 1` within error for `N = 2, 3`, `R > 1` from `N = 4`, and `R`
 growing with `N` along the table. Since the excess at `N = 4` is below 1 %, longer chains give a
 larger signal and test the growth at the same time. At `N = 4` a second prediction is available:
-states that saturate Robertson–Schrödinger carry tension at most `1/φ` of the scale where the
-maximum is `2/3` (`D23f`, `D23g`). In three dimensions, the same holds on each axis of an
+states that saturate Robertson–Schrödinger carry tension at most `1/φ ≈ 0.618`, against a
+maximal tension of `2/3` (`D23f`, `D23g`). In three dimensions, the same holds on each axis of an
 `N × N × N` lattice, and the variances of the three axes add (`D37d`).
 
 ## License
