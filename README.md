@@ -30,6 +30,19 @@ From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d =
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
 (`D23f`; upper bound `D23g` in the separate target).
 
+**Localization and tension (the two extremes of NRS).**
+
+* A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
+  (`valor_esperado_conmutador_cero`, `D23`).
+* The maximal-tension state `ψ*` has a nonzero coordinate at every site
+  (`vectorFiedlerExplicito_coordenada_ne_zero`, `D5`), and `Var T_d · Var P_d > 0` there
+  (`producto_varianzas`, `D21`), so `Var P_d > 0`: no site carries all the weight.
+* From `d = 4` no unit state has maximal tension and minimum uncertainty at once: every
+  maximal-tension state satisfies Robertson–Schrödinger strictly
+  (`desigualdad_estricta_estado_maximo`, `D21`), strictly on a whole band below the maximum
+  (`desigualdad_estricta_franja`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
+  most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
+
 **NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
 factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
 
@@ -63,7 +76,11 @@ identification, which is a premise and not a Lean theorem:
   `x, y, z`; a site is a cell with three coordinates, and motion changes one coordinate by one
   cell at a time (`D4`: the diagonal is never the minimal step).
 
-Under this bridge, NRS and NRS³ are statements about discrete space: in every direction with at
+Under this bridge, a particle localized at one cell carries no transport tension; at maximal
+tension it cannot be localized — it is spread over all the cells, with positive probability at
+each and certainty at none (the discrete form of "exact position, completely uncertain
+momentum"). From `4` cells on, the most definite states and the most loaded with transport are
+never the same. More generally, NRS and NRS³ are statements about discrete space: in every direction with at
 least `4` cells the state of maximal tension carries an irreducible angle between position and
 transport (at least `≈ 7.44°`, below `≈ 28.30°`), and the three directions agree more closely the
 more cells each has. What this repository does not contain is the size of a cell in SI units
