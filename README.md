@@ -45,6 +45,23 @@ physlib to commit `1c81053a2ec6542f0de013c163e5db5091cf5b3c`. All headline theor
 on the three standard axioms `propext`, `Classical.choice` and `Quot.sound`;
 the package has no `sorry`.
 
+### Separate target: `NavaRobertsonCertificados`
+
+Not built by `lake build`. It contains `D23g`: every minimum-uncertainty state of `H₄`
+(Robertson–Schrödinger saturated) carries tension at most `1/φ = (√5 − 1)/2`
+(`CotaMinimaIncertidumbreCuatro.tension_le_of_satura`). With `D23f`, which exhibits a state
+attaining it, `1/φ` is the maximum: `3(√5 − 1)/4 ≈ 92.7 %` of the maximal tension `2/3`.
+The proof reduces the claim to an inequality on the densities `|ψⱼ|²` (link currents plus
+Cauchy–Schwarz) and closes it with two exact rational Positivstellensatz certificates
+(`CotaCasoA`: 207 weighted squares, `CotaCasoB`: 229), found by semidefinite programming,
+rounded to exact rationals and checked by `ring`. `CotaCasoA` is a 1 MB polynomial identity,
+so this target takes about 20–30 minutes:
+
+```bash
+lake build NavaRobertsonCertificados
+lake env lean Verification/Certificados.lean          # axioms
+```
+
 ## The theorem
 
 The Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty Inequality for
