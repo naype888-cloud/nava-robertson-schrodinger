@@ -64,3 +64,6 @@ open Lean
 #print axioms AnguloNRS.anguloNRS_eq_zero_iff
 #print axioms AnguloNRS.anguloNRS_strictMonoOn
 #print axioms AnguloNRS.angulos_cubo
+#print axioms EspectroCubo.autovector_suma
+#print axioms EspectroCubo.tensionTotal_psiStar
+#print axioms EspectroCubo.tensionTotal_le
