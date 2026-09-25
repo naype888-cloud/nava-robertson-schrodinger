@@ -75,6 +75,37 @@ This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
 computes the import closure of the package and fails if it contains a
 module outside `NavaRobertsonIndependent.Mathematics`.
 
+## Figures
+
+Illustrations of NRS³ at the maximal-tension state `ψ* ⊗ ψ* ⊗ ψ*` of the cube. For each axis,
+the solid line is the fluctuation vector of `T` and the dashed line that of `P` (drawn in both
+senses along the axis). The arrows live in the state space of the cube; each pair is shown next
+to the axis it belongs to. Values are exact where stated; magnified drawings say so.
+
+**The star at the first rupture `4 × 4 × 4`.** Each axis opens `θ_NRS(4) ≈ 7.43°`; the three
+pairs are mutually perpendicular (`D37b`, `D37d`). Right: `θ_NRS(d)` against the number of sites,
+from `0°` at `d = 2, 3` to the floor `θ_NRS(4)` and towards the unattained ceiling `≈ 28.30°`.
+
+![NRS³ star at 4×4×4](docs/figures/nrs3_star_4x4x4.png)
+
+**The star in the cube and its growth.** The `4 × 4 × 4` lattice with the star; zoom at true
+scale; the same star with the angle drawn `×4`; and the star at `4³`, `8³`, `40³` and at the
+ceiling (`D37b`).
+
+![NRS³ star sketches](docs/figures/nrs3_star_sketches.png)
+
+**Pythagoras for uncertainty.** At `4 × 4 × 4` the per-axis variances add to the variance of the
+total transport: `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` (`pitagoras_T`, `D37d`).
+
+![Pythagoras for uncertainty](docs/figures/nrs3_pythagoras.png)
+
+**The volumetric quantum.** `V = δ(dx) δ(dy) δ(dz)` with `δ = C_Nava − 1`: the box at the heart
+of the star (drawn `×25` in the first panel, true proportions in the second); line → square →
+box (`δ`, the area quantum `δ²` of `D11`, `δ³`); growth from the floor `δ(4)³ ≈ 6.09 × 10⁻⁷`
+towards the unattained ceiling `δ_∞³ ≈ 2.50 × 10⁻³` (`D37e`).
+
+![Volumetric quantum](docs/figures/nrs3_volumetric_quantum.png)
+
 ## Declared physical bridge
 
 The theorems above are mathematics. Their physical content rests on one declared
