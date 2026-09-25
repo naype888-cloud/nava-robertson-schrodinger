@@ -32,6 +32,7 @@ import NavaRobertsonIndependent.Mathematics.D26a_OmegaFromPi
 import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
 import NavaRobertsonIndependent.Mathematics.D28b_OllivierCurvature
 import NavaRobertsonIndependent.Mathematics.PhyslibBridge
+import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 /-!
 # Layer 1 — Mathematics
