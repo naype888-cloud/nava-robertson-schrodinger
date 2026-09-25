@@ -130,6 +130,53 @@ only by reducing some direction to `2` or `3` levels. What this repository does 
 (metres, seconds) and the cosmological and observer layers; those are separate layers with their
 own declared hypotheses.
 
+## Experimental proposal
+
+The mathematics is proved. The declared bridge is tested by measuring the predicted excess over
+the Robertson–Schrödinger floor in a physical system that realizes `T_N:P_N`.
+
+**Systems.** Any system with `N` levels arranged as a line and coupled only to nearest
+neighbours with uniform strength:
+
+* a chain of `N` qubits (or spins) with uniform nearest-neighbour exchange, in its
+  single-excitation sector: the excitation hops by `A_N` (so `T_N = A_N/ρ_N`), and its site is
+  `P_N` (sites relabelled to `[−1, 1]`). This is the setting of quantum state transfer along
+  spin chains: the state moves cell by cell, it is not teleported;
+* a single `N`-level system (for `N = 4`, a ququart) whose drive couples only consecutive levels
+  `0 ↔ 1 ↔ … ↔ N−1`, with `P_N` the level index;
+* a photonic waveguide array of `N` guides with equal nearest-neighbour coupling.
+
+Two qubits with independent flips form a square `00–01–11–10–00`, a cycle rather than a line;
+the theorems here do not cover that geometry.
+
+**State.** The maximal-tension state `ψ*`: the fundamental sine mode of the path with phases
+`(−i)^j` (`D5`, `D21`), `ψ*_j ∝ (−i)^j sin((j+1)π/(N+1))`.
+
+**Measurement.** The spreads `σ_T`, `σ_P` of transport and position in `ψ*` (`P_N` is diagonal in
+the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator term
+`½ |⟨[T_N, P_N]⟩| = 1/(N−1)`.
+
+**Prediction.** The ratio `R = σ_T σ_P / (½ |⟨[T_N, P_N]⟩|)` equals `C_Nava(N)`:
+
+| sites `N` | `C_Nava(N)` | excess over the floor | NRS angle |
+|---|---|---|---|
+| 2 | 1 | 0 (saturates — control) | 0° |
+| 3 | 1 | 0 (saturates — control) | 0° |
+| **4** | **1.008479** | **0.85 %** | **7.43°** |
+| 5 | 1.018350 | 1.84 % | 10.89° |
+| 6 | 1.027727 | 2.77 % | 13.34° |
+| 8 | 1.043563 | 4.36 % | 16.61° |
+| 10 | 1.055806 | 5.58 % | 18.71° |
+| 20 | 1.088392 | 8.84 % | 23.25° |
+| limit | `√(π²/3 − 2)` ≈ 1.135724 | 13.57 % (never reached) | 28.30° |
+
+What would test the bridge: `R = 1` within error for `N = 2, 3`, `R > 1` from `N = 4`, and `R`
+growing with `N` along the table. Since the excess at `N = 4` is below 1 %, longer chains give a
+larger signal and test the growth at the same time. At `N = 4` a second prediction is available:
+states that saturate Robertson–Schrödinger carry tension at most `1/φ` of the scale where the
+maximum is `2/3` (`D23f`, `D23g`). In three dimensions, the same holds on each axis of an
+`N × N × N` lattice, and the variances of the three axes add (`D37d`).
+
 ## License
 
 [NRS Noncommercial License 1.0.0](LICENSE) — free for noncommercial,
