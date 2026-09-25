@@ -1,5 +1,4 @@
-import NavaRobertsonCertificados.CotaCasoA
-import NavaRobertsonCertificados.CotaCasoB
+import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 
 /-!
 # Certificates — separate target
