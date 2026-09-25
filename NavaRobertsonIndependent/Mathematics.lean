@@ -36,6 +36,7 @@ import NavaRobertsonIndependent.Mathematics.PhyslibBridge
 import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
+import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
@@ -87,6 +88,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * the spectrum of the cube is axis by axis: eigenvectors of an axis lift with the same
   eigenvalue, products of eigenvectors add their eigenvalues, and `ψ* ⊗ ψ* ⊗ ψ*` is the
   top of `K_x + K_y + K_z`, eigenvalue `Σ 2/(d_i − 1)`, which no state exceeds (`D37c`).
+* at `ψ* ⊗ ψ* ⊗ ψ*` the fluctuation vectors of different axes are orthogonal, so variances
+  add like Pythagoras, `Var(T_x + T_y + T_z) = Σ Var T_•` (same for `P`); on `d × d × d` the
+  total pair meets at exactly `θ_NRS(d)`, at `4 × 4 × 4` exactly `θ_NRS(4)` (`D37d`).
 
 ## Order of the chain
 

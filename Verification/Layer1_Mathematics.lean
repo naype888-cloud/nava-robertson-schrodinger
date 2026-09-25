@@ -75,3 +75,7 @@ open Lean
 #print axioms IncertidumbreMinimaCuatro.tension_psiSat_fraccion
 #print axioms AnguloNRS.anguloNRS_isotropia
 #print axioms AnguloNRS.isotropia_finita_cubo
+#print axioms PitagorasCubo.pitagoras_T
+#print axioms PitagorasCubo.pitagoras_P
+#print axioms PitagorasCubo.angulo_total_cubo
+#print axioms PitagorasCubo.angulo_total_cuatro

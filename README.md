@@ -54,7 +54,11 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
   finite cubes only (`D37b`);
 * the spectrum is axis by axis: eigenvalues add, and `Ψ*` is the top of
-  `K_x + K_y + K_z` with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds (`D37c`).
+  `K_x + K_y + K_z` with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds (`D37c`);
+* **Pythagoras for uncertainty**: the fluctuation vectors of different axes are orthogonal, so
+  `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` and the same for `P`; on the cube
+  `d × d × d` the total pair meets at exactly `θ_NRS(d)` — at the first rupture `4 × 4 × 4`,
+  exactly `θ_NRS(4) ≈ 7.44°` (`D37d`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -229,6 +233,9 @@ unit and no constant to it.
   `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`piso_angular`), below
   `arccos (1/C_∞)`; one angle per axis of the cube (`angulos_cubo`, `piso_angular_cubo`);
   finite isotropy (`anguloNRS_isotropia`, `isotropia_finita_cubo`).
+- `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at `Ψ*`
+  (`ortogonal_ejes_xy/xz/yz`); variances add (`pitagoras_T`, `pitagoras_P`); the total pair of
+  the cube `d × d × d` meets at `θ_NRS(d)` (`angulo_total_cubo`, `angulo_total_cuatro`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
