@@ -83,3 +83,7 @@ open Lean
 #print axioms CuantoVolumetrico.cuantoVolumetrico_eq_cero_iff
 #print axioms CuantoVolumetrico.cuantoVolumetrico_cuatro
 #print axioms CuantoVolumetrico.cuantoVolumetrico_cuatro_sq
+#print axioms ConoDeLuz.cono_de_luz
+#print axioms ConoDeLuz.cono_de_luz_estado
+#print axioms ConoDeLuz.borde_del_cono_ne_zero
+#print axioms ConoDeLuz.cono_de_luz_cubo

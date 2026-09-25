@@ -64,7 +64,12 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   some axis has `2` or `3` sites; from `4 × 4 × 4` it is strictly positive, at least
   `δ(4)³ = (√((99 − 42√5)/5) − 1)³ ≈ 6.09 × 10⁻⁷`, strictly below `δ_∞³ ≈ 2.50 × 10⁻³`, and
   strictly increasing in each axis; `𝒱(4,4,4)² = (δ(4)²)³` relates it to the area quantum of
-  `D11` (`D37e`).
+  `D11` (`D37e`);
+* **light cone**: `T_d` is, up to shift and scale, the Dirichlet discretization of `−d²/dx²` on
+  `[−1, 1]` (the particle in a box), so it only connects neighbours; counting time in steps of
+  transport, `(T_d^k) i j = 0` whenever `|i − j| > k`, and the edge is reached exactly,
+  `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone is the
+  octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -327,6 +332,10 @@ unit and no constant to it.
   ceiling `δ_∞³` (`cuantoVolumetrico_techo`), strictly increasing per axis, closed form at
   `4 × 4 × 4` (`cuantoVolumetrico_cuatro`), `𝒱(4,4,4)² = (area quantum)³`
   (`cuantoVolumetrico_cuatro_sq`); certificate `cuanto_volumetrico`.
+- `D37f_LightCone`: generic cone for powers of a local matrix (`pow_apply_eq_zero_of_lt`);
+  on the path `cono_de_luz`, `cono_de_luz_estado` (no signal outruns the cone) and
+  `borde_del_cono` / `borde_del_cono_ne_zero` (the edge is reached); on the cube
+  `cono_de_luz_cubo` for `T_x + T_y + T_z` with the lattice distance.
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 

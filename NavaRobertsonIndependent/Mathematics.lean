@@ -38,6 +38,7 @@ import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
 import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
+import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
@@ -95,6 +96,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * the volumetric quantum `𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)` vanishes only at a seed axis;
   from `4 × 4 × 4` it is positive, at least `δ(4)³`, strictly below `δ_∞³`, strictly increasing
   in each axis, and `𝒱(4,4,4)² = (area quantum of D11)³` (`D37e`).
+* light cone of neighbour transport: `(T_d^k) i j = 0` for `|i − j| > k`, with the edge reached
+  exactly (`(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0`); on the cube, `(T_x + T_y + T_z)^k` vanishes beyond
+  lattice distance `|Δx| + |Δy| + |Δz| > k` (`D37f`).
 
 ## Order of the chain
 
