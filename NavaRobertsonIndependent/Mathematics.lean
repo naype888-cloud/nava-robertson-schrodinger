@@ -33,6 +33,7 @@ import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
 import NavaRobertsonIndependent.Mathematics.D28b_OllivierCurvature
 import NavaRobertsonIndependent.Mathematics.PhyslibBridge
 import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
+import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 
 /-!
 # Layer 1 — Mathematics
@@ -67,6 +68,10 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * on the cube `Fin dx × Fin dy × Fin dz` of `D4`, one pair `(T, P)` per axis: pairs on
   different axes commute, and at `ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies the inequality with
   its own `C_Nava`, saturating exactly for `2` or `3` sites and strict from `4` (`D37`).
+* the gap is an angle: at `ψ*` the fluctuation vectors of `T_d` and `P_d` meet at
+  `θ_NRS(d) = arccos (1 / C_Nava(d))`, zero exactly for `d = 2, 3`, positive and strictly
+  increasing from `d = 4`, strictly below `arccos (1 / C_∞)`; one such angle per axis of
+  the cube (`D37b`).
 
 ## Order of the chain
 

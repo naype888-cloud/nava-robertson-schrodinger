@@ -60,3 +60,7 @@ open Lean
 #print axioms PathGraph3DNRS.conmutador_ejes_distintos_xy
 #print axioms PathGraph3DNRS.saturacion_cubo
 #print axioms PathGraph3DNRS.estricta_cubo
+#print axioms AnguloNRS.cos_anguloNRS
+#print axioms AnguloNRS.anguloNRS_eq_zero_iff
+#print axioms AnguloNRS.anguloNRS_strictMonoOn
+#print axioms AnguloNRS.angulos_cubo
