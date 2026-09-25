@@ -79,3 +79,7 @@ open Lean
 #print axioms PitagorasCubo.pitagoras_P
 #print axioms PitagorasCubo.angulo_total_cubo
 #print axioms PitagorasCubo.angulo_total_cuatro
+#print axioms CuantoVolumetrico.cuanto_volumetrico
+#print axioms CuantoVolumetrico.cuantoVolumetrico_eq_cero_iff
+#print axioms CuantoVolumetrico.cuantoVolumetrico_cuatro
+#print axioms CuantoVolumetrico.cuantoVolumetrico_cuatro_sq

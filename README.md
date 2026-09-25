@@ -58,7 +58,13 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 * **Pythagoras for uncertainty**: the fluctuation vectors of different axes are orthogonal, so
   `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` and the same for `P`; on the cube
   `d × d × d` the total pair meets at exactly `θ_NRS(d)` — at the first rupture `4 × 4 × 4`,
-  exactly `θ_NRS(4) ≈ 7.44°` (`D37d`).
+  exactly `θ_NRS(4) ≈ 7.44°` (`D37d`);
+* **the volumetric quantum** `𝒱(dx, dy, dz) = δ(dx) · δ(dy) · δ(dz)`, with `δ(d) = C_Nava(d) − 1`
+  the dimensional quantum of an axis (`θ_NRS(d) = arccos (1/(1 + δ(d)))`): it vanishes only if
+  some axis has `2` or `3` sites; from `4 × 4 × 4` it is strictly positive, at least
+  `δ(4)³ = (√((99 − 42√5)/5) − 1)³ ≈ 6.09 × 10⁻⁷`, strictly below `δ_∞³ ≈ 2.50 × 10⁻³`, and
+  strictly increasing in each axis; `𝒱(4,4,4)² = (δ(4)²)³` relates it to the area quantum of
+  `D11` (`D37e`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -87,7 +93,9 @@ momentum"). From `4` cells on, the most definite states and the most loaded with
 never the same. More generally, NRS and NRS³ are statements about discrete space: in every direction with at
 least `4` cells the state of maximal tension carries an irreducible angle between position and
 transport (at least `≈ 7.44°`, below `≈ 28.30°`), and the three directions agree more closely the
-more cells each has. What this repository does not contain is the size of a cell in SI units
+more cells each has. The volumetric quantum `𝒱` is the three-dimensional precision limit of
+position and transport: no refinement lowers it (adding cells enlarges it); it is cancelled
+only by reducing some direction to `2` or `3` levels. What this repository does not contain is the size of a cell in SI units
 (metres, seconds) and the cosmological and observer layers; those are separate layers with their
 own declared hypotheses.
 
@@ -236,6 +244,11 @@ unit and no constant to it.
 - `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at `Ψ*`
   (`ortogonal_ejes_xy/xz/yz`); variances add (`pitagoras_T`, `pitagoras_P`); the total pair of
   the cube `d × d × d` meets at `θ_NRS(d)` (`angulo_total_cubo`, `angulo_total_cuatro`).
+- `D37e_VolumetricQuantum`: `cuantoVolumetrico dx dy dz = δ(dx) δ(dy) δ(dz)`; zero only at a
+  seed axis (`cuantoVolumetrico_eq_cero_iff`), floor `δ(4)³` (`cuantoVolumetrico_piso`),
+  ceiling `δ_∞³` (`cuantoVolumetrico_techo`), strictly increasing per axis, closed form at
+  `4 × 4 × 4` (`cuantoVolumetrico_cuatro`), `𝒱(4,4,4)² = (area quantum)³`
+  (`cuantoVolumetrico_cuatro_sq`); certificate `cuanto_volumetrico`.
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 

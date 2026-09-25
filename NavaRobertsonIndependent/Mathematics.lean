@@ -37,6 +37,7 @@ import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
+import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
@@ -91,6 +92,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * at `ψ* ⊗ ψ* ⊗ ψ*` the fluctuation vectors of different axes are orthogonal, so variances
   add like Pythagoras, `Var(T_x + T_y + T_z) = Σ Var T_•` (same for `P`); on `d × d × d` the
   total pair meets at exactly `θ_NRS(d)`, at `4 × 4 × 4` exactly `θ_NRS(4)` (`D37d`).
+* the volumetric quantum `𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)` vanishes only at a seed axis;
+  from `4 × 4 × 4` it is positive, at least `δ(4)³`, strictly below `δ_∞³`, strictly increasing
+  in each axis, and `𝒱(4,4,4)² = (area quantum of D11)³` (`D37e`).
 
 ## Order of the chain
 
