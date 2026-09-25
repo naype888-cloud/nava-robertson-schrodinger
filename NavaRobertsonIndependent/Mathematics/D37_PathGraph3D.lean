@@ -207,6 +207,197 @@ theorem estricta_eje {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
 
 end Eje
 
+/-! ## 5. The cube `Sitio3D dx dy dz` of `D4` -/
+
+section Cubo
+
+variable (dx dy dz : ℕ)
+
+/-- States on the cube: amplitudes on its `dx·dy·dz` sites. -/
+abbrev H3D := EuclideanSpace ℂ (Sitio3D dx dy dz)
+
+/-- The `x` axis and the rest `(y, z)`. -/
+def eX : Sitio3D dx dy dz ≃ Fin dx × (Fin dy × Fin dz) := Equiv.refl _
+
+/-- The `y` axis and the rest `(x, z)`. -/
+def eY : Sitio3D dx dy dz ≃ Fin dy × (Fin dx × Fin dz) where
+  toFun p := (p.2.1, p.1, p.2.2)
+  invFun q := (q.2.1, q.1, q.2.2)
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- The `z` axis and the rest `(x, y)`. -/
+def eZ : Sitio3D dx dy dz ≃ Fin dz × (Fin dx × Fin dy) where
+  toFun p := (p.2.2, p.1, p.2.1)
+  invFun q := (q.2.1, q.2.2, q.1)
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- `T` and `P` of each axis: `(T_d, P_d)` of `D3` on that coordinate, identity on the others. -/
+def TX : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eX dx dy dz) (Td dx))
+def PX : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eX dx dy dz) (Pd dx))
+def TY : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eY dx dy dz) (Td dy))
+def PY : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eY dx dy dz) (Pd dy))
+def TZ : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) (Td dz))
+def PZ : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) (Pd dz))
+
+/-- The maximal-tension state of the cube: `ψ*` on each axis. -/
+def PsiStar3D : H3D dx dy dz :=
+  WithLp.toLp 2 fun p => psiStar dx p.1 * psiStar dy p.2.1 * psiStar dz p.2.2
+
+theorem PsiStar3D_eq_eX :
+    PsiStar3D dx dy dz =
+      prodAlong (eX dx dy dz) (psiStar dx) (prodAlong (Equiv.refl _) (psiStar dy) (psiStar dz)) := by
+  ext p
+  simp [PsiStar3D, prodAlong_apply, eX, mul_assoc]
+
+theorem PsiStar3D_eq_eY :
+    PsiStar3D dx dy dz =
+      prodAlong (eY dx dy dz) (psiStar dy) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dz)) := by
+  ext p
+  simp [PsiStar3D, prodAlong_apply, eY]
+  ring
+
+theorem PsiStar3D_eq_eZ :
+    PsiStar3D dx dy dz =
+      prodAlong (eZ dx dy dz) (psiStar dz) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dy)) := by
+  ext p
+  simp [PsiStar3D, prodAlong_apply, eZ]
+  ring
+
+/-! ## 6. Different axes commute -/
+
+/-- Operators whose matrices commute have zero commutator. -/
+theorem conmutador_eq_zero_of_mul_comm {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {M N : Matrix ι ι ℂ} (h : M * N = N * M) :
+    conmutador (Matrix.toEuclideanLin M) (Matrix.toEuclideanLin N) = 0 := by
+  rw [conmutador, ← Matrix.toLpLin_mul_same, ← Matrix.toLpLin_mul_same, h, sub_self]
+
+theorem liftAlong_xy_comm (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dy) (Fin dy) ℂ) :
+    liftAlong (eX dx dy dz) A * liftAlong (eY dx dy dz) B =
+      liftAlong (eY dx dy dz) B * liftAlong (eX dx dy dz) A := by
+  ext p q
+  obtain ⟨i, j, k⟩ := p
+  obtain ⟨i', j', k'⟩ := q
+  simp only [Matrix.mul_apply, liftAlong, Matrix.of_apply, eX, eY, Equiv.refl_apply,
+    Equiv.coe_fn_mk, Fintype.sum_prod_type, Prod.mk.injEq]
+  simp [ite_and, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', mul_comm]
+
+theorem liftAlong_xz_comm (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dz) (Fin dz) ℂ) :
+    liftAlong (eX dx dy dz) A * liftAlong (eZ dx dy dz) B =
+      liftAlong (eZ dx dy dz) B * liftAlong (eX dx dy dz) A := by
+  ext p q
+  obtain ⟨i, j, k⟩ := p
+  obtain ⟨i', j', k'⟩ := q
+  simp only [Matrix.mul_apply, liftAlong, Matrix.of_apply, eX, eZ, Equiv.refl_apply,
+    Equiv.coe_fn_mk, Fintype.sum_prod_type, Prod.mk.injEq]
+  simp [ite_and, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', mul_comm]
+
+theorem liftAlong_yz_comm (A : Matrix (Fin dy) (Fin dy) ℂ) (B : Matrix (Fin dz) (Fin dz) ℂ) :
+    liftAlong (eY dx dy dz) A * liftAlong (eZ dx dy dz) B =
+      liftAlong (eZ dx dy dz) B * liftAlong (eY dx dy dz) A := by
+  ext p q
+  obtain ⟨i, j, k⟩ := p
+  obtain ⟨i', j', k'⟩ := q
+  simp only [Matrix.mul_apply, liftAlong, Matrix.of_apply, eY, eZ, Equiv.coe_fn_mk,
+    Fintype.sum_prod_type, Prod.mk.injEq]
+  simp [ite_and, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', mul_comm]
+
+/-- `[x, p_y] = 0`: any operator of the `x` axis commutes with any operator of the `y` axis
+(in particular `[T_x, P_y] = [P_x, T_y] = [T_x, T_y] = [P_x, P_y] = 0`). Only the pair of the
+same axis collides. -/
+theorem conmutador_ejes_distintos_xy (A : Matrix (Fin dx) (Fin dx) ℂ)
+    (B : Matrix (Fin dy) (Fin dy) ℂ) :
+    conmutador (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
+      (Matrix.toEuclideanLin (liftAlong (eY dx dy dz) B)) = 0 :=
+  conmutador_eq_zero_of_mul_comm (liftAlong_xy_comm dx dy dz A B)
+
+theorem conmutador_ejes_distintos_xz (A : Matrix (Fin dx) (Fin dx) ℂ)
+    (B : Matrix (Fin dz) (Fin dz) ℂ) :
+    conmutador (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
+      (Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) B)) = 0 :=
+  conmutador_eq_zero_of_mul_comm (liftAlong_xz_comm dx dy dz A B)
+
+theorem conmutador_ejes_distintos_yz (A : Matrix (Fin dy) (Fin dy) ℂ)
+    (B : Matrix (Fin dz) (Fin dz) ℂ) :
+    conmutador (Matrix.toEuclideanLin (liftAlong (eY dx dy dz) A))
+      (Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) B)) = 0 :=
+  conmutador_eq_zero_of_mul_comm (liftAlong_yz_comm dx dy dz A B)
+
+variable {dx dy dz}
+
+theorem norm_resto {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
+    ‖prodAlong (Equiv.refl (Fin a × Fin b)) (psiStar a) (psiStar b)‖ = 1 :=
+  norm_prodAlong_eq_one _ (norma_psiStar ha) (norma_psiStar hb)
+
+/-! ## 7. NRS on each axis of the cube -/
+
+theorem estadisticas_eje_x (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dx) (psiStar dx) ∧
+      varianzaG (PX dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dx) (psiStar dx) ∧
+      covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) =
+        covarianza (TdOp dx) (PdOp dx) (psiStar dx) ∧
+      tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dx : ℝ) - 1) := by
+  rw [PsiStar3D_eq_eX]
+  exact estadisticas_eje (norm_resto hy hz) hx _
+
+theorem estadisticas_eje_y (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dy) (psiStar dy) ∧
+      varianzaG (PY dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dy) (psiStar dy) ∧
+      covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) =
+        covarianza (TdOp dy) (PdOp dy) (psiStar dy) ∧
+      tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dy : ℝ) - 1) := by
+  rw [PsiStar3D_eq_eY]
+  exact estadisticas_eje (norm_resto hx hz) hy _
+
+theorem estadisticas_eje_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dz) (psiStar dz) ∧
+      varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dz) (psiStar dz) ∧
+      covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) =
+        covarianza (TdOp dz) (PdOp dz) (psiStar dz) ∧
+      tensionG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dz : ℝ) - 1) := by
+  rw [PsiStar3D_eq_eZ]
+  exact estadisticas_eje (norm_resto hx hy) hz _
+
+/-- **NRS on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
+`3` sites, independently of the other two axes. -/
+theorem saturacion_cubo (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    (covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dx / 2) ^ 2 =
+        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz)
+        ↔ dx = 2 ∨ dx = 3) ∧
+    (covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dy / 2) ^ 2 =
+        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz)
+        ↔ dy = 2 ∨ dy = 3) ∧
+    (covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dz / 2) ^ 2 =
+        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz)
+        ↔ dz = 2 ∨ dz = 3) := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [PsiStar3D_eq_eX]; exact saturacion_eje (norm_resto hy hz) hx _
+  · rw [PsiStar3D_eq_eY]; exact saturacion_eje (norm_resto hx hz) hy _
+  · rw [PsiStar3D_eq_eZ]; exact saturacion_eje (norm_resto hx hy) hz _
+
+/-- **The algebraic quantum on the `4 × 4 × 4` cube and beyond.** With at least `4` sites on
+every axis, the inequality is strict on all three axes at once. -/
+theorem estricta_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
+    covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dx / 2) ^ 2 <
+        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz) ∧
+    covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dy / 2) ^ 2 <
+        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz) ∧
+    covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+          (commutatorConstant dz / 2) ^ 2 <
+        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz) := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [PsiStar3D_eq_eX]; exact estricta_eje (norm_resto (by omega) (by omega)) hx _
+  · rw [PsiStar3D_eq_eY]; exact estricta_eje (norm_resto (by omega) (by omega)) hy _
+  · rw [PsiStar3D_eq_eZ]; exact estricta_eje (norm_resto (by omega) (by omega)) hz _
+
+end Cubo
+
 end PathGraph3DNRS
 
 end

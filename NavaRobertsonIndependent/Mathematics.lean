@@ -64,6 +64,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * the inequality at `ψ*` is physlib's `robertson_schrodinger` instantiated at the
   vector state of `ψ*` with `T_d`, `P_d` as observables, term by term, and it is
   strict there for `d ≥ 4` (`PhyslibBridge`).
+* on the cube `Fin dx × Fin dy × Fin dz` of `D4`, one pair `(T, P)` per axis: pairs on
+  different axes commute, and at `ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies the inequality with
+  its own `C_Nava`, saturating exactly for `2` or `3` sites and strict from `4` (`D37`).
 
 ## Order of the chain
 

@@ -57,3 +57,6 @@ open Lean
 #print axioms OmegaDesdePi.decimal_desde_pi
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
+#print axioms PathGraph3DNRS.conmutador_ejes_distintos_xy
+#print axioms PathGraph3DNRS.saturacion_cubo
+#print axioms PathGraph3DNRS.estricta_cubo
