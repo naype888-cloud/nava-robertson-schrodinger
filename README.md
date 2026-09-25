@@ -221,7 +221,8 @@ The proof reduces the claim to an inequality on the densities `|ψⱼ|²` (link 
 Cauchy–Schwarz) and closes it with two exact rational Positivstellensatz certificates
 (`CotaCasoA`: 207 weighted squares, `CotaCasoB`: 229), found by semidefinite programming,
 rounded to exact rationals and checked by `ring`. `CotaCasoA` is a 1 MB polynomial identity,
-so this target takes about 20–30 minutes:
+so this target takes about 20–30 minutes. Both certificates are wrapped to 100 columns; the only
+longer lines in `CotaCasoA` are single exact numerals of more than 100 digits, which cannot be split:
 
 ```bash
 lake build NavaRobertsonCertificados
