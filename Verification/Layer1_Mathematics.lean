@@ -112,3 +112,8 @@ open Lean
 #print axioms GroupVelocity.mtRatio_psiStar_lt_one
 #print axioms GroupVelocity.mtRatioG_axis_x
 #print axioms GroupVelocity.mtRatioG_total_cube
+#print axioms Direction.tension_reflect
+#print axioms Direction.mtRatio_reflect
+#print axioms Direction.KdOp_reflect_eigen
+#print axioms Direction.velocities_octant
+#print axioms Direction.octant_four

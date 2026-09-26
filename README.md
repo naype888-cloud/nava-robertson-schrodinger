@@ -390,6 +390,12 @@ lake env lean Verification/Certificados.lean          # axioms
   `4 Var T_d`). At `ψ*` both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_psiStar`),
   exactly at `d = 2, 3` (`mtRatio_psiStar_eq_one_iff`); on the cube, per axis
   (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
+- `D42_DirectionOctants`: the direction of motion is the sign of `⟨K_d⟩`. The reflection
+  `j ↦ d − 1 − j` commutes with `T_d` and reverses `P_d`, so it reverses the tension
+  (`tension_reflect`) and keeps the Mandelstam–Tamm/Cramér–Rao ratio (`mtRatio_reflect`) and the
+  NRS angle; the spectrum of `K_d` is symmetric (`KdOp_reflect_eigen`). On the cube the eight
+  octant states move at `(±1, ±1, ±1)` (`velocities_octant`) with the same ratio and angle on
+  every axis; at `4 × 4 × 4`, `θ_NRS(4) ≈ 7.43°` and ratio `< 1` in every octant (`octant_four`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
