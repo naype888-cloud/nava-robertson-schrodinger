@@ -216,6 +216,12 @@ the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator te
 | 20 | 1.088392 | 8.84 % | 23.25° |
 | limit | `√(π²/3 − 2)` ≈ 1.135724 | 13.57 % (never reached) | 28.30° |
 
+The table holds for every pair realized on `T_N:P_N`, `A = a T_N + b`, `B = c P_N + e`: units
+and origins do not reach the ratio, the angle or the volumetric quantum (`D39`). A pair only
+sets its floor, `|a c|/(N − 1)` in its own units. The catalogue of pairs (position–momentum,
+number–phase, charge–flux, angle–angular momentum, spin, …) is in [`docs/PAIRS.md`](docs/PAIRS.md);
+the table with its explanation, as a PDF: [`docs/NRS_Pairs_Table.pdf`](docs/NRS_Pairs_Table.pdf).
+
 A full design for a photonic waveguide array — state preparation, holographic measurement, error
 budget and tolerances — is in [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md).
 
@@ -387,6 +393,12 @@ unit and no constant to it.
   `velocidadGrupo_le` / `velocidadGrupo_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocidad_le`, `velocidad_psiStar`, phase modes `velocidad_modoFase`;
   cube `velocidades_le`, `velocidades_PsiStar3D`, `rapidez_sq_PsiStar3D`.
+- `D39_ConjugatePairs`: affine invariance of the angle and of the ratio (`anguloG_afin`,
+  `razonG_afin`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at `ψ*`
+  (`razon_par`), saturates exactly at `d = 2, 3` (`satura_par_iff`), opens strictly with `d`
+  (`angulo_par_lt_of_lt`) below `arccos (1/C_∞)` (`angulo_par_lt_limite`); on the cube, three
+  pairs in their own units give `𝒱(dx, dy, dz)` (`cuantoVolumetrico_pares`,
+  `cuanto_volumetrico_pares`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 

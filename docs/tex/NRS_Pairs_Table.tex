@@ -1,0 +1,248 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{STIX Two Text}
+\setmathfont{STIX Two Math}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsthm}
+\newtheorem*{theorem}{Theorem}
+\newcommand{\leanus}{\textunderscore\allowbreak}
+\newcommand{\lean}[1]{{\small\ttfamily\let\_\leanus #1}}
+\sloppy
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+\title{NRS for every conjugate pair\\[0.3em]
+\large The Robertson--Schrödinger table on $T_d{:}P_d$ at maximal tension}
+\author{Eduardo Nava Hernández}
+\date{26 September 2026 \\ \small Lean 4 package \texttt{nava-robertson-schrodinger}, module \texttt{D39\_ConjugatePairs}}
+
+\begin{document}
+\maketitle
+
+\section{What the table says}
+
+Robertson (1929) and Schrödinger (1930) proved, for any two observables $A$, $B$ and any
+normalized state $\psi$,
+\[
+  \sigma_A^2\,\sigma_B^2 \;\ge\; \Big(\tfrac12\langle\{A,B\}\rangle-\langle A\rangle\langle B\rangle\Big)^2
+  + \Big(\tfrac12\,|\langle[A,B]\rangle|\Big)^2 \;=\; |\langle \tilde A\psi,\tilde B\psi\rangle|^2 ,
+\]
+where $\tilde A\psi=(A-\langle A\rangle)\psi$ and $\tilde B\psi=(B-\langle B\rangle)\psi$ are the
+fluctuation vectors. The theorem carries no list of pairs: it holds for every pair
+(\lean{D2\_Robertson}). NRS evaluates it on the elemental pair $T_d{:}P_d$ at the state of
+maximal tension $\psi^*$, and measures the ratio
+\[
+  R \;=\; \frac{\sigma_A\,\sigma_B}{|\langle \tilde A\psi^*,\tilde B\psi^*\rangle|}\;\ge 1 .
+\]
+$R=1$ means the inequality is saturated; $R>1$ is what the inequality cannot close.
+
+\textbf{The result of this note.} $R$ is the same number $C_{\mathrm{Nava}}(d)$ for
+\emph{every} conjugate pair realized on $T_d{:}P_d$. It equals $1$ exactly at $d=2,3$; from
+$d=4$ on it is strictly larger than $1$, grows strictly with $d$, and stays strictly below
+$C_\infty=\sqrt{\pi^2/3-2}$, which no $d$ reaches. On a cube of three pairs the leftover is
+the volumetric quantum $\mathcal V$: zero at $3\times3\times3$, strictly positive from
+$4\times4\times4$, growing with every axis, never vanishing. All of this is proved in Lean 4
+with only the standard axioms.
+
+\section{The setting}
+
+On $H_d=\mathbb C^d$:
+\begin{itemize}
+  \item $P_d$ is diagonal with the $d$ equispaced values of $[-1,1]$: it orders the values of
+        the pair.
+  \item $T_d=A_d/\rho_d$ is the adjacency of the path on $d$ sites, $\rho_d=2\cos(\pi/(d+1))$:
+        the step between consecutive values. It is the only graph compatible with ordered
+        locality and completeness (\lean{D3\_PathGraph}).
+  \item $\psi^*_j\propto(-i)^j\sin\big((j+1)\pi/(d+1)\big)$ is the maximal-tension state
+        (\lean{D5\_MaximalTension}, \lean{D21}); at $\psi^*$,
+        $\tfrac12|\langle[T_d,P_d]\rangle| = 1/(d-1)$.
+\end{itemize}
+
+\textbf{A pair realized on $T_d{:}P_d$} is
+\[
+  A = a\,T_d + b, \qquad B = c\,P_d + e, \qquad a,c\in\mathbb R\setminus\{0\},\; b,e\in\mathbb R .
+\]
+The numbers $a,c$ are the units of the pair and $b,e$ its origins: metres and kg\,m/s for
+position--momentum, a count and radians for number--phase, coulombs and webers for
+charge--flux, and so on.
+
+\section{The theorem}
+
+\begin{theorem}[\lean{D39\_ConjugatePairs}]
+Let $d\ge2$ and $a,c\neq0$. For the pair $A=aT_d+b$, $B=cP_d+e$ at $\psi^*$:
+\begin{enumerate}
+  \item $R = C_{\mathrm{Nava}}(d)$ \hfill(\lean{razon\_par});
+  \item the fluctuation vectors are parallel ($R=1$) if and only if $d=2$ or $d=3$
+        \hfill(\lean{satura\_par\_iff});
+  \item for $d\ge4$ they meet at an angle $\theta_{\mathrm{NRS}}(d)=\arccos(1/C_{\mathrm{Nava}}(d))>0$
+        \hfill(\lean{angulo\_par\_pos});
+  \item the angle grows strictly with $d$, even if the pair at $d$ and the pair at $d'$ carry
+        different units \hfill(\lean{angulo\_par\_lt\_of\_lt});
+  \item it stays strictly below $\arccos(1/C_\infty)\approx28.30^\circ$, which no $d$ attains
+        \hfill(\lean{angulo\_par\_lt\_limite});
+  \item the excess $R-1$ is the dimensional quantum $\delta(d)=C_{\mathrm{Nava}}(d)-1$
+        \hfill(\lean{cuanto\_par}).
+\end{enumerate}
+On the cube $d_x\times d_y\times d_z$ with one pair per axis, $A_i=a_iT_{d_i}+b_i$,
+$B_i=c_iP_{d_i}+e_i$ (all $a_i,c_i\neq0$, each axis in its own units) and the state
+$\Psi^*=\psi^*\otimes\psi^*\otimes\psi^*$:
+\begin{enumerate}\setcounter{enumi}{6}
+  \item axis $i$ has ratio $C_{\mathrm{Nava}}(d_i)$ \hfill(\lean{razon\_par\_eje\_x/y/z});
+  \item $(R_x-1)(R_y-1)(R_z-1)=\mathcal V(d_x,d_y,d_z)=\delta(d_x)\,\delta(d_y)\,\delta(d_z)$
+        \hfill(\lean{cuantoVolumetrico\_pares});
+  \item $\mathcal V=0$ if and only if some axis has $2$ or $3$ sites; from $4\times4\times4$ on,
+        $0<\mathcal V<\delta_\infty^3$ \hfill(\lean{cuanto\_volumetrico\_pares}).
+\end{enumerate}
+\end{theorem}
+
+\textbf{Why units do not matter.} For a unit state,
+$\langle aL+b\rangle = a\langle L\rangle+b$, so the fluctuation vector of $aL+b$ is exactly
+$a$ times that of $L$ (\lean{centradoG\_afin}). In
+$R=\|\tilde A\psi\|\,\|\tilde B\psi\|/|\langle\tilde A\psi,\tilde B\psi\rangle|$ the factor
+$|a|\,|c|$ appears once in the numerator and once in the denominator and cancels
+(\lean{razonG\_afin}); the same holds for the angle (\lean{anguloG\_afin}). These two lemmas
+hold at \emph{every} unit state, not only at $\psi^*$, so any statement about $T_d{:}P_d$
+that depends only on $R$ or on the angle, such as strictness on the band of states near
+maximal tension (\lean{D23d}), holds for every pair as well.
+
+\textbf{The only thing a pair changes} is its floor,
+\[
+  \tfrac12|\langle[A,B]\rangle| \;=\; |a\,c|\cdot\tfrac12|\langle[T_d,P_d]\rangle| \;=\; \frac{|a\,c|}{d-1},
+\]
+expressed in the units of that pair.
+
+\section{The table}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{rccccc}
+\toprule
+$d$ & $R=C_{\mathrm{Nava}}(d)$ & excess $\delta(d)$ & angle $\theta_{\mathrm{NRS}}(d)$
+  & cube $\mathcal V(d,d,d)=\delta(d)^3$ & floor of a pair \\
+\midrule
+2 & 1 & 0 (saturates) & $0^\circ$ & 0 & $|ac|$ \\
+3 & 1 & 0 (saturates) & $0^\circ$ & 0 & $|ac|/2$ \\
+\textbf{4} & \textbf{1.008479} & \textbf{0.85\,\%} & $\mathbf{7.43^\circ}$
+  & $\mathbf{6.09\times10^{-7}}$ & $|ac|/3$ \\
+5 & 1.018350 & 1.84\,\% & $10.89^\circ$ & $6.18\times10^{-6}$ & $|ac|/4$ \\
+6 & 1.027727 & 2.77\,\% & $13.34^\circ$ & $2.13\times10^{-5}$ & $|ac|/5$ \\
+8 & 1.043563 & 4.36\,\% & $16.61^\circ$ & $8.27\times10^{-5}$ & $|ac|/7$ \\
+10 & 1.055806 & 5.58\,\% & $18.71^\circ$ & $1.74\times10^{-4}$ & $|ac|/9$ \\
+20 & 1.088392 & 8.84\,\% & $23.25^\circ$ & $6.91\times10^{-4}$ & $|ac|/19$ \\
+50 & 1.114641 & 11.46\,\% & $26.21^\circ$ & $1.51\times10^{-3}$ & $|ac|/49$ \\
+100 & 1.124785 & 12.48\,\% & $27.24^\circ$ & $1.94\times10^{-3}$ & $|ac|/99$ \\
+\midrule
+ceiling & $\sqrt{\pi^2/3-2}\approx1.135724$ & 13.57\,\% & $28.30^\circ$
+  & $\delta_\infty^3\approx2.50\times10^{-3}$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{How to read each column.}
+\begin{itemize}
+  \item $R=C_{\mathrm{Nava}}(d)$: the measured ratio $\sigma_A\sigma_B/|\langle\tilde A\psi^*,\tilde B\psi^*\rangle|$.
+        It is the same for every row of the catalogue in Section~5.
+  \item Excess $\delta(d)$: how far above the Robertson--Schrödinger floor the pair stays.
+        Zero only at $d=2,3$; from $d=4$ on it is an algebraic quantum that no choice of
+        units removes (\lean{D25}).
+  \item Angle $\theta_{\mathrm{NRS}}(d)$: the opening between the fluctuation vectors of $A$
+        and $B$. At $d=2,3$ they are parallel. From $d=4$ they open, at least $7.43^\circ$,
+        and the opening grows with $d$ (\lean{D37b}).
+  \item $\mathcal V(d,d,d)$: the volumetric quantum of the cube with three pairs, one per axis
+        (\lean{D37e}). It is the box $\delta\times\delta\times\delta$. In the pictures of the
+        repository the six fluctuation vectors of the three axes form a star whose envelope
+        is an octahedron; each of its three axes opens by $\theta_{\mathrm{NRS}}(d)$.
+  \item Floor of a pair: $\tfrac12|\langle[A,B]\rangle|$ in the units of that pair.
+\end{itemize}
+
+\textbf{The leftover does not disappear.} At $3\times3\times3$ nothing is left
+($\mathcal V=0$, all three angles $0^\circ$). From $4\times4\times4$ something is always
+left: $\mathcal V\ge\delta(4)^3$ (\lean{cuantoVolumetrico\_piso}) and every axis opens at least
+$7.43^\circ$ (\lean{piso\_angular\_cubo}). Adding sites never shrinks it: $\mathcal V$ grows
+strictly in each axis (\lean{cuantoVolumetrico\_strictMono\_x/y/z}) and the angle grows
+strictly with $d$ (\lean{anguloNRS\_strictMonoOn}). It rises towards the ceiling
+$\delta_\infty^3\approx2.50\times10^{-3}$ and $28.30^\circ$, and no cube reaches it
+(\lean{cuantoVolumetrico\_techo}, \lean{anguloNRS\_lt\_limite}). The ceiling is a bound
+approached by finite lattices, not a lattice of its own.
+
+\section{The catalogue of pairs}
+
+Each pair below is realized on $T_d{:}P_d$ with its own units $a,c$ and origins $b,e$; by the
+theorem, all rows share the table of Section~4.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{r>{\raggedright}p{6.2cm}>{\raggedright}p{3.9cm}>{\raggedright\arraybackslash}p{3.9cm}}
+\toprule
+\# & Pair & $P_d$: the ordered values & $T_d$: the step \\
+\midrule
+\endhead
+\multicolumn{4}{l}{\emph{Position and its equivalents}} \\
+1 & position $x$ -- momentum $p_x$ & cell along $x$ & hop to the next cell \\
+2 & position $y$ -- momentum $p_y$ & cell along $y$ & hop to the next cell \\
+3 & position $z$ -- momentum $p_z$ & cell along $z$ & hop to the next cell \\
+4 & centre of mass -- total momentum; relative coordinate -- relative momentum & cell of the coordinate & hop \\
+5 & lattice site -- lattice momentum (tight-binding chain, open ends) & site & hop \\
+6 & waveguide index -- transverse momentum & guide & evanescent coupling \\
+7 & site of a spin chain, one-excitation sector -- exchange & excited site & exchange with the neighbour \\
+8 & level $n$ of a $d$-level system -- drive between consecutive levels & level & drive $n\leftrightarrow n{+}1$ \\
+\midrule
+\multicolumn{4}{l}{\emph{Fields}} \\
+9 & field $\varphi(x)$ -- conjugate momentum $\pi(x)$, site by site & field value & step of field value \\
+10 & vector potential $A$ -- electric field $E$, mode by mode & value of $A$ & step of $A$ \\
+11 & quadrature $X$ -- quadrature $Y$ of a mode & value of $X$ & step of $X$ \\
+12 & photon number $n$ -- quadrature & photon number & $n\leftrightarrow n{+}1$ \\
+13 & link electric field $E$ -- link variable $U$ (lattice gauge theory) & value of $E$ & $U$: $E\leftrightarrow E{+}1$ \\
+\midrule
+\multicolumn{4}{l}{\emph{Number and phase}} \\
+14 & photon number $n$ -- phase $\varphi$ & photon number & phase shift $n\leftrightarrow n{+}1$ \\
+15 & Cooper-pair number $n$ -- Josephson phase $\varphi$ & charge state & tunnelling $n\leftrightarrow n{+}1$ \\
+16 & charge $Q$ -- flux $\Phi$ (LC circuit) & value of $Q$ & step of $Q$ \\
+17 & number difference -- relative phase (two-mode condensate) & number difference & one particle between modes \\
+\midrule
+\multicolumn{4}{l}{\emph{Angle, rotation and spin}} \\
+18 & angle $\varphi$ -- angular momentum $L_z$ & value $m$ of $L_z$ & $m\leftrightarrow m{+}1$ \\
+19 & angle -- action (action--angle variables) & value of the action & step of the action \\
+20 & clock $Z$ -- shift $X$ (Weyl pair, $d$ levels; \lean{D12}) & clock value & shift by one \\
+21 & $\sigma_z$ -- $\sigma_x$ of a qubit & $\pm1$ & flip; exactly $(P_2,T_2)$ \\
+22 & $J_z$ -- $J_x$ (and cyclic), spin or angular momentum & value $m$ of $J_z$ & $m\leftrightarrow m{+}1$ \\
+23 & isospin and colour generators & weight along one generator & step between weights \\
+\midrule
+\multicolumn{4}{l}{\emph{Magnetic field}} \\
+24 & kinetic momenta $\pi_x$ -- $\pi_y$ (Landau levels) & Landau level & $n\leftrightarrow n{+}1$ \\
+25 & guiding centre $X$ -- $Y$ & guiding-centre level & $n\leftrightarrow n{+}1$ \\
+\midrule
+\multicolumn{4}{l}{\emph{Time}} \\
+26 & time $t$ -- energy $E$ & registered tick & step between ticks \\
+27 & time -- frequency of a signal (Fourier, Gabor) & time bin & step between bins \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Rows 26 and 27: in the theorem of 1929--1930 time is not an operator, and the reading of time
+as registered ticks belongs to the physical layer, outside this repository. Row 27 concerns
+classical signals with the same algebra as row~1.
+
+Rows 1--3 are the three axes of the cube of \lean{D37}. Any three rows whose pairs commute with
+each other can occupy the three axes, and items 7--9 of the theorem apply to them.
+
+\section{Reproduce}
+
+\begin{verbatim}
+lake exe cache get
+lake build                                       # the whole package
+lake env lean Verification/Layer1_Mathematics.lean  # boundary + axioms
+\end{verbatim}
+Every theorem cited here depends only on \lean{propext}, \lean{Classical.choice} and
+\lean{Quot.sound}; the package has no \lean{sorry}. The numbers of the table are
+$C_{\mathrm{Nava}}(d)$ from \lean{D9}/\lean{D21}, recomputed from the matrices $T_d$, $P_d$ and
+the vector $\psi^*$; the exact value at $d=4$ is
+$C_{\mathrm{Nava}}(4)=\sqrt{(99-42\sqrt5)/5}$ (\lean{D37b}, \lean{D37e}).
+
+\end{document}
