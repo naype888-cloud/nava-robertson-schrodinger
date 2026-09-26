@@ -13,7 +13,7 @@ cube `dx × dy × dz`, with one such pair per factor. All statements are theorem
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
-## The two theorems
+## Main theorems
 
 **NRS — base theorem (one row, `d` sites).** At the state of maximal tension `ψ*`,
 
@@ -26,6 +26,8 @@ Equivalently, the fluctuation vectors of `T_d` and `P_d` meet at the angle
 `θ_NRS(d) = arccos (1/C_Nava(d))`: `0°` for `d = 2, 3`, exactly
 `arccos (1/√((99 − 42√5)/5)) ≈ 7.43°` at `d = 4`, rising towards `≈ 28.30°` (`D37b`).
 The inequality is physlib's `robertson_schrodinger`, instantiated (`PhyslibBridge`).
+The same holds for every conjugate pair realized on `T_d:P_d`, `(a T_d + b, c P_d + e)`: units
+and origins do not change the ratio or the angle (`D39`).
 From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d = 4` the
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
 (`D23f`; upper bound `D23g` in the separate target).
@@ -94,9 +96,9 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
 | Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates. | Lean theorems. |
 
-This is checked, not just stated: `Verification/Layer1_Mathematics.lean`
-computes the import closure of the package and fails if it contains a
-module outside `NavaRobertsonIndependent.Mathematics`.
+This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
+closure of the package, fails if it contains any physics, cosmology or ontology module, and
+prints the axioms of the main theorems.
 
 ## Figures
 
@@ -299,22 +301,22 @@ lake env lean Verification/Certificados.lean          # axioms
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
   finite-path operators, Fiedler/Niven obstruction, Szegő limit, monotonicity,
   and certificates.
-- `D16_TransporteSuperficieCerrada`: finite-sum transport to a closed
+- `D16_ClosedSurfaceTransport`: finite-sum transport to a closed
   orientable surface, including `Ω(Σ_g) = 2g · δ∞` and its radical form. The
   per-cycle defect `δ∞` and `b₁ = 2g` are inputs of the definition, not theorems.
-- `D25_CuantoDimensional`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
+- `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
-- `D26a_OmegaDesdePi`: `omegaPi = (1 − 1/C∞)·e^{−1/C∞} = 0.04954367888809…`, a
+- `D26a_OmegaFromPi`: `omegaPi = (1 − 1/C∞)·e^{−1/C∞} = 0.04954367888809…`, a
   function of `π` only, with `0.049543679` certified as its 9-digit rounding
   from both sides (`decimal_of_pi`).
 - `SumInvSinSq`: the finite cosecant-square identity
   `Σ csc²(kπ/N) = (N²−1)/3` through Chebyshev roots, with the cotangent
-  corollaries (v14: the former duplicate `D15` was removed).
-- `D17_DefectoIntrinsecoTransporte`: observer-free algebraic interface for any
+  corollaries.
+- `D17_IntrinsicTransportDefect`: observer-free algebraic interface for any
   position–transport dynamics realizing `(T_d, P_d)`; for `d ≥ 4`, its
   Robertson–Schrödinger defect is strictly positive.
-- `D19_VarianzaPosicionFiedler`, `D20_EscalonGramCNava`: closed-form variances
+- `D19_FiedlerPositionVariance`, `D20_GramStepCoherenceConstant`: closed-form variances
   of `T_d` and `P_d` at the extremal state `ψ*` (the explicit Fiedler mode with
   phase `(−i)^j`) and the Gram step `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`,
   with Gram defect `(C_Nava(d)² − 1)/(d−1)²`, equal to zero exactly for
@@ -325,10 +327,10 @@ lake env lean Verification/Certificados.lean          # axioms
   `(c/2)² δ_geom (2 + δ_geom)`. The top eigenvalue `2/(d−1)` of
   `K_d = i[T_d, P_d]` is simple, so every unit state with `⟨K_d⟩ = 2/(d−1)` is a
   phase of `ψ*` and the strict inequality holds at every such state.
-- `D22_InstanciaPosicionTransporteTdPd`: the interface `PositionTransport d` of
+- `D22_TransportPositionInstanceTdPd`: the interface `PositionTransport d` of
   `D17` instantiated with the concrete operators `(T_d, P_d)`; its saturation
   field is a theorem, and the intrinsic defect equals the Gram defect of `D20`.
-- `D23_SaturacionAutovectores`: Robertson–Schrödinger is an inequality and equality
+- `D23_EigenvectorSaturation`: Robertson–Schrödinger is an inequality and equality
   is allowed. On vectors of `Hd d`, the Gram defect vanishes iff `Var B = 0` or
   `Ãψ = c • B̃ψ`; every unit eigenvector of `A − iλB` (`λ` real, `A`, `B` symmetric)
   has `cov = 0` and `Var A · Var B = Im²`. For `d ≥ 4`, no unit eigenvector of
@@ -338,7 +340,7 @@ lake env lean Verification/Certificados.lean          # axioms
   vectors with zero product are those with `⟨K_d⟩ = 0`, such as the canonical basis
   vectors, although `T_d` and `P_d` do not commute. Mathlib-only port of the Physlib
   module `UncertaintySaturation` to vector states.
-- `D24_BrechaCuatroAsintota`: the pure gap `Δ = C_∞ − C_Nava(4) = δ_∞ − δ_geom(4)`
+- `D24_GapFourAsymptote`: the pure gap `Δ = C_∞ − C_Nava(4) = δ_∞ − δ_geom(4)`
   between the first open dimension and the Szegő limit. It is positive, strictly
   below `δ_∞`, strictly bounds the rise of the defect from `d = 4`
   (`δ_geom(d) − δ_geom(4) < Δ`), and is the exact limit of that rise
@@ -355,14 +357,14 @@ lake env lean Verification/Certificados.lean          # axioms
   `robertson_schrodinger` instantiated (`robertson_schrodinger_eq_D21`), strict for `d ≥ 4`
   (`physlib_robertson_schrodinger_strict`).
 
-- `D28_CurvaturaBakryEmery`: the discrete Bakry-Émery curvature of the
+- `D28_BakryEmeryCurvature`: the discrete Bakry-Émery curvature of the
   interior of the path graph satisfies `CD(0,2)`, sharp, via an exact
   polynomial identity (the discrete Bochner-Weitzenböck formula,
   `gamma2_eq_bochner`). Neither the curvature lower bound `0` nor the
   effective dimension `2` can be improved: both are witnessed by explicit
   counterexamples (`kappa_zero_sharp`, `dim_two_sharp`). Ties back
   to `D3`'s actual graph edges via `adj_im1`/`adj_ip1`, not an unconnected toy.
-- `D28b_CurvaturaOllivier`: the same conclusion, `κ = 0` on the interior,
+- `D28b_OllivierCurvature`: the same conclusion, `κ = 0` on the interior,
   from the independent Ollivier-Ricci notion, computed via the
   Kantorovich–Rubinstein dual characterization worked out directly (upper
   bound from the Lipschitz property, lower bound from an explicit witness;
@@ -378,7 +380,18 @@ lake env lean Verification/Certificados.lean          # axioms
   physical stretching factor to a curvature measured on `T_d:P_d` gets
   nothing from the graph itself; no such hypothesis is part of this package.
 
-The word "quantum" in `D11_CuantoMinimoArea` means the algebraic quantum
+- `D40_SpeedLimitUncertainty`: a state at the speed limit has maximal tension
+  (`tension_eq_of_velocity_eq_one`), so for `d ≥ 4` it satisfies Robertson–Schrödinger strictly
+  (`surplus_pos_of_velocity_eq_one`); minimum-uncertainty states move slower than the cone
+  (`velocity_lt_one_of_surplus_eq_zero`).
+- `D41_MandelstamTammCramerRao`: Robertson for `(T_d, P_d)` read as Mandelstam–Tamm
+  (`mandelstamTamm`: `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`, `⟨K_d⟩` the rate of `⟨P_d⟩`, `D38`) and as
+  quantum Cramér–Rao (`cramerRao`: error-propagation Fisher information of `P_d` at most
+  `4 Var T_d`). At `ψ*` both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_psiStar`),
+  exactly at `d = 2, 3` (`mtRatio_psiStar_eq_one_iff`); on the cube, per axis
+  (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
+
+The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
 unit and no constant to it.
 
@@ -388,11 +401,13 @@ unit and no constant to it.
 - `D4_WhyNotDiagonal`: the site of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
   changes one coordinate by one site (lengths `1 < √2 < √3`: the diagonal is never minimal).
 - `D37_PathGraph3D`: one pair `(T, P)` per axis (`liftAlong`, `prodAlong`), commuting across
-  axes (`conmutador_ejes_distintos_*`); NRS on each axis (`saturation_cube`, `strict_cube`).
+  axes (`commutator_axes_xy/xz/yz`); NRS on each axis (`saturation_cube`, `strict_cube`).
 - `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_angleNRS`), zero only at
   `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`angle_floor`), below
   `arccos (1/C_∞)`; one angle per axis of the cube (`angles_cube`, `angle_floor_cube`);
   finite isotropy (`angleNRS_isotropy`, `finite_isotropy_cube`).
+- `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
+  maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 - `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at `Ψ*`
   (`orthogonal_axes_xy/xz/yz`); variances add (`pythagoras_T`, `pythagoras_P`); the total pair of
   the cube `d × d × d` meets at `θ_NRS(d)` (`angle_total_cube`, `angle_total_four`).
@@ -417,25 +432,13 @@ unit and no constant to it.
   (`angle_pair_lt_of_lt`) below `arccos (1/C_∞)` (`angle_pair_lt_limit`); on the cube, three
   pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
   `volQuantum_pairs_certificate`).
-- `D40_SpeedLimitUncertainty`: a state at the speed limit has maximal tension
-  (`tension_eq_of_velocity_eq_one`), so for `d ≥ 4` it satisfies Robertson–Schrödinger strictly
-  (`surplus_pos_of_velocity_eq_one`); minimum-uncertainty states move slower than the cone
-  (`velocity_lt_one_of_surplus_eq_zero`).
-- `D41_MandelstamTammCramerRao`: Robertson for `(T_d, P_d)` read as Mandelstam–Tamm
-  (`mandelstamTamm`: `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`, `⟨K_d⟩` the rate of `⟨P_d⟩`, `D38`) and as
-  quantum Cramér–Rao (`cramerRao`: error-propagation Fisher information of `P_d` at most
-  `4 Var T_d`). At `ψ*` both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_psiStar`),
-  exactly at `d = 2, 3` (`mtRatio_psiStar_eq_one_iff`); on the cube, per axis
-  (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
-- `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
-  maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
 closed-surface statements are formal mathematical theorems in Lean, with no
 input beyond Mathlib. The Cauchy–Gram and Robertson–Schrödinger inequalities
-are proved in `D1_CauchyGram` and `D2_Robertson` (including the bridge from
+are proved in `D1_CauchyGramInequality` and `D2_Robertson` (including the bridge from
 any two vectors of a complex Hilbert space, `schrodingerEvaluationOfGram`).
 
 `T_d:P_d` is not one graph picked among others: `D3.PathUniqueness` proves
