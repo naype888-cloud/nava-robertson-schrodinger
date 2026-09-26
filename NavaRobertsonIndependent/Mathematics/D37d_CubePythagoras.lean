@@ -14,7 +14,7 @@ of fluctuation vectors `(T − ⟨T⟩)Ψ*`, `(P − ⟨P⟩)Ψ*`, open at the N
   `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z`, and the same for `P`.
 * **The star has the angle of its axes** (`angulo_total_cubo`): on the cube `d × d × d`, the
   total pair `(T_x + T_y + T_z, P_x + P_y + P_z)` meets at exactly `θ_NRS(d)` — at the first
-  rupture `4 × 4 × 4`, exactly `θ_NRS(4) ≈ 7.44°` (`angulo_total_cuatro`).
+  rupture `4 × 4 × 4`, exactly `θ_NRS(4) ≈ 7.43°` (`angulo_total_cuatro`).
 -/
 
 noncomputable section
@@ -212,7 +212,7 @@ theorem angulo_total_cubo :
 end Igual
 
 /-- **At the first rupture** `4 × 4 × 4`, the star of the three axes opens exactly
-`θ_NRS(4) = arccos (1/√((99 − 42√5)/5)) ≈ 7.44°`. -/
+`θ_NRS(4) = arccos (1/√((99 − 42√5)/5)) ≈ 7.43°`. -/
 theorem angulo_total_cuatro :
     anguloG (TX 4 4 4 + TY 4 4 4 + TZ 4 4 4) (PX 4 4 4 + PY 4 4 4 + PZ 4 4 4) (PsiStar3D 4 4 4) =
       arccos (1 / Real.sqrt ((99 - 42 * Real.sqrt 5) / 5)) := by

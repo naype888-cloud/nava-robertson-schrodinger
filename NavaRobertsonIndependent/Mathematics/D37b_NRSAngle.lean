@@ -22,7 +22,7 @@ On the cube of `D37` each axis carries its own angle, `θ_NRS(dx)`, `θ_NRS(dy)`
 
 **Universal angular floor** (`piso_angular`): for every `d ≥ 4`,
 `θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`, with the exact value
-`θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.44°` (`anguloNRS_cuatro`) and `θ_NRS(4) > 0`.
+`θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` (`anguloNRS_cuatro`) and `θ_NRS(4) > 0`.
 No axis with `4` or more sites, however many, brings its two fluctuation vectors closer than
 `θ_NRS(4)`; on the cube this holds on all three axes at once (`piso_angular_cubo`).
 

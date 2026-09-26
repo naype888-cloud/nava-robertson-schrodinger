@@ -24,7 +24,7 @@ with `C_Nava(d) = 1` exactly for `d = 2, 3` (Robertson–Schrödinger saturates)
 and strictly below `C_∞ = √(π²/3 − 2)`, which no `d` attains (`D8`, `D9`, `D20`, `D21`).
 Equivalently, the fluctuation vectors of `T_d` and `P_d` meet at the angle
 `θ_NRS(d) = arccos (1/C_Nava(d))`: `0°` for `d = 2, 3`, exactly
-`arccos (1/√((99 − 42√5)/5)) ≈ 7.44°` at `d = 4`, rising towards `≈ 28.30°` (`D37b`).
+`arccos (1/√((99 − 42√5)/5)) ≈ 7.43°` at `d = 4`, rising towards `≈ 28.30°` (`D37b`).
 The inequality is physlib's `robertson_schrodinger`, instantiated (`PhyslibBridge`).
 From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d = 4` the
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
@@ -49,7 +49,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 * pairs on different axes commute — only `T` and `P` of the same axis collide;
 * at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
   only with `2` or `3` sites and is strict from `4` on, on all three axes at once;
-* each axis carries its own angle, at least `θ_NRS(4) ≈ 7.44°` and below `≈ 28.30°` (`D37b`);
+* each axis carries its own angle, at least `θ_NRS(4) ≈ 7.43°` and below `≈ 28.30°` (`D37b`);
 * **finite isotropy**: if every axis has at least `D` sites, the angles of any two axes differ
   by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
   finite cubes only (`D37b`);
@@ -58,7 +58,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 * **Pythagoras for uncertainty**: the fluctuation vectors of different axes are orthogonal, so
   `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` and the same for `P`; on the cube
   `d × d × d` the total pair meets at exactly `θ_NRS(d)` — at the first rupture `4 × 4 × 4`,
-  exactly `θ_NRS(4) ≈ 7.44°` (`D37d`);
+  exactly `θ_NRS(4) ≈ 7.43°` (`D37d`);
 * **the volumetric quantum** `𝒱(dx, dy, dz) = δ(dx) · δ(dy) · δ(dz)`, with `δ(d) = C_Nava(d) − 1`
   the dimensional quantum of an axis (`θ_NRS(d) = arccos (1/(1 + δ(d)))`): it vanishes only if
   some axis has `2` or `3` sites; from `4 × 4 × 4` it is strictly positive, at least
@@ -138,7 +138,7 @@ each and certainty at none (the discrete form of "exact position, completely unc
 momentum"). From `4` cells on, the most definite states and the most loaded with transport are
 never the same. More generally, NRS and NRS³ are statements about discrete space: in every direction with at
 least `4` cells the state of maximal tension carries an irreducible angle between position and
-transport (at least `≈ 7.44°`, below `≈ 28.30°`), and the three directions agree more closely the
+transport (at least `≈ 7.43°`, below `≈ 28.30°`), and the three directions agree more closely the
 more cells each has. The volumetric quantum `𝒱` is the three-dimensional precision limit of
 position and transport: no refinement lowers it (adding cells enlarges it); it is cancelled
 only by reducing some direction to `2` or `3` levels.
