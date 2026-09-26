@@ -105,6 +105,8 @@ For comparison, the Robertson ratio `σ_T σ_P / (½ |⟨[T, P]⟩|)` under the 
 | 8 | 1.0436 | 1.0439 ± 0.0019 | 1.0461 ± 0.0059 | 1.0474 ± 0.0026 | 1.0675 ± 0.0160 | 1.0448 ± 0.0062 | 1.0465 ± 0.0076 | 1.0448 ± 0.0047 | 1.0502 ± 0.0084 | 1.0882 ± 0.0304 |
 | 10 | 1.0558 | 1.0562 ± 0.0018 | 1.0594 ± 0.0058 | 1.0612 ± 0.0033 | 1.0891 ± 0.0199 | 1.0574 ± 0.0062 | 1.0605 ± 0.0084 | 1.0582 ± 0.0059 | 1.0655 ± 0.0094 | 1.1189 ± 0.0352 |
 
+![Controls under noise](figures/experiment_controls_rs_vs_robertson.png)
+
 Consequences for the design:
 
 1. **Use the Robertson–Schrödinger ratio.** Phase and holographic errors create a spurious

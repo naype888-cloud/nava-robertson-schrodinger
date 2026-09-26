@@ -43,6 +43,14 @@ minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never 
   (`strict_inequality_bandWidth`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
   most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
 
+**Mandelstam–Tamm and Cramér–Rao (`D40`, `D41`).** By the Heisenberg equation (`D38`),
+`⟨K_d⟩ = ⟨i[T_d, P_d]⟩` is the rate of `⟨P_d⟩` under transport, in time or in an imprinted
+displacement. Robertson for `(T_d, P_d)` is therefore the Mandelstam–Tamm bound
+`⟨K_d⟩² ≤ 4 Var T_d · Var P_d` and the quantum Cramér–Rao bound for estimating with `P_d`
+(Fisher information at most `4 Var T_d`). At `ψ*` both are attained to the fraction
+`1/C_Nava(d)² = cos² θ_NRS(d)`, exactly only at `d = 2, 3`; on the cube, per axis and for the
+total pair of `d × d × d`. From `d = 4`, no state at the speed limit has minimum uncertainty.
+
 **NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
 factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
 
@@ -140,6 +148,13 @@ corner `(1, 1, 1)`; and the two-dimensional prediction: a square velocity region
 diagonal, against a circle.
 
 ![Group velocity and lattice anisotropy](docs/figures/d38_group_velocity.png)
+
+**Mandelstam–Tamm and Cramér–Rao (`D41`).** Robertson for `(T_d, P_d)` is the Mandelstam–Tamm
+bound on the speed of `⟨P_d⟩` and the quantum Cramér–Rao bound for estimating with `P_d`. At the
+maximal-tension state both are attained to the fraction `1/C_Nava(d)²`: exactly at `d = 2, 3`,
+`0.9833` at `d = 4`, falling towards `3/(π² − 6) ≈ 0.775`, which no `d` reaches.
+
+![Mandelstam–Tamm and Cramér–Rao](docs/figures/d41_mandelstam_tamm_cramer_rao.png)
 
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
