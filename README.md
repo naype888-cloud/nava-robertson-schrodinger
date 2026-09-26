@@ -406,6 +406,12 @@ unit and no constant to it.
   (`tension_eq_of_velocity_eq_one`), so for `d ≥ 4` it satisfies Robertson–Schrödinger strictly
   (`surplus_pos_of_velocity_eq_one`); minimum-uncertainty states move slower than the cone
   (`velocity_lt_one_of_surplus_eq_zero`).
+- `D41_MandelstamTammCramerRao`: Robertson for `(T_d, P_d)` read as Mandelstam–Tamm
+  (`mandelstamTamm`: `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`, `⟨K_d⟩` the rate of `⟨P_d⟩`, `D38`) and as
+  quantum Cramér–Rao (`cramerRao`: error-propagation Fisher information of `P_d` at most
+  `4 Var T_d`). At `ψ*` both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_psiStar`),
+  exactly at `d = 2, 3` (`mtRatio_psiStar_eq_one_iff`); on the cube, per axis
+  (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 

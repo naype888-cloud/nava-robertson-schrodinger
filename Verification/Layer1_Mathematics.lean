@@ -105,3 +105,10 @@ open Lean
 #print axioms ConjugatePairs.volQuantum_pairs_certificate
 #print axioms GroupVelocity.surplus_pos_of_velocity_eq_one
 #print axioms GroupVelocity.velocity_lt_one_of_surplus_eq_zero
+#print axioms GroupVelocity.mandelstamTamm
+#print axioms GroupVelocity.cramerRao
+#print axioms GroupVelocity.mtRatio_psiStar
+#print axioms GroupVelocity.mtRatio_psiStar_eq_one_iff
+#print axioms GroupVelocity.mtRatio_psiStar_lt_one
+#print axioms GroupVelocity.mtRatioG_axis_x
+#print axioms GroupVelocity.mtRatioG_total_cube
