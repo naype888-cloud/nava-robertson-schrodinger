@@ -134,9 +134,14 @@ least `4` cells the state of maximal tension carries an irreducible angle betwee
 transport (at least `≈ 7.44°`, below `≈ 28.30°`), and the three directions agree more closely the
 more cells each has. The volumetric quantum `𝒱` is the three-dimensional precision limit of
 position and transport: no refinement lowers it (adding cells enlarges it); it is cancelled
-only by reducing some direction to `2` or `3` levels. What this repository does not contain is the size of a cell in SI units
-(metres, seconds) and the cosmological and observer layers; those are separate layers with their
-own declared hypotheses.
+only by reducing some direction to `2` or `3` levels.
+
+**Units.** The theorems carry no unit. Units enter through one laboratory datum: the slope of the
+light cone (`D37f`, exactly one cell per step; `D37g` in continuous time) is identified with the
+measured limiting speed — `c` for motion in space, the coupling `κ` in a waveguide array. That
+ties cell to step and leaves a single scale, set by one more measurement. Ratios such as
+`C_Nava(d)` and the NRS angle need no calibration: they are the same number on every platform
+(see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md), §6).
 
 ## Experimental proposal
 

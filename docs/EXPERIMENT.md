@@ -89,7 +89,42 @@ Consequences for the design:
 4. **Use the curve, not one point.** The excess at `N = 4` (0.85 %) is small; measuring
    `N = 2, …, 10` on the same chip tests both the vanishing at the seeds and the growth.
 
-## 6. Other platforms
+## 6. Units: from the algebra to the laboratory
+
+The theorems carry no unit: sites, steps and `R` are pure numbers. Units enter in one place.
+
+**The cone fixes the speed.** `T_N` only connects neighbours, so after `k` steps an amplitude
+has moved at most `k` sites, and the edge is reached (`D37f`: `cono_de_luz`, `borde_del_cono`).
+The slope of the cone is exactly one site per step. In continuous time, `U(t) = exp(−i t T_N)`,
+the edge is no longer sharp, but outside the cone the amplitude falls as `|t|^r / r! · e^{|t|}`
+with `r` the distance (`D37g`, `lieb_robinson`): the front still advances one site per unit of
+`t`, and what lies beyond it is a tail that vanishes faster than any exponential.
+
+**The laboratory gives that slope a number.** The slope of the cone is identified with the
+measured limiting speed of the platform:
+
+| Platform | site | step | slope of the cone |
+|---|---|---|---|
+| motion in space | cell of length `L` | tick of duration `τ` | `L / τ = c` |
+| waveguide array | one guide | propagation length `z` | set by the coupling `κ` (per mm) |
+
+In the array, `i dψ/dz = κ A_N ψ = κ ρ_N T_N ψ`, so `t = κ ρ_N z`: light launched into a single
+guide spreads inside a cone whose edge advances about `κ ρ_N` guides per unit length. Imaging
+that cone measures `κ`.
+
+**One scale is left.** Fixing the slope ties length to time; one scale remains, the size of a
+cell (or of a step), and one more measurement of the platform sets it. The choice `L = l_P`,
+`τ = t_P` is consistent: the ratio is `c`, and nothing falls below the Planck scale, because
+the step is the floor of registrable duration and is not derived from a mass. (A
+non-relativistic discretization with hopping `ħ²/(2ma²)` and `a = l_P` would give steps shorter
+than `t_P`; that is a different model, not this one.)
+
+**Ratios need nothing.** `R = C_Nava(N)`, the NRS angle and the excess are quotients of
+quantities with the same units: any scale multiplies numerator and denominator alike. They are
+compared with the measurement as they are, with no calibration. This is what makes the
+prediction of §4 the same number on every platform.
+
+## 7. Other platforms
 
 * **Single photons in the same array** give the quantum version with identical mathematics.
 * **Superconducting qubit chains** with uniform nearest-neighbour exchange, in the
