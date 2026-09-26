@@ -103,3 +103,5 @@ open Lean
 #print axioms ConjugatePairs.angle_pair_lt_limit
 #print axioms ConjugatePairs.volQuantum_pairs
 #print axioms ConjugatePairs.volQuantum_pairs_certificate
+#print axioms GroupVelocity.surplus_pos_of_velocity_eq_one
+#print axioms GroupVelocity.velocity_lt_one_of_surplus_eq_zero

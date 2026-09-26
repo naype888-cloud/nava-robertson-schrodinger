@@ -49,6 +49,7 @@ public import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 public import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
 public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 public import NavaRobertsonIndependent.Mathematics.D39_ConjugatePairs
+public import NavaRobertsonIndependent.Mathematics.D40_SpeedLimitUncertainty
 
 /-!
 # NRS and NRS³
@@ -74,5 +75,6 @@ theorem.
   cone, Lieb–Robinson.
 - `D38` : dispersion, group velocity, the Heisenberg equation.
 - `D39` : every conjugate pair realized on `T_d : P_d`.
+- `D40` : the speed limit excludes minimum uncertainty.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
