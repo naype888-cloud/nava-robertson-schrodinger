@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 
 /-!
 # D24 — La gap entre la dimensión cuatro y el límite de Szegő
@@ -14,7 +21,7 @@ la cadena desde `d = 4`, y es el límite exacto de ese ascenso. No introduce
 unidades ni constantes: es un corolario de `D8` y `D9`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace GapCuatroAsintota
 

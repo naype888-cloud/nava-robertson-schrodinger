@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
-import NavaRobertsonIndependent.Mathematics.D20_GramStepCoherenceConstant
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
+public import NavaRobertsonIndependent.Mathematics.D20_GramStepCoherenceConstant
 
 /-!
 # D25 — El cuanto es dimensional
@@ -24,7 +31,7 @@ masa del cuanto en cada `H_d`) está en la Capa 2 (`Physics/PhysicalDimensionalQ
 Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas estándar.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace CuantoDimensional
 

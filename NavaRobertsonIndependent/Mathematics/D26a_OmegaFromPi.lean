@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D8_Szego
-import Mathlib.Analysis.Real.Pi.Bounds
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
+public import Mathlib.Analysis.Real.Pi.Bounds
 
 /-!
 # D26a — `Ω` desde `π`: la constante `g_s·e^{−1/C∞}` y su encierro racional
@@ -23,7 +30,7 @@ la Capa 3 (`D26`, `D26b`).
 Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas estándar.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace OmegaDesdePi
 
@@ -111,7 +118,5 @@ theorem decimal_desde_pi :
       mul_lt_mul_of_pos_right gPi_lt hb]
   · nlinarith [mul_lt_mul_of_pos_left boltzmannPi_gt hg,
       mul_lt_mul_of_pos_right gPi_gt hb]
-
-#print axioms decimal_desde_pi
 
 end OmegaDesdePi

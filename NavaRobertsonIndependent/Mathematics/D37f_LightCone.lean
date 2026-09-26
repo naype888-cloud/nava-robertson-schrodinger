@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 /-!
 # D37f — The light cone of transport between neighbours
@@ -20,7 +27,7 @@ per step.
   octahedron of that distance, one axis step per unit of time.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion PathGraph3DNRS
 open PathGraph3D (Sitio3D)

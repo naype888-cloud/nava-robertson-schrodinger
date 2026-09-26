@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D8_Szego
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
 # Transporte del defect asintótico a superficies cerradas
@@ -14,7 +21,7 @@ son entradas de la definición, no teoremas de este archivo; lo que se demuestra
 es la aritmética de la suma y la forma cerrada.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real
 

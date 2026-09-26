@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D16_ClosedSurfaceTransport
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D16_ClosedSurfaceTransport
 
 /-!
 # D16b — Puente Gauss–Bonnet: el defect transportado fija la curvatura total
@@ -35,7 +42,7 @@ curvatura vive en los ciclos no contraíbles.
 Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas estándar.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real
 
@@ -118,8 +125,5 @@ theorem defect_determina_genero {g₁ g₂ : ℕ}
     · exfalso; exact hd (by linarith)
     · linarith
   exact_mod_cast this
-
-#print axioms HGaussBonnet.integralEscalar_desde_defect
-#print axioms defect_determina_genero
 
 end Gnomon

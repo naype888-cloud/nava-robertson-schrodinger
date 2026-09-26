@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D2_Robertson
-import NavaRobertsonIndependent.Mathematics.D7_Niven
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D2_Robertson
+public import NavaRobertsonIndependent.Mathematics.D7_Niven
 
 /-!
 # Defect intrínseco de una dinámica elemental posición–transporte
@@ -12,7 +19,7 @@ obstruye esa igualdad; por tanto, el defect cuadrático es estrictamente
 positivo. Ningún observador aparece en las definiciones ni en las hipótesis.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace DinamicaElemental
 

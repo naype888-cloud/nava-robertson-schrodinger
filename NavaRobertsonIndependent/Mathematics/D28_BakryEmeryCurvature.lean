@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D3_PathGraph
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D3_PathGraph
 
 /-!
 # D28 — Curvatura de Bakry-Émery del camino discreto: `CD(0,2)`, ajustado
@@ -46,7 +53,7 @@ Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas
 estándar de Mathlib.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace CurvaturaBakryEmery
 
@@ -214,16 +221,5 @@ siempre: no hay curvatura ahí para mover la aguja. Ese puente exigiría un
 grafo distinto del camino — y D3 ya prueba que el camino es el único
 compatible con localidad + completitud.
 -/
-
-#print axioms gamma2_eq_bochner
-#print axioms cd_cero_dos
-#print axioms gamma2_nonneg
-#print axioms gamma2_eq_en_extension_afin
-#print axioms n_dos_no_mejorable
-#print axioms kappa_cero_no_mejorable
-#print axioms adj_im1
-#print axioms adj_ip1
-#print axioms curvatura_camino_CD02
-#print axioms gamma2Camino_nonneg
 
 end CurvaturaBakryEmery

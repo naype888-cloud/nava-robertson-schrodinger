@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 /-!
 # D37c — The spectrum of the cube, axis by axis
@@ -19,7 +26,7 @@ Szegő on the cube therefore splits into the three one-dimensional limits of `D8
 constant appears.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
 open PathGraph3D (Sitio3D)

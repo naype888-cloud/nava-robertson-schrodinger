@@ -1,6 +1,13 @@
-import NavaRobertsonIndependent.Mathematics.D11_MinimalAreaQuantum
-import NavaRobertsonIndependent.Mathematics.D25_DimensionalQuantum
-import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D11_MinimalAreaQuantum
+public import NavaRobertsonIndependent.Mathematics.D25_DimensionalQuantum
+public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 
 /-!
 # D37e — The volumetric quantum of three-dimensional uncertainty
@@ -22,7 +29,7 @@ Each axis of the cube `dx × dy × dz` (`D37`) carries its own dimensional quant
   square is the cube of the area quantum of `D11` (`cuantoVolumetrico_cuatro_sq`).
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real Gnomon CuantoDimensional CuantoMinimoArea AnguloNRS NavaRobertsonSchrodingerEDUI
 

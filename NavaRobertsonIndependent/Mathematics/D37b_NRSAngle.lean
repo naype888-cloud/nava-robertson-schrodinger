@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
-import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
+public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 /-!
 # D37b — The NRS angle: the algebraic quantum as an angle
@@ -32,7 +39,7 @@ of the cube, with at least `D ≥ 4` sites each have angles differing by less th
 unattained ceiling.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP Gnomon
 open PathGraph3DNRS SaturacionAutovectores

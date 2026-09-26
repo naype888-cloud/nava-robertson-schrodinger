@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
-import NavaRobertsonIndependent.Mathematics.D17_IntrinsicTransportDefect
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
+public import NavaRobertsonIndependent.Mathematics.D17_IntrinsicTransportDefect
 
 /-!
 # D22 — La interfaz `PosicionTransporte` instanciada con `(T_d, P_d)`
@@ -14,7 +21,7 @@ una hipótesis: se demuestra con `D21` (saturación exactamente en `d = 2, 3`) y
 `(C_Nava(d)² − 1)/(d−1)²` de `D20`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Gnomon TransportePosicion RNavaVarianzaFiedler EscalonGramCoherenceConstant Robertson1929
   DinamicaElemental

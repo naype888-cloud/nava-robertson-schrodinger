@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
-import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
+public import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
 
 /-!
 # D37d — The three axes of the cube are perpendicular: Pythagoras for uncertainty
@@ -17,7 +24,7 @@ of fluctuation vectors `(T − ⟨T⟩)Ψ*`, `(P − ⟨P⟩)Ψ*`, open at the N
   rupture `4 × 4 × 4`, exactly `θ_NRS(4) ≈ 7.43°` (`angulo_total_cuatro`).
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
 open PathGraph3DNRS EspectroCubo AnguloNRS

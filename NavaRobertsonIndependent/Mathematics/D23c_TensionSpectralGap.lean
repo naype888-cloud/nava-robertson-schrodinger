@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
 # D23c — Brecha espectral de `K_d`: la tensión controla la distancia a `ψ*`
@@ -18,7 +25,7 @@ En palabras: cuanto más cerca está la carga `⟨K_d⟩` del máximo, más cerc
 `ψ*`, con constante explícita `brechaK d`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace AnchoFranja
 

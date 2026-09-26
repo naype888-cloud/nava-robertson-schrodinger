@@ -1,7 +1,14 @@
-import NavaRobertsonIndependent.Mathematics.D23d_BandWidth
-import NavaRobertsonIndependent.Mathematics.D37f_LightCone
-import Mathlib.Analysis.Matrix.Normed
-import Mathlib.Analysis.Normed.Algebra.Exponential
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23d_BandWidth
+public import NavaRobertsonIndependent.Mathematics.D37f_LightCone
+public import Mathlib.Analysis.Matrix.Normed
+public import Mathlib.Analysis.Normed.Algebra.Exponential
 
 /-!
 # D37g — Lieb–Robinson bound for transport in continuous time
@@ -21,7 +28,7 @@ and `|(T_dⁿ)ᵢⱼ| ≤ 1` because `‖T_d‖ ≤ 1` (`D23d`); the tail sums t
 `|t|^r/r! · e^{|t|}` since `m! r! ≤ (m + r)!`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion ConoDeLuz AnchoFranja
 

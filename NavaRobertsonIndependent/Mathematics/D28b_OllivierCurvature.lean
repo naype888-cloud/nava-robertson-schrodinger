@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
 
 /-!
 # D28b — Curvatura de Ollivier-Ricci del camino discreto: `κ = 0` en el interior
@@ -27,7 +34,7 @@ Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas
 estándar de Mathlib.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace CurvaturaOllivier
 
@@ -110,14 +117,5 @@ theorem convergencia_bakry_emery_ollivier {d : ℕ} (j : Fin d) (_h1 : 1 ≤ j.v
     (h2 : j.val + 2 < d) :
     (GrafoTP d).Adj j (ip1 j (by omega)) ∧ kappaOllivier 1 1 = 0 :=
   ⟨arista_es_grafoTP j (by omega), kappa_ollivier_interior_es_cero⟩
-
-#print axioms gapKR_le_uno
-#print axioms neg_uno_le_gapKR
-#print axioms gapKR_testigo
-#print axioms lip1en4_testigo
-#print axioms W1_es_uno
-#print axioms kappa_ollivier_interior_es_cero
-#print axioms arista_es_grafoTP
-#print axioms convergencia_bakry_emery_ollivier
 
 end CurvaturaOllivier

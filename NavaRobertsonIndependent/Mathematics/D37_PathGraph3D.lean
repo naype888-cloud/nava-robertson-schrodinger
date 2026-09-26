@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D4_WhyNotDiagonal
-import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D4_WhyNotDiagonal
+public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
 # D37 — The path graph in three axes: `(T, P)` per axis and NRS on each
@@ -25,7 +32,7 @@ Everything is proved once for a general axis (`liftAlong`, `prodAlong`) and then
 instantiated three times through the coordinate permutations `eX`, `eY`, `eZ`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
 open PathGraph3D (Sitio3D)

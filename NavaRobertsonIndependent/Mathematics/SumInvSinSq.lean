@@ -1,12 +1,16 @@
 /-
 Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
 Authors: Eduardo Nava-Hernandez
 -/
-import Mathlib.RingTheory.Polynomial.Chebyshev
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema
-import Mathlib.Algebra.Polynomial.Splits
+module
+
+public import Mathlib.RingTheory.Polynomial.Chebyshev
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Basic
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema
+public import Mathlib.Algebra.Polynomial.Splits
+public import Mathlib.Analysis.Calculus.Deriv.Comp
+public import Mathlib.Analysis.Calculus.Deriv.Polynomial
 
 /-!
 # The cosecant- and cotangent-squared identities
@@ -47,6 +51,8 @@ cotangent half-sum is the arithmetic core of the elementary evaluation of
 `∑ 1 / k ^ 2 = π ^ 2 / 6` given in M. Aigner and G. M. Ziegler, *Proofs from THE BOOK*,
 Chapter "π²/6".
 -/
+
+@[expose] public section
 
 open Polynomial Polynomial.Chebyshev Real
 

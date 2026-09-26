@@ -1,6 +1,13 @@
-import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
-import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
-import PhyslibAlpha.AlgebraicFramework.HilbertSpace.State.VectorUncertainty
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
+public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
+public import PhyslibAlpha.AlgebraicFramework.HilbertSpace.State.VectorUncertainty
 
 /-!
 # Bridge to physlib: `(T_d, P_d)` as an instance of `robertson_schrodinger`
@@ -19,7 +26,7 @@ corresponding `D21` quantity at `ψ*`, so the two inequalities coincide term by 
 No SI constant, no unit: this stays entirely inside Layer 1.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion NavaRobertsonSchrodingerEDUI UnitalPositiveLinearMap ConstructorEspectralTP
 open scoped selfAdjoint ComplexOrder InnerProductSpace

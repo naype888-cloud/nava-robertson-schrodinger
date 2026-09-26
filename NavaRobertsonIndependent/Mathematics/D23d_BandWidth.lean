@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D23c_TensionSpectralGap
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23c_TensionSpectralGap
 
 /-!
 # D23d — Ancho explícito de la franja de desigualdad estricta
@@ -17,7 +24,7 @@ import NavaRobertsonIndependent.Mathematics.D23c_TensionSpectralGap
 Las constantes `32` y `2048` no son óptimas; salen de cotas directas.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace AnchoFranja
 
