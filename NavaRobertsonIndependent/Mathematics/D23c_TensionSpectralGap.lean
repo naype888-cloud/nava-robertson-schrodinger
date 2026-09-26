@@ -8,37 +8,32 @@ module
 public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
-# D23c — Brecha espectral de `K_d`: la tensión controla la distancia a `ψ*`
+# D23c — The spectral gap of `K_d`: tension controls the distance to `ψ*`
 
-El autovalor superior `2/(d−1)` de `K_d = i[T_d, P_d]` es simple (`D21`). Aquí se da la
-separación explícita con el resto del espectro:
+The top eigenvalue `2/(d−1)` of `K_d` is simple (`D21`); here is the explicit gap to the rest
+of the spectrum, `λ_k = (2/(d−1)) cos θ_k / cos θ_0` with `θ_k = (k+1)π/(d+1)`.
 
-* `autovalorK_eq`: `λ_k = (2/(d−1)) · cos θ_k / cos θ_0`, con `θ_k = (k+1)π/(d+1)`.
-* `segundoAutovalor d = (2/(d−1)) · cos(2π/(d+1)) / cos(π/(d+1))` acota todo autovalor
-  distinto del superior (`autovalorK_le_segundo`).
-* `brechaK d = 2/(d−1) − segundoAutovalor d > 0` (`brechaK_pos`).
-* `tension_ortogonal_le`: si `φ ⊥ ψ*`, entonces `⟨φ, K_d φ⟩ ≤ segundoAutovalor d · ‖φ‖²`.
-* `distancia_le_deficit`: para todo estado unitario `ψ`, con `a = ⟨ψ*, ψ⟩`,
-  `brechaK d · ‖ψ − a ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`.
+## Main results
 
-En palabras: cuanto más cerca está la carga `⟨K_d⟩` del máximo, más cerca está el estado de
-`ψ*`, con constante explícita `brechaK d`.
+- `BandWidth.eigenvalueK_le_second` : every other eigenvalue is at most `secondEigenvalue d`.
+- `BandWidth.gapK_pos` : `gapK d = 2/(d−1) − secondEigenvalue d > 0`.
+- `BandWidth.dist_le_deficit` : `gapK d · ‖ψ − ⟪ψ*, ψ⟫ ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`.
 -/
 
 @[expose] public noncomputable section
 
-namespace AnchoFranja
+namespace BandWidth
 
-open NavaRobertsonSchrodingerEDUI TransportePosicion SaturacionAutovectores SobranteIntermedio
-  ConstructorEspectralTP
+open NRSInequality TransportPosition EigenvectorSaturation NearMaxTension
+  SpectralExtremal
 
-/-! ## 1. Expansión espectral de la forma cuadrática -/
+/-! ## 1. Spectral expansion of the quadratic form -/
 
 section Generico
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
-theorem re_inner_eq_suma (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
+theorem re_inner_eq_sum (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
     (inner ℂ v (K v)).re =
       ∑ i, hK.eigenvalues rfl i * ‖(hK.eigenvectorBasis rfl).repr v i‖ ^ 2 := by
   rw [← (hK.eigenvectorBasis rfl).repr.inner_map_map v (K v), PiLp.inner_apply, Complex.re_sum]
@@ -47,47 +42,47 @@ theorem re_inner_eq_suma (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
     inner_self_eq_norm_sq_to_K]
   simp [← Complex.ofReal_pow]
 
-theorem norm_sq_eq_suma (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
+theorem norm_sq_eq_sum (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
     ‖v‖ ^ 2 = ∑ i, ‖(hK.eigenvectorBasis rfl).repr v i‖ ^ 2 := by
   rw [← (hK.eigenvectorBasis rfl).repr.norm_map, EuclideanSpace.norm_sq_eq]
 
 end Generico
 
-/-! ## 2. El segundo autovalor y la brecha -/
+/-! ## 2. The second eigenvalue and the gap -/
 
-/-- Cota de todo autovalor de `K_d` distinto del superior. -/
-def segundoAutovalor (d : ℕ) : ℝ :=
+/-- A bound for every eigenvalue of `K_d` other than the top one. -/
+def secondEigenvalue (d : ℕ) : ℝ :=
   (2 / ((d : ℝ) - 1)) * Real.cos (2 * Real.pi / ((d : ℝ) + 1)) /
     Real.cos (Real.pi / ((d : ℝ) + 1))
 
-/-- Brecha espectral de `K_d`: distancia del autovalor superior al resto del espectro. -/
-def brechaK (d : ℕ) : ℝ := 2 / ((d : ℝ) - 1) - segundoAutovalor d
+/-- The spectral gap of `K_d`. -/
+def gapK (d : ℕ) : ℝ := 2 / ((d : ℝ) - 1) - secondEigenvalue d
 
-theorem cos_fiedler_pos {d : ℕ} (hd : 2 ≤ d) : 0 < Real.cos (Real.pi / ((d : ℝ) + 1)) := by
+theorem cos_fiedlerAngle_pos {d : ℕ} (hd : 2 ≤ d) : 0 < Real.cos (Real.pi / ((d : ℝ) + 1)) := by
   have h := rho_pos d hd
   unfold rho at h
   linarith
 
-theorem autovalorK_eq {d : ℕ} (hd : 2 ≤ d) (k : Fin d) :
-    autovalorK d k =
-      (((2 / ((d : ℝ) - 1)) * Real.cos (anguloModo d k) /
+theorem eigenvalueK_eq {d : ℕ} (hd : 2 ≤ d) (k : Fin d) :
+    eigenvalueK d k =
+      (((2 / ((d : ℝ) - 1)) * Real.cos (modeAngle d k) /
         Real.cos (Real.pi / ((d : ℝ) + 1)) : ℝ) : ℂ) := by
-  have hc := (cos_fiedler_pos hd).ne'
-  simp only [autovalorK, autovalorAd, rho]
+  have hc := (cos_fiedlerAngle_pos hd).ne'
+  simp only [eigenvalueK, eigenvalueAd, rho]
   push_cast
   field_simp
 
-theorem autovalorK_le_segundo {d : ℕ} (hd : 2 ≤ d) (k : Fin d) (hk : k.val ≠ 0) :
-    (autovalorK d k).re ≤ segundoAutovalor d := by
-  rw [autovalorK_eq hd, Complex.ofReal_re, segundoAutovalor]
-  have hc := cos_fiedler_pos hd
+theorem eigenvalueK_le_second {d : ℕ} (hd : 2 ≤ d) (k : Fin d) (hk : k.val ≠ 0) :
+    (eigenvalueK d k).re ≤ secondEigenvalue d := by
+  rw [eigenvalueK_eq hd, Complex.ofReal_re, secondEigenvalue]
+  have hc := cos_fiedlerAngle_pos hd
   have hdpos : 0 < 2 / ((d : ℝ) - 1) := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     exact div_pos (by norm_num) (by linarith)
   apply div_le_div_of_nonneg_right _ hc.le
   apply mul_le_mul_of_nonneg_left _ hdpos.le
-  apply Real.cos_le_cos_of_nonneg_of_le_pi (by positivity) (anguloModo_mem_Icc k).2
-  unfold anguloModo
+  apply Real.cos_le_cos_of_nonneg_of_le_pi (by positivity) (modeAngle_mem_Icc k).2
+  unfold modeAngle
   have hk1 : (2 : ℝ) ≤ (k.val : ℝ) + 1 := by
     have : 1 ≤ k.val := Nat.one_le_iff_ne_zero.mpr hk
     have : (1 : ℝ) ≤ k.val := by exact_mod_cast this
@@ -96,8 +91,8 @@ theorem autovalorK_le_segundo {d : ℕ} (hd : 2 ≤ d) (k : Fin d) (hk : k.val �
   rw [mul_div_assoc, mul_div_assoc]
   exact mul_le_mul_of_nonneg_right hk1 (by positivity)
 
-theorem brechaK_pos {d : ℕ} (hd : 2 ≤ d) : 0 < brechaK d := by
-  have hc := cos_fiedler_pos hd
+theorem gapK_pos {d : ℕ} (hd : 2 ≤ d) : 0 < gapK d := by
+  have hc := cos_fiedlerAngle_pos hd
   have hdR : (2 : ℝ) ≤ d := by exact_mod_cast hd
   have hdpos : 0 < 2 / ((d : ℝ) - 1) := div_pos (by norm_num) (by linarith)
   have hd1 : 0 < (d : ℝ) + 1 := by positivity
@@ -108,79 +103,79 @@ theorem brechaK_pos {d : ℕ} (hd : 2 ≤ d) : 0 < brechaK d := by
     · rw [mul_div_assoc]
       have : 0 < Real.pi / ((d : ℝ) + 1) := by positivity
       linarith
-  unfold brechaK segundoAutovalor
+  unfold gapK secondEigenvalue
   rw [mul_div_assoc]
   have hq : Real.cos (2 * Real.pi / ((d : ℝ) + 1)) / Real.cos (Real.pi / ((d : ℝ) + 1)) < 1 :=
     (div_lt_one hc).mpr hlt
   nlinarith
 
-/-! ## 3. Estados ortogonales a `ψ*` -/
+/-! ## 3. States orthogonal to `ψ*` -/
 
-/-- Si `φ ⊥ ψ*`, su tensión no pasa de `segundoAutovalor d · ‖φ‖²`. -/
-theorem tension_ortogonal_le {d : ℕ} (hd : 2 ≤ d) (φ : Hd d)
+/-- If `φ ⊥ ψ*`, its tension is at most `secondEigenvalue d · ‖φ‖²`. -/
+theorem tension_orthogonal_le {d : ℕ} (hd : 2 ≤ d) (φ : Hd d)
     (hφ : inner ℂ (psiStar d) φ = 0) :
-    tension d φ ≤ segundoAutovalor d * ‖φ‖ ^ 2 := by
-  have hK := KdOp_simetrico d
+    tension d φ ≤ secondEigenvalue d * ‖φ‖ ^ 2 := by
+  have hK := KdOp_isSymmetric d
   unfold tension
-  rw [re_inner_eq_suma (KdOp d) hK, norm_sq_eq_suma (KdOp d) hK, Finset.mul_sum]
+  rw [re_inner_eq_sum (KdOp d) hK, norm_sq_eq_sum (KdOp d) hK, Finset.mul_sum]
   refine Finset.sum_le_sum fun i _ => ?_
-  obtain ⟨k, hk⟩ := KdOp_autovalor_agota_espectro hd (hK.hasEigenvalue_eigenvalues rfl i)
+  obtain ⟨k, hk⟩ := KdOp_eigenvalue_exhausts_spectrum hd (hK.hasEigenvalue_eigenvalues rfl i)
   by_cases hk0 : k.val = 0
-  · -- autovalor superior: el vector propio es múltiplo de `ψ*`, luego la coordenada es `0`
+  · -- top eigenvalue: the eigenvector is a multiple of `ψ*`, so the coordinate is `0`
     have hk' : k = ⟨0, by omega⟩ := Fin.ext hk0
     have hv : KdOp d (hK.eigenvectorBasis rfl i) =
         ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • hK.eigenvectorBasis rfl i := by
-      rw [hK.apply_eigenvectorBasis rfl i, hk, hk', autovalorK_fundamental d hd]
-    obtain ⟨c, hc⟩ := autovector_superior_multiplo hd _ hv
+      rw [hK.apply_eigenvectorBasis rfl i, hk, hk', eigenvalueK_fundamental d hd]
+    obtain ⟨c, hc⟩ := top_eigenvector_smul hd _ hv
     have h0 : (hK.eigenvectorBasis rfl).repr φ i = 0 := by
       rw [OrthonormalBasis.repr_apply_apply, hc, inner_smul_left, hφ, mul_zero]
     simp [h0]
-  · have hle : hK.eigenvalues rfl i ≤ segundoAutovalor d := by
-      have := autovalorK_le_segundo hd k hk0
+  · have hle : hK.eigenvalues rfl i ≤ secondEigenvalue d := by
+      have := eigenvalueK_le_second hd k hk0
       rw [← hk] at this
       simpa using this
     exact mul_le_mul_of_nonneg_right hle (sq_nonneg _)
 
-/-! ## 4. La tensión controla la distancia a `ψ*` -/
+/-! ## 4. Tension controls the distance to `ψ*` -/
 
 theorem inner_psiStar_self {d : ℕ} (hd : 2 ≤ d) : inner ℂ (psiStar d) (psiStar d) = 1 := by
-  rw [inner_self_eq_norm_sq_to_K, norma_psiStar hd]
+  rw [inner_self_eq_norm_sq_to_K, norm_psiStar hd]
   simp
 
-/-- La componente de `ψ` ortogonal a `ψ*`. -/
-def componenteOrtogonal (d : ℕ) (ψ : Hd d) : Hd d :=
+/-- The component of `ψ` orthogonal to `ψ*`. -/
+def orthComponent (d : ℕ) (ψ : Hd d) : Hd d :=
   ψ - inner ℂ (psiStar d) ψ • psiStar d
 
-theorem componenteOrtogonal_perp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
-    inner ℂ (psiStar d) (componenteOrtogonal d ψ) = 0 := by
-  rw [componenteOrtogonal, inner_sub_right, inner_smul_right, inner_psiStar_self hd, mul_one,
+theorem orthComponent_perp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
+    inner ℂ (psiStar d) (orthComponent d ψ) = 0 := by
+  rw [orthComponent, inner_sub_right, inner_smul_right, inner_psiStar_self hd, mul_one,
     sub_self]
 
-/-- `‖ψ‖² = |⟨ψ*,ψ⟩|² + ‖φ‖²`. -/
-theorem norm_sq_descomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
-    ‖ψ‖ ^ 2 = ‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖componenteOrtogonal d ψ‖ ^ 2 := by
+/-- `‖ψ‖² = |⟪ψ*, ψ⟫|² + ‖φ‖²`. -/
+theorem norm_sq_decomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
+    ‖ψ‖ ^ 2 = ‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2 := by
   set a := inner ℂ (psiStar d) ψ
-  set φ := componenteOrtogonal d ψ
-  have hψ : ψ = a • psiStar d + φ := by simp [φ, componenteOrtogonal, a]
+  set φ := orthComponent d ψ
+  have hψ : ψ = a • psiStar d + φ := by simp [φ, orthComponent, a]
   have h0 : inner ℂ (a • psiStar d) φ = 0 := by
-    rw [inner_smul_left, componenteOrtogonal_perp hd, mul_zero]
+    rw [inner_smul_left, orthComponent_perp hd, mul_zero]
   conv_lhs => rw [hψ]
-  rw [@norm_add_sq ℂ, h0, norm_smul, norma_psiStar hd]
+  rw [@norm_add_sq ℂ, h0, norm_smul, norm_psiStar hd]
   simp
 
-/-- `⟨K⟩_ψ = (2/(d−1)) |⟨ψ*,ψ⟩|² + ⟨K⟩_φ`. -/
-theorem tension_descomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
+/-- `⟨K⟩_ψ = (2/(d−1)) |⟪ψ*, ψ⟫|² + ⟨K⟩_φ`. -/
+theorem tension_decomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
     tension d ψ = 2 / ((d : ℝ) - 1) * ‖inner ℂ (psiStar d) ψ‖ ^ 2 +
-      tension d (componenteOrtogonal d ψ) := by
+      tension d (orthComponent d ψ) := by
   set a := inner ℂ (psiStar d) ψ
-  set φ := componenteOrtogonal d ψ
-  have hψ : ψ = a • psiStar d + φ := by simp [φ, componenteOrtogonal, a]
-  have hperp : inner ℂ (psiStar d) φ = 0 := componenteOrtogonal_perp hd ψ
+  set φ := orthComponent d ψ
+  have hψ : ψ = a • psiStar d + φ := by simp [φ, orthComponent, a]
+  have hperp : inner ℂ (psiStar d) φ = 0 := orthComponent_perp hd ψ
   have hperp' : inner ℂ φ (psiStar d) = 0 := by
     rw [← inner_conj_symm, hperp, map_zero]
   have hKφ : inner ℂ (psiStar d) (KdOp d φ) = 0 := by
-    rw [← KdOp_simetrico d, KdOp_vectorFiedlerExplicito d hd, inner_smul_left, hperp, mul_zero]
-  have hK := KdOp_vectorFiedlerExplicito d hd
+    rw [← KdOp_isSymmetric d, KdOp_fiedlerVec d hd, inner_smul_left, hperp, mul_zero]
+  have hK := KdOp_fiedlerVec d hd
   unfold tension
   conv_lhs => rw [hψ]
   simp only [map_add, map_smul, inner_add_left, inner_add_right, inner_smul_left,
@@ -191,20 +186,20 @@ theorem tension_descomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
     Complex.ofReal_re]
   rw [zero_add]
 
-/-- **La tensión controla la distancia a `ψ*`.** Para todo estado unitario,
-`brechaK d · ‖ψ − ⟨ψ*,ψ⟩ ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`. -/
-theorem distancia_le_deficit {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
-    brechaK d * ‖componenteOrtogonal d ψ‖ ^ 2 ≤ 2 / ((d : ℝ) - 1) - tension d ψ := by
-  have hn := norm_sq_descomp hd ψ
-  have ht := tension_descomp hd ψ
-  have hφ := tension_ortogonal_le hd _ (componenteOrtogonal_perp hd ψ)
+/-- **Tension controls the distance to `ψ*`.** For every unit state,
+`gapK d · ‖ψ − ⟪ψ*, ψ⟫ ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`. -/
+theorem dist_le_deficit {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
+    gapK d * ‖orthComponent d ψ‖ ^ 2 ≤ 2 / ((d : ℝ) - 1) - tension d ψ := by
+  have hn := norm_sq_decomp hd ψ
+  have ht := tension_decomp hd ψ
+  have hφ := tension_orthogonal_le hd _ (orthComponent_perp hd ψ)
   rw [hψ, one_pow] at hn
-  unfold brechaK
+  unfold gapK
   have e : 2 / ((d : ℝ) - 1) = 2 / ((d : ℝ) - 1) *
-      (‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖componenteOrtogonal d ψ‖ ^ 2) := by
+      (‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2) := by
     rw [← hn, mul_one]
   nlinarith
 
-end AnchoFranja
+end BandWidth
 
 end

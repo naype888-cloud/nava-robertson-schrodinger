@@ -8,119 +8,113 @@ module
 public import NavaRobertsonIndependent.Mathematics.D23_EigenvectorSaturation
 
 /-!
-# D23b — El sobrante en los estados intermedios
+# D23b — The surplus at intermediate states
 
-`D21` calcula el sobrante de Robertson–Schrödinger en los estados de máxima tensión,
-`⟨K_d⟩ = 2/(d−1)`: es el defect de Gram `defectGram d`. `D23` muestra que por debajo del
-máximo hay estados que saturan (sobrante `0`). Aquí se estudia el sobrante en **todo**
-estado unitario, en función de su tensión `⟨K_d⟩`:
+`D21` computes the Robertson–Schrödinger surplus at maximal tension: the Gram defect
+`defectGram d`. `D23` shows that below the maximum some states saturate. Here the surplus is
+studied at every unit state as a function of its tension `⟨K_d⟩`. The `ε` below comes from
+compactness of the unit sphere, not in closed form.
 
-* `sobrante_eq`: en todo estado,
-  `sobrante ψ = Var T_d · Var P_d − (cov² + ⟨K_d⟩²/4)`; el piso lo fija la tensión del estado.
-* `sobrante_fase`: el sobrante no depende de la fase global.
-* `sobrante_psiStar`: en `ψ*`, el sobrante es `defectGram d`.
-* `tension_le`: en todo estado unitario, `⟨K_d⟩ ≤ 2/(d−1)`.
-* `sobrante_cerca_del_maximo`: **continuidad en el máximo.** Para todo `η > 0` hay `ε > 0` tal
-  que todo estado unitario con `⟨K_d⟩ > 2/(d−1) − ε` tiene sobrante a menos de `η` de
+## Main results
+
+- `NearMaxTension.surplus_eq` : `surplus ψ = Var T_d · Var P_d − (cov² + ⟨K_d⟩²/4)`.
+- `NearMaxTension.tension_le` : `⟨K_d⟩ ≤ 2/(d−1)` at every unit state.
+- `NearMaxTension.surplus_near_max` : states with tension near `2/(d−1)` have surplus near
   `defectGram d`.
-* `desigualdad_estricta_banda`: para `d ≥ 4` la desigualdad de Robertson–Schrödinger es
-  estricta en toda una banda de estados intermedios, `2/(d−1) − ε < ⟨K_d⟩`, no solo en el
-  máximo.
-
-El `ε` se obtiene por compacidad de la esfera unidad; no se da en forma cerrada.
+- `NearMaxTension.strict_inequality_band` : for `d ≥ 4` the inequality is strict on a band
+  `2/(d−1) − ε < ⟨K_d⟩`.
 -/
 
 @[expose] public noncomputable section
 
-namespace SobranteIntermedio
+namespace NearMaxTension
 
-open NavaRobertsonSchrodingerEDUI TransportePosicion SaturacionAutovectores
-  EscalonGramCoherenceConstant ConstructorEspectralTP
+open NRSInequality TransportPosition EigenvectorSaturation
+  GramStep SpectralExtremal
 
-/-- Tensión del estado: `⟨K_d⟩ = Re ⟨ψ, K_d ψ⟩`. -/
+/-- The tension `⟨K_d⟩ = Re ⟪ψ, K_d ψ⟫`. -/
 def tension (d : ℕ) (ψ : Hd d) : ℝ :=
   (inner ℂ ψ (KdOp d ψ)).re
 
-/-- Sobrante de Robertson–Schrödinger de `(T_d, P_d)` en `ψ`: el defect de Gram. -/
-abbrev sobrante (d : ℕ) (ψ : Hd d) : ℝ :=
-  defectGramEn (TdOp d) (PdOp d) ψ
+/-- The Robertson–Schrödinger surplus of `(T_d, P_d)` at `ψ`: the Gram defect. -/
+abbrev surplus (d : ℕ) (ψ : Hd d) : ℝ :=
+  gramDefectAt (TdOp d) (PdOp d) ψ
 
-/-! ## 1. Forma del sobrante -/
+/-! ## 1. The surplus -/
 
-/-- El sobrante con el piso propio del estado, `⟨K_d⟩²/4`. -/
-theorem sobrante_eq (d : ℕ) (ψ : Hd d) :
-    sobrante d ψ =
-      varianza (TdOp d) ψ * varianza (PdOp d) ψ -
-        (covarianza (TdOp d) (PdOp d) ψ ^ 2 + tension d ψ ^ 2 / 4) := by
-  rw [sobrante, defectGramEn_eq_gap,
-    parteImaginaria_eq_im_inner (TdOp_simetrico d) (PdOp_simetrico d), tension, re_inner_KdOp]
+/-- The surplus with the state's own floor `⟨K_d⟩²/4`. -/
+theorem surplus_eq (d : ℕ) (ψ : Hd d) :
+    surplus d ψ =
+      variance (TdOp d) ψ * variance (PdOp d) ψ -
+        (covariance (TdOp d) (PdOp d) ψ ^ 2 + tension d ψ ^ 2 / 4) := by
+  rw [surplus, gramDefectAt_eq_gap,
+    imPart_eq_im_inner (TdOp_isSymmetric d) (PdOp_isSymmetric d), tension, re_inner_KdOp]
   ring
 
-theorem sobrante_fase {d : ℕ} (ψ : Hd d) (c : ℂ) (hc : ‖c‖ = 1) :
-    sobrante d (c • ψ) = sobrante d ψ := by
-  unfold sobrante defectGramEn
-  rw [varianza_fase _ _ _ hc, varianza_fase _ _ _ hc, centrado_fase _ _ _ hc,
-    centrado_fase _ _ _ hc, inner_smul_left, inner_smul_right, norm_mul, norm_mul,
+theorem surplus_phase {d : ℕ} (ψ : Hd d) (c : ℂ) (hc : ‖c‖ = 1) :
+    surplus d (c • ψ) = surplus d ψ := by
+  unfold surplus gramDefectAt
+  rw [variance_phase _ _ _ hc, variance_phase _ _ _ hc, centered_phase _ _ _ hc,
+    centered_phase _ _ _ hc, inner_smul_left, inner_smul_right, norm_mul, norm_mul,
     Complex.norm_conj, hc]
   simp
 
 theorem tension_psiStar {d : ℕ} (hd : 2 ≤ d) : tension d (psiStar d) = 2 / ((d : ℝ) - 1) := by
   unfold tension
-  rw [KdOp_vectorFiedlerExplicito d hd, inner_smul_right, inner_self_eq_norm_sq_to_K,
-    norma_psiStar hd]
+  rw [KdOp_fiedlerVec d hd, inner_smul_right, inner_self_eq_norm_sq_to_K,
+    norm_psiStar hd]
   simpa using Complex.ofReal_re (2 / ((d : ℝ) - 1))
 
-theorem sobrante_psiStar {d : ℕ} (hd : 2 ≤ d) : sobrante d (psiStar d) = defectGram d := by
+theorem surplus_psiStar {d : ℕ} (hd : 2 ≤ d) : surplus d (psiStar d) = defectGram d := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
     linarith
-  rw [← gap_eq_defectGram hd, sobrante_eq, tension_psiStar hd, commutatorConstant_half_sq hd]
+  rw [← gap_eq_defectGram hd, surplus_eq, tension_psiStar hd, commutatorConstant_half_sq hd]
   field_simp
   ring
 
-/-- La tensión de un estado unitario no pasa del máximo `2/(d−1)`. -/
+/-- The tension of a unit state is at most `2/(d−1)`. -/
 theorem tension_le {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
     tension d ψ ≤ 2 / ((d : ℝ) - 1) := by
   have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have : Nontrivial (Hd d) := inferInstance
-  have hle := expectativa_le_radio (KdOp d) (KdOp_simetrico d) ψ hψ
-  rw [radioEspectral_KdOp_eq_paso d hd] at hle
+  have hle := expectation_le_specRadius (KdOp d) (KdOp_isSymmetric d) ψ hψ
+  rw [specRadius_KdOp_eq_step d hd] at hle
   exact (Complex.re_le_norm _).trans hle
 
-/-! ## 2. Continuidad -/
+/-! ## 2. Continuity -/
 
-theorem continuous_media {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (media A) :=
+theorem continuous_mean {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (mean A) :=
   Complex.continuous_re.comp (continuous_id.inner (LinearMap.continuous_of_finiteDimensional A))
 
-theorem continuous_centrado {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (centrado A) :=
+theorem continuous_centered {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (centered A) :=
   (LinearMap.continuous_of_finiteDimensional A).sub
-    ((Complex.continuous_ofReal.comp (continuous_media A)).smul continuous_id)
+    ((Complex.continuous_ofReal.comp (continuous_mean A)).smul continuous_id)
 
-theorem continuous_varianza {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (varianza A) :=
-  (continuous_centrado A).norm.pow 2
+theorem continuous_variance {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) : Continuous (variance A) :=
+  (continuous_centered A).norm.pow 2
 
 theorem continuous_tension (d : ℕ) : Continuous (tension d) :=
   Complex.continuous_re.comp
     (continuous_id.inner (LinearMap.continuous_of_finiteDimensional (KdOp d)))
 
-theorem continuous_sobrante (d : ℕ) : Continuous (sobrante d) :=
-  ((continuous_varianza _).mul (continuous_varianza _)).sub
-    (((continuous_centrado _).inner (continuous_centrado _)).norm.pow 2)
+theorem continuous_surplus (d : ℕ) : Continuous (surplus d) :=
+  ((continuous_variance _).mul (continuous_variance _)).sub
+    (((continuous_centered _).inner (continuous_centered _)).norm.pow 2)
 
-/-! ## 3. El sobrante cerca del máximo -/
+/-! ## 3. The surplus near the maximum -/
 
-/-- **Continuidad del sobrante en el máximo.** Los estados unitarios con tensión cerca de
-`2/(d−1)` tienen sobrante cerca de `defectGram d`. -/
-theorem sobrante_cerca_del_maximo {d : ℕ} (hd : 2 ≤ d) {η : ℝ} (hη : 0 < η) :
+/-- Unit states with tension near `2/(d−1)` have surplus near `defectGram d`. -/
+theorem surplus_near_max {d : ℕ} (hd : 2 ≤ d) {η : ℝ} (hη : 0 < η) :
     ∃ ε > 0, ∀ ψ : Hd d, ‖ψ‖ = 1 → 2 / ((d : ℝ) - 1) - ε < tension d ψ →
-      |sobrante d ψ - defectGram d| < η := by
+      |surplus d ψ - defectGram d| < η := by
   set S : Set (Hd d) :=
-    Metric.sphere 0 1 ∩ {ψ | η ≤ |sobrante d ψ - defectGram d|} with hS
+    Metric.sphere 0 1 ∩ {ψ | η ≤ |surplus d ψ - defectGram d|} with hS
   have hSc : IsCompact S :=
     (isCompact_sphere 0 1).inter_right
-      (isClosed_le continuous_const ((continuous_sobrante d).sub continuous_const).abs)
-  have hfuera : ∀ ψ : Hd d, ‖ψ‖ = 1 → ψ ∉ S → |sobrante d ψ - defectGram d| < η := by
+      (isClosed_le continuous_const ((continuous_surplus d).sub continuous_const).abs)
+  have hfuera : ∀ ψ : Hd d, ‖ψ‖ = 1 → ψ ∉ S → |surplus d ψ - defectGram d| < η := by
     intro ψ hψ hnS
     by_contra h
     exact hnS ⟨by simpa using hψ, le_of_not_gt h⟩
@@ -130,9 +124,9 @@ theorem sobrante_cerca_del_maximo {d : ℕ} (hd : 2 ≤ d) {η : ℝ} (hη : 0 <
   have hψ₀ : ‖ψ₀‖ = 1 := by simpa using hψ₀S.1
   have hlt : tension d ψ₀ < 2 / ((d : ℝ) - 1) := by
     refine lt_of_le_of_ne (tension_le hd ψ₀ hψ₀) fun heq => ?_
-    obtain ⟨c, hc, rfl⟩ := estado_maxima_tension_es_fase hd ψ₀ hψ₀ heq
+    obtain ⟨c, hc, rfl⟩ := maxTension_state_eq_phase hd ψ₀ hψ₀ heq
     have h := hψ₀S.2
-    simp only [Set.mem_ofPred_eq, sobrante_fase _ c hc, sobrante_psiStar hd, sub_self,
+    simp only [Set.mem_ofPred_eq, surplus_phase _ c hc, surplus_psiStar hd, sub_self,
       abs_zero] at h
     linarith
   refine ⟨2 / ((d : ℝ) - 1) - tension d ψ₀, by linarith, fun ψ hψ hK => hfuera ψ hψ ?_⟩
@@ -141,22 +135,21 @@ theorem sobrante_cerca_del_maximo {d : ℕ} (hd : 2 ≤ d) {η : ℝ} (hη : 0 <
   simp only [Set.mem_ofPred_eq] at this
   linarith
 
-/-- **Desigualdad estricta en una banda de estados intermedios.** Para `d ≥ 4` hay `ε > 0`
-tal que todo estado unitario con `⟨K_d⟩ > 2/(d−1) − ε` cumple Robertson–Schrödinger de
-forma estricta, con su propio piso `⟨K_d⟩²/4`. -/
-theorem desigualdad_estricta_banda {d : ℕ} (hd : 4 ≤ d) :
+/-- For `d ≥ 4` there is `ε > 0` such that every unit state with `⟨K_d⟩ > 2/(d−1) − ε`
+satisfies Robertson–Schrödinger strictly, with floor `⟨K_d⟩²/4`. -/
+theorem strict_inequality_band {d : ℕ} (hd : 4 ≤ d) :
     ∃ ε > 0, ∀ ψ : Hd d, ‖ψ‖ = 1 → 2 / ((d : ℝ) - 1) - ε < tension d ψ →
-      covarianza (TdOp d) (PdOp d) ψ ^ 2 + tension d ψ ^ 2 / 4 <
-        varianza (TdOp d) ψ * varianza (PdOp d) ψ := by
-  obtain ⟨ε, hε, h⟩ := sobrante_cerca_del_maximo (by omega : 2 ≤ d) (escalon_gram_pos hd)
+      covariance (TdOp d) (PdOp d) ψ ^ 2 + tension d ψ ^ 2 / 4 <
+        variance (TdOp d) ψ * variance (PdOp d) ψ := by
+  obtain ⟨ε, hε, h⟩ := surplus_near_max (by omega : 2 ≤ d) (gramStep_gram_pos hd)
   refine ⟨ε, hε, fun ψ hψ hK => ?_⟩
   have h1 := h ψ hψ hK
-  have h2 : 0 < sobrante d ψ := by
-    have := neg_abs_le (sobrante d ψ - defectGram d)
+  have h2 : 0 < surplus d ψ := by
+    have := neg_abs_le (surplus d ψ - defectGram d)
     linarith
-  rw [sobrante_eq] at h2
+  rw [surplus_eq] at h2
   linarith
 
-end SobranteIntermedio
+end NearMaxTension
 
 end

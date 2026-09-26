@@ -9,33 +9,26 @@ public import NavaRobertsonIndependent.Mathematics.D4_WhyNotDiagonal
 public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
-# D37 — The path graph in three axes: `(T, P)` per axis and NRS on each
+# D37 — The path graph in three axes: one pair `(T, P)` per axis
 
-The cube is the Cartesian product of three path graphs: a site is a triple of coordinates and
-adjacency changes a single coordinate by one step. (Under the declared physical bridge of
-`Mathematics.lean`, its three factors are the directions `x, y, z` of discrete space.)
-`D4` fixes the site of the cube, `Sitio3D dx dy dz = Fin dx × Fin dy × Fin dz`, and shows
-that the elementary step changes exactly one coordinate (the diagonal is never minimal).
-This file puts the operators on that cube: one pair `(T, P)` per axis, each acting as the
-`D3` pair `(T_d, P_d)` on its own coordinate and as the identity on the other two.
+The cube `Site3D dx dy dz = Fin dx × Fin dy × Fin dz` of `D4` is the Cartesian product of
+three paths. Each axis carries the pair `(T_d, P_d)` of `D3` on its coordinate and the
+identity on the other two. Everything is proved once for a general axis (`liftAlong`,
+`prodAlong`) and instantiated through `eX`, `eY`, `eZ`.
 
-* Pairs on different axes commute (`conmutador_ejes_distintos_*`): only `T` and `P` of
-  the same axis collide.
-* At the product state `Ψ* = ψ*_{dx} ⊗ ψ*_{dy} ⊗ ψ*_{dz}` every statistic of the pair of
-  an axis — mean, variance, covariance, tension `⟨i[T,P]⟩` — is exactly the `D21`
-  statistic of that axis (`estadisticas_eje_*`).
-* Hence the Nava–Robertson–Schrödinger inequality holds on each axis with that axis's
-  own `C_Nava`: it saturates exactly when the axis has `2` or `3` sites and is strict
-  from `4` sites on (`saturacion_eje_*`, `estricta_eje_*`).
+## Main results
 
-Everything is proved once for a general axis (`liftAlong`, `prodAlong`) and then
-instantiated three times through the coordinate permutations `eX`, `eY`, `eZ`.
+- `PathGraph3DNRS.commutator_axes_xy` (and `_xz`, `_yz`) : pairs on different axes commute.
+- `PathGraph3DNRS.stats_axis_x` (and `_y`, `_z`) : at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the mean, variance,
+  covariance and tension of an axis are those of `D21` for that axis.
+- `PathGraph3DNRS.saturation_cube` : an axis saturates iff it has `2` or `3` sites.
+- `PathGraph3DNRS.strict_cube` : from `4 × 4 × 4`, strict on all three axes.
 -/
 
 @[expose] public noncomputable section
 
-open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
-open PathGraph3D (Sitio3D)
+open TransportPosition NRSInequality SpectralExtremal
+open PathGraph3D (Site3D)
 
 namespace PathGraph3DNRS
 
@@ -118,20 +111,20 @@ theorem inner_self_of_norm_one {φ : EuclideanSpace ℂ β} (hφ : ‖φ‖ = 1)
 
 /-! ## 2. The `D21` statistics on any finite site set -/
 
-/-- Mean `Re ⟨Ψ, LΨ⟩`: `D21`'s `media` on `ℂ^ι` (it is `media` itself when `ι = Fin d`). -/
-def mediaG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
+/-- Mean `Re ⟨Ψ, LΨ⟩`: `D21`'s `mean` on `ℂ^ι` (it is `mean` itself when `ι = Fin d`). -/
+def meanG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   (inner ℂ Ψ (L Ψ)).re
 
-def centradoG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) :
+def centeredG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) :
     EuclideanSpace ℂ ι :=
-  L Ψ - (mediaG L Ψ : ℂ) • Ψ
+  L Ψ - (meanG L Ψ : ℂ) • Ψ
 
-def varianzaG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
-  ‖centradoG L Ψ‖ ^ 2
+def varianceG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
+  ‖centeredG L Ψ‖ ^ 2
 
-def covarianzaG (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι)
+def covarianceG (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι)
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
-  (inner ℂ (centradoG L Ψ) (centradoG M Ψ)).re
+  (inner ℂ (centeredG L Ψ) (centeredG M Ψ)).re
 
 /-- Tension `⟨i[L, M]⟩` (`D23b`'s `tension` on `ℂ^ι`). -/
 def tensionG (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
@@ -142,35 +135,35 @@ def tensionG (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ
 variable (e : ι ≃ α × β) {φ : EuclideanSpace ℂ β} (hφ : ‖φ‖ = 1)
 include hφ
 
-theorem mediaG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
-    mediaG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
-      mediaG (Matrix.toEuclideanLin A) ψ := by
-  rw [mediaG, mediaG, toEuclideanLin_liftAlong, inner_prodAlong, inner_self_of_norm_one hφ,
+theorem meanG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
+    meanG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
+      meanG (Matrix.toEuclideanLin A) ψ := by
+  rw [meanG, meanG, toEuclideanLin_liftAlong, inner_prodAlong, inner_self_of_norm_one hφ,
     mul_one]
 
-theorem centradoG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
-    centradoG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
-      prodAlong e (centradoG (Matrix.toEuclideanLin A) ψ) φ := by
-  rw [centradoG, centradoG, mediaG_lift e hφ, toEuclideanLin_liftAlong, prodAlong_sub,
+theorem centeredG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
+    centeredG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
+      prodAlong e (centeredG (Matrix.toEuclideanLin A) ψ) φ := by
+  rw [centeredG, centeredG, meanG_lift e hφ, toEuclideanLin_liftAlong, prodAlong_sub,
     prodAlong_smul]
 
-theorem varianzaG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
-    varianzaG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
-      varianzaG (Matrix.toEuclideanLin A) ψ := by
-  rw [varianzaG, varianzaG, centradoG_lift e hφ, norm_sq_prodAlong e _ _ hφ]
+theorem varianceG_lift (A : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
+    varianceG (Matrix.toEuclideanLin (liftAlong e A)) (prodAlong e ψ φ) =
+      varianceG (Matrix.toEuclideanLin A) ψ := by
+  rw [varianceG, varianceG, centeredG_lift e hφ, norm_sq_prodAlong e _ _ hφ]
 
-theorem covarianzaG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
-    covarianzaG (Matrix.toEuclideanLin (liftAlong e A)) (Matrix.toEuclideanLin (liftAlong e B))
+theorem covarianceG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
+    covarianceG (Matrix.toEuclideanLin (liftAlong e A)) (Matrix.toEuclideanLin (liftAlong e B))
         (prodAlong e ψ φ) =
-      covarianzaG (Matrix.toEuclideanLin A) (Matrix.toEuclideanLin B) ψ := by
-  rw [covarianzaG, covarianzaG, centradoG_lift e hφ, centradoG_lift e hφ, inner_prodAlong,
+      covarianceG (Matrix.toEuclideanLin A) (Matrix.toEuclideanLin B) ψ := by
+  rw [covarianceG, covarianceG, centeredG_lift e hφ, centeredG_lift e hφ, inner_prodAlong,
     inner_self_of_norm_one hφ, mul_one]
 
 theorem tensionG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
     tensionG (Matrix.toEuclideanLin (liftAlong e A)) (Matrix.toEuclideanLin (liftAlong e B))
         (prodAlong e ψ φ) =
       tensionG (Matrix.toEuclideanLin A) (Matrix.toEuclideanLin B) ψ := by
-  simp only [tensionG, observableTension, conmutador, LinearMap.smul_apply, LinearMap.sub_apply,
+  simp only [tensionG, observableTension, opCommutator, LinearMap.smul_apply, LinearMap.sub_apply,
     LinearMap.comp_apply, toEuclideanLin_liftAlong, ← prodAlong_sub, ← prodAlong_smul,
     inner_prodAlong, inner_self_of_norm_one hφ, mul_one]
 
@@ -178,66 +171,66 @@ theorem tensionG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
 
 /-- On any axis with `d ≥ 2` sites, lifted into a product with a unit state `φ` on the rest,
 the four statistics of `(T, P)` at `ψ* ⊗ φ` are those of `(T_d, P_d)` at `ψ*` (`D21`). -/
-theorem estadisticas_eje {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
-    varianzaG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) =
-        varianza (TdOp d) (psiStar d) ∧
-      varianzaG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
-        varianza (PdOp d) (psiStar d) ∧
-      covarianzaG (Matrix.toEuclideanLin (liftAlong e (Td d)))
+theorem stats_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
+    varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) =
+        variance (TdOp d) (psiStar d) ∧
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
+        variance (PdOp d) (psiStar d) ∧
+      covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
-        covarianza (TdOp d) (PdOp d) (psiStar d) ∧
+        covariance (TdOp d) (PdOp d) (psiStar d) ∧
       tensionG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
         2 / ((d : ℝ) - 1) :=
-  ⟨varianzaG_lift e hφ _ _, varianzaG_lift e hφ _ _, covarianzaG_lift e hφ _ _ _,
-    (tensionG_lift e hφ _ _ _).trans (SobranteIntermedio.tension_psiStar hd)⟩
+  ⟨varianceG_lift e hφ _ _, varianceG_lift e hφ _ _, covarianceG_lift e hφ _ _ _,
+    (tensionG_lift e hφ _ _ _).trans (NearMaxTension.tension_psiStar hd)⟩
 
 /-- NRS on one axis: saturation exactly for `2` or `3` sites on that axis. -/
-theorem saturacion_eje {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
-    covarianzaG (Matrix.toEuclideanLin (liftAlong e (Td d)))
+theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
+    covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
         (commutatorConstant d / 2) ^ 2 =
-      varianzaG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
-        varianzaG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ↔
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
+        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ↔
       d = 2 ∨ d = 3 := by
-  obtain ⟨h1, h2, h3, -⟩ := estadisticas_eje hφ hd e
+  obtain ⟨h1, h2, h3, -⟩ := stats_axis hφ hd e
   rw [h1, h2, h3]
-  exact saturacion_iff hd
+  exact saturation_iff hd
 
 /-- NRS on one axis: from `4` sites on, the inequality is strict (the algebraic quantum). -/
-theorem estricta_eje {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
-    covarianzaG (Matrix.toEuclideanLin (liftAlong e (Td d)))
+theorem strict_axis {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
+    covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
         (commutatorConstant d / 2) ^ 2 <
-      varianzaG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
-        varianzaG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) := by
-  obtain ⟨h1, h2, h3, -⟩ := estadisticas_eje hφ (by omega) e
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
+        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) := by
+  obtain ⟨h1, h2, h3, -⟩ := stats_axis hφ (by omega) e
   rw [h1, h2, h3]
-  exact desigualdad_estricta hd
+  exact strict_inequality hd
 
 end Eje
 
-/-! ## 5. The cube `Sitio3D dx dy dz` of `D4` -/
+/-! ## 5. The cube `Site3D dx dy dz` of `D4` -/
 
 section Cubo
 
 variable (dx dy dz : ℕ)
 
 /-- States on the cube: amplitudes on its `dx·dy·dz` sites. -/
-abbrev H3D := EuclideanSpace ℂ (Sitio3D dx dy dz)
+abbrev H3D := EuclideanSpace ℂ (Site3D dx dy dz)
 
 /-- The `x` axis and the rest `(y, z)`. -/
-def eX : Sitio3D dx dy dz ≃ Fin dx × (Fin dy × Fin dz) := Equiv.refl _
+def eX : Site3D dx dy dz ≃ Fin dx × (Fin dy × Fin dz) := Equiv.refl _
 
 /-- The `y` axis and the rest `(x, z)`. -/
-def eY : Sitio3D dx dy dz ≃ Fin dy × (Fin dx × Fin dz) where
+def eY : Site3D dx dy dz ≃ Fin dy × (Fin dx × Fin dz) where
   toFun p := (p.2.1, p.1, p.2.2)
   invFun q := (q.2.1, q.1, q.2.2)
   left_inv _ := rfl
   right_inv _ := rfl
 
 /-- The `z` axis and the rest `(x, y)`. -/
-def eZ : Sitio3D dx dy dz ≃ Fin dz × (Fin dx × Fin dy) where
+def eZ : Site3D dx dy dz ≃ Fin dz × (Fin dx × Fin dy) where
   toFun p := (p.2.2, p.1, p.2.1)
   invFun q := (q.2.1, q.2.2, q.1)
   left_inv _ := rfl
@@ -281,10 +274,10 @@ theorem PsiStar3D_eq_eZ :
 /-! ## 6. Different axes commute -/
 
 /-- Operators whose matrices commute have zero commutator. -/
-theorem conmutador_eq_zero_of_mul_comm {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem commutator_eq_zero_of_mul_comm {ι : Type*} [Fintype ι] [DecidableEq ι]
     {M N : Matrix ι ι ℂ} (h : M * N = N * M) :
-    conmutador (Matrix.toEuclideanLin M) (Matrix.toEuclideanLin N) = 0 := by
-  rw [conmutador, ← Matrix.toLpLin_mul_same, ← Matrix.toLpLin_mul_same, h, sub_self]
+    opCommutator (Matrix.toEuclideanLin M) (Matrix.toEuclideanLin N) = 0 := by
+  rw [opCommutator, ← Matrix.toLpLin_mul_same, ← Matrix.toLpLin_mul_same, h, sub_self]
 
 theorem liftAlong_xy_comm (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dy) (Fin dy) ℂ) :
     liftAlong (eX dx dy dz) A * liftAlong (eY dx dy dz) B =
@@ -319,98 +312,98 @@ theorem liftAlong_yz_comm (A : Matrix (Fin dy) (Fin dy) ℂ) (B : Matrix (Fin dz
 /-- `[x, p_y] = 0`: any operator of the `x` axis commutes with any operator of the `y` axis
 (in particular `[T_x, P_y] = [P_x, T_y] = [T_x, T_y] = [P_x, P_y] = 0`). Only the pair of the
 same axis collides. -/
-theorem conmutador_ejes_distintos_xy (A : Matrix (Fin dx) (Fin dx) ℂ)
+theorem commutator_axes_xy (A : Matrix (Fin dx) (Fin dx) ℂ)
     (B : Matrix (Fin dy) (Fin dy) ℂ) :
-    conmutador (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
+    opCommutator (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
       (Matrix.toEuclideanLin (liftAlong (eY dx dy dz) B)) = 0 :=
-  conmutador_eq_zero_of_mul_comm (liftAlong_xy_comm dx dy dz A B)
+  commutator_eq_zero_of_mul_comm (liftAlong_xy_comm dx dy dz A B)
 
-theorem conmutador_ejes_distintos_xz (A : Matrix (Fin dx) (Fin dx) ℂ)
+theorem commutator_axes_xz (A : Matrix (Fin dx) (Fin dx) ℂ)
     (B : Matrix (Fin dz) (Fin dz) ℂ) :
-    conmutador (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
+    opCommutator (Matrix.toEuclideanLin (liftAlong (eX dx dy dz) A))
       (Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) B)) = 0 :=
-  conmutador_eq_zero_of_mul_comm (liftAlong_xz_comm dx dy dz A B)
+  commutator_eq_zero_of_mul_comm (liftAlong_xz_comm dx dy dz A B)
 
-theorem conmutador_ejes_distintos_yz (A : Matrix (Fin dy) (Fin dy) ℂ)
+theorem commutator_axes_yz (A : Matrix (Fin dy) (Fin dy) ℂ)
     (B : Matrix (Fin dz) (Fin dz) ℂ) :
-    conmutador (Matrix.toEuclideanLin (liftAlong (eY dx dy dz) A))
+    opCommutator (Matrix.toEuclideanLin (liftAlong (eY dx dy dz) A))
       (Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) B)) = 0 :=
-  conmutador_eq_zero_of_mul_comm (liftAlong_yz_comm dx dy dz A B)
+  commutator_eq_zero_of_mul_comm (liftAlong_yz_comm dx dy dz A B)
 
 variable {dx dy dz}
 
-theorem norm_resto {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
+theorem norm_rest {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
     ‖prodAlong (Equiv.refl (Fin a × Fin b)) (psiStar a) (psiStar b)‖ = 1 :=
-  norm_prodAlong_eq_one _ (norma_psiStar ha) (norma_psiStar hb)
+  norm_prodAlong_eq_one _ (norm_psiStar ha) (norm_psiStar hb)
 
 /-! ## 7. NRS on each axis of the cube -/
 
-theorem estadisticas_eje_x (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dx) (psiStar dx) ∧
-      varianzaG (PX dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dx) (psiStar dx) ∧
-      covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) =
-        covarianza (TdOp dx) (PdOp dx) (psiStar dx) ∧
+theorem stats_axis_x (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianceG (TX dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dx) (psiStar dx) ∧
+      varianceG (PX dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dx) (psiStar dx) ∧
+      covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) =
+        covariance (TdOp dx) (PdOp dx) (psiStar dx) ∧
       tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dx : ℝ) - 1) := by
   rw [PsiStar3D_eq_eX]
-  exact estadisticas_eje (norm_resto hy hz) hx _
+  exact stats_axis (norm_rest hy hz) hx _
 
-theorem estadisticas_eje_y (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dy) (psiStar dy) ∧
-      varianzaG (PY dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dy) (psiStar dy) ∧
-      covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) =
-        covarianza (TdOp dy) (PdOp dy) (psiStar dy) ∧
+theorem stats_axis_y (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianceG (TY dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dy) (psiStar dy) ∧
+      varianceG (PY dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dy) (psiStar dy) ∧
+      covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) =
+        covariance (TdOp dy) (PdOp dy) (psiStar dy) ∧
       tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dy : ℝ) - 1) := by
   rw [PsiStar3D_eq_eY]
-  exact estadisticas_eje (norm_resto hx hz) hy _
+  exact stats_axis (norm_rest hx hz) hy _
 
-theorem estadisticas_eje_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) = varianza (TdOp dz) (psiStar dz) ∧
-      varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz) = varianza (PdOp dz) (psiStar dz) ∧
-      covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) =
-        covarianza (TdOp dz) (PdOp dz) (psiStar dz) ∧
+theorem stats_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dz) (psiStar dz) ∧
+      varianceG (PZ dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dz) (psiStar dz) ∧
+      covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) =
+        covariance (TdOp dz) (PdOp dz) (psiStar dz) ∧
       tensionG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dz : ℝ) - 1) := by
   rw [PsiStar3D_eq_eZ]
-  exact estadisticas_eje (norm_resto hx hy) hz _
+  exact stats_axis (norm_rest hx hy) hz _
 
 /-- **NRS on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
 `3` sites, independently of the other two axes. -/
-theorem saturacion_cubo (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    (covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+theorem saturation_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    (covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 =
-        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TX dx dy dz) (PsiStar3D dx dy dz) * varianceG (PX dx dy dz) (PsiStar3D dx dy dz)
         ↔ dx = 2 ∨ dx = 3) ∧
-    (covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    (covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dy / 2) ^ 2 =
-        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TY dx dy dz) (PsiStar3D dx dy dz) * varianceG (PY dx dy dz) (PsiStar3D dx dy dz)
         ↔ dy = 2 ∨ dy = 3) ∧
-    (covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    (covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dz / 2) ^ 2 =
-        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianceG (PZ dx dy dz) (PsiStar3D dx dy dz)
         ↔ dz = 2 ∨ dz = 3) := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [PsiStar3D_eq_eX]; exact saturacion_eje (norm_resto hy hz) hx _
-  · rw [PsiStar3D_eq_eY]; exact saturacion_eje (norm_resto hx hz) hy _
-  · rw [PsiStar3D_eq_eZ]; exact saturacion_eje (norm_resto hx hy) hz _
+  · rw [PsiStar3D_eq_eX]; exact saturation_axis (norm_rest hy hz) hx _
+  · rw [PsiStar3D_eq_eY]; exact saturation_axis (norm_rest hx hz) hy _
+  · rw [PsiStar3D_eq_eZ]; exact saturation_axis (norm_rest hx hy) hz _
 
 /-- **The algebraic quantum on the `4 × 4 × 4` cube and beyond.** With at least `4` sites on
 every axis, the inequality is strict on all three axes at once. -/
-theorem estricta_cubo (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
-    covarianzaG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+theorem strict_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
+    covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 <
-        varianzaG (TX dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PX dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TX dx dy dz) (PsiStar3D dx dy dz) * varianceG (PX dx dy dz) (PsiStar3D dx dy dz)
             ∧
-    covarianzaG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dy / 2) ^ 2 <
-        varianzaG (TY dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PY dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TY dx dy dz) (PsiStar3D dx dy dz) * varianceG (PY dx dy dz) (PsiStar3D dx dy dz)
             ∧
-    covarianzaG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dz / 2) ^ 2 <
-        varianzaG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianzaG (PZ dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianceG (PZ dx dy dz) (PsiStar3D dx dy dz)
             := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [PsiStar3D_eq_eX]; exact estricta_eje (norm_resto (by omega) (by omega)) hx _
-  · rw [PsiStar3D_eq_eY]; exact estricta_eje (norm_resto (by omega) (by omega)) hy _
-  · rw [PsiStar3D_eq_eZ]; exact estricta_eje (norm_resto (by omega) (by omega)) hz _
+  · rw [PsiStar3D_eq_eX]; exact strict_axis (norm_rest (by omega) (by omega)) hx _
+  · rw [PsiStar3D_eq_eY]; exact strict_axis (norm_rest (by omega) (by omega)) hy _
+  · rw [PsiStar3D_eq_eZ]; exact strict_axis (norm_rest (by omega) (by omega)) hz _
 
 end Cubo
 

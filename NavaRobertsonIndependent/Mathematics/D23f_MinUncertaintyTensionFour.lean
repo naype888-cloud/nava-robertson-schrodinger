@@ -10,55 +10,50 @@ public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 /-!
 # D23f — A minimum-uncertainty state of `H_4` with tension `1/φ`
 
-`D23` shows that minimum-uncertainty states (those saturating Robertson–Schrödinger) exist in
-every dimension and carry transport, and that for `d ≥ 4` none of them reaches the maximal
-tension `2/(d−1)` (`autovector_no_maxima_tension`, `D23b`, `D23d`). This file exhibits, at
-`d = 4`, an explicit minimum-uncertainty state whose tension is the inverse golden ratio:
+Minimum-uncertainty states exist in every dimension and carry transport, and for `d ≥ 4` none
+has maximal tension (`D23`, `D23b`, `D23d`). At `d = 4`,
+`ψ♭ = (1/(2√2)) (1, e^{−iπ/3}√3, e^{−i5π/6}√3, e^{iπ/2})` saturates Robertson–Schrödinger with
+tension `1/φ`. That `1/φ` is the largest such tension is `D23g`, in the separate target
+`NavaRobertsonCertificados`.
 
-  `ψ♭ = (1/(2√2)) · (1, e^{−iπ/3}√3, e^{−i5π/6}√3, e^{iπ/2})`, with probabilities
-  `(1/8, 3/8, 3/8, 1/8)`.
+## Main results
 
-* `Td_psiSat_eq`: `T₄ ψ♭ = c · P₄ ψ♭` with `c = (−√3 + 3i)/(2ρ₄)`, `ρ₄ = 2cos(π/5) = φ`;
-* `media_T_psiSat`, `media_P_psiSat`: `⟨T₄⟩ = ⟨P₄⟩ = 0`;
-* `satura_psiSat`: the Gram defect vanishes — `ψ♭` is a minimum-uncertainty state;
-* `tension_psiSat`: `⟨K₄⟩_{ψ♭} = (√5 − 1)/2 = 1/φ`, i.e. `3(√5 − 1)/4` of the maximal
-  tension `2/3` (`tension_psiSat_fraccion`), and strictly below it.
-
-Status. This proves that the value `1/φ` **is attained** by a minimum-uncertainty state. That
-it is the **largest** tension of any minimum-uncertainty state of `H_4` is supported by a
-numerical search over all eigenvectors of `T₄ − c P₄`, `c ∈ ℂ`, and is **not** proved here.
+- `MinUncertaintyFour.Td_psiSat_eq` : `T₄ ψ♭ = c · P₄ ψ♭`, `c = (−√3 + 3i)/(2ρ₄)`, `ρ₄ = φ`.
+- `MinUncertaintyFour.saturated_psiSat` : `ψ♭` saturates Robertson–Schrödinger.
+- `MinUncertaintyFour.tension_psiSat` : `⟨K₄⟩ = (√5 − 1)/2 = 1/φ`, that is `3(√5 − 1)/4` of the
+  maximal tension `2/3` (`tension_psiSat_fraction`).
 -/
 
 @[expose] public noncomputable section
 
-open Real Complex TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
-open SaturacionAutovectores
+open Real Complex TransportPosition NRSInequality SpectralExtremal
+open EigenvectorSaturation
 
-namespace IncertidumbreMinimaCuatro
+namespace MinUncertaintyFour
 
 /-! ## 1. `T₄`, `P₄` in coordinates -/
 
-theorem rho_cuatro : rho 4 = (1 + √5) / 2 := by
+theorem rho_four : rho 4 = (1 + √5) / 2 := by
   rw [rho]
   rw [show Real.pi / ((4 : ℕ) + 1 : ℝ) = Real.pi / 5 by norm_num, Real.cos_pi_div_five]
   ring
 
-theorem rho_cuatro_pos : 0 < rho 4 := by
-  rw [rho_cuatro]; positivity
+theorem rho_four_pos : 0 < rho 4 := by
+  rw [rho_four]; positivity
 
-theorem TdOp_cuatro_apply (u : Hd 4) :
+theorem TdOp_four_apply (u : Hd 4) :
     TdOp 4 u = WithLp.toLp 2 ![u 1 / (rho 4 : ℂ), (u 0 + u 2) / (rho 4 : ℂ),
       (u 1 + u 3) / (rho 4 : ℂ), u 2 / (rho 4 : ℂ)] := by
   ext i
   fin_cases i <;>
     simp [TdOp, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_four, Td, Ad,
-      PasoMinimo] <;> ring
+      MinStep] <;> ring
 
-theorem PdOp_cuatro_apply (u : Hd 4) :
+theorem PdOp_four_apply (u : Hd 4) :
     PdOp 4 u = WithLp.toLp 2 ![-u 0, -(u 1 / 3), u 2 / 3, u 3] := by
   ext i
   fin_cases i <;>
-    simp [PdOp, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct, Pd, posicionCoord] <;> ring
+    simp [PdOp, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct, Pd, posCoord] <;> ring
 
 /-! ## 2. The state `ψ♭` -/
 
@@ -85,11 +80,11 @@ def psiSat : Hd 4 :=
 /-- `c = (−√3 + 3i)/(2ρ₄)`. -/
 def cSat : ℂ := (-s3 + 3 * I) / (2 * (rho 4 : ℂ))
 
-theorem rho_ne : (rho 4 : ℂ) ≠ 0 := ofReal_ne_zero.mpr rho_cuatro_pos.ne'
+theorem rho_ne : (rho 4 : ℂ) ≠ 0 := ofReal_ne_zero.mpr rho_four_pos.ne'
 
-/-- **`T₄ ψ♭ = c · P₄ ψ♭`.** -/
+/-- `T₄ ψ♭ = c · P₄ ψ♭`. -/
 theorem Td_psiSat_eq : TdOp 4 psiSat = cSat • PdOp 4 psiSat := by
-  rw [TdOp_cuatro_apply, PdOp_cuatro_apply]
+  rw [TdOp_four_apply, PdOp_four_apply]
   have hr := rho_ne
   have h3 := s3_sq
   ext i
@@ -118,7 +113,7 @@ theorem norm_psiSat : ‖psiSat‖ = 1 := by
 theorem inner_psiSat_P : inner ℂ psiSat (PdOp 4 psiSat) = 0 := by
   have h3 := s3_sq
   have ha := a_sq
-  rw [PdOp_cuatro_apply]
+  rw [PdOp_four_apply]
   simp only [psiSat, PiLp.inner_apply, Fin.sum_univ_four, RCLike.inner_apply,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
     Matrix.head_cons, Matrix.tail_cons]
@@ -130,7 +125,7 @@ theorem inner_psiSat_P : inner ℂ psiSat (PdOp 4 psiSat) = 0 := by
 theorem inner_P_psiSat_P : inner ℂ (PdOp 4 psiSat) (PdOp 4 psiSat) = 1 / 3 := by
   have h3 := s3_sq
   have ha := a_sq
-  rw [PdOp_cuatro_apply]
+  rw [PdOp_four_apply]
   simp only [psiSat, PiLp.inner_apply, Fin.sum_univ_four, RCLike.inner_apply,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
     Matrix.head_cons, Matrix.tail_cons]
@@ -141,24 +136,23 @@ theorem inner_P_psiSat_P : inner ℂ (PdOp 4 psiSat) (PdOp 4 psiSat) = 1 / 3 := 
 
 /-! ## 4. Minimum uncertainty with transport -/
 
-theorem media_P_psiSat : media (PdOp 4) psiSat = 0 := by
-  rw [media, inner_psiSat_P]; simp
+theorem mean_P_psiSat : mean (PdOp 4) psiSat = 0 := by
+  rw [mean, inner_psiSat_P]; simp
 
-theorem media_T_psiSat : media (TdOp 4) psiSat = 0 := by
-  rw [media, Td_psiSat_eq, inner_smul_right, inner_psiSat_P]; simp
+theorem mean_T_psiSat : mean (TdOp 4) psiSat = 0 := by
+  rw [mean, Td_psiSat_eq, inner_smul_right, inner_psiSat_P]; simp
 
-/-- **`ψ♭` is a minimum-uncertainty state**: the Gram defect of `(T₄, P₄)` vanishes, i.e.
-Robertson–Schrödinger is saturated. -/
-theorem satura_psiSat : defectGramEn (TdOp 4) (PdOp 4) psiSat = 0 := by
-  rw [defectGramEn_eq_zero_iff]
+/-- `ψ♭` saturates Robertson–Schrödinger: the Gram defect of `(T₄, P₄)` vanishes. -/
+theorem saturated_psiSat : gramDefectAt (TdOp 4) (PdOp 4) psiSat = 0 := by
+  rw [gramDefectAt_eq_zero_iff]
   refine Or.inr ⟨cSat, ?_⟩
-  rw [centrado, centrado, media_T_psiSat, media_P_psiSat]
+  rw [centered, centered, mean_T_psiSat, mean_P_psiSat]
   simpa using Td_psiSat_eq
 
-/-- **The tension of `ψ♭` is `1/ρ₄`.** -/
-theorem tension_psiSat_rho : SobranteIntermedio.tension 4 psiSat = 1 / rho 4 := by
-  have hr := rho_cuatro_pos
-  rw [SobranteIntermedio.tension, re_inner_KdOp, Td_psiSat_eq, inner_smul_left,
+/-- The tension of `ψ♭` is `1/ρ₄`. -/
+theorem tension_psiSat_rho : NearMaxTension.tension 4 psiSat = 1 / rho 4 := by
+  have hr := rho_four_pos
+  rw [NearMaxTension.tension, re_inner_KdOp, Td_psiSat_eq, inner_smul_left,
     inner_P_psiSat_P, cSat]
   simp only [map_div₀, map_add, map_neg, map_mul, conj_s3, conj_I, map_ofNat,
     Complex.conj_ofReal]
@@ -171,18 +165,18 @@ theorem tension_psiSat_rho : SobranteIntermedio.tension 4 psiSat = 1 / rho 4 := 
   field_simp
   ring
 
-/-- **The tension of `ψ♭` is the inverse golden ratio**: `⟨K₄⟩ = (√5 − 1)/2 = 1/φ`. -/
-theorem tension_psiSat : SobranteIntermedio.tension 4 psiSat = (√5 - 1) / 2 := by
-  rw [tension_psiSat_rho, rho_cuatro]
+/-- The tension of `ψ♭` is `(√5 − 1)/2 = 1/φ`. -/
+theorem tension_psiSat : NearMaxTension.tension 4 psiSat = (√5 - 1) / 2 := by
+  rw [tension_psiSat_rho, rho_four]
   have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
   have hpos : 0 < 1 + Real.sqrt 5 := by positivity
   field_simp
   nlinarith [h5]
 
-/-- `ψ♭` carries `3(√5 − 1)/4 ≈ 92.7 %` of the maximal tension `2/(4−1)`, strictly less. -/
-theorem tension_psiSat_fraccion :
-    SobranteIntermedio.tension 4 psiSat / (2 / ((4 : ℕ) - 1 : ℝ)) = 3 * (√5 - 1) / 4 ∧
-      SobranteIntermedio.tension 4 psiSat < 2 / ((4 : ℕ) - 1 : ℝ) := by
+/-- `ψ♭` carries `3(√5 − 1)/4 ≈ 92.7 %` of the maximal tension `2/3`. -/
+theorem tension_psiSat_fraction :
+    NearMaxTension.tension 4 psiSat / (2 / ((4 : ℕ) - 1 : ℝ)) = 3 * (√5 - 1) / 4 ∧
+      NearMaxTension.tension 4 psiSat < 2 / ((4 : ℕ) - 1 : ℝ) := by
   rw [tension_psiSat]
   have h5 : Real.sqrt 5 < 7 / 3 := by
     rw [Real.sqrt_lt' (by norm_num)]; norm_num
@@ -190,6 +184,6 @@ theorem tension_psiSat_fraccion :
   · push_cast; ring
   · push_cast; linarith
 
-end IncertidumbreMinimaCuatro
+end MinUncertaintyFour
 
 end

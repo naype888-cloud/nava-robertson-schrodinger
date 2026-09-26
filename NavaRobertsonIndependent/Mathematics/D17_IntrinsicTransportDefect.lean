@@ -9,85 +9,79 @@ public import NavaRobertsonIndependent.Mathematics.D2_Robertson
 public import NavaRobertsonIndependent.Mathematics.D7_Niven
 
 /-!
-# Defect intrínseco de una dinámica elemental posición–transporte
+# D17 — The intrinsic defect of a position–transport dynamics
 
-Este módulo separa la existencia algebraica del defect de cualquier acto de
-observación. Una dinámica aporta una evaluación Robertson–Schrödinger y el
-puente que identifica su condición de saturación con la condición espectral
-del par elemental de posición–transporte `(T_d, P_d)`. Desde `d = 4`, Niven
-obstruye esa igualdad; por tanto, el defect cuadrático es estrictamente
-positivo. Ningún observador aparece en las definiciones ni en las hipótesis.
+A dynamics provides a Robertson–Schrödinger evaluation and identifies its saturation with the
+spectral condition of `(T_d, P_d)`. From `d = 4` Niven forbids that equality, so the quadratic
+defect is strictly positive. No observer appears in the definitions or hypotheses.
+
+## Main results
+
+- `IntrinsicDefect.intrinsicDefect_pos_iff` : the defect is positive iff no saturation.
+- `IntrinsicDefect.PositionTransport.defect_pos` : for `d ≥ 4` the defect is positive.
 -/
 
 @[expose] public noncomputable section
 
-namespace DinamicaElemental
+namespace IntrinsicDefect
 
 open Robertson1929
 
-/-- Diferencia intrínseca entre el producto cuadrático de dispersiones y el
-piso de Robertson–Schrödinger. Depende exclusivamente de los datos algebraicos
-de la evaluación. -/
-def defectIntrinseco (S : EvaluacionSchrodinger) : ℝ :=
+/-- The intrinsic defect `σ_A² σ_B² − (cov² + comm²)`. -/
+def intrinsicDefect (S : SchrodingerEvaluation) : ℝ :=
   S.sigmaA ^ 2 * S.sigmaB ^ 2 -
-    (S.covarianza ^ 2 + S.conmutador ^ 2)
+    (S.covariance ^ 2 + S.commutator ^ 2)
 
-/-- El defect intrínseco nunca es negativo. -/
-theorem defectIntrinseco_nonneg (S : EvaluacionSchrodinger) :
-    0 ≤ defectIntrinseco S := by
-  unfold defectIntrinseco
-  linarith [S.cota_cuadratica]
+/-- The intrinsic defect is nonnegative. -/
+theorem intrinsicDefect_nonneg (S : SchrodingerEvaluation) :
+    0 ≤ intrinsicDefect S := by
+  unfold intrinsicDefect
+  linarith [S.quadratic_bound]
 
-/-- El defect se anula exactamente cuando la desigualdad se satura. -/
-theorem defectIntrinseco_eq_zero_iff (S : EvaluacionSchrodinger) :
-    defectIntrinseco S = 0 ↔ SaturadaSchrodinger S := by
-  unfold defectIntrinseco SaturadaSchrodinger
+/-- The defect vanishes iff the inequality saturates. -/
+theorem intrinsicDefect_eq_zero_iff (S : SchrodingerEvaluation) :
+    intrinsicDefect S = 0 ↔ SchrodingerSaturated S := by
+  unfold intrinsicDefect SchrodingerSaturated
   constructor <;> intro h <;> linarith
 
-/-- La no-saturación equivale a un defect estrictamente positivo. -/
-theorem defectIntrinseco_pos_iff (S : EvaluacionSchrodinger) :
-    0 < defectIntrinseco S ↔ ¬ SaturadaSchrodinger S := by
-  have hnonneg := defectIntrinseco_nonneg S
-  rw [← defectIntrinseco_eq_zero_iff]
+/-- No saturation iff the defect is positive. -/
+theorem intrinsicDefect_pos_iff (S : SchrodingerEvaluation) :
+    0 < intrinsicDefect S ↔ ¬ SchrodingerSaturated S := by
+  have hnonneg := intrinsicDefect_nonneg S
+  rw [← intrinsicDefect_eq_zero_iff]
   constructor
   · exact ne_of_gt
   · intro hne
     exact lt_of_le_of_ne hnonneg (Ne.symm hne)
 
-/-- Interfaz algebraica de cualquier sistema cuya dinámica elemental de
-posición y transporte realiza la geometría espectral del par `(T_d, P_d)`.
-El campo de transporte no describe una medición: identifica dos condiciones
-de saturación internas al sistema. -/
-structure PosicionTransporte (d : ℕ) where
-  evaluacion : EvaluacionSchrodinger
-  saturacion_iff_camino :
-    SaturadaSchrodinger evaluacion ↔
+/-- A dynamics realizing the spectral geometry of `(T_d, P_d)`: its saturation is the
+saturation of the path. -/
+structure PositionTransport (d : ℕ) where
+  evaluation : SchrodingerEvaluation
+  saturated_iff_path :
+    SchrodingerSaturated evaluation ↔
       Real.cos (Real.pi / (d + 1)) ^ 2 = ((d : ℝ) - 1) / 4
 
-/-- Defect propio de una dinámica elemental posición–transporte. -/
-def PosicionTransporte.defect {d : ℕ} (D : PosicionTransporte d) : ℝ :=
-  defectIntrinseco D.evaluacion
+/-- The defect of the dynamics. -/
+def PositionTransport.defect {d : ℕ} (D : PositionTransport d) : ℝ :=
+  intrinsicDefect D.evaluation
 
-/-- Desde cuatro dimensiones, ninguna dinámica que realice el par elemental
-`(T_d, P_d)` puede saturar Robertson–Schrödinger. -/
-theorem PosicionTransporte.no_saturacion {d : ℕ} (D : PosicionTransporte d)
-    (hd : 4 ≤ d) : ¬ SaturadaSchrodinger D.evaluacion := by
+/-- For `d ≥ 4` no such dynamics saturates. -/
+theorem PositionTransport.not_saturated {d : ℕ} (D : PositionTransport d)
+    (hd : 4 ≤ d) : ¬ SchrodingerSaturated D.evaluation := by
   intro hsat
-  exact Gnomon.no_reposición_saturacion_camino d hd
-    (D.saturacion_iff_camino.mp hsat)
+  exact Gnomon.not_saturated_of_four_le d hd
+    (D.saturated_iff_path.mp hsat)
 
-/-- **Obstrucción intrínseca.** Toda dinámica elemental posición–transporte
-que realiza `(T_d, P_d)` en dimensión `d ≥ 4` posee defect estrictamente
-positivo. El resultado no contiene observador, medición ni colapso. -/
-theorem PosicionTransporte.defect_pos {d : ℕ} (D : PosicionTransporte d)
+/-- **Intrinsic defect.** For `d ≥ 4` every such dynamics has positive defect. -/
+theorem PositionTransport.defect_pos {d : ℕ} (D : PositionTransport d)
     (hd : 4 ≤ d) : 0 < D.defect := by
-  exact (defectIntrinseco_pos_iff D.evaluacion).2 (D.no_saturacion hd)
+  exact (intrinsicDefect_pos_iff D.evaluation).2 (D.not_saturated hd)
 
-/-- El certificado conjunto deja explícito que la positividad es uniforme
-para toda realización algebraica del transporte elemental en `d ≥ 4`. -/
-theorem defect_intrinseco_en_toda_dinamica_TdPd :
-    ∀ (d : ℕ), 4 ≤ d → ∀ D : PosicionTransporte d, 0 < D.defect := by
+/-- The positivity is uniform over all realizations in `d ≥ 4`. -/
+theorem intrinsicDefect_pos_of_four_le :
+    ∀ (d : ℕ), 4 ≤ d → ∀ D : PositionTransport d, 0 < D.defect := by
   intro d hd D
   exact D.defect_pos hd
 
-end DinamicaElemental
+end IntrinsicDefect

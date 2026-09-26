@@ -13,22 +13,22 @@ public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Sinc
 public import Mathlib.Tactic.IntervalCases
 
 /-!
-# D8 — El límite de Szegő y la positividad de la gap
+# D8 — The Szegő limit and the positivity of the gap
 
-Define la constante de coherencia finita `C_Nava(d)` (forma cerrada exacta
-en `cos`/`sin` de `π/(d+1)`) y su gap `geometricGap(d) = C_Nava(d) − 1`.
-Dos resultados centrales:
+The coherence constant `C_Nava(d)`, in closed form in `π/(d+1)`, and its gap
+`geometricGap d = C_Nava(d) − 1`.
 
-1. **Positividad** (`geometricGap_pos_of_four_le`): `geometricGap(d) > 0` para
-   todo `d ≥ 4`. Se verifica `d = 4, 5` en forma cerrada exacta y `d ≥ 6`
-   mediante cotas de Taylor certificadas para seno y coseno — sin apelar a
-   ningún cálculo numérico externo, sólo álgebra racional y las cotas
-   `Real.pi_gt_d2`/`Real.pi_lt_d2` de Mathlib.
-2. **Límite de Szegő** (`limite_szego_CoherenceConstant`): `C_Nava(d) → C_∞ = √(π²/3−2)`
-   cuando `d → ∞` (como filtro `atTop` sobre la sucesión de espacios
-   finitos, no como un nuevo espacio de Hilbert en `d = ∞`; ver
-   `infinito_no_es_dimension_sino_limite`). En particular
-   `deltaInf = C_∞ − 1 > 0`, consecuencia exacta de `π > 3`.
+1. **Positivity** (`geometricGap_pos_of_four_le`): `geometricGap d > 0` for `d ≥ 4`; `d = 4, 5`
+   in closed form, `d ≥ 6` by certified Taylor bounds and `Real.pi_gt_d2`, `Real.pi_lt_d2`.
+2. **Szegő limit** (`tendsto_CoherenceConstant`): `C_Nava(d) → C_∞ = √(π²/3 − 2)` along
+   `atTop`, a limit of the finite spaces, not a space at `d = ∞` (`deltaInf_is_limit`);
+   `deltaInf = C_∞ − 1 > 0` since `π > 3`.
+
+## Main results
+
+- `Gnomon.tendsto_CoherenceConstant` : `C_Nava(d) → √(π²/3 − 2)`.
+- `Gnomon.deltaInf_pos` : `δ_∞ > 0`.
+- `Gnomon.geometricGap_pos_of_four_le` : `C_Nava(d) > 1` for `d ≥ 4`.
 -/
 
 @[expose] public noncomputable section
@@ -39,43 +39,42 @@ open scoped Topology
 
 namespace Gnomon
 
-/-! ## Forma cerrada y límite asintótico -/
+/-! ## Closed form and limit -/
 
-/-- `N = d + 1`, notación para el grafo camino `pathGraph d`. -/
+/-- `N = d + 1` as a real number. -/
 noncomputable def Nreal (d : ℕ) : ℝ := (d : ℝ) + 1
 
-/-- Ángulo espectral fundamental `θ_d = π/(d+1)`. -/
+/-- The fundamental angle `θ_d = π/(d+1)`. -/
 noncomputable def theta (d : ℕ) : ℝ := π / Nreal d
 
-/-- Forma cerrada exacta de `C_Nava(d)²`. -/
+/-- `C_Nava(d)²` in closed form. -/
 noncomputable def CoherenceConstantSq (d : ℕ) : ℝ :=
   2 * ((d : ℝ) - 1) / (Nreal d * Real.cos (theta d) ^ 2) *
     (((Nreal d ^ 2 + 2) / 6) * Real.sin (theta d) ^ 2 - 1)
 
-/-- Constante de coherencia finita. -/
+/-- The coherence constant `C_Nava(d)`. -/
 noncomputable def CoherenceConstant (d : ℕ) : ℝ := Real.sqrt (CoherenceConstantSq d)
 
-/-- Límite universal de Szegő. -/
+/-- The Szegő limit `C_∞ = √(π²/3 − 2)`. -/
 noncomputable def CoherenceConstantInf : ℝ := Real.sqrt (π ^ 2 / 3 - 2)
 
-/-- Defect geométrico finito `δ_geom(d) = C_Nava(d) - 1`. -/
+/-- The geometric gap `δ(d) = C_Nava(d) − 1`. -/
 noncomputable def geometricGap (d : ℕ) : ℝ := CoherenceConstant d - 1
 
-/-- Defect asintótico `δ_∞ = C_∞ - 1`. -/
+/-- The asymptotic gap `δ_∞ = C_∞ − 1`. -/
 noncomputable def deltaInf : ℝ := CoherenceConstantInf - 1
 
-/-- Término principal de la expansión de Szegő. -/
+/-- The leading term of the Szegő expansion. -/
 noncomputable def deltaSzegoPrincipal (d : ℕ) : ℝ :=
   deltaInf - CoherenceConstantInf / Nreal d
 
-theorem CoherenceConstantSq_forma_cerrada (d : ℕ) :
+theorem CoherenceConstantSq_closed_form (d : ℕ) :
     CoherenceConstantSq d =
       2 * ((d : ℝ) - 1) / (Nreal d * Real.cos (theta d) ^ 2) *
         (((Nreal d ^ 2 + 2) / 6) * Real.sin (theta d) ^ 2 - 1) := rfl
 
-/-- La forma cerrada reescrita mediante `sinc`. Elimina la singularidad
-aparente y permite tomar el límite en Lean. -/
-theorem CoherenceConstantSq_forma_regularizada (d : ℕ) :
+/-- The closed form through `sinc`, without the apparent singularity. -/
+theorem CoherenceConstantSq_sinc_form (d : ℕ) :
     CoherenceConstantSq d =
       2 * (1 - 2 / Nreal d) / Real.cos (theta d) ^ 2 *
         ((π ^ 2 * Real.sinc (theta d) ^ 2 +
@@ -99,7 +98,7 @@ theorem theta_tendsto_zero : Tendsto theta atTop (𝓝 0) := by
   unfold theta
   exact Nreal_tendsto_atTop.const_div_atTop π
 
-private theorem CoherenceConstantSq_regularizada_tendsto :
+private theorem CoherenceConstantSq_sinc_tendsto :
     Tendsto
       (fun d : ℕ =>
         2 * (1 - 2 / Nreal d) / Real.cos (theta d) ^ 2 *
@@ -144,34 +143,31 @@ private theorem CoherenceConstantSq_regularizada_tendsto :
   · ext d
     ring_nf
 
-/-- TEOREMA DE SZEGŐ, forma cuadrática: `C_Nava(d)² → (π²-6)/3`. -/
-theorem limite_szego_CoherenceConstantSq :
+/-- **Szegő, squared form.** `C_Nava(d)² → (π² − 6)/3`. -/
+theorem tendsto_CoherenceConstantSq :
     Tendsto CoherenceConstantSq atTop (𝓝 (π ^ 2 / 3 - 2)) := by
-  apply CoherenceConstantSq_regularizada_tendsto.congr'
+  apply CoherenceConstantSq_sinc_tendsto.congr'
   filter_upwards with d
-  exact (CoherenceConstantSq_forma_regularizada d).symm
+  exact (CoherenceConstantSq_sinc_form d).symm
 
-/-- LÍMITE DE SZEGŐ: `C_Nava(d) → C_∞ = √((π²-6)/3)`, construido sobre la
-teoría clásica de distribución espectral de Szegő. -/
-theorem limite_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
+/-- **Szegő limit.** `C_Nava(d) → C_∞ = √((π² − 6)/3)`. -/
+theorem tendsto_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
     by
   unfold CoherenceConstant CoherenceConstantInf
-  exact Real.continuous_sqrt.continuousAt.tendsto.comp limite_szego_CoherenceConstantSq
+  exact Real.continuous_sqrt.continuousAt.tendsto.comp tendsto_CoherenceConstantSq
 
-/-- Nombre citable de la especialización. Es un alias del resultado ya
-demostrado, no una rederivación de la teoría clásica de Toeplitz/Szegő. -/
-theorem limite_nava_szego_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝
+/-- The Szegő limit of `C_Nava`, under its citation name. -/
+theorem szego_limit_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝
     CoherenceConstantInf) :=
-  limite_szego_CoherenceConstant
+  tendsto_CoherenceConstant
 
-/-- El defect geométrico converge al defect universal asintótico. -/
-theorem limite_defect_geometrico :
+/-- The geometric gap converges to `δ_∞`. -/
+theorem tendsto_geometricGap :
     Tendsto geometricGap atTop (𝓝 deltaInf) := by
   unfold geometricGap deltaInf
-  exact limite_szego_CoherenceConstant.sub_const 1
+  exact tendsto_CoherenceConstant.sub_const 1
 
-/-- El defect universal jamás se anula: `δ_∞ > 0`, consecuencia exacta de
-`π > 3`. -/
+/-- `δ_∞ > 0`, since `π > 3`. -/
 theorem deltaInf_pos : 0 < deltaInf := by
   unfold deltaInf CoherenceConstantInf
   have hpi : (3 : ℝ) < π := Real.pi_gt_three
@@ -181,19 +177,18 @@ theorem deltaInf_pos : 0 < deltaInf := by
   rw [Real.sqrt_one] at hs
   linarith
 
-/-- El infinito no se añade como una dimensión realizada: la sucesión de
-defects finitos sólo converge al valor límite estricto `δ∞ = C∞ - 1`. -/
-theorem infinito_no_es_dimension_sino_limite :
+/-- `δ_∞` is a limit of finite gaps, not the gap of a space: the gaps converge to
+`δ_∞ = C_∞ − 1 > 0`. -/
+theorem deltaInf_is_limit :
     Tendsto geometricGap atTop (𝓝 deltaInf) ∧ deltaInf = CoherenceConstantInf - 1 ∧ 0 < deltaInf :=
-  ⟨limite_defect_geometrico, rfl, deltaInf_pos⟩
+  ⟨tendsto_geometricGap, rfl, deltaInf_pos⟩
 
 theorem CoherenceConstantInf_pos : 0 < CoherenceConstantInf := by
   have h := deltaInf_pos
   unfold deltaInf at h
   linarith
 
-/-- Monotonía asintótica: el término principal `δ_∞ - C_∞/(d+1)` de la
-expansión de Szegő es estrictamente creciente. -/
+/-- The leading term `δ_∞ − C_∞/(d+1)` is strictly increasing. -/
 theorem deltaSzegoPrincipal_strictMono : StrictMono deltaSzegoPrincipal := by
   intro a b hab
   have hNa : 0 < Nreal a := by
@@ -209,23 +204,15 @@ theorem deltaSzegoPrincipal_strictMono : StrictMono deltaSzegoPrincipal := by
   have hmul := mul_lt_mul_of_pos_left hinv CoherenceConstantInf_pos
   simpa [div_eq_mul_inv] using sub_lt_sub_left hmul deltaInf
 
-/-! ## Positividad de la gap para `d ≥ 4`
+/-! ## Positivity of the gap for `d ≥ 4`
 
-Niven cierra la ecuación de saturación en `d ∈ {2,3}` (`D7_Niven.lean`).
-Lo que sigue traduce ese hecho trigonométrico a la desigualdad algebraica
-`1 < CoherenceConstant(d)` (equivalentemente `0 < geometricGap d`) para todo `d ≥ 4`,
-verificando los casos `d = 4, 5` en forma cerrada exacta y `d ≥ 6` mediante
-las mismas cotas de Taylor certificadas usadas arriba para el límite. -/
+Niven closes saturation at `d ∈ {2, 3}` (`D7`). Here that becomes `1 < C_Nava(d)` for
+`d ≥ 4`: `d = 4, 5` in closed form, `d ≥ 6` by certified Taylor bounds. -/
 
-/-! ## Consecuencia: `δ_geom(d) > 0` para todo `d ≥ 4`
+/-! ## Consequence: `δ(d) > 0` for `d ≥ 4`
 
-Niven cierra la ecuación de saturación en `d ∈ {2,3}`. El resto de esta
-sección traduce ese hecho trigonométrico a la desigualdad algebraica
-`1 < CoherenceConstant(d)` (equivalentemente `0 < geometricGap d`) para todo `d ≥ 4`,
-verificando los casos `d = 4, 5` en forma cerrada exacta y `d ≥ 6` mediante
-cotas de Taylor certificadas para seno y coseno (sin apelar a ningún
-resultado numérico externo: sólo `Real.pi_gt_d2`/`pi_lt_d2` de Mathlib y
-álgebra racional). -/
+Certified Taylor bounds for sine and cosine, with `Real.pi_gt_d2`, `Real.pi_lt_d2` and rational
+arithmetic only. -/
 
 theorem CoherenceConstantSq_two : CoherenceConstantSq 2 = 1 := by
   simp only [CoherenceConstantSq, Nreal, theta, Nat.cast_ofNat]
@@ -637,8 +624,7 @@ theorem one_lt_CoherenceConstantSq_of_six_le (d : ℕ) (hd : 6 ≤ d) : 1 < Cohe
     (by simpa [N] using hcos_pos)
     (by simpa [N] using hcos_thr)
 
-/-- `CoherenceConstant(d)² > 1` para todo `d ≥ 4`: casos `4, 5` exactos, `d ≥ 6` vía cotas
-de Taylor certificadas. -/
+/-- `C_Nava(d)² > 1` for `d ≥ 4`: `d = 4, 5` exactly, `d ≥ 6` by Taylor bounds. -/
 theorem one_lt_CoherenceConstantSq (d : ℕ) (hd : 4 ≤ d) : 1 < CoherenceConstantSq d := by
   match d with
   | 0 | 1 | 2 | 3 => omega
@@ -650,8 +636,7 @@ theorem one_lt_CoherenceConstant_of_four_le (d : ℕ) (hd : 4 ≤ d) : 1 < Coher
   rw [CoherenceConstant, ← sqrt_one]
   exact sqrt_lt_sqrt (by norm_num) (one_lt_CoherenceConstantSq d hd)
 
-/-- TEOREMA CENTRAL DE NIVEN → POSITIVIDAD: `δ_geom(d) > 0` para todo
-`d ≥ 4`. -/
+/-- **Positivity of the gap.** `δ(d) > 0` for `d ≥ 4`. -/
 theorem geometricGap_pos_of_four_le (d : ℕ) (hd : 4 ≤ d) : 0 < geometricGap d := by
   unfold geometricGap
   linarith [one_lt_CoherenceConstant_of_four_le d hd]

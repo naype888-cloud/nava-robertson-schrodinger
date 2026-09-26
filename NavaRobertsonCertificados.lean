@@ -8,10 +8,10 @@ module
 public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 
 /-!
-# Certificates — separate target
+# Certificates
 
-Not part of the default build. Contains `D23g`, the upper bound for the minimum-uncertainty
-states of `H₄` (tension `≤ 1/φ`), and its two exact rational Positivstellensatz certificates.
-Build with `lake build NavaRobertsonCertificados` (about 20–30 minutes: `CotaCasoA` alone is a
-1 MB polynomial identity checked by `ring`).
+A separate target, not built by default: `D23g`, the bound `≤ 1/φ` on the tension of the
+minimum-uncertainty states of `H₄`, and its two exact Positivstellensatz certificates. Build with
+`lake build NavaRobertsonCertificados` (20–30 minutes; `CotaCasoA` is a 1 MB identity checked by
+`ring`).
 -/

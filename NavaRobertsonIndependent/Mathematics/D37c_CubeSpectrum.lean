@@ -10,29 +10,26 @@ public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 /-!
 # D37c — The spectrum of the cube, axis by axis
 
-On the cube of `D37`, every axis keeps the spectrum it has on the path (`D6`), and the cube
-adds the three:
+Each axis keeps its spectrum on the path (`D6`) and the cube adds the three. The Szegő limit
+on the cube splits into the three limits of `D8`; no new constant appears.
 
-* **Per axis** (`autovector_lift`): an eigenvector of an axis operator, times any state of
-  the other two axes, is an eigenvector of the lifted operator with the same eigenvalue.
-* **Sum of spectra** (`autovector_suma`): a product `u ⊗ v ⊗ w` of eigenvectors of one
-  operator per axis is an eigenvector of their sum, with eigenvalue `λ + μ + ν`.
-* **Maximal tension of the cube** (`tensionTotal_psiStar`, `tensionTotal_le`): with
-  `K_• = i[T_•, P_•]` per axis, `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` is an eigenvector of
-  `K_x + K_y + K_z` with eigenvalue `2/(dx−1) + 2/(dy−1) + 2/(dz−1)`, and no state of the
-  cube exceeds it. The bound is proved by slicing a state into fibres along the axis.
+## Main results
 
-Szegő on the cube therefore splits into the three one-dimensional limits of `D8`: no new
-constant appears.
+- `CubeSpectrum.eigenvector_lift` : an axis eigenvector times any state of the other axes is
+  an eigenvector of the lifted operator.
+- `CubeSpectrum.eigenvector_sum` : `u ⊗ v ⊗ w` is an eigenvector of the sum with eigenvalue
+  `λ + μ + ν`.
+- `CubeSpectrum.tensionTotal_psiStar`, `CubeSpectrum.tensionTotal_le` : `Ψ*` is the top of
+  `K_x + K_y + K_z`, with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds.
 -/
 
 @[expose] public noncomputable section
 
-open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
-open PathGraph3D (Sitio3D)
+open TransportPosition NRSInequality SpectralExtremal
+open PathGraph3D (Site3D)
 open PathGraph3DNRS
 
-namespace EspectroCubo
+namespace CubeSpectrum
 
 /-! ## 1. Eigenvectors lift along an axis -/
 
@@ -41,7 +38,7 @@ section Eje
 variable {ι α β : Type*} [Fintype ι] [Fintype α] [Fintype β]
   [DecidableEq ι] [DecidableEq α] [DecidableEq β]
 
-theorem autovector_lift (e : ι ≃ α × β) (A : Matrix α α ℂ) {ψ : EuclideanSpace ℂ α} {c : ℂ}
+theorem eigenvector_lift (e : ι ≃ α × β) (A : Matrix α α ℂ) {ψ : EuclideanSpace ℂ α} {c : ℂ}
     (h : Matrix.toEuclideanLin A ψ = c • ψ) (φ : EuclideanSpace ℂ β) :
     Matrix.toEuclideanLin (liftAlong e A) (prodAlong e ψ φ) = c • prodAlong e ψ φ := by
   rw [toEuclideanLin_liftAlong, h, prodAlong_smul]
@@ -49,41 +46,41 @@ theorem autovector_lift (e : ι ≃ α × β) (A : Matrix α α ℂ) {ψ : Eucli
 /-! ## 2. Fibres along an axis -/
 
 /-- The fibre of `Φ` over `b`: the axis `α` with the rest frozen at `b`. -/
-def fibra (e : ι ≃ α × β) (Φ : EuclideanSpace ℂ ι) (b : β) : EuclideanSpace ℂ α :=
+def fiber (e : ι ≃ α × β) (Φ : EuclideanSpace ℂ ι) (b : β) : EuclideanSpace ℂ α :=
   WithLp.toLp 2 fun a => Φ (e.symm (a, b))
 
 omit [DecidableEq ι] [DecidableEq α] [DecidableEq β] in
-theorem inner_eq_sum_fibras (e : ι ≃ α × β) (Φ Ψ : EuclideanSpace ℂ ι) :
-    inner ℂ Φ Ψ = ∑ b, inner ℂ (fibra e Φ b) (fibra e Ψ b) := by
-  simp only [PiLp.inner_apply, fibra]
+theorem inner_eq_sum_fibers (e : ι ≃ α × β) (Φ Ψ : EuclideanSpace ℂ ι) :
+    inner ℂ Φ Ψ = ∑ b, inner ℂ (fiber e Φ b) (fiber e Ψ b) := by
+  simp only [PiLp.inner_apply, fiber]
   rw [← Fintype.sum_equiv e.symm _ _ (fun _ => rfl), Fintype.sum_prod_type_right]
 
 omit [DecidableEq ι] [DecidableEq α] [DecidableEq β] in
-theorem norm_sq_eq_sum_fibras (e : ι ≃ α × β) (Φ : EuclideanSpace ℂ ι) :
-    ‖Φ‖ ^ 2 = ∑ b, ‖fibra e Φ b‖ ^ 2 := by
-  have h := inner_eq_sum_fibras e Φ Φ
+theorem norm_sq_eq_sum_fibers (e : ι ≃ α × β) (Φ : EuclideanSpace ℂ ι) :
+    ‖Φ‖ ^ 2 = ∑ b, ‖fiber e Φ b‖ ^ 2 := by
+  have h := inner_eq_sum_fibers e Φ Φ
   simp only [inner_self_eq_norm_sq_to_K] at h
   exact_mod_cast h
 
 /-- The lifted operator acts fibre by fibre. -/
-theorem fibra_lift (e : ι ≃ α × β) (A : Matrix α α ℂ) (Φ : EuclideanSpace ℂ ι) (b : β) :
-    fibra e (Matrix.toEuclideanLin (liftAlong e A) Φ) b =
-      Matrix.toEuclideanLin A (fibra e Φ b) := by
+theorem fiber_lift (e : ι ≃ α × β) (A : Matrix α α ℂ) (Φ : EuclideanSpace ℂ ι) (b : β) :
+    fiber e (Matrix.toEuclideanLin (liftAlong e A) Φ) b =
+      Matrix.toEuclideanLin A (fiber e Φ b) := by
   ext a
-  simp only [fibra, Matrix.toEuclideanLin, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct,
+  simp only [fiber, Matrix.toEuclideanLin, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct,
     liftAlong, Matrix.of_apply, Equiv.apply_symm_apply]
   rw [← Fintype.sum_equiv e.symm _ _ (fun _ => rfl), Fintype.sum_prod_type_right,
     Finset.sum_comm]
   simp [Equiv.apply_symm_apply, Finset.sum_ite_eq]
 
-theorem fibra_tension (e : ι ≃ α × β) (A B : Matrix α α ℂ) (Φ : EuclideanSpace ℂ ι) (b : β) :
-    fibra e (observableTension (Matrix.toEuclideanLin (liftAlong e A))
+theorem fiber_tension (e : ι ≃ α × β) (A B : Matrix α α ℂ) (Φ : EuclideanSpace ℂ ι) (b : β) :
+    fiber e (observableTension (Matrix.toEuclideanLin (liftAlong e A))
         (Matrix.toEuclideanLin (liftAlong e B)) Φ) b =
-      observableTension (Matrix.toEuclideanLin A) (Matrix.toEuclideanLin B) (fibra e Φ b) := by
-  simp only [observableTension, conmutador, LinearMap.smul_apply, LinearMap.sub_apply,
-    LinearMap.comp_apply, ← fibra_lift]
+      observableTension (Matrix.toEuclideanLin A) (Matrix.toEuclideanLin B) (fiber e Φ b) := by
+  simp only [observableTension, opCommutator, LinearMap.smul_apply, LinearMap.sub_apply,
+    LinearMap.comp_apply, ← fiber_lift]
   ext a
-  simp [fibra]
+  simp [fiber]
 
 end Eje
 
@@ -94,8 +91,8 @@ theorem tension_le_vec {d : ℕ} (hd : 2 ≤ d) (v : Hd d) :
     (inner ℂ v (KdOp d v)).re ≤ 2 / ((d : ℝ) - 1) * ‖v‖ ^ 2 := by
   have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have : Nontrivial (Hd d) := inferInstance
-  have hK := norma_aplicacion_le_radio_mul_norma (KdOp d) (KdOp_simetrico d) v
-  rw [radioEspectral_KdOp_eq_paso d hd] at hK
+  have hK := norm_apply_le_specRadius_mul_norm (KdOp d) (KdOp_isSymmetric d) v
+  rw [specRadius_KdOp_eq_step d hd] at hK
   calc (inner ℂ v (KdOp d v)).re ≤ ‖inner ℂ v (KdOp d v)‖ := Complex.re_le_norm _
     _ ≤ ‖v‖ * ‖KdOp d v‖ := norm_inner_le_norm _ _
     _ ≤ ‖v‖ * (2 / ((d : ℝ) - 1) * ‖v‖) := mul_le_mul_of_nonneg_left hK (norm_nonneg _)
@@ -105,9 +102,9 @@ theorem tension_lift_le {ι β : Type*} [Fintype ι] [Fintype β] [DecidableEq �
     {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) (Φ : EuclideanSpace ℂ ι) :
     (inner ℂ Φ (observableTension (Matrix.toEuclideanLin (liftAlong e (Td d)))
         (Matrix.toEuclideanLin (liftAlong e (Pd d))) Φ)).re ≤ 2 / ((d : ℝ) - 1) * ‖Φ‖ ^ 2 := by
-  rw [inner_eq_sum_fibras e, Complex.re_sum, norm_sq_eq_sum_fibras e, Finset.mul_sum]
+  rw [inner_eq_sum_fibers e, Complex.re_sum, norm_sq_eq_sum_fibers e, Finset.mul_sum]
   refine Finset.sum_le_sum fun b _ => ?_
-  rw [fibra_tension]
+  rw [fiber_tension]
   exact tension_le_vec hd _
 
 /-! ## 4. The cube -/
@@ -137,7 +134,7 @@ theorem PsiStar3D_eq_prod3 : PsiStar3D dx dy dz = prod3 (psiStar dx) (psiStar dy
 
 /-- **Sum of spectra.** One eigenvector per axis gives an eigenvector of the sum, with the
 sum of the eigenvalues. -/
-theorem autovector_suma (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dy) (Fin dy) ℂ)
+theorem eigenvector_sum (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dy) (Fin dy) ℂ)
     (C : Matrix (Fin dz) (Fin dz) ℂ) {u : Hd dx} {v : Hd dy} {w : Hd dz} {l m n : ℂ}
     (hu : Matrix.toEuclideanLin A u = l • u) (hv : Matrix.toEuclideanLin B v = m • v)
     (hw : Matrix.toEuclideanLin C w = n • w) :
@@ -145,9 +142,9 @@ theorem autovector_suma (A : Matrix (Fin dx) (Fin dx) ℂ) (B : Matrix (Fin dy) 
         Matrix.toEuclideanLin (liftAlong (eY dx dy dz) B) +
         Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) C)) (prod3 u v w) =
       (l + m + n) • prod3 u v w := by
-  have hx := autovector_lift (eX dx dy dz) A hu (prodAlong (Equiv.refl _) v w)
-  have hy := autovector_lift (eY dx dy dz) B hv (prodAlong (Equiv.refl _) u w)
-  have hz := autovector_lift (eZ dx dy dz) C hw (prodAlong (Equiv.refl _) u v)
+  have hx := eigenvector_lift (eX dx dy dz) A hu (prodAlong (Equiv.refl _) v w)
+  have hy := eigenvector_lift (eY dx dy dz) B hv (prodAlong (Equiv.refl _) u w)
+  have hz := eigenvector_lift (eZ dx dy dz) C hw (prodAlong (Equiv.refl _) u v)
   rw [← prod3_eq_eX] at hx
   rw [← prod3_eq_eY] at hy
   rw [← prod3_eq_eZ] at hz
@@ -164,13 +161,13 @@ theorem tension_lift_apply {ι β : Type*} [Fintype ι] [Fintype β] [DecidableE
     observableTension (Matrix.toEuclideanLin (liftAlong e (Td d)))
         (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e ψ φ) =
       prodAlong e (KdOp d ψ) φ := by
-  simp only [KdOp, TdOp, PdOp, observableTension, conmutador, LinearMap.smul_apply,
+  simp only [KdOp, TdOp, PdOp, observableTension, opCommutator, LinearMap.smul_apply,
     LinearMap.sub_apply, LinearMap.comp_apply, toEuclideanLin_liftAlong, prodAlong_sub,
     prodAlong_smul]
 
-theorem autovalor_psiStar {d : ℕ} (hd : 2 ≤ d) :
+theorem eigenvalue_psiStar {d : ℕ} (hd : 2 ≤ d) :
     KdOp d (psiStar d) = (((2 / ((d : ℝ) - 1) : ℝ)) : ℂ) • psiStar d :=
-  KdOp_vectorFiedlerExplicito d hd
+  KdOp_fiedlerVec d hd
 
 /-- **Maximal tension of the cube.** `Ψ*` is an eigenvector of `K_x + K_y + K_z` with
 eigenvalue `2/(dx−1) + 2/(dy−1) + 2/(dz−1)`. -/
@@ -179,11 +176,11 @@ theorem tensionTotal_psiStar (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
       (((2 / ((dx : ℝ) - 1) + 2 / ((dy : ℝ) - 1) + 2 / ((dz : ℝ) - 1) : ℝ)) : ℂ) •
         PsiStar3D dx dy dz := by
   have ex : KX (PsiStar3D dx dy dz) = (((2 / ((dx : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eX, KX, TX, PX, tension_lift_apply, autovalor_psiStar hx, prodAlong_smul]
+    rw [PsiStar3D_eq_eX, KX, TX, PX, tension_lift_apply, eigenvalue_psiStar hx, prodAlong_smul]
   have ey : KY (PsiStar3D dx dy dz) = (((2 / ((dy : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eY, KY, TY, PY, tension_lift_apply, autovalor_psiStar hy, prodAlong_smul]
+    rw [PsiStar3D_eq_eY, KY, TY, PY, tension_lift_apply, eigenvalue_psiStar hy, prodAlong_smul]
   have ez : KZ (PsiStar3D dx dy dz) = (((2 / ((dz : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eZ, KZ, TZ, PZ, tension_lift_apply, autovalor_psiStar hz, prodAlong_smul]
+    rw [PsiStar3D_eq_eZ, KZ, TZ, PZ, tension_lift_apply, eigenvalue_psiStar hz, prodAlong_smul]
   rw [Ktotal, LinearMap.add_apply, LinearMap.add_apply, ex, ey, ez, ← add_smul, ← add_smul]
   push_cast
   ring_nf
@@ -202,6 +199,6 @@ theorem tensionTotal_le (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (Φ : H3
 
 end Cubo
 
-end EspectroCubo
+end CubeSpectrum
 
 end

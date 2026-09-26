@@ -18,11 +18,11 @@ Generated certificate: 229 weighted squares. `m` and `g` are the region polynomi
 
 @[expose] public section
 
-namespace CertificadoH4
+namespace CertificateH4
 
 set_option maxHeartbeats 0 in
 set_option maxRecDepth 100000 in
-theorem cota_casoB (n0 n1 n2 n3 m g : ℝ)
+theorem bound_caseB (n0 n1 n2 n3 m g : ℝ)
     (h0 : 0 ≤ n0) (h1 : 0 ≤ n1) (h2 : 0 ≤ n2) (h3 : 0 ≤ n3)
     (hm_def : m = (1:ℝ)*n3 + ((1:ℝ)/3)*n2 + ((-1:ℝ)/3)*n1 + (-1:ℝ)*n0)
     (hg_def : g = ((4:ℝ)/9)*n1*n2^2*n3 + ((-16:ℝ)/9)*n1^2*n3^2 + ((-4:ℝ)/9)*n1^2*n2^2 +
@@ -601,4 +601,4 @@ theorem cota_casoB (n0 n1 n2 n3 m g : ℝ)
       (sq_nonneg _))) (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ ((1113:ℝ)/100)) h0)
       hg) (sq_nonneg _)))
 
-end CertificadoH4
+end CertificateH4

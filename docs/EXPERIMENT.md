@@ -94,7 +94,7 @@ Consequences for the design:
 The theorems carry no unit: sites, steps and `R` are pure numbers. Units enter in one place.
 
 **The cone fixes the speed.** `T_N` only connects neighbours, so after `k` steps an amplitude
-has moved at most `k` sites, and the edge is reached (`D37f`: `cono_de_luz`, `borde_del_cono`).
+has moved at most `k` sites, and the edge is reached (`D37f`: `lightCone`, `lightCone_edge`).
 The slope of the cone is exactly one site per step. In continuous time, `U(t) = exp(−i t T_N)`,
 the edge is no longer sharp, but outside the cone the amplitude falls as `|t|^r / r! · e^{|t|}`
 with `r` the distance (`D37g`, `lieb_robinson`): the front still advances one site per unit of

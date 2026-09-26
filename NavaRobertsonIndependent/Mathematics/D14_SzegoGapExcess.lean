@@ -8,14 +8,15 @@ module
 public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 
 /-!
-# El exceso sobre el límite de Szegő
+# D14 — The excess below the Szegő limit
 
-Corolario aritmético directo de la monotonía (`D9_Monotonia.lean`) y el
-límite de Szegő (`D8_Szego.lean`): el "exceso" `CoherenceConstantInf - CoherenceConstant(d)` —cuánto
-le falta a `CoherenceConstant(d)` para alcanzar el límite `C∞`— es positivo, máximo
-exactamente en `d = 4`, estrictamente decreciente en `d`, y se disuelve a
-`0`. No es un pilar nuevo: es la misma cadena de `D9_Monotonia.lean` leída
-desde el lado del remanente en vez del valor mismo.
+The excess `C_∞ − C_Nava(d)` is positive, largest at `d = 4`, strictly decreasing and tends to
+`0`: monotonicity (`D9`) and the Szegő limit (`D8`), read from the side of the remainder.
+
+## Main results
+
+- `Gnomon.gapExcess_pos`, `Gnomon.gapExcess_strictAnti`, `Gnomon.gapExcess_le_four`,
+  `Gnomon.gapExcess_tendsto_zero`.
 -/
 
 @[expose] public section
@@ -25,39 +26,33 @@ open scoped Topology
 
 namespace Gnomon
 
-/-- El exceso de coherencia: cuánto le falta a `CoherenceConstant(d)` para alcanzar el
-límite de Szegő `C∞`. -/
-noncomputable def excesoGap (d : ℕ) : ℝ := CoherenceConstantInf - CoherenceConstant d
+/-- The excess `C_∞ − C_Nava(d)`. -/
+noncomputable def gapExcess (d : ℕ) : ℝ := CoherenceConstantInf - CoherenceConstant d
 
-/-- El exceso es siempre positivo: `CoherenceConstant(d)` nunca alcanza `C∞` a `d`
-finito. -/
-theorem excesoGap_pos (d : ℕ) (hd : 4 ≤ d) : 0 < excesoGap d := by
-  unfold excesoGap
+/-- The excess is positive: `C_Nava(d)` never reaches `C_∞`. -/
+theorem gapExcess_pos (d : ℕ) (hd : 4 ≤ d) : 0 < gapExcess d := by
+  unfold gapExcess
   linarith [CoherenceConstant_lt_CoherenceConstantInf d hd]
 
-/-- El exceso es estrictamente decreciente en `d`, heredado de la
-monotonía de `CoherenceConstant`. -/
-theorem excesoGap_strictAnti {a b : ℕ} (ha : 4 ≤ a) (hb : 4 ≤ b) (hab : a < b) :
-    excesoGap b < excesoGap a := by
-  unfold excesoGap
+/-- The excess is strictly decreasing. -/
+theorem gapExcess_strictAnti {a b : ℕ} (ha : 4 ≤ a) (hb : 4 ≤ b) (hab : a < b) :
+    gapExcess b < gapExcess a := by
+  unfold gapExcess
   linarith [CoherenceConstant_strictMonoOn_ge_four ha hb hab]
 
-/-- El exceso máximo de toda la cola `d ≥ 4` se alcanza exactamente en
-`d = 4`: el mínimo global de `CoherenceConstant` es el techo del exceso. -/
-theorem excesoGap_le_four (d : ℕ) (hd : 4 ≤ d) :
-    excesoGap d ≤ excesoGap 4 := by
-  unfold excesoGap
+/-- On `d ≥ 4` the excess is largest at `d = 4`. -/
+theorem gapExcess_le_four (d : ℕ) (hd : 4 ≤ d) :
+    gapExcess d ≤ gapExcess 4 := by
+  unfold gapExcess
   linarith [CoherenceConstant_four_le d hd]
 
-/-- El exceso se apaga por completo: `CoherenceConstantInf − CoherenceConstant(d) → 0`, acotado
-arriba
-por `excesoGap 4` y llevado a `0` por el límite de Szegő. -/
-theorem excesoGap_tendsto_zero :
-    Tendsto (fun d : ℕ => excesoGap d) atTop (𝓝 0) := by
-  unfold excesoGap
+/-- The excess tends to `0`. -/
+theorem gapExcess_tendsto_zero :
+    Tendsto (fun d : ℕ => gapExcess d) atTop (𝓝 0) := by
+  unfold gapExcess
   have h : Tendsto (fun d : ℕ => CoherenceConstantInf - CoherenceConstant d) atTop (𝓝
       (CoherenceConstantInf - CoherenceConstantInf)) :=
-    limite_szego_CoherenceConstant.const_sub CoherenceConstantInf
+    tendsto_CoherenceConstant.const_sub CoherenceConstantInf
   simpa using h
 
 end Gnomon

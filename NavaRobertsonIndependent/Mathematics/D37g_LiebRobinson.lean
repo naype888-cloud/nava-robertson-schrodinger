@@ -11,26 +11,22 @@ public import Mathlib.Analysis.Matrix.Normed
 public import Mathlib.Analysis.Normed.Algebra.Exponential
 
 /-!
-# D37g — Lieb–Robinson bound for transport in continuous time
+# D37g — Lieb–Robinson bound for transport
 
-`T_d` is, up to shift and scale, the Dirichlet discretization of `−d²/dx²` on `[−1, 1]`. Its
-evolution in continuous time is `U(t) = exp(−i t T_d)`. The cone of `D37f` (steps of
-transport) becomes, in continuous time, a Lieb–Robinson bound: outside the cone the amplitude
-is not exactly zero but decays faster than any exponential,
+`T_d` is, up to shift and scale, the Dirichlet discretization of `−d²/dx²` on `[−1, 1]`. In
+continuous time `U(t) = exp(−i t T_d)`, and outside the cone of `D37f` the amplitude decays
+faster than any exponential: `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}`, `r = |i − j|`. The terms
+`n < r` of `Σₙ (−it)ⁿ/n! (T_dⁿ)ᵢⱼ` vanish (`D37f`), `|(T_dⁿ)ᵢⱼ| ≤ 1` (`D23d`), and
+`m! r! ≤ (m + r)!` bounds the tail.
 
-  `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}`,   `r = |i − j|`   (`lieb_robinson`).
+## Main results
 
-For fixed `t`, `|t|^r / r!` decays faster than any `λ^r`: signals effectively travel at most at
-a finite speed (one site per unit of `|t|` up to the `e^{|t|}` factor).
-
-The proof: the series `U(t)ᵢⱼ = Σₙ (−it)ⁿ/n! (T_dⁿ)ᵢⱼ` has zero terms for `n < r` (`D37f`),
-and `|(T_dⁿ)ᵢⱼ| ≤ 1` because `‖T_d‖ ≤ 1` (`D23d`); the tail sums to at most
-`|t|^r/r! · e^{|t|}` since `m! r! ≤ (m + r)!`.
+- `LiebRobinson.lieb_robinson` : `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}`.
 -/
 
 @[expose] public noncomputable section
 
-open TransportePosicion ConoDeLuz AnchoFranja
+open TransportPosition LightCone BandWidth
 
 namespace LiebRobinson
 
@@ -62,7 +58,7 @@ theorem norm_entry_pow_le (hd : 2 ≤ d) (n : ℕ) (i j : Fin d) : ‖(Td d ^ n)
 def U (d : ℕ) (t : ℝ) : Matrix (Fin d) (Fin d) ℂ :=
   NormedSpace.exp ((-(Complex.I * t)) • Td d)
 
-theorem entrada_exp (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
+theorem entry_exp (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
     NormedSpace.exp M i j = ∑' n : ℕ, ((n.factorial : ℂ)⁻¹) * (M ^ n) i j := by
   let _ : NormedRing (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedRing
   let _ : NormedAlgebra ℂ (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedAlgebra
@@ -74,15 +70,15 @@ theorem entrada_exp (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
   simp only [Matrix.smul_apply, smul_eq_mul] at h1 h2
   exact (congrFun h1 j).trans h2
 
-theorem entrada_U (t : ℝ) (i j : Fin d) :
+theorem entry_U (t : ℝ) (i j : Fin d) :
     U d t i j = ∑' n : ℕ, ((n.factorial : ℂ)⁻¹) * ((-(Complex.I * t)) ^ n * (Td d ^ n) i j) := by
-  rw [U, entrada_exp]
+  rw [U, entry_exp]
   congr 1; ext n
   rw [smul_pow, Matrix.smul_apply, smul_eq_mul]
 
 /-! ## 3. The Lieb–Robinson bound -/
 
-theorem cola_factorial (x : ℝ) (hx : 0 ≤ x) (m r : ℕ) :
+theorem factorial_tail (x : ℝ) (hx : 0 ≤ x) (m r : ℕ) :
     x ^ (m + r) / ((m + r).factorial : ℝ) ≤
       x ^ r / (r.factorial : ℝ) * (x ^ m / (m.factorial : ℝ)) := by
   have hfac : ((m.factorial : ℝ) * (r.factorial : ℝ)) ≤ ((m + r).factorial : ℝ) := by
@@ -100,8 +96,8 @@ theorem cola_factorial (x : ℝ) (hx : 0 ≤ x) (m r : ℕ) :
 amplitude decays faster than any exponential in the distance. -/
 theorem lieb_robinson (hd : 2 ≤ d) (t : ℝ) (i j : Fin d) :
     ‖U d t i j‖ ≤
-      |t| ^ distCamino i j / ((distCamino i j).factorial : ℝ) * Real.exp |t| := by
-  set r := distCamino i j
+      |t| ^ distPath i j / ((distPath i j).factorial : ℝ) * Real.exp |t| := by
+  set r := distPath i j
   set f : ℕ → ℂ := fun n => ((n.factorial : ℂ)⁻¹) * ((-(Complex.I * t)) ^ n * (Td d ^ n) i j)
   set b : ℕ → ℝ := fun n => if n < r then 0 else |t| ^ n / (n.factorial : ℝ)
   have hb0 : ∀ n, 0 ≤ b n := by
@@ -109,7 +105,7 @@ theorem lieb_robinson (hd : 2 ≤ d) (t : ℝ) (i j : Fin d) :
   have hfb : ∀ n, ‖f n‖ ≤ b n := by
     intro n
     by_cases hn : n < r
-    · simp [f, b, hn, cono_de_luz n i j hn]
+    · simp [f, b, hn, lightCone n i j hn]
     · simp only [f, b, hn, ite_false, norm_mul, norm_inv, Complex.norm_natCast, norm_pow,
         norm_neg, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]
       have := norm_entry_pow_le hd n i j
@@ -124,7 +120,7 @@ theorem lieb_robinson (hd : 2 ≤ d) (t : ℝ) (i j : Fin d) :
       · exact le_rfl) (Real.summable_pow_div_factorial |t|)
   have hfs : Summable (fun n => ‖f n‖) :=
     Summable.of_nonneg_of_le (fun n => norm_nonneg _) hfb hbs
-  have hU : U d t i j = ∑' n, f n := entrada_U t i j
+  have hU : U d t i j = ∑' n, f n := entry_U t i j
   -- the tail of `b` starts at `r`
   have hsplit := hbs.sum_add_tsum_nat_add r
   have hhead : ∑ n ∈ Finset.range r, b n = 0 :=
@@ -141,7 +137,7 @@ theorem lieb_robinson (hd : 2 ≤ d) (t : ℝ) (i j : Fin d) :
     _ = ∑' m, b (m + r) := by rw [← hsplit, hhead, zero_add]
     _ ≤ ∑' m : ℕ, |t| ^ r / (r.factorial : ℝ) * (|t| ^ m / (m.factorial : ℝ)) := by
         refine Summable.tsum_le_tsum (fun m => ?_) ((summable_nat_add_iff r).mpr hbs) hgs
-        rw [htail]; exact cola_factorial |t| (abs_nonneg t) m r
+        rw [htail]; exact factorial_tail |t| (abs_nonneg t) m r
     _ = |t| ^ r / (r.factorial : ℝ) * Real.exp |t| := by rw [tsum_mul_left, hexp]
 
 end LiebRobinson

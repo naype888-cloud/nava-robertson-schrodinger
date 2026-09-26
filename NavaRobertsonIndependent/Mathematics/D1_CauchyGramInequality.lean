@@ -9,37 +9,35 @@ public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.Analysis.Complex.Norm
 
 /-!
-# D1 — Cauchy–Schwarz vía el defect de Gram
+# D1 — Cauchy–Schwarz as a Gram defect
 
-Núcleo puramente algebraico: para dos vectores `x, y` de un espacio de
-Hilbert complejo, el determinante de la matriz de Gram hermitiana
+For two vectors `x`, `y` of a complex inner product space the Gram determinant
+`gramDefectC x y = ‖x‖² ‖y‖² − |⟪x, y⟫|²` is nonnegative: this is Cauchy–Schwarz. Written in
+the real and imaginary parts of `⟪x, y⟫` it is the Robertson–Schrödinger inequality (`D2`).
 
-`gramDefectC x y = ‖x‖² ‖y‖² − |⟨x,y⟩|²`
+## Main results
 
-nunca es negativo. Esa es, palabra por palabra, la desigualdad de
-Cauchy–Schwarz. Escribiendo `⟨x,y⟩` en sus partes real e imaginaria se
-obtiene de inmediato la desigualdad de Robertson–Schrödinger (`D2_Robertson.lean`)
-como consecuencia algebraica, no como postulado adicional.
+- `gramDefectC_nonneg` : the Gram defect is nonnegative.
+- `robertsonSchrodinger_from_gram` : Robertson–Schrödinger in real and imaginary coordinates.
+- `robertsonSchrodinger_saturated_iff_gram_zero` : saturation iff the Gram defect vanishes.
 -/
 
 @[expose] public noncomputable section
 
-namespace ObstruccionGramUnificada
+namespace CauchyGram
 
 universe u
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
-/-- Cuadrado de la dispersión representada por un vector centrado. -/
+/-- The squared norm of a fluctuation vector. -/
 def varianceC (x : H) : ℝ := ‖x‖ ^ 2
 
-/-- Determinante de la matriz de Gram hermitiana de dos vectores. -/
+/-- The Gram determinant of two vectors. -/
 def gramDefectC (x y : H) : ℝ :=
   varianceC x * varianceC y - ‖@inner ℂ H _ x y‖ ^ 2
 
-/-- La obstrucción universal: el determinante de Gram nunca es negativo.
-Esto ES la desigualdad de Cauchy–Schwarz, reescrita como positividad de un
-determinante 2×2. -/
+/-- **Cauchy–Schwarz as a Gram defect.** The Gram determinant is nonnegative. -/
 theorem gramDefectC_nonneg (x y : H) : 0 ≤ gramDefectC x y := by
   have hxy : ‖@inner ℂ H _ x y‖ ≤ ‖x‖ * ‖y‖ := norm_inner_le_norm x y
   have hleft : 0 ≤ ‖x‖ * ‖y‖ - ‖@inner ℂ H _ x y‖ := sub_nonneg.mpr hxy
@@ -50,8 +48,7 @@ theorem gramDefectC_nonneg (x y : H) : 0 ≤ gramDefectC x y := by
         (‖x‖ * ‖y‖ + ‖@inner ℂ H _ x y‖) := mul_nonneg hleft hright
     _ = gramDefectC x y := by simp [gramDefectC, varianceC, pow_two]; ring
 
-/-- Saturar Cauchy–Schwarz equivale a anular, no las dispersiones, sino el
-determinante de Gram. -/
+/-- Cauchy–Schwarz is saturated iff the Gram defect vanishes. -/
 theorem gramDefectC_eq_zero_iff (x y : H) :
     gramDefectC x y = 0 ↔ ‖@inner ℂ H _ x y‖ = ‖x‖ * ‖y‖ := by
   have hxy : ‖@inner ℂ H _ x y‖ ≤ ‖x‖ * ‖y‖ := norm_inner_le_norm x y
@@ -66,15 +63,15 @@ theorem gramDefectC_eq_zero_iff (x y : H) :
     rw [heq]
     ring
 
-/-- Parte simétrica del producto interno de las fluctuaciones. -/
+/-- The real part of the inner product of two fluctuation vectors. -/
 def covarianceC (x y : H) : ℝ := (@inner ℂ H _ x y).re
 
-/-- Coordenada antisimétrica real: para fluctuaciones operatoriales es la
-coordenada real de la esperanza del conmutador. -/
+/-- The imaginary part of the inner product; for operator fluctuations it is the commutator
+term. -/
 def commutatorCoordinateC (x y : H) : ℝ := 2 * (@inner ℂ H _ x y).im
 
-/-- Robertson–Schrödinger es exactamente la positividad de Gram escrita en
-coordenadas real e imaginaria. -/
+/-- Robertson–Schrödinger is the positivity of the Gram defect in real and imaginary
+coordinates. -/
 theorem robertsonSchrodinger_from_gram (x y : H) :
     covarianceC x y ^ 2 + (commutatorCoordinateC x y / 2) ^ 2 ≤
       varianceC x * varianceC y := by
@@ -89,12 +86,12 @@ theorem robertsonSchrodinger_from_gram (x y : H) :
   rw [hnorm] at hbase
   simpa [covarianceC, commutatorCoordinateC] using hbase
 
-/-- Saturación Robertson–Schrödinger abstracta. -/
+/-- Abstract Robertson–Schrödinger saturation. -/
 def RSSaturated (x y : H) : Prop :=
   covarianceC x y ^ 2 + (commutatorCoordinateC x y / 2) ^ 2 =
     varianceC x * varianceC y
 
-/-- La saturación Robertson–Schrödinger es exactamente defect de Gram cero. -/
+/-- Robertson–Schrödinger is saturated iff the Gram defect vanishes. -/
 theorem robertsonSchrodinger_saturated_iff_gram_zero (x y : H) :
     RSSaturated x y ↔ gramDefectC x y = 0 := by
   have hnorm :
@@ -108,4 +105,4 @@ theorem robertsonSchrodinger_saturated_iff_gram_zero (x y : H) :
   rw [← hnorm]
   constructor <;> intro h <;> nlinarith
 
-end ObstruccionGramUnificada
+end CauchyGram

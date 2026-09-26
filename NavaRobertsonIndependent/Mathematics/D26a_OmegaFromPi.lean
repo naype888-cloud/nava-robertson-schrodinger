@@ -9,43 +9,36 @@ public import NavaRobertsonIndependent.Mathematics.D8_Szego
 public import Mathlib.Analysis.Real.Pi.Bounds
 
 /-!
-# D26a — `Ω` desde `π`: la constante `g_s·e^{−1/C∞}` y su encierro racional
+# D26a — `g_s e^{−1/C_∞}` from `π`, with a rational enclosure
 
-Matemática pura (Capa 1): solo `π`. Con `C∞ = √(π²/3 − 2)` (`D8`),
+With `C_∞ = √(π²/3 − 2)` (`D8`), `omegaPi = (1 − 1/C_∞) e^{−1/C_∞} = 0.04954367888809…`; the
+decimal `0.049543679` is its rounding to 9 digits, certified from both sides:
+`1.11 × 10⁻¹⁰ < 0.049543679 − omegaPi < 1.12 × 10⁻¹⁰`.
 
-`omegaPi = (1 − 1/C∞) · e^{−1/C∞} = 0.04954367888809…`
+Method: `π` to 20 decimals (`Real.pi_gt_d20`, `Real.pi_lt_d20`); `C_∞` enclosed to 13 decimals;
+`1/C_∞` by monotonicity; `e^{−1/C_∞}` by `Real.exp_bound` at `n = 16`.
 
-y el decimal `0.049543679` es su redondeo a 9 cifras, **certificado por los dos lados**:
+## Main results
 
-`1.11×10⁻¹⁰ < 0.049543679 − omegaPi < 1.12×10⁻¹⁰`  (`< 2.3×10⁻⁹` relativo).
-
-Método: `π` a 20 decimales (`Real.pi_gt_d20`/`pi_lt_d20`); `C∞` encerrado a 13
-decimales; `1/C∞` por monotonía de la división; `e^{−1/C∞}` con la cota de Taylor
-`Real.exp_bound` en `n = 16` (resto `< 7×10⁻¹⁵`), evaluada en los extremos racionales.
-
-Uso: la Capa 2 toma `Ω_b = 0.049543679` y, con este módulo, sabe que ese decimal sale
-de `π` (`LimiteSubPlanckiano.Omega_b_desde_pi`). La lectura "fracción bariónica" es de
-la Capa 3 (`D26`, `D26b`).
-
-Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas estándar.
+- `OmegaFromPi.decimal_of_pi` : the two-sided enclosure.
 -/
 
 @[expose] public noncomputable section
 
-namespace OmegaDesdePi
+namespace OmegaFromPi
 
 open Gnomon
 
-/-- `g_s = 1 − 1/C∞`. -/
+/-- `g_s = 1 − 1/C_∞`. -/
 def gPi : ℝ := 1 - 1 / CoherenceConstantInf
 
-/-- `e^{−1/C∞}`. -/
+/-- `e^{−1/C_∞}`. -/
 def boltzmannPi : ℝ := Real.exp (-1 / CoherenceConstantInf)
 
-/-- `omegaPi = g_s · e^{−1/C∞}`, función solo de `π`. -/
+/-- `omegaPi = g_s e^{−1/C_∞}`, a function of `π` only. -/
 def omegaPi : ℝ := gPi * boltzmannPi
 
-/-! ## `C∞` a 13 decimales -/
+/-! ## `C_∞` to 13 decimals -/
 
 theorem CoherenceConstantInf_gt : (1.1357236167732 : ℝ) < CoherenceConstantInf := by
   unfold CoherenceConstantInf
@@ -59,7 +52,7 @@ theorem CoherenceConstantInf_lt : CoherenceConstantInf < 1.1357236167733 := by
   rw [Real.sqrt_lt' (by norm_num)]
   nlinarith [Real.pi_lt_d20, Real.pi_pos]
 
-/-! ## `1/C∞` y `g_s` -/
+/-! ## `1/C_∞` and `g_s` -/
 
 theorem invCoherenceConstantInf_gt : (0.88049591047606 : ℝ) < 1 / CoherenceConstantInf := by
   have h := one_div_lt_one_div_of_lt CoherenceConstantInf_pos CoherenceConstantInf_lt
@@ -79,7 +72,7 @@ theorem gPi_lt : gPi < (0.11950408952394 : ℝ) := by
 
 theorem gPi_pos : 0 < gPi := by linarith [gPi_gt]
 
-/-! ## `e^{−1/C∞}` vía Taylor `n = 16` -/
+/-! ## `e^{−1/C_∞}` by Taylor at `n = 16` -/
 
 theorem boltzmannPi_gt : (0.41457726748507 : ℝ) < boltzmannPi := by
   have hz : (-1 : ℝ) / CoherenceConstantInf = -(1 / CoherenceConstantInf) := by ring
@@ -103,11 +96,10 @@ theorem boltzmannPi_lt : boltzmannPi < (0.41457726748516 : ℝ) := by
 
 theorem boltzmannPi_pos : 0 < boltzmannPi := Real.exp_pos _
 
-/-! ## Cierre -/
+/-! ## Conclusion -/
 
-/-- **El decimal `0.049543679` es `omegaPi` a 9 cifras**: la distancia está encerrada
-por los dos lados en `(1.11, 1.12)×10⁻¹⁰`. -/
-theorem decimal_desde_pi :
+/-- `0.049543679 − omegaPi ∈ (1.11, 1.12) × 10⁻¹⁰`. -/
+theorem decimal_of_pi :
     111 * 10 ^ (-12 : ℤ) < (49543679 : ℝ) / 10 ^ 9 - omegaPi ∧
       (49543679 : ℝ) / 10 ^ 9 - omegaPi < 112 * 10 ^ (-12 : ℤ) := by
   unfold omegaPi
@@ -119,4 +111,4 @@ theorem decimal_desde_pi :
   · nlinarith [mul_lt_mul_of_pos_left boltzmannPi_gt hg,
       mul_lt_mul_of_pos_right gPi_gt hb]
 
-end OmegaDesdePi
+end OmegaFromPi

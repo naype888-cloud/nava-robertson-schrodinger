@@ -8,20 +8,20 @@ module
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# D9 — Monotonía estricta de `C_Nava` y `geometricGap`
+# D9 — Strict monotonicity of `C_Nava` and `geometricGap`
 
-Sin barrido numérico: `CoherenceConstant` (y por tanto `geometricGap`) crece
-estrictamente para toda dimensión `d ≥ 4`. En particular, `d = 4` es
-el mínimo global de la cola `d ≥ 4` y cada valor finito se aproxima a
-`CoherenceConstantInf` estrictamente por debajo (`CoherenceConstant_lt_CoherenceConstantInf`,
-`geometricGap_lt_deltaInf`).
+`CoherenceConstant`, and so `geometricGap`, is strictly increasing for `d ≥ 4`. Hence `d = 4`
+is the minimum on `d ≥ 4`, and every value lies strictly below `CoherenceConstantInf`.
 
-La prueba no supone que `π` sea racional. Las llamadas a `ring`
-certifican únicamente identidades algebraicas formales con `π` como
-elemento real simbólico. El signo estricto de la derivada se obtiene
-mediante cotas formales `3 < π < 22/7`, cotas de Taylor verificadas y
-un certificado polinómico de Bernstein de que el resto es
-estrictamente negativo en la caja compacta correspondiente.
+No numerical sweep is used. `ring` only certifies polynomial identities in the real `π`; the
+sign of the derivative comes from `3 < π < 22/7`, certified Taylor bounds and a Bernstein
+certificate that the remainder is negative on the relevant box.
+
+## Main results
+
+- `Gnomon.CoherenceConstant_strictMonoOn_ge_four` : `C_Nava` is strictly increasing on `d ≥ 4`.
+- `Gnomon.CoherenceConstant_lt_CoherenceConstantInf` : `C_Nava(d) < C_∞` for `d ≥ 4`.
+- `Gnomon.geometricGap_lt_deltaInf` : `δ(d) < δ_∞` for `d ≥ 4`.
 -/
 
 @[expose] public noncomputable section
@@ -331,7 +331,7 @@ private lemma remainder_poly_neg {y p : ℝ}
             hb_12_1, hb_12_2, hb_12_3, hb_12_4, hb_12_5, hb_12_6, hb_12_7, hb_12_8, hb_12_9,
             hb_12_10, hb_12_11, hb_12_12]
 
-/-- Continuous angular form of the exact finite coherence squared. -/
+/-- `C_Nava²` as a function of the angle `x = π/(d+1)`. -/
 private noncomputable def coherenceSqAngle (x : ℝ) : ℝ :=
   ((Real.pi ^ 2 / x ^ 2 - 2 * Real.pi / x - 4 + 8 * x / Real.pi) / 3) *
       Real.tan x ^ 2 - 2 + 4 * x / Real.pi
@@ -510,7 +510,7 @@ private lemma coherenceSqAngle_strictAntiOn :
     rw [interior_Ioc] at hx
     exact deriv_coherenceSqAngle_neg hx.1 hx.2.le
 
-/-- The exact finite coherence squared is strictly increasing from dimension four onward. -/
+/-- `C_Nava²` is strictly increasing on `d ≥ 4`. -/
 theorem CoherenceConstantSq_strictMonoOn_ge_four :
     StrictMonoOn CoherenceConstantSq {d : ℕ | 4 ≤ d} := by
   intro a ha b hb hab
@@ -535,7 +535,7 @@ theorem CoherenceConstantSq_strictMonoOn_ge_four :
     nlinarith [Real.pi_pos]
   exact coherenceSqAngle_strictAntiOn ⟨htb0, htb5⟩ ⟨hta0, hta5⟩ htheta
 
-/-- The exact (square-rooted) finite coherence is strictly increasing from dimension four. -/
+/-- `C_Nava` is strictly increasing on `d ≥ 4`. -/
 theorem CoherenceConstant_strictMonoOn_ge_four :
     StrictMonoOn CoherenceConstant {d : ℕ | 4 ≤ d} := by
   intro a ha b hb hab
@@ -543,13 +543,13 @@ theorem CoherenceConstant_strictMonoOn_ge_four :
   exact Real.sqrt_lt_sqrt (zero_le_one.trans (one_lt_CoherenceConstantSq a ha).le)
     (CoherenceConstantSq_strictMonoOn_ge_four ha hb hab)
 
-/-- The geometric defect is strictly increasing from dimension four onward. -/
+/-- `δ` is strictly increasing on `d ≥ 4`. -/
 theorem geometricGap_strictMonoOn_ge_four :
     StrictMonoOn geometricGap {d : ℕ | 4 ≤ d} := by
   intro a ha b hb hab
   simpa [geometricGap] using CoherenceConstant_strictMonoOn_ge_four ha hb hab
 
-/-- Dimension four is the exact global minimum of finite coherence on the physical tail. -/
+/-- `C_Nava(4)` is the minimum on `d ≥ 4`. -/
 theorem CoherenceConstant_four_le (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant 4 ≤ CoherenceConstant d
     := by
   rcases eq_or_lt_of_le hd with h | h
@@ -558,12 +558,12 @@ theorem CoherenceConstant_four_le (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant 4
     have hmemd : d ∈ {d : ℕ | 4 ≤ d} := hd
     exact (CoherenceConstant_strictMonoOn_ge_four hmem4 hmemd h).le
 
-/-- Dimension four is the exact global minimum of the geometric defect on the physical tail. -/
+/-- `δ(4)` is the minimum on `d ≥ 4`. -/
 theorem geometricGap_four_le (d : ℕ) (hd : 4 ≤ d) :
     geometricGap 4 ≤ geometricGap d := by
   simpa [geometricGap] using CoherenceConstant_four_le d hd
 
-/-- The squared geometric defect also has its exact global minimum at dimension four. -/
+/-- `δ(4)²` is the minimum of `δ²` on `d ≥ 4`. -/
 theorem geometricGap_sq_four_le (d : ℕ) (hd : 4 ≤ d) :
     geometricGap 4 ^ 2 ≤ geometricGap d ^ 2 := by
   have h4 : 0 < geometricGap 4 := by
@@ -582,9 +582,9 @@ private theorem CoherenceConstant_tail_strictMono :
 
 private theorem CoherenceConstant_tail_tendsto :
     Tendsto (fun n : ℕ => CoherenceConstant (n + 4)) atTop (𝓝 CoherenceConstantInf) := by
-  exact (Filter.tendsto_add_atTop_iff_nat 4).2 limite_nava_szego_CoherenceConstant
+  exact (Filter.tendsto_add_atTop_iff_nat 4).2 szego_limit_CoherenceConstant
 
-/-- Every finite physical coherence lies strictly below its Nava--Szegő attractor. -/
+/-- `C_Nava(d) < C_∞` for `d ≥ 4`. -/
 theorem CoherenceConstant_lt_CoherenceConstantInf (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant d <
     CoherenceConstantInf := by
   let n := d - 4
@@ -596,7 +596,7 @@ theorem CoherenceConstant_lt_CoherenceConstantInf (d : ℕ) (hd : 4 ≤ d) : Coh
   rw [← hdn]
   exact hstep.trans_le hlimit
 
-/-- Every finite physical defect approaches the Szegő defect strictly from below. -/
+/-- `δ(d) < δ_∞` for `d ≥ 4`. -/
 theorem geometricGap_lt_deltaInf (d : ℕ) (hd : 4 ≤ d) :
     geometricGap d < deltaInf := by
   simpa [geometricGap, deltaInf] using CoherenceConstant_lt_CoherenceConstantInf d hd

@@ -13,33 +13,29 @@ public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 /-!
 # D38 — Dispersion and group velocity of transport
 
-`T_d` has the plane-wave spectrum of the path (`D6`): the sine mode of angle `θ_k` has energy
-`ε(θ_k)` with the **dispersion relation** `ε(θ) = 2 cos θ / ρ_d`, whose **group velocity** is
-`v(θ) = −ε'(θ) = 2 sin θ / ρ_d` (`hasDerivAt_dispersion`). It is largest at the band centre
-`θ = π/2`, where `ε` vanishes and is linear (`velocidadGrupo_le`, `velocidadGrupo_eq_max_iff`).
+The sine modes of `D6` have energy `ε(θ) = 2 cos θ / ρ_d`, with group velocity
+`v(θ) = −ε'(θ) = 2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Under
+`U(t) = exp(−i t T_d)` position obeys `d/dt (U† P_d U) = U† K_d U`: the tension is velocity.
+In sites, the velocity of a state is `((d−1)/2) ⟨K_d⟩`; it never exceeds one site per unit of
+time, and `ψ*` moves at exactly that speed, the slope of the cone of `D37f`. On the cube
+`Ψ*` reaches the bound on the three axes at once: velocity `(1, 1, 1)`, length `√3`.
 
-**Velocity is tension.** Under the evolution `U(t) = exp(−i t T_d)` of `D37g`, position obeys
-the Heisenberg equation `d/dt (U† P_d U) = U† K_d U` with `K_d = i[T_d, P_d]`
-(`heisenberg`). Measured in sites (`P_d` spans `d − 1` sites over `[−1, 1]`), the velocity
-of a state is `((d−1)/2)·⟨K_d⟩` (`velocidad`). It never exceeds one site per unit of time,
-and the state of maximal tension `ψ*` moves at exactly that speed
-(`abs_velocidad_le`, `velocidad_psiStar`): the slope of the light cone of `D37f`. The phase
-modes of `D6` move at the group velocity of the carrier shifted by `π/2`
-(`velocidad_modoFase`): `ψ*` is the mode at the band centre.
+## Main results
 
-**The cube is anisotropic** (`D37`). Each axis has its own velocity, bounded by one site per
-unit of time, and `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` reaches the bound on the three axes at once
-(`velocidades_PsiStar3D`): its velocity is `(1, 1, 1)`, of Euclidean length `√3`, while
-along a single axis the bound is `1` (`rapidez_sq_PsiStar3D`).
+- `GroupVelocity.hasDerivAt_dispersion` : `ε' = −v`.
+- `GroupVelocity.heisenberg` : `d/dt (U† P_d U) = U† K_d U`.
+- `GroupVelocity.abs_velocity_le`, `GroupVelocity.velocity_psiStar` : `|v| ≤ 1`, attained by
+  `ψ*`.
+- `GroupVelocity.velocities_PsiStar3D` : `Ψ*` moves at `(1, 1, 1)`.
 -/
 
 @[expose] public noncomputable section
 
-open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP SobranteIntermedio
-open LiebRobinson PathGraph3DNRS EspectroCubo
+open TransportPosition NRSInequality SpectralExtremal NearMaxTension
+open LiebRobinson PathGraph3DNRS CubeSpectrum
 open scoped Matrix
 
-namespace VelocidadGrupo
+namespace GroupVelocity
 
 variable {d : ℕ}
 
@@ -49,19 +45,19 @@ variable {d : ℕ}
 def dispersion (d : ℕ) (θ : ℝ) : ℝ := 2 * Real.cos θ / rho d
 
 /-- Group velocity `v(θ) = −ε'(θ)`, in sites per unit of time. -/
-def velocidadGrupo (d : ℕ) (θ : ℝ) : ℝ := 2 * Real.sin θ / rho d
+def groupVelocity (d : ℕ) (θ : ℝ) : ℝ := 2 * Real.sin θ / rho d
 
 theorem hasDerivAt_dispersion (θ : ℝ) :
-    HasDerivAt (dispersion d) (-velocidadGrupo d θ) θ := by
-  unfold dispersion velocidadGrupo
+    HasDerivAt (dispersion d) (-groupVelocity d θ) θ := by
+  unfold dispersion groupVelocity
   convert ((Real.hasDerivAt_cos θ).const_mul 2).div_const (rho d) using 1
   ring
 
 /-- The sine modes of `D6` are eigenvectors of `T_d`, with energy `ε(θ_k)`. -/
-theorem Td_mulVec_modoSeno (hd : 1 ≤ d) (k : Fin d) :
-    (Td d).mulVec (modoSeno d k) =
-      fun i => (dispersion d (anguloModo d k) : ℂ) * modoSeno d k i := by
-  have hA := Ad_modoSeno hd k
+theorem Td_mulVec_sineMode (hd : 1 ≤ d) (k : Fin d) :
+    (Td d).mulVec (sineMode d k) =
+      fun i => (dispersion d (modeAngle d k) : ℂ) * sineMode d k i := by
+  have hA := Ad_sineMode hd k
   funext i
   have hi := congrFun hA i
   simp only [Matrix.mulVec, dotProduct, Td] at hi ⊢
@@ -69,19 +65,19 @@ theorem Td_mulVec_modoSeno (hd : 1 ≤ d) (k : Fin d) :
   push_cast
   ring
 
-theorem dispersion_centro : dispersion d (Real.pi / 2) = 0 := by
+theorem dispersion_centre : dispersion d (Real.pi / 2) = 0 := by
   simp [dispersion]
 
-theorem velocidadGrupo_le (hd : 2 ≤ d) (θ : ℝ) : velocidadGrupo d θ ≤ 2 / rho d := by
+theorem groupVelocity_le (hd : 2 ≤ d) (θ : ℝ) : groupVelocity d θ ≤ 2 / rho d := by
   have hρ := rho_pos d hd
-  unfold velocidadGrupo
+  unfold groupVelocity
   gcongr
   linarith [Real.sin_le_one θ]
 
-theorem velocidadGrupo_eq_max_iff (hd : 2 ≤ d) (θ : ℝ) :
-    velocidadGrupo d θ = 2 / rho d ↔ Real.sin θ = 1 := by
+theorem groupVelocity_eq_max_iff (hd : 2 ≤ d) (θ : ℝ) :
+    groupVelocity d θ = 2 / rho d ↔ Real.sin θ = 1 := by
   have hρ := (rho_pos d hd).ne'
-  unfold velocidadGrupo
+  unfold groupVelocity
   constructor
   · intro h
     field_simp at h
@@ -89,8 +85,8 @@ theorem velocidadGrupo_eq_max_iff (hd : 2 ≤ d) (θ : ℝ) :
   · intro h
     rw [h, mul_one]
 
-theorem velocidadGrupo_centro : velocidadGrupo d (Real.pi / 2) = 2 / rho d := by
-  simp [velocidadGrupo]
+theorem groupVelocity_centre : groupVelocity d (Real.pi / 2) = 2 / rho d := by
+  simp [groupVelocity]
 
 /-! ## 2. The Heisenberg equation for position -/
 
@@ -143,48 +139,48 @@ theorem heisenberg (t : ℝ) :
 /-! ## 3. Velocity: one site per unit of time, reached at `ψ*` -/
 
 /-- Velocity of a state, in sites per unit of time: `((d−1)/2)·⟨K_d⟩`. -/
-def velocidad (d : ℕ) (ψ : Hd d) : ℝ := ((d : ℝ) - 1) / 2 * tension d ψ
+def velocity (d : ℕ) (ψ : Hd d) : ℝ := ((d : ℝ) - 1) / 2 * tension d ψ
 
 theorem abs_tension_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
     |tension d ψ| ≤ 2 / ((d : ℝ) - 1) := by
   have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have : Nontrivial (Hd d) := inferInstance
-  have hle := expectativa_le_radio (KdOp d) (KdOp_simetrico d) ψ hψ
-  rw [radioEspectral_KdOp_eq_paso d hd] at hle
+  have hle := expectation_le_specRadius (KdOp d) (KdOp_isSymmetric d) ψ hψ
+  rw [specRadius_KdOp_eq_step d hd] at hle
   exact (Complex.abs_re_le_norm _).trans hle
 
 /-- **Speed limit.** No unit state moves faster than one site per unit of time. -/
-theorem abs_velocidad_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) : |velocidad d ψ| ≤ 1 := by
+theorem abs_velocity_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) : |velocity d ψ| ≤ 1 := by
   have h1 : (0 : ℝ) < (d : ℝ) - 1 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
-  rw [velocidad, abs_mul, abs_of_pos (by positivity)]
+  rw [velocity, abs_mul, abs_of_pos (by positivity)]
   calc ((d : ℝ) - 1) / 2 * |tension d ψ| ≤ ((d : ℝ) - 1) / 2 * (2 / ((d : ℝ) - 1)) :=
         mul_le_mul_of_nonneg_left (abs_tension_le hd ψ hψ) (by positivity)
     _ = 1 := by field_simp
 
 /-- **`ψ*` moves at the speed limit**, the slope of the light cone of `D37f`. -/
-theorem velocidad_psiStar (hd : 2 ≤ d) : velocidad d (psiStar d) = 1 := by
+theorem velocity_psiStar (hd : 2 ≤ d) : velocity d (psiStar d) = 1 := by
   have h1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
-  rw [velocidad, tension_psiStar hd]
+  rw [velocity, tension_psiStar hd]
   field_simp
 
 /-- **Velocity of the phase modes.** The velocity operator `((d−1)/2)·K_d` acts on the phase
 mode `k` of `D6` as the group velocity at `π/2 − θ_k`: the carrier `(−i)^j` shifts the
 angle by `π/2`. For `k = 0` (`ψ*`) this is `v(π/2 − π/(d+1)) = 1`. -/
-theorem velocidad_modoFase (hd : 2 ≤ d) (k : Fin d) :
-    ((((d : ℝ) - 1) / 2 : ℝ) : ℂ) • (Kmat d).mulVec (modoFase d k) =
-      fun i => (velocidadGrupo d (Real.pi / 2 - anguloModo d k) : ℂ) * modoFase d k i := by
+theorem velocity_phaseMode (hd : 2 ≤ d) (k : Fin d) :
+    ((((d : ℝ) - 1) / 2 : ℝ) : ℂ) • (Kmat d).mulVec (phaseMode d k) =
+      fun i => (groupVelocity d (Real.pi / 2 - modeAngle d k) : ℂ) * phaseMode d k i := by
   have h1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
   have h1' : ((d : ℂ) - 1) ≠ 0 := by exact_mod_cast h1
   have hρ : (rho d : ℂ) ≠ 0 := by exact_mod_cast (rho_pos d hd).ne'
-  rw [Kmat_mulVec_modoFase hd k]
+  rw [Kmat_mulVec_phaseMode hd k]
   funext i
-  simp only [Pi.smul_apply, smul_eq_mul, velocidadGrupo, Real.sin_pi_div_two_sub]
+  simp only [Pi.smul_apply, smul_eq_mul, groupVelocity, Real.sin_pi_div_two_sub]
   push_cast
   field_simp
 
@@ -195,13 +191,13 @@ section Cubo
 variable {dx dy dz : ℕ}
 
 /-- Velocity along `x`, in sites per unit of time. -/
-def velocidadX (Φ : H3D dx dy dz) : ℝ :=
+def velocityX (Φ : H3D dx dy dz) : ℝ :=
   ((dx : ℝ) - 1) / 2 * tensionG (TX dx dy dz) (PX dx dy dz) Φ
 /-- Velocity along `y`. -/
-def velocidadY (Φ : H3D dx dy dz) : ℝ :=
+def velocityY (Φ : H3D dx dy dz) : ℝ :=
   ((dy : ℝ) - 1) / 2 * tensionG (TY dx dy dz) (PY dx dy dz) Φ
 /-- Velocity along `z`. -/
-def velocidadZ (Φ : H3D dx dy dz) : ℝ :=
+def velocityZ (Φ : H3D dx dy dz) : ℝ :=
   ((dz : ℝ) - 1) / 2 * tensionG (TZ dx dy dz) (PZ dx dy dz) Φ
 
 theorem mul_tension_le {a : ℕ} (ha : 2 ≤ a) {x n : ℝ} (hx : x ≤ 2 / ((a : ℝ) - 1) * n) :
@@ -215,18 +211,18 @@ theorem mul_tension_le {a : ℕ} (ha : 2 ≤ a) {x n : ℝ} (hx : x ≤ 2 / ((a 
 
 /-- **One speed limit per axis.** Along each axis, no state moves faster than one site per
 unit of time (`‖Φ‖ = 1`). -/
-theorem velocidades_le (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (Φ : H3D dx dy dz)
-    (hΦ : ‖Φ‖ = 1) : velocidadX Φ ≤ 1 ∧ velocidadY Φ ≤ 1 ∧ velocidadZ Φ ≤ 1 := by
+theorem velocities_le (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (Φ : H3D dx dy dz)
+    (hΦ : ‖Φ‖ = 1) : velocityX Φ ≤ 1 ∧ velocityY Φ ≤ 1 ∧ velocityZ Φ ≤ 1 := by
   have bx := tension_lift_le hx (eX dx dy dz) Φ
   have by' := tension_lift_le hy (eY dx dy dz) Φ
   have bz := tension_lift_le hz (eZ dx dy dz) Φ
   rw [hΦ, one_pow, mul_one] at bx by' bz
   refine ⟨?_, ?_, ?_⟩
-  · unfold velocidadX
+  · unfold velocityX
     exact mul_tension_le hx (n := 1) (by simpa [tensionG, TX, PX] using bx)
-  · unfold velocidadY
+  · unfold velocityY
     exact mul_tension_le hy (n := 1) (by simpa [tensionG, TY, PY] using by')
-  · unfold velocidadZ
+  · unfold velocityZ
     exact mul_tension_le hz (n := 1) (by simpa [tensionG, TZ, PZ] using bz)
 
 theorem mul_tension_eq {a : ℕ} (ha : 2 ≤ a) : ((a : ℝ) - 1) / 2 * (2 / ((a : ℝ) - 1)) = 1 := by
@@ -236,28 +232,28 @@ theorem mul_tension_eq {a : ℕ} (ha : 2 ≤ a) : ((a : ℝ) - 1) / 2 * (2 / ((a
   field_simp
 
 /-- **`Ψ*` reaches the limit on the three axes at once**: its velocity is `(1, 1, 1)`. -/
-theorem velocidades_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    velocidadX (PsiStar3D dx dy dz) = 1 ∧ velocidadY (PsiStar3D dx dy dz) = 1 ∧
-      velocidadZ (PsiStar3D dx dy dz) = 1 := by
+theorem velocities_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    velocityX (PsiStar3D dx dy dz) = 1 ∧ velocityY (PsiStar3D dx dy dz) = 1 ∧
+      velocityZ (PsiStar3D dx dy dz) = 1 := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [velocidadX, PsiStar3D_eq_eX, TX, PX,
-      (estadisticas_eje (norm_resto hy hz) hx (eX dx dy dz)).2.2.2, mul_tension_eq hx]
-  · rw [velocidadY, PsiStar3D_eq_eY, TY, PY,
-      (estadisticas_eje (norm_resto hx hz) hy (eY dx dy dz)).2.2.2, mul_tension_eq hy]
-  · rw [velocidadZ, PsiStar3D_eq_eZ, TZ, PZ,
-      (estadisticas_eje (norm_resto hx hy) hz (eZ dx dy dz)).2.2.2, mul_tension_eq hz]
+  · rw [velocityX, PsiStar3D_eq_eX, TX, PX,
+      (stats_axis (norm_rest hy hz) hx (eX dx dy dz)).2.2.2, mul_tension_eq hx]
+  · rw [velocityY, PsiStar3D_eq_eY, TY, PY,
+      (stats_axis (norm_rest hx hz) hy (eY dx dy dz)).2.2.2, mul_tension_eq hy]
+  · rw [velocityZ, PsiStar3D_eq_eZ, TZ, PZ,
+      (stats_axis (norm_rest hx hy) hz (eZ dx dy dz)).2.2.2, mul_tension_eq hz]
 
 /-- **Anisotropy.** Along the diagonal, `Ψ*` moves with squared Euclidean speed `3`, while each
 axis alone is bounded by `1`: the lattice speed limit is a cube, not a sphere. -/
-theorem rapidez_sq_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    velocidadX (PsiStar3D dx dy dz) ^ 2 + velocidadY (PsiStar3D dx dy dz) ^ 2 +
-      velocidadZ (PsiStar3D dx dy dz) ^ 2 = 3 := by
-  obtain ⟨h1, h2, h3⟩ := velocidades_PsiStar3D hx hy hz
+theorem speed_sq_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    velocityX (PsiStar3D dx dy dz) ^ 2 + velocityY (PsiStar3D dx dy dz) ^ 2 +
+      velocityZ (PsiStar3D dx dy dz) ^ 2 = 3 := by
+  obtain ⟨h1, h2, h3⟩ := velocities_PsiStar3D hx hy hz
   rw [h1, h2, h3]
   norm_num
 
 end Cubo
 
-end VelocidadGrupo
+end GroupVelocity
 
 end

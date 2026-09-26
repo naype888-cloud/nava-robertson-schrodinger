@@ -11,42 +11,17 @@ public import NavaRobertsonIndependent.Mathematics.D8_Szego
 public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 
 /-!
-# D10 — Certificado conjunto: Fiedler + Niven + Szegő en `H_d`
+# D10 — Joint certificate: Fiedler, Niven, Szegő on `H_d`
 
-Reúne, en un único certificado citable, los tres pilares que se apoyan sobre
-el hábitat común `H_d = ℂ^d` (`D0_Habitat.lean`): la descomposición
-espectral de Fiedler (`D6_Fiedler.lean`), el teorema de Niven
-(`D7_Niven.lean`) y el límite de Szegő con la positividad de la gap
-(`D8_Szego.lean`). Este es el teorema terminal del paquete: aquí se acaba
-la matemática que se demuestra en este repositorio.
+One certificate for the results that rest on `H_d = ℂ^d` (`D0`): the spectrum of the path and
+its Fiedler vector (`D6`), Niven (`D7`), the Szegő limit with the positivity of the gap (`D8`)
+and monotonicity (`D9`). Saturation happens only at `d ∈ {2, 3}`; for every `d ≥ 4` the gap is
+at least `δ(4)`, and as `d` grows it converges to `δ_∞ > 0`. `d = ∞` is only that limit.
 
-# Blindaje de `δ_geom(d)` en el Hilbert finito `H_d`
+## Main results
 
-**Hábitat:** \(H_d=\mathtt{EuclideanSpace}\,\mathbb{C}\,(\mathtt{Fin}\,d)\).
-No se abandona ese espacio: es el que acoge la derivación del marco.
-
-**Terna de escudos** (todo sobre el discreto):
-
-| Escudo | Contenido Lean |
-|--------|----------------|
-| **Fiedler** | modo fundamental / `KdOp` / radio espectral en \(H_d\) |
-| **Niven** | `saturacion_iff` + `no_reposición_saturacion_camino` + `geometricGap_pos_of_four_le` |
-| **Szegő** | `limite_szego_CoherenceConstant` + `deltaInf_pos` + ∞ no es dimensión |
-| **Monotonía** | `geometricGap_four_le`: `δ_geom(4)` es el piso global para todo `d ≥ 4` |
-
-Lectura: los productos trigonométricos simultáneamente racionales de la
-saturación del camino **solo** existen en \(d\in\{2,3\}\). No hay más
-seeds; por eso **nada repone la cota unitaria** después de \(d=4\).
-Además, la monotonía certificada fija a \(d=4\) como el menor defect
-realizado: cualquier medición en un \(H_d\) físico con \(d\ge4\) queda
-separada del cero por al menos \(\delta_{\rm geom}(4)\). Al crecer la
-familia finita, el defect no se apaga: converge a
-\(\delta_\infty>0\).
-
-**Cierre del hábitat:** \(H_d = \mathbb{C}^d \cong \mathbb{R}^{2d}\), finito.
-Punto. Si quieren continuo infinito, aquí no es hotel — \(d=\infty\) no se
-hospeda en este paquete; a lo más se le ve llegar por la ventana como límite
-(`D8_Szego.lean`), pero nunca cruza la puerta.
+- `HdCertificate.certificate` : the joint certificate is inhabited.
+- `HdCertificate.lt_geometricGap_of_lt_four` : no gap in `d ≥ 4` is below `δ(4)`.
 -/
 
 @[expose] public noncomputable section
@@ -55,118 +30,117 @@ open Real
 open Filter
 open scoped Topology
 
-namespace BlindajeHd
+namespace HdCertificate
 
-open TransportePosicion
+open TransportPosition
 open Gnomon
 
-/-! ## Habitat: no se sale de \(H_d\) -/
+/-! ## The space `H_d` -/
 
-def HabitatHilbertFinito (d : ℕ) : Prop :=
+def FiniteHabitat (d : ℕ) : Prop :=
   Hd d = EuclideanSpace ℂ (Fin d)
 
-theorem habitatHilbertFinito (d : ℕ) : HabitatHilbertFinito d :=
+theorem finiteHabitat (d : ℕ) : FiniteHabitat d :=
   Hd_eq_euclidean d
 
-theorem infinito_no_es_habitat :
+theorem deltaInf_is_limit_of_Hd :
     Tendsto geometricGap atTop (𝓝 deltaInf) ∧
       deltaInf = CoherenceConstantInf - 1 ∧
       0 < deltaInf :=
-  infinito_no_es_dimension_sino_limite
+  deltaInf_is_limit
 
-/-! ## Niven: cota unitaria no se repone -/
+/-! ## Niven: no saturation from `d = 4` -/
 
-theorem niven_saturacion_solo_seeds (d : ℕ) (hd : 2 ≤ d) :
+theorem niven_saturation_iff (d : ℕ) (hd : 2 ≤ d) :
     cos (π / (d + 1)) ^ 2 = ((d : ℝ) - 1) / 4 ↔ d = 2 ∨ d = 3 :=
-  saturacion_iff d hd
+  saturation_iff d hd
 
-/-- **Nada repone la cota** tras \(d=4\). -/
-theorem niven_cota_unitaria_no_se_repone (d : ℕ) (hd : 4 ≤ d) :
+/-- No saturation for `d ≥ 4`. -/
+theorem niven_not_saturated (d : ℕ) (hd : 4 ≤ d) :
     cos (π / (d + 1)) ^ 2 ≠ ((d : ℝ) - 1) / 4 :=
-  no_reposición_saturacion_camino d hd
+  not_saturated_of_four_le d hd
 
-theorem niven_geometricGap_pos_en_Hd (d : ℕ) (hd : 4 ≤ d) :
+theorem niven_geometricGap_pos (d : ℕ) (hd : 4 ≤ d) :
     0 < geometricGap d :=
   geometricGap_pos_of_four_le d hd
 
-theorem piso_precision_geometricGap_d4_en_Hd (d : ℕ) (hd : 4 ≤ d) :
+theorem geometricGap_four_le_of_Hd (d : ℕ) (hd : 4 ≤ d) :
     geometricGap 4 ≤ geometricGap d :=
   geometricGap_four_le d hd
 
-/-- En el régimen físico finito `H_d`, `d ≥ 4`, no existe lectura con defect
-por debajo del piso elemental `δ_geom(4)`. -/
-theorem no_medicion_absoluta_bajo_piso_d4_en_Hd
+/-- For `d ≥ 4` every gap is above any `ε < δ(4)`. -/
+theorem lt_geometricGap_of_lt_four
     (d : ℕ) (hd : 4 ≤ d) (ε : ℝ) (hε : ε < geometricGap 4) :
     ε < geometricGap d :=
-  lt_of_lt_of_le hε (piso_precision_geometricGap_d4_en_Hd d hd)
+  lt_of_lt_of_le hε (geometricGap_four_le_of_Hd d hd)
 
-/-! ## Fiedler: espectro y banda en \(H_d\) -/
+/-! ## Fiedler: spectrum of `K_d` on `H_d` -/
 
-theorem fiedler_autovector_en_Hd (d : ℕ) (hd : 2 ≤ d) :
-    KdOp d (vectorFiedlerExplicito d) =
-      ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • vectorFiedlerExplicito d :=
-  KdOp_vectorFiedlerExplicito d hd
+theorem fiedler_eigenvector_Hd (d : ℕ) (hd : 2 ≤ d) :
+    KdOp d (fiedlerVec d) =
+      ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • fiedlerVec d :=
+  KdOp_fiedlerVec d hd
 
-theorem fiedler_radio_banda (d : ℕ) (hd : 2 ≤ d) :
+theorem fiedler_specRadius (d : ℕ) (hd : 2 ≤ d) :
     letI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
     letI : Nontrivial (Hd d) := inferInstance
-    ConstructorEspectralTP.radioEspectral (KdOp d) (KdOp_simetrico d) =
+    SpectralExtremal.specRadius (KdOp d) (KdOp_isSymmetric d) =
       2 / ((d : ℝ) - 1) := by
   let : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   let : Nontrivial (Hd d) := inferInstance
-  exact radioEspectral_KdOp_eq_paso d hd
+  exact specRadius_KdOp_eq_step d hd
 
-/-! ## Szegő: asintótica de la familia finita -/
+/-! ## Szegő: the limit of the finite family -/
 
-theorem szego_limite_familia_finita :
+theorem szego_limit_family :
     Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
-  limite_szego_CoherenceConstant
+  tendsto_CoherenceConstant
 
 theorem szego_deltaInf_pos : 0 < deltaInf :=
   deltaInf_pos
 
-theorem defect_real_positivo_desde_Hd4_hasta_limite :
+theorem geometricGap_pos_and_tendsto :
     (∀ d : ℕ, 4 ≤ d → 0 < geometricGap d) ∧
       Tendsto geometricGap atTop (𝓝 deltaInf) ∧
       0 < deltaInf :=
-  ⟨niven_geometricGap_pos_en_Hd, limite_defect_geometrico, szego_deltaInf_pos⟩
+  ⟨niven_geometricGap_pos, tendsto_geometricGap, szego_deltaInf_pos⟩
 
-/-! ## Certificado conjunto citable -/
+/-! ## The joint certificate -/
 
-structure CertificadoBlindajeHd where
-  habitat : ∀ d : ℕ, HabitatHilbertFinito d
+structure Certificate where
+  habitat : ∀ d : ℕ, FiniteHabitat d
   niven_iff :
     ∀ d : ℕ, 2 ≤ d →
       (cos (π / ((d : ℝ) + 1)) ^ 2 = ((d : ℝ) - 1) / 4 ↔ d = 2 ∨ d = 3)
-  niven_no_reposición :
+  niven_not_saturated_of_four_le :
     ∀ d : ℕ, 4 ≤ d →
       cos (π / ((d : ℝ) + 1)) ^ 2 ≠ ((d : ℝ) - 1) / 4
   geometricGap_pos : ∀ d : ℕ, 4 ≤ d → 0 < geometricGap d
-  geometricGap_piso_d4 : ∀ d : ℕ, 4 ≤ d → geometricGap 4 ≤ geometricGap d
-  fiedler_autovector :
+  geometricGap_floor : ∀ d : ℕ, 4 ≤ d → geometricGap 4 ≤ geometricGap d
+  fiedler_eigenvector :
     ∀ d : ℕ, 2 ≤ d →
-      KdOp d (vectorFiedlerExplicito d) =
-        ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • vectorFiedlerExplicito d
-  szego_limite : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf)
+      KdOp d (fiedlerVec d) =
+        ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • fiedlerVec d
+  szego_limit : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf)
   szego_deltaInf : 0 < deltaInf
-  defect_real_positivo :
+  gap_pos_and_limit :
     (∀ d : ℕ, 4 ≤ d → 0 < geometricGap d) ∧
       Tendsto geometricGap atTop (𝓝 deltaInf) ∧
       0 < deltaInf
-  infinito_limite :
+  infinity_is_limit :
     Tendsto geometricGap atTop (𝓝 deltaInf) ∧
       deltaInf = CoherenceConstantInf - 1 ∧ 0 < deltaInf
 
-theorem certificadoBlindajeHd_OK : Nonempty CertificadoBlindajeHd :=
-  ⟨{ habitat := habitatHilbertFinito
-     niven_iff := fun d hd => niven_saturacion_solo_seeds d hd
-     niven_no_reposición := fun d hd => niven_cota_unitaria_no_se_repone d hd
-     geometricGap_pos := fun d hd => niven_geometricGap_pos_en_Hd d hd
-     geometricGap_piso_d4 := fun d hd => piso_precision_geometricGap_d4_en_Hd d hd
-     fiedler_autovector := fun d hd => fiedler_autovector_en_Hd d hd
-     szego_limite := szego_limite_familia_finita
+theorem certificate : Nonempty Certificate :=
+  ⟨{ habitat := finiteHabitat
+     niven_iff := fun d hd => niven_saturation_iff d hd
+     niven_not_saturated_of_four_le := fun d hd => niven_not_saturated d hd
+     geometricGap_pos := fun d hd => niven_geometricGap_pos d hd
+     geometricGap_floor := fun d hd => geometricGap_four_le_of_Hd d hd
+     fiedler_eigenvector := fun d hd => fiedler_eigenvector_Hd d hd
+     szego_limit := szego_limit_family
      szego_deltaInf := szego_deltaInf_pos
-     defect_real_positivo := defect_real_positivo_desde_Hd4_hasta_limite
-     infinito_limite := infinito_no_es_habitat }⟩
+     gap_pos_and_limit := geometricGap_pos_and_tendsto
+     infinity_is_limit := deltaInf_is_limit_of_Hd }⟩
 
-end BlindajeHd
+end HdCertificate

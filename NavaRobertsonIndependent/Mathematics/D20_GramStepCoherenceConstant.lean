@@ -10,37 +10,26 @@ public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# Escalón: defect de Gram de `(T_d ψ, P_d ψ)` y `C_Nava(d)²`
+# D20 — The Gram defect of `(T_d ψ*, P_d ψ*)` and `C_Nava(d)²`
 
-Módulo de álgebra pura sobre `H_d = ℂ^d`. Une dos cosas que en el corpus
-estaban separadas:
+Joins the closed form `CoherenceConstantSq d` to the concrete `T_d`, `P_d` and `ψ* = fiedlerVec d`.
+For `d ≥ 2`, `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²` (`gramStep_product`); the cross product
+`⟪T_d ψ*, P_d ψ*⟫` has real part `0` and imaginary part `−1/(d−1)`, so the Gram defect is
+`(C_Nava(d)² − 1)/(d−1)²` (`gramStep_gram`). Both means vanish, so this is the centred defect: it
+is zero exactly at `d = 2, 3` and positive from `d = 4`.
 
-* la fórmula cerrada `CoherenceConstantSq d` (y con ella `δ_geom d = C_Nava d - 1`);
-* las matrices concretas `T_d`, `P_d` y el vector explícito
-  `ψ = vectorFiedlerExplicito d`.
+## Main results
 
-Resultado central (`escalon_producto`), para `d ≥ 2`:
-
-`(d-1)² · ‖T_d ψ‖² · ‖P_d ψ‖² = CoherenceConstantSq d`.
-
-Con `⟨T_d ψ, P_d ψ⟩` de parte real nula y parte imaginaria `-1/(d-1)`
-(`escalon_cruzado_re`, `escalon_cruzado_im`) el defect de Gram del par vale
-`(CoherenceConstantSq d - 1)/(d-1)²` (`escalon_gram`). Las medias `⟨ψ, T_d ψ⟩` y
-`⟨ψ, P_d ψ⟩` son nulas (`escalon_media_T`, `escalon_media_P`), de modo que ese
-defect es el centrado. Por tanto se anula exactamente en `d = 2, 3`
-(`escalon_gram_eq_zero_iff`) y es estrictamente positivo desde `d = 4`
-(`escalon_gram_pos`).
-
-No se introduce ninguna definición nueva sobre los operadores: todo se
-demuestra sobre `TdOp`, `PdOp`, `KdOp` y `vectorFiedlerExplicito` ya
-existentes.
+- `GramStep.gramStep_product` : `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`.
+- `GramStep.gramStep_gram` : the Gram defect is `(C_Nava(d)² − 1)/(d−1)²`.
+- `GramStep.gramStep_gram_eq_zero_iff`, `GramStep.gramStep_gram_pos`.
 -/
 
 @[expose] public noncomputable section
 
 namespace Gnomon
 
-/-- `C_Nava(d) = 1` exactamente en las seeds `d = 2, 3` (dimensiones `≥ 2`). -/
+/-- `C_Nava(d) = 1` exactly at `d = 2, 3`. -/
 theorem CoherenceConstant_eq_one_iff (d : ℕ) (hd : 2 ≤ d) : CoherenceConstant d = 1 ↔ d = 2 ∨ d = 3
     := by
   constructor
@@ -60,11 +49,11 @@ theorem CoherenceConstant_eq_one_iff (d : ℕ) (hd : 2 ≤ d) : CoherenceConstan
 
 end Gnomon
 
-open Gnomon TransportePosicion RNavaVarianzaFiedler
+open Gnomon TransportPosition FiedlerPositionVariance
 
-namespace EscalonGramCoherenceConstant
+namespace GramStep
 
-/-! ## 1. Acción de las matrices sobre coordenadas -/
+/-! ## 1. The matrices on coordinates -/
 
 theorem TdOp_apply (d : ℕ) (x : Hd d) :
     TdOp d x = WithLp.toLp 2 ((Td d).mulVec x.ofLp) :=
@@ -80,21 +69,21 @@ theorem Td_mulVec (d : ℕ) (f : Fin d → ℂ) (i : Fin d) :
   rw [Finset.sum_div]
 
 theorem Pd_mulVec (d : ℕ) (f : Fin d → ℂ) (i : Fin d) :
-    (Pd d).mulVec f i = (posicionCoord d i : ℂ) * f i := by
+    (Pd d).mulVec f i = (posCoord d i : ℂ) * f i := by
   simp [Matrix.mulVec, dotProduct, Pd]
 
-/-! ## 2. Coordenadas del modo crudo -/
+/-! ## 2. Coordinates of the raw mode -/
 
-/-- Coordenadas del vector de Fiedler sin normalizar. -/
+/-- The coordinates of the unnormalized Fiedler vector. -/
 def cf (d : ℕ) (j : Fin d) : ℂ :=
   (-Complex.I) ^ j.val * (Real.sin (((j.val : ℝ) + 1) * theta d) : ℂ)
 
-theorem crudo_ofLp (d : ℕ) : (vectorFiedlerCrudo d).ofLp = cf d := by
+theorem raw_ofLp (d : ℕ) : (fiedlerVecRaw d).ofLp = cf d := by
   funext j
-  have h : (vectorFiedlerCrudo d).ofLp j =
+  have h : (fiedlerVecRaw d).ofLp j =
       (-Complex.I) ^ j.val *
-        (Real.sin (((j.val : ℝ) + 1) * anguloFiedler d) : ℂ) := rfl
-  rw [h, anguloFiedler_eq_theta]
+        (Real.sin (((j.val : ℝ) + 1) * fiedlerAngle d) : ℂ) := rfl
+  rw [h, fiedlerAngle_eq_theta]
   rfl
 
 theorem sin_sub_sin_two (θ : ℝ) (n : ℕ) :
@@ -122,13 +111,13 @@ theorem cos_theta_pos {d : ℕ} (hd : 2 ≤ d) : 0 < Real.cos (theta d) := by
     nlinarith [Real.pi_pos]
   exact Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], h2⟩
 
-theorem sin_frontera (d : ℕ) : Real.sin (((d : ℝ) + 1) * theta d) = 0 := by
+theorem sin_boundary (d : ℕ) : Real.sin (((d : ℝ) + 1) * theta d) = 0 := by
   have : ((d : ℝ) + 1) * theta d = Real.pi := by
     unfold theta Nreal
     field_simp
   rw [this, Real.sin_pi]
 
-/-- La adyacencia actúa sobre el modo de fase como `(-i)^(j+1) · 2 sin θ cos((j+1)θ)`. -/
+/-- The adjacency acts on the phase mode as `(−i)^(j+1) · 2 sin θ cos((j+1)θ)`. -/
 theorem Ad_cf_apply (d : ℕ) (i : Fin d) :
     (Ad d).mulVec (cf d) i =
       (-Complex.I) ^ (i.val + 1) *
@@ -146,7 +135,7 @@ theorem Ad_cf_apply (d : ℕ) (i : Fin d) :
         push_cast at this
         linarith
       simp only [h, dite_false]
-      rw [hr, sin_frontera]
+      rw [hr, sin_boundary]
       simp
   have hdown : (if h : 0 < i.val then cf d ⟨i.val - 1, by omega⟩ else 0) =
       -((-Complex.I) ^ (i.val + 1) * (Real.sin ((i.val : ℝ) * theta d) : ℂ)) := by
@@ -190,7 +179,7 @@ theorem Td_cf_apply {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
   push_cast
   field_simp
 
-/-! ## 3. Normas -/
+/-! ## 3. Norms -/
 
 theorem norm_ofLp_sq_of_phase (i : ℕ) (r : ℝ) :
     ‖(-Complex.I) ^ i * (r : ℂ)‖ ^ 2 = r ^ 2 := by
@@ -199,9 +188,9 @@ theorem norm_ofLp_sq_of_phase (i : ℕ) (r : ℝ) :
 
 theorem sum_sin_sq_fin {d : ℕ} (hd : 1 ≤ d) :
     ∑ i : Fin d, Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 = ((d : ℝ) + 1) / 2 := by
-  have h1 := crudo_normSq_eq_sum d
+  have h1 := raw_normSq_eq_sum d
   rw [sin_sq_sum_eq d hd, EuclideanSpace.norm_sq_eq] at h1
-  simp_rw [vectorFiedlerCrudo_norm_sq] at h1
+  simp_rw [fiedlerVecRaw_norm_sq] at h1
   exact h1.symm ▸ rfl
 
 theorem sum_cos_sq_fin {d : ℕ} (hd : 1 ≤ d) :
@@ -213,43 +202,42 @@ theorem sum_cos_sq_fin {d : ℕ} (hd : 1 ≤ d) :
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]
   ring
 
-theorem norm_crudo_sq {d : ℕ} (hd : 1 ≤ d) :
-    ‖vectorFiedlerCrudo d‖ ^ 2 = ((d : ℝ) + 1) / 2 := by
-  rw [crudo_normSq_eq_sum, sin_sq_sum_eq d hd]
+theorem norm_raw_sq {d : ℕ} (hd : 1 ≤ d) :
+    ‖fiedlerVecRaw d‖ ^ 2 = ((d : ℝ) + 1) / 2 := by
+  rw [raw_normSq_eq_sum, sin_sq_sum_eq d hd]
 
-theorem norm_sq_Td_crudo {d : ℕ} (hd : 2 ≤ d) :
-    ‖TdOp d (vectorFiedlerCrudo d)‖ ^ 2 = Real.tan (theta d) ^ 2 * (((d : ℝ) - 1) / 2) := by
+theorem norm_sq_Td_raw {d : ℕ} (hd : 2 ≤ d) :
+    ‖TdOp d (fiedlerVecRaw d)‖ ^ 2 = Real.tan (theta d) ^ 2 * (((d : ℝ) - 1) / 2) := by
   rw [EuclideanSpace.norm_sq_eq]
-  have hcoord : ∀ i : Fin d, ‖(TdOp d (vectorFiedlerCrudo d)).ofLp i‖ ^ 2 =
+  have hcoord : ∀ i : Fin d, ‖(TdOp d (fiedlerVecRaw d)).ofLp i‖ ^ 2 =
       Real.tan (theta d) ^ 2 * Real.cos (((i.val : ℝ) + 1) * theta d) ^ 2 := by
     intro i
-    rw [TdOp_apply, WithLp.ofLp_toLp, crudo_ofLp, Td_cf_apply hd i, norm_ofLp_sq_of_phase,
+    rw [TdOp_apply, WithLp.ofLp_toLp, raw_ofLp, Td_cf_apply hd i, norm_ofLp_sq_of_phase,
       mul_pow]
   simp_rw [hcoord]
   rw [← Finset.mul_sum, sum_cos_sq_fin (by omega)]
 
 theorem norm_sq_Td_psi {d : ℕ} (hd : 2 ≤ d) :
-    ‖TdOp d (vectorFiedlerExplicito d)‖ ^ 2 =
+    ‖TdOp d (fiedlerVec d)‖ ^ 2 =
       Real.tan (theta d) ^ 2 * (((d : ℝ) - 1) / ((d : ℝ) + 1)) := by
-  have hn := norm_crudo_sq (d := d) (by omega)
-  rw [vectorFiedlerExplicito, map_smul, norm_smul, mul_pow, norm_inv, Complex.norm_real,
-    norm_norm, inv_pow, hn, norm_sq_Td_crudo hd]
+  have hn := norm_raw_sq (d := d) (by omega)
+  rw [fiedlerVec, map_smul, norm_smul, mul_pow, norm_inv, Complex.norm_real,
+    norm_norm, inv_pow, hn, norm_sq_Td_raw hd]
   have : (d : ℝ) + 1 ≠ 0 := by positivity
   field_simp
 
 theorem norm_sq_Pd_psi {d : ℕ} (hd : 2 ≤ d) :
-    ‖PdOp d (vectorFiedlerExplicito d)‖ ^ 2 = RNavaSq d := by
-  rw [RNavaSq_eq_varianzaFin d hd, EuclideanSpace.norm_sq_eq]
+    ‖PdOp d (fiedlerVec d)‖ ^ 2 = RNavaSq d := by
+  rw [RNavaSq_eq_positionVariance d hd, EuclideanSpace.norm_sq_eq]
   apply Finset.sum_congr rfl
   intro i _
   rw [PdOp_apply, WithLp.ofLp_toLp, Pd_mulVec, norm_mul, Complex.norm_real, Real.norm_eq_abs,
     mul_pow, sq_abs, mul_comm]
 
-/-- **Escalón.** `(d-1)² · ‖T_d ψ‖² · ‖P_d ψ‖² = C_Nava(d)²`, sobre las matrices
-concretas y el vector de Fiedler explícito. -/
-theorem escalon_producto {d : ℕ} (hd : 2 ≤ d) :
+/-- `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`. -/
+theorem gramStep_product {d : ℕ} (hd : 2 ≤ d) :
     ((d : ℝ) - 1) ^ 2 *
-        (‖TdOp d (vectorFiedlerExplicito d)‖ ^ 2 * ‖PdOp d (vectorFiedlerExplicito d)‖ ^ 2) =
+        (‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2) =
       CoherenceConstantSq d := by
   rw [norm_sq_Td_psi hd, norm_sq_Pd_psi hd, RNavaSq_eq d hd]
   have hs : Real.sin (theta d) ≠ 0 := (sin_theta_pos (by omega)).ne'
@@ -264,14 +252,14 @@ theorem escalon_producto {d : ℕ} (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-! ## 4. Producto cruzado `⟨T_d ψ, P_d ψ⟩` -/
+/-! ## 4. The cross product `⟪T_d ψ*, P_d ψ*⟫` -/
 
-theorem cruz_term {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
-    inner ℂ ((TdOp d (vectorFiedlerCrudo d)).ofLp i) ((PdOp d (vectorFiedlerCrudo d)).ofLp i) =
+theorem cross_term {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
+    inner ℂ ((TdOp d (fiedlerVecRaw d)).ofLp i) ((PdOp d (fiedlerVecRaw d)).ofLp i) =
       Complex.I *
-        ((posicionCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) *
+        ((posCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) *
           (Real.tan (theta d) * Real.cos (((i.val : ℝ) + 1) * theta d)) : ℝ) : ℂ) := by
-  simp only [TdOp_apply, PdOp_apply, WithLp.ofLp_toLp, crudo_ofLp]
+  simp only [TdOp_apply, PdOp_apply, WithLp.ofLp_toLp, raw_ofLp]
   rw [Td_cf_apply hd i, Pd_mulVec, RCLike.inner_apply]
   have hII : ((-Complex.I) ^ i.val) * (Complex.I ^ i.val) = 1 := by
     rw [← mul_pow]
@@ -281,7 +269,7 @@ theorem cruz_term {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
     simp
   rw [map_mul, hconj, Complex.conj_ofReal]
   simp only [cf]
-  generalize posicionCoord d i = p
+  generalize posCoord d i = p
   generalize Real.sin (((i.val : ℝ) + 1) * theta d) = sn
   generalize Real.tan (theta d) = t
   generalize Real.cos (((i.val : ℝ) + 1) * theta d) = c
@@ -289,44 +277,44 @@ theorem cruz_term {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
   rw [pow_succ Complex.I]
   linear_combination (Complex.I * (p : ℂ) * (sn : ℂ) * (t : ℂ) * (c : ℂ)) * hII
 
-theorem cruzado_crudo_re {d : ℕ} (hd : 2 ≤ d) :
-    (inner ℂ (TdOp d (vectorFiedlerCrudo d)) (PdOp d (vectorFiedlerCrudo d))).re = 0 := by
+theorem cross_raw_re {d : ℕ} (hd : 2 ≤ d) :
+    (inner ℂ (TdOp d (fiedlerVecRaw d)) (PdOp d (fiedlerVecRaw d))).re = 0 := by
   rw [PiLp.inner_apply]
-  simp_rw [cruz_term hd]
+  simp_rw [cross_term hd]
   rw [← Finset.mul_sum, ← Complex.ofReal_sum, Complex.I_mul_re, Complex.ofReal_im, neg_zero]
 
-/-- La parte real del producto cruzado es nula (covarianza nula). -/
-theorem escalon_cruzado_re {d : ℕ} (hd : 2 ≤ d) :
-    (inner ℂ (TdOp d (vectorFiedlerExplicito d)) (PdOp d (vectorFiedlerExplicito d))).re = 0 := by
-  have hcr := cruzado_crudo_re hd
-  rw [vectorFiedlerExplicito, map_smul, map_smul, inner_smul_left, inner_smul_right,
+/-- The cross product has real part `0`: zero covariance. -/
+theorem gramStep_cross_re {d : ℕ} (hd : 2 ≤ d) :
+    (inner ℂ (TdOp d (fiedlerVec d)) (PdOp d (fiedlerVec d))).re = 0 := by
+  have hcr := cross_raw_re hd
+  rw [fiedlerVec, map_smul, map_smul, inner_smul_left, inner_smul_right,
     ← mul_assoc]
-  set r : ℂ := ((‖vectorFiedlerCrudo d‖ : ℝ) : ℂ)⁻¹ with hr
-  have hrr : (starRingEnd ℂ) r * r = ((((‖vectorFiedlerCrudo d‖ : ℝ) ^ 2)⁻¹ : ℝ) : ℂ) := by
+  set r : ℂ := ((‖fiedlerVecRaw d‖ : ℝ) : ℂ)⁻¹ with hr
+  have hrr : (starRingEnd ℂ) r * r = ((((‖fiedlerVecRaw d‖ : ℝ) ^ 2)⁻¹ : ℝ) : ℂ) := by
     rw [hr, map_inv₀, Complex.conj_ofReal]
     push_cast
     ring
   rw [hrr, Complex.re_ofReal_mul, hcr]
   ring
 
-/-! ## 5. Parte imaginaria vía el autovalor de `K = i[T_d,P_d]` -/
+/-! ## 5. The imaginary part through the eigenvalue of `K_d` -/
 
-theorem escalon_cruzado_im {d : ℕ} (hd : 2 ≤ d) :
-    (inner ℂ (TdOp d (vectorFiedlerExplicito d)) (PdOp d (vectorFiedlerExplicito d))).im =
+theorem gramStep_cross_im {d : ℕ} (hd : 2 ≤ d) :
+    (inner ℂ (TdOp d (fiedlerVec d)) (PdOp d (fiedlerVec d))).im =
       -(1 / ((d : ℝ) - 1)) := by
-  set ψ := vectorFiedlerExplicito d with hψ
+  set ψ := fiedlerVec d with hψ
   set z := inner ℂ (TdOp d ψ) (PdOp d ψ) with hz
-  have hK := KdOp_vectorFiedlerExplicito d hd
-  have hn : ‖ψ‖ = 1 := vectorFiedlerExplicito_normalizado d (by omega)
+  have hK := KdOp_fiedlerVec d hd
+  have hn : ‖ψ‖ = 1 := norm_fiedlerVec d (by omega)
   have h1 : inner ℂ ψ (KdOp d ψ) = ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) := by
     rw [hK, inner_smul_right, inner_self_eq_norm_sq_to_K, hn]
     simp
   have h2 : inner ℂ ψ (KdOp d ψ) = Complex.I * (z - (starRingEnd ℂ) z) := by
-    have hT := TdOp_simetrico d ψ (PdOp d ψ)
-    have hP := PdOp_simetrico d ψ (TdOp d ψ)
+    have hT := TdOp_isSymmetric d ψ (PdOp d ψ)
+    have hP := PdOp_isSymmetric d ψ (TdOp d ψ)
     have hc : inner ℂ (PdOp d ψ) (TdOp d ψ) = (starRingEnd ℂ) z :=
       (inner_conj_symm (PdOp d ψ) (TdOp d ψ)).symm
-    simp only [KdOp, ConstructorEspectralTP.observableTension, ConstructorEspectralTP.conmutador,
+    simp only [KdOp, SpectralExtremal.observableTension, SpectralExtremal.opCommutator,
       LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply, inner_smul_right,
       inner_sub_right]
     rw [← hT, ← hP, hc]
@@ -341,46 +329,46 @@ theorem escalon_cruzado_im {d : ℕ} (hd : 2 ≤ d) :
   field_simp at h3 ⊢
   linarith
 
-/-! ## 6. Defect de Gram del par `(T_d ψ, P_d ψ)` -/
+/-! ## 6. The Gram defect of `(T_d ψ*, P_d ψ*)` -/
 
-/-- Defect de Gram del par `(T_d ψ, P_d ψ)`. -/
+/-- The Gram defect of `(T_d ψ*, P_d ψ*)`. -/
 def defectGram (d : ℕ) : ℝ :=
-  ‖TdOp d (vectorFiedlerExplicito d)‖ ^ 2 * ‖PdOp d (vectorFiedlerExplicito d)‖ ^ 2 -
-    ‖inner ℂ (TdOp d (vectorFiedlerExplicito d)) (PdOp d (vectorFiedlerExplicito d))‖ ^ 2
+  ‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2 -
+    ‖inner ℂ (TdOp d (fiedlerVec d)) (PdOp d (fiedlerVec d))‖ ^ 2
 
-/-- **Puente.** El defect de Gram es `(C_Nava(d)² - 1)/(d-1)²`. -/
-theorem escalon_gram {d : ℕ} (hd : 2 ≤ d) :
+/-- The Gram defect is `(C_Nava(d)² − 1)/(d−1)²`. -/
+theorem gramStep_gram {d : ℕ} (hd : 2 ≤ d) :
     defectGram d = (CoherenceConstantSq d - 1) / ((d : ℝ) - 1) ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
     linarith
-  have hprod := escalon_producto hd
-  have hnorm : ‖inner ℂ (TdOp d (vectorFiedlerExplicito d))
-      (PdOp d (vectorFiedlerExplicito d))‖ ^ 2 = 1 / ((d : ℝ) - 1) ^ 2 := by
-    rw [Complex.sq_norm, Complex.normSq_apply, escalon_cruzado_re hd, escalon_cruzado_im hd]
+  have hprod := gramStep_product hd
+  have hnorm : ‖inner ℂ (TdOp d (fiedlerVec d))
+      (PdOp d (fiedlerVec d))‖ ^ 2 = 1 / ((d : ℝ) - 1) ^ 2 := by
+    rw [Complex.sq_norm, Complex.normSq_apply, gramStep_cross_re hd, gramStep_cross_im hd]
     field_simp
     ring
   unfold defectGram
   rw [hnorm, ← hprod]
   field_simp
 
-/-- Desde `d = 4` el defect de Gram es estrictamente positivo. -/
-theorem escalon_gram_pos {d : ℕ} (hd : 4 ≤ d) : 0 < defectGram d := by
-  rw [escalon_gram (by omega)]
+/-- From `d = 4` the Gram defect is positive. -/
+theorem gramStep_gram_pos {d : ℕ} (hd : 4 ≤ d) : 0 < defectGram d := by
+  rw [gramStep_gram (by omega)]
   have h1 := one_lt_CoherenceConstantSq d hd
   have hd1 : (0 : ℝ) < ((d : ℝ) - 1) ^ 2 := by
     have : (4 : ℝ) ≤ d := by exact_mod_cast hd
     nlinarith
   exact div_pos (by linarith) hd1
 
-/-- El defect de Gram se anula exactamente en `d = 2, 3`. -/
-theorem escalon_gram_eq_zero_iff {d : ℕ} (hd : 2 ≤ d) :
+/-- The Gram defect vanishes exactly at `d = 2, 3`. -/
+theorem gramStep_gram_eq_zero_iff {d : ℕ} (hd : 2 ≤ d) :
     defectGram d = 0 ↔ d = 2 ∨ d = 3 := by
   have hd1 : (0 : ℝ) < ((d : ℝ) - 1) ^ 2 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     nlinarith
-  rw [← CoherenceConstant_eq_one_iff d hd, escalon_gram hd, CoherenceConstant, Real.sqrt_eq_one,
+  rw [← CoherenceConstant_eq_one_iff d hd, gramStep_gram hd, CoherenceConstant, Real.sqrt_eq_one,
     div_eq_zero_iff]
   constructor
   · rintro (h | h)
@@ -389,7 +377,7 @@ theorem escalon_gram_eq_zero_iff {d : ℕ} (hd : 2 ≤ d) :
   · intro h
     exact Or.inl (by linarith)
 
-/-! ## 7. Las medias son nulas: el defect es el centrado -/
+/-! ## 7. The means vanish: the defect is the centred one -/
 
 theorem sum_fin_shift (d : ℕ) (g : ℕ → ℝ) (h0 : g 0 = 0) :
     ∑ i : Fin d, g (i.val + 1) = ∑ k ∈ Finset.range (d + 1), g k := by
@@ -397,7 +385,7 @@ theorem sum_fin_shift (d : ℕ) (g : ℕ → ℝ) (h0 : g 0 = 0) :
   ring
 
 theorem sum_pos_sin_sq {d : ℕ} (hd : 2 ≤ d) :
-    ∑ i : Fin d, posicionCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 = 0 := by
+    ∑ i : Fin d, posCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 = 0 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
@@ -410,39 +398,39 @@ theorem sum_pos_sin_sq {d : ℕ} (hd : 2 ≤ d) :
     simp only [Nat.cast_add, Nat.cast_one] at this
     rw [this, hk]
   have hsf := sum_sin_sq_fin (d := d) (by omega)
-  have hterm : ∀ i : Fin d, posicionCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 =
+  have hterm : ∀ i : Fin d, posCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 =
       (2 * (((i.val : ℝ) + 1) * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2) -
         ((d : ℝ) + 1) * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2) / ((d : ℝ) - 1) := by
     intro i
-    rw [posicionCoord_apply]
+    rw [posCoord_apply]
     ring
   simp_rw [hterm]
   rw [← Finset.sum_div, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, hkf, hsf]
   ring
 
-/-- `⟨ψ, P_d ψ⟩ = 0`. -/
-theorem escalon_media_P {d : ℕ} (hd : 2 ≤ d) :
-    inner ℂ (vectorFiedlerExplicito d) (PdOp d (vectorFiedlerExplicito d)) = 0 := by
-  have hn := norm_crudo_sq (d := d) (by omega)
+/-- `⟪ψ*, P_d ψ*⟫ = 0`. -/
+theorem gramStep_mean_P {d : ℕ} (hd : 2 ≤ d) :
+    inner ℂ (fiedlerVec d) (PdOp d (fiedlerVec d)) = 0 := by
+  have hn := norm_raw_sq (d := d) (by omega)
   have hterm : ∀ i : Fin d,
-      inner ℂ ((vectorFiedlerExplicito d).ofLp i) ((PdOp d (vectorFiedlerExplicito d)).ofLp i) =
-        ((posicionCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 /
+      inner ℂ ((fiedlerVec d).ofLp i) ((PdOp d (fiedlerVec d)).ofLp i) =
+        ((posCoord d i * Real.sin (((i.val : ℝ) + 1) * theta d) ^ 2 /
           (((d : ℝ) + 1) / 2) : ℝ) : ℂ) := by
     intro i
     simp only [PdOp_apply, WithLp.ofLp_toLp]
     rw [Pd_mulVec, RCLike.inner_apply]
-    have h2 : ((vectorFiedlerExplicito d).ofLp i) *
-        (starRingEnd ℂ) ((vectorFiedlerExplicito d).ofLp i) =
-          ((‖(vectorFiedlerExplicito d).ofLp i‖ ^ 2 : ℝ) : ℂ) := by
+    have h2 : ((fiedlerVec d).ofLp i) *
+        (starRingEnd ℂ) ((fiedlerVec d).ofLp i) =
+          ((‖(fiedlerVec d).ofLp i‖ ^ 2 : ℝ) : ℂ) := by
       rw [Complex.mul_conj', ]
       push_cast
       ring
-    have hnorm := vectorFiedlerExplicito_norm_sq d (by omega) i
-    rw [vectorFiedlerCrudo_norm_sq, hn] at hnorm
-    calc (posicionCoord d i : ℂ) * (vectorFiedlerExplicito d).ofLp i *
-          (starRingEnd ℂ) ((vectorFiedlerExplicito d).ofLp i)
-        = (posicionCoord d i : ℂ) * ((vectorFiedlerExplicito d).ofLp i *
-          (starRingEnd ℂ) ((vectorFiedlerExplicito d).ofLp i)) := by ring
+    have hnorm := fiedlerVec_norm_sq d (by omega) i
+    rw [fiedlerVecRaw_norm_sq, hn] at hnorm
+    calc (posCoord d i : ℂ) * (fiedlerVec d).ofLp i *
+          (starRingEnd ℂ) ((fiedlerVec d).ofLp i)
+        = (posCoord d i : ℂ) * ((fiedlerVec d).ofLp i *
+          (starRingEnd ℂ) ((fiedlerVec d).ofLp i)) := by ring
       _ = _ := by
         rw [h2, hnorm]
         push_cast
@@ -452,16 +440,16 @@ theorem escalon_media_P {d : ℕ} (hd : 2 ≤ d) :
   rw [← Complex.ofReal_sum, ← Finset.sum_div, sum_pos_sin_sq hd]
   simp
 
-/-- `⟨ψ, T_d ψ⟩ = 0`. -/
-theorem escalon_media_T {d : ℕ} (hd : 2 ≤ d) :
-    inner ℂ (vectorFiedlerExplicito d) (TdOp d (vectorFiedlerExplicito d)) = 0 := by
+/-- `⟪ψ*, T_d ψ*⟫ = 0`. -/
+theorem gramStep_mean_T {d : ℕ} (hd : 2 ≤ d) :
+    inner ℂ (fiedlerVec d) (TdOp d (fiedlerVec d)) = 0 := by
   have hterm : ∀ i : Fin d,
-      inner ℂ ((vectorFiedlerCrudo d).ofLp i) ((TdOp d (vectorFiedlerCrudo d)).ofLp i) =
+      inner ℂ ((fiedlerVecRaw d).ofLp i) ((TdOp d (fiedlerVecRaw d)).ofLp i) =
         -Complex.I *
           ((Real.tan (theta d) * Real.cos (((i.val : ℝ) + 1) * theta d) *
             Real.sin (((i.val : ℝ) + 1) * theta d) : ℝ) : ℂ) := by
     intro i
-    simp only [TdOp_apply, WithLp.ofLp_toLp, crudo_ofLp]
+    simp only [TdOp_apply, WithLp.ofLp_toLp, raw_ofLp]
     rw [Td_cf_apply hd i, RCLike.inner_apply]
     have hII : ((-Complex.I) ^ i.val) * (Complex.I ^ i.val) = 1 := by
       rw [← mul_pow]
@@ -477,25 +465,25 @@ theorem escalon_media_T {d : ℕ} (hd : 2 ≤ d) :
     push_cast
     rw [pow_succ]
     linear_combination (-Complex.I * (t : ℂ) * (c : ℂ) * (sn : ℂ)) * hII
-  have hcr : (inner ℂ (vectorFiedlerCrudo d) (TdOp d (vectorFiedlerCrudo d))).re = 0 := by
+  have hcr : (inner ℂ (fiedlerVecRaw d) (TdOp d (fiedlerVecRaw d))).re = 0 := by
     rw [PiLp.inner_apply]
     simp_rw [hterm]
     rw [← Finset.mul_sum, ← Complex.ofReal_sum, neg_mul, Complex.neg_re, Complex.I_mul_re,
       Complex.ofReal_im, neg_zero, neg_zero]
-  set ψ := vectorFiedlerExplicito d with hψ
+  set ψ := fiedlerVec d with hψ
   set z := inner ℂ ψ (TdOp d ψ) with hz
   have hre : z.re = 0 := by
-    rw [hz, hψ, vectorFiedlerExplicito, map_smul, inner_smul_left, inner_smul_right,
+    rw [hz, hψ, fiedlerVec, map_smul, inner_smul_left, inner_smul_right,
       ← mul_assoc]
-    set r : ℂ := ((‖vectorFiedlerCrudo d‖ : ℝ) : ℂ)⁻¹ with hr
-    have hrr : (starRingEnd ℂ) r * r = ((((‖vectorFiedlerCrudo d‖ : ℝ) ^ 2)⁻¹ : ℝ) : ℂ) := by
+    set r : ℂ := ((‖fiedlerVecRaw d‖ : ℝ) : ℂ)⁻¹ with hr
+    have hrr : (starRingEnd ℂ) r * r = ((((‖fiedlerVecRaw d‖ : ℝ) ^ 2)⁻¹ : ℝ) : ℂ) := by
       rw [hr, map_inv₀, Complex.conj_ofReal]
       push_cast
       ring
     rw [hrr, Complex.re_ofReal_mul, hcr]
     ring
   have him : z.im = 0 := by
-    have hT := TdOp_simetrico d ψ ψ
+    have hT := TdOp_isSymmetric d ψ ψ
     have hc : (starRingEnd ℂ) (inner ℂ (TdOp d ψ) ψ) = inner ℂ ψ (TdOp d ψ) :=
       inner_conj_symm ψ (TdOp d ψ)
     rw [hT] at hc
@@ -505,6 +493,6 @@ theorem escalon_media_T {d : ℕ} (hd : 2 ≤ d) :
     linarith
   exact Complex.ext (by simpa using hre) (by simpa using him)
 
-end EscalonGramCoherenceConstant
+end GramStep
 
 end

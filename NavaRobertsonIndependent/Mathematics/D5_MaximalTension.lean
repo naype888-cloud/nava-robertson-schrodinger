@@ -14,33 +14,32 @@ public import Mathlib.RingTheory.PicardGroup
 public import Mathlib.RingTheory.SimpleRing.Principal
 
 /-!
-# D5 — Estado de máxima tensión y observable `i[T_d,P_d]`
+# D5 — The maximal-tension state and the observable `i[T_d, P_d]`
 
-En dimensión finita, `i[T,P]` es simétrico (hermitiano) siempre que `T` y
-`P` lo son; por el teorema espectral finito, posee una base ortonormal de
-autovectores. Este archivo elige el autovector cuyo autovalor tiene módulo
-máximo y demuestra la envolvente sobre todos los estados normalizados: ese
-estado realiza, entre todos los estados unitarios del mismo canal, la mayor
-tensión posible del conmutador. También se exhibe, en coordenadas
-explícitas (fase seno), el mismo estado extremal para el par concreto
-`(T_d,P_d)` del camino discreto: es el "modo de Fiedler" de la cadena.
+For symmetric `T`, `P` on a finite-dimensional space, `i[T, P]` is symmetric; its eigenvector
+of largest `|eigenvalue|` maximizes the tension `⟪ψ, i[T, P] ψ⟫` over unit states. For the
+path, the same state is written explicitly: the Fiedler mode `ψ*_j ∝ (−i)^j sin((j+1)π/(d+1))`,
+with no vanishing coordinate. Finally `[T_d, P_d] ≠ 0` for `d ≥ 2`, seen on one entry.
 
-Se cierra con un certificado concreto de no conmutatividad:
-`[T_d,P_d] ≠ 0` para `d ≥ 2`, exhibido en una única entrada de matriz.
+## Main results
+
+- `SpectralExtremal.extremalState_attains_specRadius` : the extremal state attains the
+  spectral radius, and no unit state exceeds it (`expectation_le_specRadius`).
+- `TransportPosition.fiedlerVec_apply_ne_zero` : `ψ*` has no zero coordinate.
+- `TransportPosition.KdOp_ne_zero` : `i[T_d, P_d] ≠ 0` for `d ≥ 2`.
 -/
 
 @[expose] public noncomputable section
 
-namespace ConstructorEspectralTP
+namespace SpectralExtremal
 
 universe u
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [FiniteDimensional ℂ H] [Nontrivial H]
 
-/-- En dimensión positiva existe un índice cuyo autovalor tiene módulo
-máximo. -/
-theorem existe_indice_extremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
+/-- In positive dimension some eigenvalue has largest absolute value. -/
+theorem exists_extremal_index (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
     ∃ i : Fin (Module.finrank ℂ H),
       ∀ j : Fin (Module.finrank ℂ H),
         |hK.eigenvalues rfl j| ≤ |hK.eigenvalues rfl i| := by
@@ -52,45 +51,44 @@ theorem existe_indice_extremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
       (fun j => |hK.eigenvalues rfl j|) hne
   exact ⟨i, fun j => hi j (Finset.mem_univ j)⟩
 
-def indiceExtremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
+def extremalIndex (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
     Fin (Module.finrank ℂ H) :=
-  (existe_indice_extremal K hK).choose
+  (exists_extremal_index K hK).choose
 
-def autovalorExtremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : ℝ :=
-  hK.eigenvalues rfl (indiceExtremal K hK)
+def extremalEigenvalue (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : ℝ :=
+  hK.eigenvalues rfl (extremalIndex K hK)
 
-/-- Radio espectral realizado por el estado elegido. -/
-def radioEspectral (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : ℝ :=
-  |autovalorExtremal K hK|
+/-- The spectral radius, attained by the chosen state. -/
+def specRadius (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : ℝ :=
+  |extremalEigenvalue K hK|
 
-/-- Estado unitario de máxima tensión. -/
-def estadoExtremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : H :=
-  hK.eigenvectorBasis rfl (indiceExtremal K hK)
+/-- The unit state of maximal tension. -/
+def extremalState (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) : H :=
+  hK.eigenvectorBasis rfl (extremalIndex K hK)
 
-theorem modulo_autovalor_le_radio
+theorem abs_eigenvalue_le_specRadius
     (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric)
     (j : Fin (Module.finrank ℂ H)) :
-    |hK.eigenvalues rfl j| ≤ radioEspectral K hK := by
-  exact (existe_indice_extremal K hK).choose_spec j
+    |hK.eigenvalues rfl j| ≤ specRadius K hK := by
+  exact (exists_extremal_index K hK).choose_spec j
 
-theorem radioEspectral_nonneg (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
-    0 ≤ radioEspectral K hK :=
+theorem specRadius_nonneg (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
+    0 ≤ specRadius K hK :=
   abs_nonneg _
 
-theorem estadoExtremal_normalizado (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
-    ‖estadoExtremal K hK‖ = 1 := by
-  exact (hK.eigenvectorBasis rfl).orthonormal.norm_eq_one (indiceExtremal K hK)
+theorem norm_extremalState (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
+    ‖extremalState K hK‖ = 1 := by
+  exact (hK.eigenvectorBasis rfl).orthonormal.norm_eq_one (extremalIndex K hK)
 
-theorem aplica_estadoExtremal (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
-    K (estadoExtremal K hK) =
-      (autovalorExtremal K hK : ℂ) • estadoExtremal K hK := by
-  exact hK.apply_eigenvectorBasis rfl (indiceExtremal K hK)
+theorem apply_extremalState (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
+    K (extremalState K hK) =
+      (extremalEigenvalue K hK : ℂ) • extremalState K hK := by
+  exact hK.apply_eigenvectorBasis rfl (extremalIndex K hK)
 
-/-- La acción de un operador simétrico queda acotada por el radio espectral
-elegido. -/
-theorem norma_aplicacion_le_radio_mul_norma
+/-- A symmetric operator is bounded by its spectral radius. -/
+theorem norm_apply_le_specRadius_mul_norm
     (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (v : H) :
-    ‖K v‖ ≤ radioEspectral K hK * ‖v‖ := by
+    ‖K v‖ ≤ specRadius K hK * ‖v‖ := by
   let hn : Module.finrank ℂ H = Module.finrank ℂ H := rfl
   have hKv_sq :
       ‖K v‖ ^ 2 =
@@ -115,70 +113,70 @@ theorem norma_aplicacion_le_radio_mul_norma
           ‖(hK.eigenvalues hn i : ℂ) *
             ((hK.eigenvectorBasis hn).repr v i)‖ ^ 2) ≤
         ∑ i : Fin (Module.finrank ℂ H),
-          radioEspectral K hK ^ 2 *
+          specRadius K hK ^ 2 *
             ‖(hK.eigenvectorBasis hn).repr v i‖ ^ 2 := by
     apply Finset.sum_le_sum
     intro i _
-    have hi := modulo_autovalor_le_radio K hK i
+    have hi := abs_eigenvalue_le_specRadius K hK i
     have hi' :
-        |hK.eigenvalues hn i| ≤ radioEspectral K hK := by
+        |hK.eigenvalues hn i| ≤ specRadius K hK := by
       simpa only using hi
     have hi_nonneg : 0 ≤ |hK.eigenvalues hn i| := abs_nonneg _
-    have hR_nonneg := radioEspectral_nonneg K hK
+    have hR_nonneg := specRadius_nonneg K hK
     have hi_sq :
-        |hK.eigenvalues hn i| ^ 2 ≤ radioEspectral K hK ^ 2 := by
+        |hK.eigenvalues hn i| ^ 2 ≤ specRadius K hK ^ 2 := by
       nlinarith [hi']
     simpa only [norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow] using
       mul_le_mul_of_nonneg_right hi_sq
         (sq_nonneg ‖(hK.eigenvectorBasis hn).repr v i‖)
   have hv_sq :
       (∑ i : Fin (Module.finrank ℂ H),
-          radioEspectral K hK ^ 2 *
+          specRadius K hK ^ 2 *
             ‖(hK.eigenvectorBasis hn).repr v i‖ ^ 2) =
-        radioEspectral K hK ^ 2 * ‖v‖ ^ 2 := by
+        specRadius K hK ^ 2 * ‖v‖ ^ 2 := by
     rw [← Finset.mul_sum, ← EuclideanSpace.norm_sq_eq]
     rw [(hK.eigenvectorBasis hn).repr.norm_map]
   have hsq :
-      ‖K v‖ ^ 2 ≤ (radioEspectral K hK * ‖v‖) ^ 2 := by
+      ‖K v‖ ^ 2 ≤ (specRadius K hK * ‖v‖) ^ 2 := by
     rw [hKv_sq, mul_pow]
     exact hsum_le.trans_eq hv_sq
   have hleft : 0 ≤ ‖K v‖ := norm_nonneg _
-  have hright : 0 ≤ radioEspectral K hK * ‖v‖ :=
-    mul_nonneg (radioEspectral_nonneg K hK) (norm_nonneg _)
+  have hright : 0 ≤ specRadius K hK * ‖v‖ :=
+    mul_nonneg (specRadius_nonneg K hK) (norm_nonneg _)
   nlinarith
 
-/-- Envolvente de la forma cuadrática sobre la esfera unidad. -/
-theorem expectativa_le_radio
+/-- The quadratic form is bounded by the spectral radius on the unit sphere. -/
+theorem expectation_le_specRadius
     (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric)
     (v : H) (hv : ‖v‖ = 1) :
-    ‖@inner ℂ H _ v (K v)‖ ≤ radioEspectral K hK := by
+    ‖@inner ℂ H _ v (K v)‖ ≤ specRadius K hK := by
   calc
     ‖@inner ℂ H _ v (K v)‖ ≤ ‖v‖ * ‖K v‖ :=
       norm_inner_le_norm v (K v)
-    _ ≤ ‖v‖ * (radioEspectral K hK * ‖v‖) :=
+    _ ≤ ‖v‖ * (specRadius K hK * ‖v‖) :=
       mul_le_mul_of_nonneg_left
-        (norma_aplicacion_le_radio_mul_norma K hK v) (norm_nonneg _)
-    _ = radioEspectral K hK := by rw [hv]; ring
+        (norm_apply_le_specRadius_mul_norm K hK v) (norm_nonneg _)
+    _ = specRadius K hK := by rw [hv]; ring
 
-/-- El estado elegido realiza exactamente el radio espectral. -/
-theorem estadoExtremal_realiza_radio
+/-- The extremal state attains the spectral radius. -/
+theorem extremalState_attains_specRadius
     (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) :
-    ‖@inner ℂ H _ (estadoExtremal K hK) (K (estadoExtremal K hK))‖ =
-      radioEspectral K hK := by
-  rw [aplica_estadoExtremal K hK, inner_smul_right]
-  rw [inner_self_eq_norm_sq_to_K, estadoExtremal_normalizado K hK]
-  simp [radioEspectral, autovalorExtremal]
+    ‖@inner ℂ H _ (extremalState K hK) (K (extremalState K hK))‖ =
+      specRadius K hK := by
+  rw [apply_extremalState K hK, inner_smul_right]
+  rw [inner_self_eq_norm_sq_to_K, norm_extremalState K hK]
+  simp [specRadius, extremalEigenvalue]
 
-/-- Conmutador crudo total `[T,P]`. -/
-def conmutador (T P : H →ₗ[ℂ] H) : H →ₗ[ℂ] H :=
+/-- The commutator `[T, P]`. -/
+def opCommutator (T P : H →ₗ[ℂ] H) : H →ₗ[ℂ] H :=
   T.comp P - P.comp T
 
-/-- Observable hermitiano de tensión `i[T,P]`. -/
+/-- The tension observable `i[T, P]`. -/
 def observableTension (T P : H →ₗ[ℂ] H) : H →ₗ[ℂ] H :=
-  Complex.I • conmutador T P
+  Complex.I • opCommutator T P
 
-/-- Para operadores simétricos, `i[T,P]` es simétrico. -/
-theorem observableTension_simetrico
+/-- For symmetric `T`, `P`, `i[T, P]` is symmetric. -/
+theorem observableTension_isSymmetric
     {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     (T P : E →ₗ[ℂ] E) (hT : T.IsSymmetric) (hP : P.IsSymmetric) :
     (observableTension T P).IsSymmetric := by
@@ -191,128 +189,123 @@ theorem observableTension_simetrico
   simp only [Complex.conj_I]
   ring
 
-theorem radioEspectral_pos_of_ne_zero
+theorem specRadius_pos_of_ne_zero
     (K : H →ₗ[ℂ] H) (hK : K.IsSymmetric) (hK0 : K ≠ 0) :
-    0 < radioEspectral K hK := by
-  have hR0 : radioEspectral K hK ≠ 0 := by
+    0 < specRadius K hK := by
+  have hR0 : specRadius K hK ≠ 0 := by
     intro hR
     apply hK0
     ext v
-    have hv := norma_aplicacion_le_radio_mul_norma K hK v
+    have hv := norm_apply_le_specRadius_mul_norm K hK v
     rw [hR, zero_mul] at hv
     exact norm_eq_zero.mp (le_antisymm hv (norm_nonneg _))
-  exact lt_of_le_of_ne (radioEspectral_nonneg K hK) (Ne.symm hR0)
+  exact lt_of_le_of_ne (specRadius_nonneg K hK) (Ne.symm hR0)
 
 theorem observableTension_ne_zero
     {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
-    (T P : E →ₗ[ℂ] E) (hC : conmutador T P ≠ 0) :
+    (T P : E →ₗ[ℂ] E) (hC : opCommutator T P ≠ 0) :
     observableTension T P ≠ 0 := by
   intro hK
   apply hC
   ext v
   have hv := LinearMap.congr_fun hK v
-  change Complex.I • conmutador T P v = 0 at hv
+  change Complex.I • opCommutator T P v = 0 at hv
   exact (smul_eq_zero.mp hv).resolve_left Complex.I_ne_zero
 
-end ConstructorEspectralTP
+end SpectralExtremal
 
-namespace TransportePosicion
+namespace TransportPosition
 
-open ConstructorEspectralTP
+open SpectralExtremal
 
-/-- Realización lineal total de la matriz de transporte canónica. -/
+/-- `T_d` as a linear map. -/
 noncomputable def TdOp (d : ℕ) : Hd d →ₗ[ℂ] Hd d :=
   Matrix.toEuclideanLin (Td d)
 
-/-- Realización lineal total de la matriz de posición canónica. -/
+/-- `P_d` as a linear map. -/
 noncomputable def PdOp (d : ℕ) : Hd d →ₗ[ℂ] Hd d :=
   Matrix.toEuclideanLin (Pd d)
 
-theorem pasoMinimo_simetrico {d : ℕ} {i j : Fin d} :
-    PasoMinimo i j ↔ PasoMinimo j i := by
+theorem minStep_symm {d : ℕ} {i j : Fin d} :
+    MinStep i j ↔ MinStep j i := by
   constructor <;> rintro (h | h)
   · exact Or.inr h
   · exact Or.inl h
   · exact Or.inr h
   · exact Or.inl h
 
-/-- La matriz de transporte es hermitiana. -/
+/-- `T_d` is Hermitian. -/
 theorem Td_isHermitian (d : ℕ) : Matrix.IsHermitian (Td d) := by
   rw [Matrix.IsHermitian.ext_iff]
   intro i j
   have hrho : star (rho d : ℂ) = (rho d : ℂ) := by
     exact Complex.conj_ofReal _
-  by_cases h : PasoMinimo i j
-  · have h' : PasoMinimo j i := pasoMinimo_simetrico.mp h
+  by_cases h : MinStep i j
+  · have h' : MinStep j i := minStep_symm.mp h
     simp only [Td, Ad, h, h', ↓reduceIte]
     rw [one_div, star_inv₀, hrho]
-  · have h' : ¬PasoMinimo j i := by
+  · have h' : ¬MinStep j i := by
       intro hji
-      exact h (pasoMinimo_simetrico.mpr hji)
+      exact h (minStep_symm.mpr hji)
     simp [Td, Ad, h, h']
 
-/-- La matriz diagonal de posición es hermitiana. -/
+/-- `P_d` is Hermitian. -/
 theorem Pd_isHermitian (d : ℕ) : Matrix.IsHermitian (Pd d) := by
   rw [Matrix.IsHermitian.ext_iff]
   intro i j
   by_cases hij : i = j
   · subst j
-    simp [Pd, posicionCoord]
+    simp [Pd, posCoord]
   · have hji : j ≠ i := Ne.symm hij
     simp [Pd, hij, hji]
 
-theorem TdOp_simetrico (d : ℕ) : (TdOp d).IsSymmetric := by
+theorem TdOp_isSymmetric (d : ℕ) : (TdOp d).IsSymmetric := by
   exact Matrix.isSymmetric_toEuclideanLin_iff.mpr (Td_isHermitian d)
 
-theorem PdOp_simetrico (d : ℕ) : (PdOp d).IsSymmetric := by
+theorem PdOp_isSymmetric (d : ℕ) : (PdOp d).IsSymmetric := by
   exact Matrix.isSymmetric_toEuclideanLin_iff.mpr (Pd_isHermitian d)
 
-/-- Observable hermitiano concreto `i[T_d,P_d]`. -/
+/-- The tension observable `K_d = i[T_d, P_d]`. -/
 noncomputable def KdOp (d : ℕ) : Hd d →ₗ[ℂ] Hd d :=
   observableTension (TdOp d) (PdOp d)
 
-theorem KdOp_simetrico (d : ℕ) : (KdOp d).IsSymmetric :=
-  observableTension_simetrico (TdOp d) (PdOp d)
-    (TdOp_simetrico d) (PdOp_simetrico d)
+theorem KdOp_isSymmetric (d : ℕ) : (KdOp d).IsSymmetric :=
+  observableTension_isSymmetric (TdOp d) (PdOp d)
+    (TdOp_isSymmetric d) (PdOp_isSymmetric d)
 
-/-- Estado canónico `ψ_d`: autovector unitario de `i[T_d,P_d]` cuyo
-autovalor tiene módulo máximo. -/
+/-- A unit eigenvector of `K_d` of largest `|eigenvalue|`. -/
 noncomputable def psiD (d : ℕ) (hd : 1 ≤ d) : Hd d := by
   letI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
-  exact estadoExtremal (KdOp d) (KdOp_simetrico d)
+  exact extremalState (KdOp d) (KdOp_isSymmetric d)
 
-theorem psiD_normalizado (d : ℕ) (hd : 1 ≤ d) :
+theorem norm_psiD (d : ℕ) (hd : 1 ≤ d) :
     ‖psiD d hd‖ = 1 := by
   let : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
-  exact estadoExtremal_normalizado (KdOp d) (KdOp_simetrico d)
+  exact norm_extremalState (KdOp d) (KdOp_isSymmetric d)
 
-/-! ## Vector de Fiedler explícito
+/-! ## The explicit Fiedler vector
 
-La elección espectral anterior realiza la máxima tensión, pero no expone sus
-coordenadas. El modo siguiente fija la realización seno-fase sobre `Fin d`.
-La positividad de `sin` en `(0, π)` prueba constructivamente que ninguna
-coordenada desaparece. -/
+Coordinates of the maximal-tension state: the sine mode with phases. Positivity of `sin` on
+`(0, π)` shows that no coordinate vanishes. -/
 
-/-- Ángulo fundamental del camino finito. -/
-noncomputable def anguloFiedler (d : ℕ) : ℝ :=
+/-- The fundamental angle `π/(d+1)`. -/
+noncomputable def fiedlerAngle (d : ℕ) : ℝ :=
   Real.pi / ((d : ℝ) + 1)
 
-/-- Modo seno con la fase compleja asociada a `i[T_d,P_d]`, todavía sin
-normalizar. -/
-noncomputable def vectorFiedlerCrudo (d : ℕ) : Hd d :=
+/-- The sine mode with the phases of `i[T_d, P_d]`, unnormalized. -/
+noncomputable def fiedlerVecRaw (d : ℕ) : Hd d :=
   WithLp.toLp 2 fun j : Fin d =>
     (-Complex.I) ^ j.val *
-      (Real.sin (((j.val : ℝ) + 1) * anguloFiedler d) : ℂ)
+      (Real.sin (((j.val : ℝ) + 1) * fiedlerAngle d) : ℂ)
 
-/-- Todas las amplitudes seno del modo fundamental son estrictamente
-positivas. -/
-theorem seno_fiedler_pos
+/-- The sine amplitudes of the fundamental mode are positive. -/
+theorem sin_fiedler_pos
     (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
-    0 < Real.sin (((j.val : ℝ) + 1) * anguloFiedler d) := by
+    0 < Real.sin (((j.val : ℝ) + 1) * fiedlerAngle d) := by
   apply Real.sin_pos_of_pos_of_lt_pi
-  · unfold anguloFiedler
+  · unfold fiedlerAngle
     positivity
-  · unfold anguloFiedler
+  · unfold fiedlerAngle
     have hj : (j.val : ℝ) + 1 < (d : ℝ) + 1 := by
       exact_mod_cast Nat.add_lt_add_right j.isLt 1
     have hden : 0 < (d : ℝ) + 1 := by positivity
@@ -323,47 +316,47 @@ theorem seno_fiedler_pos
         mul_lt_mul_of_pos_right ((div_lt_one hden).2 hj) Real.pi_pos
       _ = Real.pi := one_mul _
 
-theorem vectorFiedlerCrudo_coordenada_ne_zero
+theorem fiedlerVecRaw_apply_ne_zero
     (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
-    vectorFiedlerCrudo d j ≠ 0 := by
-  unfold vectorFiedlerCrudo
+    fiedlerVecRaw d j ≠ 0 := by
+  unfold fiedlerVecRaw
   apply mul_ne_zero
   · exact pow_ne_zero _ (neg_ne_zero.mpr Complex.I_ne_zero)
   · exact Complex.ofReal_ne_zero.mpr
-      (ne_of_gt (seno_fiedler_pos d hd j))
+      (ne_of_gt (sin_fiedler_pos d hd j))
 
-theorem vectorFiedlerCrudo_ne_zero
+theorem fiedlerVecRaw_ne_zero
     (d : ℕ) (hd : 1 ≤ d) :
-    vectorFiedlerCrudo d ≠ 0 := by
+    fiedlerVecRaw d ≠ 0 := by
   let j : Fin d := ⟨0, hd⟩
   intro h
   have hj := congrArg (fun v : Hd d => v j) h
-  exact vectorFiedlerCrudo_coordenada_ne_zero d hd j hj
+  exact fiedlerVecRaw_apply_ne_zero d hd j hj
 
-/-- Vector de Fiedler explícito normalizado, sin elección de autovector. -/
-noncomputable def vectorFiedlerExplicito (d : ℕ) : Hd d :=
-  ((‖vectorFiedlerCrudo d‖ : ℂ)⁻¹) • vectorFiedlerCrudo d
+/-- The normalized Fiedler vector `ψ*`. -/
+noncomputable def fiedlerVec (d : ℕ) : Hd d :=
+  ((‖fiedlerVecRaw d‖ : ℂ)⁻¹) • fiedlerVecRaw d
 
-theorem vectorFiedlerExplicito_normalizado
+theorem norm_fiedlerVec
     (d : ℕ) (hd : 1 ≤ d) :
-    ‖vectorFiedlerExplicito d‖ = 1 := by
-  rw [vectorFiedlerExplicito, norm_smul]
-  have hn : ‖vectorFiedlerCrudo d‖ ≠ 0 :=
-    norm_ne_zero_iff.mpr (vectorFiedlerCrudo_ne_zero d hd)
+    ‖fiedlerVec d‖ = 1 := by
+  rw [fiedlerVec, norm_smul]
+  have hn : ‖fiedlerVecRaw d‖ ≠ 0 :=
+    norm_ne_zero_iff.mpr (fiedlerVecRaw_ne_zero d hd)
   simp [hn]
 
-theorem vectorFiedlerExplicito_coordenada_ne_zero
+theorem fiedlerVec_apply_ne_zero
     (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
-    vectorFiedlerExplicito d j ≠ 0 := by
-  rw [vectorFiedlerExplicito]
-  change (↑‖vectorFiedlerCrudo d‖ : ℂ)⁻¹ * vectorFiedlerCrudo d j ≠ 0
+    fiedlerVec d j ≠ 0 := by
+  rw [fiedlerVec]
+  change (↑‖fiedlerVecRaw d‖ : ℂ)⁻¹ * fiedlerVecRaw d j ≠ 0
   apply mul_ne_zero
   · exact inv_ne_zero (Complex.ofReal_ne_zero.mpr
-      (norm_ne_zero_iff.mpr (vectorFiedlerCrudo_ne_zero d hd)))
-  · exact vectorFiedlerCrudo_coordenada_ne_zero d hd j
+      (norm_ne_zero_iff.mpr (fiedlerVecRaw_ne_zero d hd)))
+  · exact fiedlerVecRaw_apply_ne_zero d hd j
 
 theorem Td_mul_Pd_apply (d : ℕ) (i j : Fin d) :
-    (Td d * Pd d) i j = Td d i j * (posicionCoord d j : ℂ) := by
+    (Td d * Pd d) i j = Td d i j * (posCoord d j : ℂ) := by
   rw [Matrix.mul_apply, Finset.sum_eq_single j]
   · simp [Pd]
   · intro k _ hkj
@@ -371,7 +364,7 @@ theorem Td_mul_Pd_apply (d : ℕ) (i j : Fin d) :
   · simp
 
 theorem Pd_mul_Td_apply (d : ℕ) (i j : Fin d) :
-    (Pd d * Td d) i j = (posicionCoord d i : ℂ) * Td d i j := by
+    (Pd d * Td d) i j = (posCoord d i : ℂ) * Td d i j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
   · simp [Pd]
   · intro k _ hki
@@ -397,11 +390,11 @@ theorem rho_pos (d : ℕ) (hd : 2 ≤ d) : 0 < rho d := by
   unfold rho
   positivity
 
-theorem posicionCoord_succ_sub
+theorem posCoord_succ_sub
     (d : ℕ) (hd : 2 ≤ d)
     (i j : Fin d) (hij : i.val + 1 = j.val) :
-    posicionCoord d j - posicionCoord d i = 2 / ((d : ℝ) - 1) := by
-  unfold posicionCoord
+    posCoord d j - posCoord d i = 2 / ((d : ℝ) - 1) := by
+  unfold posCoord
   have hdsub : (d : ℝ) - 1 ≠ 0 := by
     have : (1 : ℝ) < d := by exact_mod_cast (show 1 < d by omega)
     linarith
@@ -410,8 +403,8 @@ theorem posicionCoord_succ_sub
   field_simp
   ring
 
-/-- Certificado concreto de no conmutatividad: una sola entrada vecina basta. -/
-theorem conmutador_matriz_entrada_vecina_no_cero
+/-- One nonzero entry of `[T_d, P_d]`, between neighbours. -/
+theorem commutator_matrix_apply_succ_ne_zero
     (d : ℕ) (hd : 2 ≤ d) :
     let i : Fin d := ⟨0, by omega⟩
     let j : Fin d := ⟨1, by omega⟩
@@ -420,58 +413,58 @@ theorem conmutador_matriz_entrada_vecina_no_cero
   let i : Fin d := ⟨0, by omega⟩
   let j : Fin d := ⟨1, by omega⟩
   have hij : i.val + 1 = j.val := rfl
-  have hpaso : PasoMinimo i j := Or.inl hij
+  have hpaso : MinStep i j := Or.inl hij
   have hrho : (rho d : ℂ) ≠ 0 := by
     exact_mod_cast (rho_pos d hd).ne'
   have hdelta :
-      (posicionCoord d j : ℂ) - (posicionCoord d i : ℂ) ≠ 0 := by
+      (posCoord d j : ℂ) - (posCoord d i : ℂ) ≠ 0 := by
     have hdpos : 0 < (2 : ℝ) / ((d : ℝ) - 1) := by
       have : (1 : ℝ) < d := by exact_mod_cast (show 1 < d by omega)
       positivity
     exact_mod_cast
-      ((posicionCoord_succ_sub d hd i j hij).trans_ne hdpos.ne')
+      ((posCoord_succ_sub d hd i j hij).trans_ne hdpos.ne')
   rw [Matrix.sub_apply, Td_mul_Pd_apply, Pd_mul_Td_apply]
   have hTd : Td d i j = 1 / (rho d : ℂ) := by
     simp [Td, Ad, hpaso]
   rw [hTd]
   intro hz
   have hz0 :
-      (rho d : ℂ)⁻¹ * (posicionCoord d j : ℂ) -
-        (posicionCoord d i : ℂ) * (rho d : ℂ)⁻¹ = 0 := by
+      (rho d : ℂ)⁻¹ * (posCoord d j : ℂ) -
+        (posCoord d i : ℂ) * (rho d : ℂ)⁻¹ = 0 := by
     simpa [i, j, one_div] using hz
   have hz' :
       (rho d : ℂ)⁻¹ *
-        ((posicionCoord d j : ℂ) - (posicionCoord d i : ℂ)) = 0 := by
+        ((posCoord d j : ℂ) - (posCoord d i : ℂ)) = 0 := by
     calc
       (rho d : ℂ)⁻¹ *
-          ((posicionCoord d j : ℂ) - (posicionCoord d i : ℂ)) =
-        (rho d : ℂ)⁻¹ * (posicionCoord d j : ℂ) -
-          (posicionCoord d i : ℂ) * (rho d : ℂ)⁻¹ := by ring
+          ((posCoord d j : ℂ) - (posCoord d i : ℂ)) =
+        (rho d : ℂ)⁻¹ * (posCoord d j : ℂ) -
+          (posCoord d i : ℂ) * (rho d : ℂ)⁻¹ := by ring
       _ = 0 := hz0
   exact hdelta ((mul_eq_zero.mp hz').resolve_left (inv_ne_zero hrho))
 
-theorem conmutador_matriz_no_cero (d : ℕ) (hd : 2 ≤ d) :
+theorem commutator_matrix_ne_zero (d : ℕ) (hd : 2 ≤ d) :
     (Td d * Pd d) - (Pd d * Td d) ≠ 0 := by
   intro hz
   have hentry := congrFun (congrFun hz ⟨0, by omega⟩) ⟨1, by omega⟩
-  exact conmutador_matriz_entrada_vecina_no_cero d hd hentry
+  exact commutator_matrix_apply_succ_ne_zero d hd hentry
 
-theorem conmutador_TdOp_PdOp_eq_matriz (d : ℕ) :
-    conmutador (TdOp d) (PdOp d) =
+theorem commutator_TdOp_PdOp_eq_matrix (d : ℕ) :
+    opCommutator (TdOp d) (PdOp d) =
       Matrix.toEuclideanLin ((Td d * Pd d) - (Pd d * Td d)) := by
-  simp [conmutador, TdOp, PdOp, Matrix.toEuclideanLin, Matrix.toLpLin_mul_same]
+  simp [opCommutator, TdOp, PdOp, Matrix.toEuclideanLin, Matrix.toLpLin_mul_same]
 
-/-- `[T_d,P_d] ≠ 0` para `d ≥ 2`. -/
-theorem conmutador_TdOp_PdOp_no_cero (d : ℕ) (hd : 2 ≤ d) :
-    conmutador (TdOp d) (PdOp d) ≠ 0 := by
-  rw [conmutador_TdOp_PdOp_eq_matriz]
+/-- `[T_d, P_d] ≠ 0` for `d ≥ 2`. -/
+theorem commutator_TdOp_PdOp_ne_zero (d : ℕ) (hd : 2 ≤ d) :
+    opCommutator (TdOp d) (PdOp d) ≠ 0 := by
+  rw [commutator_TdOp_PdOp_eq_matrix]
   intro hz
-  apply conmutador_matriz_no_cero d hd
+  apply commutator_matrix_ne_zero d hd
   apply Matrix.toEuclideanLin.injective
   simpa using hz
 
-theorem KdOp_no_cero (d : ℕ) (hd : 2 ≤ d) : KdOp d ≠ 0 :=
+theorem KdOp_ne_zero (d : ℕ) (hd : 2 ≤ d) : KdOp d ≠ 0 :=
   observableTension_ne_zero (TdOp d) (PdOp d)
-    (conmutador_TdOp_PdOp_no_cero d hd)
+    (commutator_TdOp_PdOp_ne_zero d hd)
 
-end TransportePosicion
+end TransportPosition

@@ -8,144 +8,134 @@ module
 public import NavaRobertsonIndependent.Mathematics.D10_Certificate
 
 /-!
-# D11 — Cuanto cuántico elemental de área
+# D11 — The minimal area quantum
 
-Este módulo baja a Lean la lectura estrictamente matemática del cuanto
-cuántico elemental:
+`geometricGap 4` is the first positive gap of the tail `d ≥ 4`, and its square
+`areaQuantum = δ(4)²` is the first area quantum. By monotonicity (`D9`) no resolution area
+`δ(d)²`, `d ≥ 4`, is below it. The statement is dimensionless; multiplying by any nonnegative
+scale preserves the bound.
 
-* `geometricGap 4` es el primer defect lineal positivo de la cola `d ≥ 4`.
-* `geometricGap 4 ^ 2` es el primer cuanto cuántico elemental de área.
-* Por monotonía, ninguna resolución de área realizada en `H_d`, `d ≥ 4`,
-  queda por debajo de ese cuanto.
+## Main results
 
-No introduce unidades físicas, bariones ni escala de Planck. Si luego se
-quiere poner una unidad externa, basta multiplicar por una escala no negativa:
-la cota sobrevive por orden.
-
-La dependencia matemática es la cadena del paquete:
-Cauchy--Gram → Robertson--Schrödinger → instancia `T_d/P_d` →
-Niven/Szegő/monotonía. No modifica Robertson 1929; lo usa como ancla y
-deriva el piso de área de su realización discreta.
+- `MinimalAreaQuantum.areaQuantum_pos` : `δ(4)² > 0`.
+- `MinimalAreaQuantum.areaQuantum_le_resolutionArea` : `δ(4)² ≤ δ(d)²` for `d ≥ 4`.
+- `MinimalAreaQuantum.areaCertificate` : the certificate is inhabited.
 -/
 
 @[expose] public noncomputable section
 
-namespace CuantoMinimoArea
+namespace MinimalAreaQuantum
 
 open Gnomon
 
-/-- Cuanto cuántico elemental de área de la cola `H_d`, `d ≥ 4`. -/
-def cuantoCuanticoElemental : ℝ :=
+/-- The area quantum `δ(4)²` of the tail `d ≥ 4`. -/
+def areaQuantum : ℝ :=
   geometricGap 4 ^ 2
 
-/-- Alias operativo: el "cuadrito" mínimo es el cuanto cuántico elemental. -/
-def cuadritoMinimo : ℝ :=
-  cuantoCuanticoElemental
+/-- The minimal square, the same quantity as `areaQuantum`. -/
+def minimalSquare : ℝ :=
+  areaQuantum
 
-/-- Área de resolución inducida por el defect geométrico en `H_d`. -/
-def areaResolucionHd (d : ℕ) : ℝ :=
+/-- The resolution area `δ(d)²`. -/
+def resolutionArea (d : ℕ) : ℝ :=
   geometricGap d ^ 2
 
-/-- El nombre citable y el alias operativo son la misma cantidad. -/
-theorem cuadritoMinimo_eq_cuantoCuanticoElemental :
-    cuadritoMinimo = cuantoCuanticoElemental := by
+/-- `minimalSquare = areaQuantum`. -/
+theorem minimalSquare_eq_areaQuantum :
+    minimalSquare = areaQuantum := by
   rfl
 
-/-- El "cuadrito" es exactamente la resolución de área en `H_4`. -/
-theorem cuadritoMinimo_eq_areaResolucionH4 :
-    cuadritoMinimo = areaResolucionHd 4 := by
+/-- The minimal square is the resolution area of `H_4`. -/
+theorem minimalSquare_eq_resolutionArea_four :
+    minimalSquare = resolutionArea 4 := by
   rfl
 
-/-- El cuanto cuántico elemental es exactamente la resolución de área en `H_4`. -/
-theorem cuantoCuanticoElemental_eq_areaResolucionH4 :
-    cuantoCuanticoElemental = areaResolucionHd 4 := by
+/-- The area quantum is the resolution area of `H_4`. -/
+theorem areaQuantum_eq_resolutionArea_four :
+    areaQuantum = resolutionArea 4 := by
   rfl
 
-/-- El cuanto cuántico elemental de área es estrictamente positivo. -/
-theorem cuantoCuanticoElemental_pos : 0 < cuantoCuanticoElemental := by
-  unfold cuantoCuanticoElemental
+/-- The area quantum is positive. -/
+theorem areaQuantum_pos : 0 < areaQuantum := by
+  unfold areaQuantum
   have hδ : 0 < geometricGap 4 :=
     geometricGap_pos_of_four_le 4 (by omega)
   positivity
 
-/-- Alias de positividad para el nombre operativo. -/
-theorem cuadritoMinimo_pos : 0 < cuadritoMinimo := by
-  simpa [cuadritoMinimo] using cuantoCuanticoElemental_pos
+/-- The minimal square is positive. -/
+theorem minimalSquare_pos : 0 < minimalSquare := by
+  simpa [minimalSquare] using areaQuantum_pos
 
-/-- Toda área de resolución en `H_d`, `d ≥ 4`, está por encima del cuanto. -/
-theorem cuantoCuanticoElemental_le_areaResolucionHd (d : ℕ) (hd : 4 ≤ d) :
-    cuantoCuanticoElemental ≤ areaResolucionHd d := by
-  unfold cuantoCuanticoElemental areaResolucionHd
+/-- Every resolution area in `d ≥ 4` is at least the area quantum. -/
+theorem areaQuantum_le_resolutionArea (d : ℕ) (hd : 4 ≤ d) :
+    areaQuantum ≤ resolutionArea d := by
+  unfold areaQuantum resolutionArea
   exact geometricGap_sq_four_le d hd
 
-/-- Toda área de resolución en `H_d`, `d ≥ 4`, está por encima del cuadrito. -/
-theorem cuadritoMinimo_le_areaResolucionHd (d : ℕ) (hd : 4 ≤ d) :
-    cuadritoMinimo ≤ areaResolucionHd d := by
-  simpa [cuadritoMinimo] using cuantoCuanticoElemental_le_areaResolucionHd d hd
+/-- Every resolution area in `d ≥ 4` is at least the minimal square. -/
+theorem minimalSquare_le_resolutionArea (d : ℕ) (hd : 4 ≤ d) :
+    minimalSquare ≤ resolutionArea d := by
+  simpa [minimalSquare] using areaQuantum_le_resolutionArea d hd
 
-/-- No existe una resolución realizada en `H_d`, `d ≥ 4`, estrictamente menor
-que el cuanto cuántico elemental. -/
-theorem no_hay_resolucion_menor_que_cuanto_cuantico
+/-- No resolution area in `d ≥ 4` is below the area quantum. -/
+theorem not_resolutionArea_lt_areaQuantum
     (d : ℕ) (hd : 4 ≤ d) :
-    ¬ areaResolucionHd d < cuantoCuanticoElemental := by
-  exact not_lt.mpr (cuantoCuanticoElemental_le_areaResolucionHd d hd)
+    ¬ resolutionArea d < areaQuantum := by
+  exact not_lt.mpr (areaQuantum_le_resolutionArea d hd)
 
-/-- Alias operativo: no hay resolución menor que el cuadrito mínimo. -/
-theorem no_hay_resolucion_menor_que_cuadrito
+/-- No resolution area in `d ≥ 4` is below the minimal square. -/
+theorem not_resolutionArea_lt_minimalSquare
     (d : ℕ) (hd : 4 ≤ d) :
-    ¬ areaResolucionHd d < cuadritoMinimo := by
-  simpa [cuadritoMinimo] using no_hay_resolucion_menor_que_cuanto_cuantico d hd
+    ¬ resolutionArea d < minimalSquare := by
+  simpa [minimalSquare] using not_resolutionArea_lt_areaQuantum d hd
 
-/-- Cualquier umbral por debajo del cuadrito queda por debajo de toda
-resolución realizada en la cola `d ≥ 4`. -/
-theorem umbral_bajo_cuadrito_no_alcanza_Hd
-    (d : ℕ) (hd : 4 ≤ d) (ε : ℝ) (hε : ε < cuadritoMinimo) :
-    ε < areaResolucionHd d :=
-  lt_of_lt_of_le hε (cuadritoMinimo_le_areaResolucionHd d hd)
+/-- A threshold below the minimal square is below every resolution area in `d ≥ 4`. -/
+theorem lt_resolutionArea_of_lt_minimalSquare
+    (d : ℕ) (hd : 4 ≤ d) (ε : ℝ) (hε : ε < minimalSquare) :
+    ε < resolutionArea d :=
+  lt_of_lt_of_le hε (minimalSquare_le_resolutionArea d hd)
 
-/-- Poner una escala externa no negativa conserva la cota mínima. -/
-theorem escala_no_negativa_conserva_cuanto_cuantico
-    (escala : ℝ) (hesc : 0 ≤ escala) (d : ℕ) (hd : 4 ≤ d) :
-    escala * cuantoCuanticoElemental ≤ escala * areaResolucionHd d :=
-  mul_le_mul_of_nonneg_left (cuantoCuanticoElemental_le_areaResolucionHd d hd) hesc
+/-- A nonnegative scale preserves the bound. -/
+theorem scaled_areaQuantum_le
+    (scale : ℝ) (hesc : 0 ≤ scale) (d : ℕ) (hd : 4 ≤ d) :
+    scale * areaQuantum ≤ scale * resolutionArea d :=
+  mul_le_mul_of_nonneg_left (areaQuantum_le_resolutionArea d hd) hesc
 
-/-- Alias operativo para la escala externa no negativa. -/
-theorem escala_no_negativa_conserva_cuadrito
-    (escala : ℝ) (hesc : 0 ≤ escala) (d : ℕ) (hd : 4 ≤ d) :
-    escala * cuadritoMinimo ≤ escala * areaResolucionHd d :=
+/-- A nonnegative scale preserves the bound, for the minimal square. -/
+theorem scaled_minimalSquare_le
+    (scale : ℝ) (hesc : 0 ≤ scale) (d : ℕ) (hd : 4 ≤ d) :
+    scale * minimalSquare ≤ scale * resolutionArea d :=
 by
-  simpa [cuadritoMinimo] using escala_no_negativa_conserva_cuanto_cuantico escala hesc d hd
+  simpa [minimalSquare] using scaled_areaQuantum_le scale hesc d hd
 
-/-- Con una escala externa positiva, el cuanto escalado sigue siendo
-estrictamente positivo. -/
-theorem cuanto_cuantico_escalado_pos
-    (escala : ℝ) (hesc : 0 < escala) :
-    0 < escala * cuantoCuanticoElemental :=
-  mul_pos hesc cuantoCuanticoElemental_pos
+/-- A positive scale keeps the area quantum positive. -/
+theorem scaled_areaQuantum_pos
+    (scale : ℝ) (hesc : 0 < scale) :
+    0 < scale * areaQuantum :=
+  mul_pos hesc areaQuantum_pos
 
-/-- Alias operativo: con escala positiva, el cuadrito escalado sigue siendo
-estrictamente positivo. -/
-theorem cuadrito_escalado_pos
-    (escala : ℝ) (hesc : 0 < escala) :
-    0 < escala * cuadritoMinimo :=
+/-- A positive scale keeps the minimal square positive. -/
+theorem scaled_minimalSquare_pos
+    (scale : ℝ) (hesc : 0 < scale) :
+    0 < scale * minimalSquare :=
 by
-  simpa [cuadritoMinimo] using cuanto_cuantico_escalado_pos escala hesc
+  simpa [minimalSquare] using scaled_areaQuantum_pos scale hesc
 
-/-- Certificado citable del cuanto cuántico elemental de área. -/
-structure CertificadoCuantoMinimoArea where
-  cuanto_pos : 0 < cuantoCuanticoElemental
-  area_minima : ∀ d : ℕ, 4 ≤ d → cuantoCuanticoElemental ≤ areaResolucionHd d
-  no_menor : ∀ d : ℕ, 4 ≤ d → ¬ areaResolucionHd d < cuantoCuanticoElemental
-  escala_conserva :
-    ∀ escala : ℝ, 0 ≤ escala →
+/-- The certificate of the area quantum. -/
+structure AreaCertificate where
+  quantum_pos : 0 < areaQuantum
+  quantum_le : ∀ d : ℕ, 4 ≤ d → areaQuantum ≤ resolutionArea d
+  not_lt_quantum : ∀ d : ℕ, 4 ≤ d → ¬ resolutionArea d < areaQuantum
+  scaled_quantum_le :
+    ∀ scale : ℝ, 0 ≤ scale →
       ∀ d : ℕ, 4 ≤ d →
-        escala * cuantoCuanticoElemental ≤ escala * areaResolucionHd d
+        scale * areaQuantum ≤ scale * resolutionArea d
 
-theorem certificadoCuantoMinimoArea_OK :
-    Nonempty CertificadoCuantoMinimoArea :=
-  ⟨{ cuanto_pos := cuantoCuanticoElemental_pos
-     area_minima := cuantoCuanticoElemental_le_areaResolucionHd
-     no_menor := no_hay_resolucion_menor_que_cuanto_cuantico
-     escala_conserva := escala_no_negativa_conserva_cuanto_cuantico }⟩
+theorem areaCertificate :
+    Nonempty AreaCertificate :=
+  ⟨{ quantum_pos := areaQuantum_pos
+     quantum_le := areaQuantum_le_resolutionArea
+     not_lt_quantum := not_resolutionArea_lt_areaQuantum
+     scaled_quantum_le := scaled_areaQuantum_le }⟩
 
-end CuantoMinimoArea
+end MinimalAreaQuantum

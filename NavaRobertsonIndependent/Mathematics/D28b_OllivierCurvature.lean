@@ -8,51 +8,38 @@ module
 public import NavaRobertsonIndependent.Mathematics.D28_BakryEmeryCurvature
 
 /-!
-# D28b — Curvatura de Ollivier-Ricci del camino discreto: `κ = 0` en el interior
+# D28b — Ollivier–Ricci curvature of the path: `κ = 0` in the interior
 
-Cierra un hueco que dejó `D28` (señalado por Kimi tras verificarlo): el
-docstring de `D28` afirma que su conclusión coincide "con Ollivier-Ricci,
-calculado aparte, misma conclusión por transporte óptimo" — pero ese
-cálculo no estaba en ningún archivo, solo en una sesión de chat. Aquí se
-formaliza.
+By Kantorovich–Rubinstein duality, `W₁(μ, ν) = sup {E_μ f − E_ν f : f 1-Lipschitz}`. For the
+uniform random walk on the path, the one-step laws from consecutive interior vertices are
+`m_j = ½δ_{j−1} + ½δ_{j+1}` and `m_{j+1} = ½δ_j + ½δ_{j+2}`. The gap is computed directly:
+the upper bound from the Lipschitz property, the lower bound from a witness. So `W₁ = 1 = d(j, j+1)`
+and `κ(j, j+1) = 1 − W₁/d = 0`, as in `D28`.
 
-Se usa la caracterización dual de Kantorovich–Rubinstein de la distancia de
-Wasserstein-1 (estándar en la literatura de curvatura de Ollivier-Ricci,
-Ollivier 2009): para medidas de probabilidad `μ,ν`, `W₁(μ,ν) = sup { E_μf −
-E_νf : f 1-Lipschitz }`. Para la caminata aleatoria uniforme sobre el
-camino, las distribuciones de un paso desde dos vértices consecutivos
-interiores `j`, `j+1` son `m_j = ½δ_{j−1}+½δ_{j+1}` y
-`m_{j+1} = ½δ_j+½δ_{j+2}`. Esa gap se calcula aquí de forma
-completamente elemental —sin invocar la maquinaria general de transporte
-óptimo de Mathlib, para mantener el módulo autocontenido—: la cota superior
-sale de la propiedad Lipschitz, la cota inferior de evaluar en la identidad.
-El resultado es `W₁ = 1 = d(j,j+1)`, luego `κ(j,j+1) = 1 − W₁/d(j,j+1) = 0`
-— exactamente lo que ya daba `D28` por Bakry-Émery. Las dos nociones de
-curvatura discreta coinciden: el interior del camino es plano en ambas.
+## Main results
 
-Estatus: **verificado** (sin `sorry`). Depende solo de los tres axiomas
-estándar de Mathlib.
+- `OllivierCurvature.W1_eq_one` : `W₁ = 1`, as an `IsGreatest`.
+- `OllivierCurvature.kappaOllivier_eq_zero` : `κ = 0` on interior edges.
+- `OllivierCurvature.bakryEmery_ollivier_agree` : both curvatures vanish on the path.
 -/
 
 @[expose] public noncomputable section
 
-namespace CurvaturaOllivier
+namespace OllivierCurvature
 
-open TransportePosicion CurvaturaBakryEmery
+open TransportPosition BakryEmery
 
-/-! ## Capa algebraica: la gap de Kantorovich–Rubinstein en cuatro puntos -/
+/-! ## The Kantorovich–Rubinstein gap on four points -/
 
-/-- `f` es 1-Lipschitz a lo largo de los tres pasos consecutivos
-`x−1→x→x+1→x+2` (los únicos que hacen falta aquí). -/
-def Lip1en4 (fm1 f0 fp1 fp2 : ℝ) : Prop :=
+/-- `f` is 1-Lipschitz along the steps `x−1 → x → x+1 → x+2`. -/
+def Lip1Four (fm1 f0 fp1 fp2 : ℝ) : Prop :=
   |fm1 - f0| ≤ 1 ∧ |f0 - fp1| ≤ 1 ∧ |fp1 - fp2| ≤ 1
 
-/-- Gap de Kantorovich–Rubinstein entre `m_x` y `m_{x+1}`:
-`E_{m_x}f − E_{m_{x+1}}f`. -/
+/-- The Kantorovich–Rubinstein gap `E_{m_x} f − E_{m_{x+1}} f`. -/
 def gapKR (fm1 f0 fp1 fp2 : ℝ) : ℝ := (fm1 + fp1) / 2 - (f0 + fp2) / 2
 
-/-- **Cota superior**: toda función 1-Lipschitz acota la gap por `1`. -/
-theorem gapKR_le_uno {fm1 f0 fp1 fp2 : ℝ} (h : Lip1en4 fm1 f0 fp1 fp2) :
+/-- A 1-Lipschitz function has gap at most `1`. -/
+theorem gapKR_le_one {fm1 f0 fp1 fp2 : ℝ} (h : Lip1Four fm1 f0 fp1 fp2) :
     gapKR fm1 f0 fp1 fp2 ≤ 1 := by
   obtain ⟨h1, _h2, h3⟩ := h
   unfold gapKR
@@ -60,7 +47,7 @@ theorem gapKR_le_uno {fm1 f0 fp1 fp2 : ℝ} (h : Lip1en4 fm1 f0 fp1 fp2) :
   have e3 := abs_le.mp h3
   linarith [e1.1, e1.2, e3.1, e3.2]
 
-theorem neg_uno_le_gapKR {fm1 f0 fp1 fp2 : ℝ} (h : Lip1en4 fm1 f0 fp1 fp2) :
+theorem neg_one_le_gapKR {fm1 f0 fp1 fp2 : ℝ} (h : Lip1Four fm1 f0 fp1 fp2) :
     -1 ≤ gapKR fm1 f0 fp1 fp2 := by
   obtain ⟨h1, _h2, h3⟩ := h
   unfold gapKR
@@ -68,54 +55,41 @@ theorem neg_uno_le_gapKR {fm1 f0 fp1 fp2 : ℝ} (h : Lip1en4 fm1 f0 fp1 fp2) :
   have e3 := abs_le.mp h3
   linarith [e1.1, e1.2, e3.1, e3.2]
 
-/-- Testigo que satura la cota: la función decreciente `f = (1, 0, −1, −2)`
-(1-Lipschitz, `lip1en4_testigo`) da gap exactamente `1`. -/
-theorem gapKR_testigo : gapKR 1 0 (-1) (-2) = 1 := by
+/-- The witness `f = (1, 0, −1, −2)` has gap `1`. -/
+theorem gapKR_witness : gapKR 1 0 (-1) (-2) = 1 := by
   unfold gapKR; norm_num
 
-theorem lip1en4_testigo : Lip1en4 1 0 (-1) (-2) := by
+theorem lip1Four_witness : Lip1Four 1 0 (-1) (-2) := by
   refine ⟨?_, ?_, ?_⟩ <;> norm_num
 
-/-- **`W₁ = 1` exacto, vía Kantorovich–Rubinstein**: el supremo de la
-gap sobre funciones 1-Lipschitz es exactamente `1` — cota y testigo, en
-un solo enunciado (`IsGreatest`). -/
-theorem W1_es_uno :
+/-- **`W₁ = 1`.** The supremum of the gap over 1-Lipschitz functions is `1`. -/
+theorem W1_eq_one :
     IsGreatest
-      {v : ℝ | ∃ fm1 f0 fp1 fp2 : ℝ, Lip1en4 fm1 f0 fp1 fp2 ∧ gapKR fm1 f0 fp1 fp2 = v} 1 := by
+      {v : ℝ | ∃ fm1 f0 fp1 fp2 : ℝ, Lip1Four fm1 f0 fp1 fp2 ∧ gapKR fm1 f0 fp1 fp2 = v} 1 := by
   constructor
-  · exact ⟨1, 0, -1, -2, lip1en4_testigo, gapKR_testigo⟩
+  · exact ⟨1, 0, -1, -2, lip1Four_witness, gapKR_witness⟩
   · rintro v ⟨fm1, f0, fp1, fp2, h, rfl⟩
-    exact gapKR_le_uno h
+    exact gapKR_le_one h
 
-/-- Curvatura de Ollivier-Ricci de una arista: `κ = 1 − W₁/d`. -/
+/-- The Ollivier–Ricci curvature of an edge, `κ = 1 − W₁/d`. -/
 def kappaOllivier (W1 d : ℝ) : ℝ := 1 - W1 / d
 
-/-- **La curvatura de Ollivier-Ricci del interior del camino es
-exactamente `0`**: `W₁ = 1` (`W1_es_uno`) y la arista mide `d = 1`
-(`PasoMinimo`, D3), luego `κ = 1 − 1/1 = 0`. -/
-theorem kappa_ollivier_interior_es_cero : kappaOllivier 1 1 = 0 := by
+/-- The Ollivier–Ricci curvature of an interior edge of the path is `0`. -/
+theorem kappaOllivier_eq_zero : kappaOllivier 1 1 = 0 := by
   unfold kappaOllivier; norm_num
 
-/-! ## Conexión con `GrafoTP d`: la arista realmente vive en el camino -/
+/-! ## The edge lies on the path -/
 
-/-- La arista `(j, j+1)` sobre la que se calculó `κ = 0` es, genuinamente,
-una arista de `GrafoTP d` (`D3.grafoTP_adj`, vía `D28.adj_ip1`) — el cálculo
-de arriba no es un juguete aislado del corpus. -/
-theorem arista_es_grafoTP {d : ℕ} (j : Fin d) (h2 : j.val + 1 < d) :
-    (GrafoTP d).Adj j (ip1 j h2) :=
+/-- The edge `(j, j+1)` is an edge of `graphTP d`. -/
+theorem edge_adj_graphTP {d : ℕ} (j : Fin d) (h2 : j.val + 1 < d) :
+    (graphTP d).Adj j (ip1 j h2) :=
   adj_ip1 j h2
 
-/-- **Cierre.** Sobre cualquier arista interior `(j, j+1)` de `GrafoTP d`
-con margen suficiente para que `j−1` y `j+2` existan también
-(`h1 : 1 ≤ j.val`, `h2 : j.val + 2 < d` — exactamente el rango donde vive el
-cálculo de `W₁` de arriba), la arista es real (`arista_es_grafoTP`) y su
-curvatura de Ollivier-Ricci es exactamente `0`
-(`kappa_ollivier_interior_es_cero`) — la misma conclusión, letra por letra,
-que `curvatura_camino_CD02` de `D28` da por Bakry-Émery. Las dos nociones
-de curvatura discreta convergen: el camino es plano. -/
-theorem convergencia_bakry_emery_ollivier {d : ℕ} (j : Fin d) (_h1 : 1 ≤ j.val)
+/-- On every interior edge `(j, j+1)` of `graphTP d` with `1 ≤ j` and `j + 2 < d`, the
+Ollivier–Ricci curvature is `0`, as the Bakry–Émery curvature of `D28`. -/
+theorem bakryEmery_ollivier_agree {d : ℕ} (j : Fin d) (_h1 : 1 ≤ j.val)
     (h2 : j.val + 2 < d) :
-    (GrafoTP d).Adj j (ip1 j (by omega)) ∧ kappaOllivier 1 1 = 0 :=
-  ⟨arista_es_grafoTP j (by omega), kappa_ollivier_interior_es_cero⟩
+    (graphTP d).Adj j (ip1 j (by omega)) ∧ kappaOllivier 1 1 = 0 :=
+  ⟨edge_adj_graphTP j (by omega), kappaOllivier_eq_zero⟩
 
-end CurvaturaOllivier
+end OllivierCurvature

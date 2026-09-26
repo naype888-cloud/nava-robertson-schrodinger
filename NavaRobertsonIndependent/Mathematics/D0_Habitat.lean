@@ -8,24 +8,21 @@ module
 public import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 
 /-!
-# D0 — Hábitat: el espacio de Hilbert finito `H_d`
+# D0 — The finite Hilbert space `H_d`
 
-Todo el argumento vive en un único espacio de Hilbert complejo de dimensión
-finita, `H_d = ℂ^d` con su producto interno estándar. No se sale nunca de
-este espacio: en particular, `d = ∞` no es una dimensión realizada, sólo un
-límite de la familia `{H_d}_{d∈ℕ}` (ver `D8_Szego.lean`).
+Everything takes place in `H_d = ℂ^d` with its standard inner product. `d = ∞` is never a
+space of the family, only a limit of `{H_d}` (`D8`).
 -/
 
 @[expose] public section
 
-namespace TransportePosicion
+namespace TransportPosition
 
-/-- El espacio de Hilbert finito de dimensión `d`: `ℂ^d` con su estructura
-euclidiana estándar. -/
+/-- The Hilbert space `H_d = ℂ^d`. -/
 abbrev Hd (d : ℕ) := EuclideanSpace ℂ (Fin d)
 
-/-- Identidad definicional: `H_d` es, literalmente, `EuclideanSpace ℂ (Fin d)`. -/
+/-- `H_d` is `EuclideanSpace ℂ (Fin d)` by definition. -/
 theorem Hd_eq_euclidean (d : ℕ) :
     Hd d = EuclideanSpace ℂ (Fin d) := rfl
 
-end TransportePosicion
+end TransportPosition

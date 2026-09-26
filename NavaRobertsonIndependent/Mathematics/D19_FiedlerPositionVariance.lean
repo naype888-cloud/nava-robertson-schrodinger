@@ -9,57 +9,20 @@ public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# `RNava`: varianza de posición del estado canónico `ψ` en `H_d`
+# D19 — The position variance of the maximal-tension state
 
-Pregunta exploratoria del usuario: "¿qué da `Vsub` contra un Hamiltoniano?"
-`Vsub` contra `PuenteAreaBekenstein` ya colapsaba a `Asub`
-(`Constructor_Bekenstein_Vsub.lean`). Este módulo instancia la otra pieza
-todavía viva en el mismo `H_d`: el Hamiltoniano canónico `{T_d,P_d}` en el
-estado de máxima tensión `ψ = vectorFiedlerExplicito` (`hamiltonianoCanal`,
-`E03_Fiedler_03_Constructor_Tensor_Energia_Momento_Discreto.lean`).
+`RNavaSq d = ⟨ψ*, P_d² ψ*⟩ = Σⱼ |ψ*ⱼ|² x_j²`, the squared RMS radius of `ψ*` on the position
+grid `[-1, 1]`, in exact closed form. The trigonometric sums are evaluated with the root of
+unity `z = exp(2iθ)`, `θ = π/(d+1)`. As `d → ∞`, `RNavaSq d → 1/3 − 2/π²`, and the limit of
+`RNava` is `C_∞ / π` (a theorem: `Rinf` is defined without `C_∞`).
 
-**Resultado 1 (numérico, no en este módulo):** `⟨ψ|{T_d,P_d}|ψ⟩ = 0`
-exactamente, para todo `d`, por paridad bajo la reflexión `j ↦ d-1-j` del
-camino (`P_d` es impar, `T_d` es par, la densidad `|ψ_j|²` es par). No hay
-nada que certificar: es cero por simetría, mismo patrón que `Vsub`.
+## Main results
 
-**Resultado 2 (este módulo):** la cantidad que SÍ sobrevive en ese mismo
-`H_d` es la varianza de posición `⟨ψ|P_d²|ψ⟩ = Σⱼ |ψⱼ|² · posicionCoord(j)²`.
-Se calcula aquí en forma cerrada exacta (vía blindaje Fourier/raíz de la
-unidad sobre `z = exp(i·2θ)`, con `θ = Gnomon.theta d`) y se cierra con un
-límite `d → ∞`.
-
-## Qué NO es
-
-No es una relación de incertidumbre nueva ni una energía de Hamiltoniano:
-`⟨H⟩` ya es cero (resultado 1). `RNava` es, literalmente, el radio de giro
-(RMS) del estado de máxima tensión sobre la malla de posición `[-1,1]`.
-
-## El hallazgo
-
-Numéricamente (fuera de Lean, no certificado en este módulo) en las seeds
-de Niven (`d=2,3`, donde `cos²(θ)=(d-1)/4` sí satura): `RNavaSq(2)=1`,
-`RNavaSq(3)=1/2` — valores racionales limpios, mismo patrón que
-`CoherenceConstantSq(2)=CoherenceConstantSq(3)=1`. No se formaliza aquí (`RNavaSq` solo se certifica
-para `d≥2` vía `RNavaSq_eq`, que ya cubre ambas seeds si alguien quiere
-evaluarlas por `norm_num`/`decide` más adelante).
-
-En el régimen físico (`d≥4`, donde Niven prueba que la saturación es
-imposible): `RNavaSq(d)` decrece estrictamente y **nunca toca** su límite
-— mismo carácter que `δ_geom(d) > 0` nunca llega a cero.
-
-El límite no es una constante independiente: `Rinf = Gnomon.CoherenceConstantInf / π`
-(`Rinf_eq_CoherenceConstantInf_div_pi`, teorema, no definición) — la misma constante de
-Szegő que ya blinda todo el corpus (`CoherenceConstantInf`, la que alimenta `Ω_b`, `g_s_sq`),
-reescalada por `π`. `RNava` es una cantidad propia (varianza de posición,
-no de saturación de banda) que resulta estar conectada a `CoherenceConstantInf` por un
-factor limpio, no "la misma constante reusada".
-
-**Cierre físico** (`§9`, `RNavaSq_eq_varianzaFin`): `RNavaSq(d)` no es solo
-una forma cerrada que numéricamente coincide con la varianza -- es,
-literalmente, `Σⱼ |vectorFiedlerExplicito(d)ⱼ|² · posicionCoord(d,j)²` sobre
-`Fin d`, probado por reindexación exacta (`j.val+1 = k`, el término `k=0`
-se anula por `sin 0 = 0`) contra las sumas de Fourier de `§2`-`§4`.
+- `FiedlerPositionVariance.RNavaSq_eq` : the closed form.
+- `FiedlerPositionVariance.RNavaSq_tendsto` : `RNavaSq d → 1/3 − 2/π²`.
+- `FiedlerPositionVariance.Rinf_eq_CoherenceConstantInf_div_pi` : `Rinf = C_∞ / π`.
+- `FiedlerPositionVariance.RNavaSq_eq_positionVariance` : `RNavaSq d` is the position variance
+  of `ψ*` on `Fin d`.
 -/
 
 @[expose] public noncomputable section
@@ -67,14 +30,13 @@ se anula por `sin 0 = 0`) contra las sumas de Fourier de `§2`-`§4`.
 open Finset Complex Real Filter
 open scoped Topology
 
-namespace RNavaVarianzaFiedler
+namespace FiedlerPositionVariance
 
-open Gnomon TransportePosicion
+open Gnomon TransportPosition
 
-/-! ## 1. Raíz de la unidad auxiliar `z = exp(i·2θ)` (maquinaria de Fourier,
-sin contenido físico: sirve solo para evaluar las sumas trigonométricas). -/
+/-! ## 1. The root of unity `z = exp(2iθ)` -/
 
-/-- Ángulo doble auxiliar. -/
+/-- The double angle `2θ`. -/
 noncomputable def phi (d : ℕ) : ℝ := 2 * theta d
 
 noncomputable def z (d : ℕ) : ℂ := Complex.exp ((phi d : ℝ) * Complex.I)
@@ -126,7 +88,7 @@ theorem z_pow_succ (d : ℕ) : z d ^ (d+1) = 1 := by
   rw [heq]
   exact Complex.exp_two_pi_mul_I
 
-/-! ## 2. Suma geométrica ponderada general (álgebra pura, cualquier `x ≠ 1`) -/
+/-! ## 2. Weighted geometric sums, for any `x ≠ 1` -/
 
 theorem sum_range_mul_pow (x : ℂ) (hx : x ≠ 1) :
     ∀ n : ℕ, ∑ k ∈ Finset.range n, (k : ℂ) * x ^ k =
@@ -193,7 +155,7 @@ theorem zpow_eq (d k : ℕ) : (z d)^k = Complex.exp (((k:ℝ)*phi d : ℝ) * Com
 theorem zpow_re (d k : ℕ) : ((z d)^k).re = Real.cos ((k:ℝ)*phi d) := by
   rw [zpow_eq]; exact Complex.exp_ofReal_mul_I_re _
 
-/-! ## 3. Extracción real: sumas de Fourier con peso `k` y `k²` -/
+/-! ## 3. Real parts: Fourier sums with weights `k` and `k²` -/
 
 theorem C1_eq (d : ℕ) (hd : 1 ≤ d) :
     ∑ k ∈ Finset.range (d+1), (k : ℝ) * Real.cos ((k:ℝ) * phi d) =
@@ -286,7 +248,7 @@ theorem C2_eq (d : ℕ) (hd : 1 ≤ d) :
   field_simp
   linear_combination ((Real.cos (phi d) - 1)*((d:ℝ)-1) + 2) * hpyth
 
-/-! ## 4. Sumas ponderadas por `sin²(kθ)`: la densidad `|ψⱼ|²` reindexada -/
+/-! ## 4. Sums weighted by `sin²(kθ)`: the density `|ψ*ⱼ|²` reindexed -/
 
 theorem sum_range_real (n:ℕ) : ∑ k ∈ Finset.range n, (k:ℝ) = (n:ℝ)*((n:ℝ)-1)/2 := by
   induction n with
@@ -375,7 +337,7 @@ theorem k_sq_sin_sq_sum_eq (d : ℕ) (hd : 1 ≤ d) :
   field_simp
   ring
 
-/-! ## 5. `RNavaSq`: forma cerrada exacta -/
+/-! ## 5. `RNavaSq` in closed form -/
 
 noncomputable def numRaw (d : ℕ) : ℝ :=
   4*(∑ k ∈ Finset.range (d+1), (k:ℝ)^2*Real.sin ((k:ℝ)*theta d)^2)
@@ -417,9 +379,7 @@ theorem RNavaSq_raw_eq (d : ℕ) (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-- Forma limpia en `sin(theta d)^2`, usando la identidad de ángulo doble.
-Coincide numéricamente con `(d²+2d-3-6cot²θ)/(3(d-1)²)`, la forma explorada
-antes de sellar en Lean. -/
+/-- The closed form in `sin² θ`, equal to `(d² + 2d − 3 − 6 cot² θ)/(3(d−1)²)`. -/
 theorem RNavaSq_clean_eq (d : ℕ) (hd : 2 ≤ d) :
     numRaw d / denRaw d =
       (((d:ℝ)+1)^2 + 2) / 3 / ((d:ℝ) - 1)^2 - 2 / (Real.sin (theta d))^2 / ((d:ℝ)-1)^2 := by
@@ -443,19 +403,16 @@ theorem RNavaSq_clean_eq (d : ℕ) (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-- `RNavaSq(d)`: varianza de posición `⟨ψ|P_d²|ψ⟩ = Σⱼ |ψⱼ|² · posicionCoord(j)²`
-del estado de máxima tensión, en forma cerrada. Ver `RNavaSq_eq_varianzaFin`
-para la identidad con la suma física sobre `Fin d`. -/
+/-- `RNavaSq d = ⟨ψ*, P_d² ψ*⟩` in closed form (`RNavaSq_eq_positionVariance`). -/
 noncomputable def RNavaSq (d : ℕ) : ℝ := numRaw d / denRaw d
 
 theorem RNavaSq_eq (d : ℕ) (hd : 2 ≤ d) :
     RNavaSq d = (((d:ℝ)+1)^2 + 2) / 3 / ((d:ℝ) - 1)^2 - 2 / (Real.sin (theta d))^2 / ((d:ℝ)-1)^2 :=
   RNavaSq_clean_eq d hd
 
-/-! ## 6. Límite de Szegő: `RNavaSq(d) → 1/3 - 2/π²` -/
+/-! ## 6. The limit `RNavaSq d → 1/3 − 2/π²` -/
 
-/-- Límite universal (forma cuadrática), independiente de `CoherenceConstantInf` por
-construcción -- se conecta a él en `Rinf_eq_CoherenceConstantInf_div_pi`. -/
+/-- The limit `1/3 − 2/π²`, defined without `C_∞`. -/
 noncomputable def RinfSq : ℝ := 1/3 - 2/Real.pi^2
 
 theorem RNavaSq_tendsto :
@@ -565,23 +522,18 @@ theorem RNavaSq_tendsto :
   unfold RinfSq
   exact this
 
-/-! ## 8. `RNava`, `Rinf`, y el puente con `CoherenceConstantInf` -/
+/-! ## 7. `RNava`, `Rinf` and `C_∞` -/
 
 noncomputable def RNava (d : ℕ) : ℝ := Real.sqrt (RNavaSq d)
 
-/-- Límite de `RNava`, definido de forma independiente (no como `CoherenceConstantInf/π`) --
-la conexión es un teorema (`Rinf_eq_CoherenceConstantInf_div_pi`), no una definición. -/
+/-- The limit of `RNava`, defined without `C_∞`. -/
 noncomputable def Rinf : ℝ := Real.sqrt RinfSq
 
 theorem RNava_tendsto : Tendsto (fun d : ℕ => RNava (d+2)) atTop (𝓝 Rinf) := by
   unfold RNava Rinf
   exact Real.continuous_sqrt.continuousAt.tendsto.comp RNavaSq_tendsto
 
-/-- **El puente**: `Rinf` (radio RMS límite de la varianza de posición) es
-`CoherenceConstantInf` (constante universal de Szegő, la misma que alimenta `Ω_b`, `g_s_sq`,
-`deltaInf`) dividida por `π`. No es la misma cantidad reusada -- `Rinf` se
-definió sin mencionar `CoherenceConstantInf` -- pero tampoco es independiente: la conexión
-es exacta y se prueba aquí. -/
+/-- `Rinf = C_∞ / π`. -/
 theorem Rinf_eq_CoherenceConstantInf_div_pi : Rinf = CoherenceConstantInf / Real.pi := by
   unfold Rinf RinfSq CoherenceConstantInf
   rw [show (1:ℝ)/3 - 2/Real.pi^2 = (Real.pi^2/3-2)/Real.pi^2 from by
@@ -589,38 +541,35 @@ theorem Rinf_eq_CoherenceConstantInf_div_pi : Rinf = CoherenceConstantInf / Real
   have hnn : (0:ℝ) ≤ Real.pi^2/3 - 2 := by nlinarith [Real.pi_gt_three]
   rw [Real.sqrt_div hnn, Real.sqrt_sq Real.pi_pos.le]
 
-/-! ## 9. Conexión física: `RNavaSq` ES la varianza sobre `Fin d`
+/-! ## 8. `RNavaSq` is the position variance on `Fin d`
 
-Todo lo anterior (`numRaw`, `denRaw`, `RNavaSq`) se construyó como suma
-sobre `Finset.range (d+1)`, sin tocar `vectorFiedlerExplicito` ni
-`posicionCoord`. Esta sección cierra el círculo: `RNavaSq(d)` es,
-literalmente, `Σⱼ |ψⱼ|² · posicionCoord(j)²` -- la varianza de posición del
-estado canónico, no solo una forma cerrada que numéricamente coincide. -/
+The sums above run over `Finset.range (d+1)`; here they are reindexed (`j.val + 1 = k`, the
+term `k = 0` vanishes) to `Σⱼ |ψ*ⱼ|² x_j²` over `Fin d`. -/
 
-theorem anguloFiedler_eq_theta (d : ℕ) : anguloFiedler d = theta d := by
-  unfold anguloFiedler theta Nreal; rfl
+theorem fiedlerAngle_eq_theta (d : ℕ) : fiedlerAngle d = theta d := by
+  unfold fiedlerAngle theta Nreal; rfl
 
-theorem vectorFiedlerCrudo_norm_sq (d : ℕ) (j : Fin d) :
-    ‖vectorFiedlerCrudo d j‖^2 = Real.sin (((j.val:ℝ)+1) * theta d)^2 := by
-  have h : vectorFiedlerCrudo d j = (-Complex.I)^j.val * (Real.sin (((j.val:ℝ)+1) * anguloFiedler d)
+theorem fiedlerVecRaw_norm_sq (d : ℕ) (j : Fin d) :
+    ‖fiedlerVecRaw d j‖^2 = Real.sin (((j.val:ℝ)+1) * theta d)^2 := by
+  have h : fiedlerVecRaw d j = (-Complex.I)^j.val * (Real.sin (((j.val:ℝ)+1) * fiedlerAngle d)
       : ℂ) := rfl
-  rw [h, anguloFiedler_eq_theta]
+  rw [h, fiedlerAngle_eq_theta]
   rw [norm_mul, norm_pow, Complex.norm_real]
   have h1 : ‖(-Complex.I : ℂ)‖ = 1 := by simp
   rw [h1]
   simp [sq_abs]
 
-theorem crudo_normSq_eq_sum (d : ℕ) :
-    ‖vectorFiedlerCrudo d‖^2 = ∑ k ∈ Finset.range (d+1), Real.sin ((k:ℝ)*theta d)^2 := by
+theorem raw_normSq_eq_sum (d : ℕ) :
+    ‖fiedlerVecRaw d‖^2 = ∑ k ∈ Finset.range (d+1), Real.sin ((k:ℝ)*theta d)^2 := by
   rw [EuclideanSpace.norm_sq_eq]
-  simp_rw [vectorFiedlerCrudo_norm_sq]
+  simp_rw [fiedlerVecRaw_norm_sq]
   rw [Fin.sum_univ_eq_sum_range (fun k => Real.sin (((k:ℝ)+1)*theta d)^2) d]
   rw [Finset.sum_range_succ']
   simp
 
-theorem posicionCoord_apply (d : ℕ) (j : Fin d) :
-    posicionCoord d j = (2*((j.val:ℝ)+1) - ((d:ℝ)+1)) / ((d:ℝ)-1) := by
-  unfold posicionCoord
+theorem posCoord_apply (d : ℕ) (j : Fin d) :
+    posCoord d j = (2*((j.val:ℝ)+1) - ((d:ℝ)+1)) / ((d:ℝ)-1) := by
+  unfold posCoord
   ring_nf
 
 theorem numRaw_eq_sum_sq (d : ℕ) :
@@ -632,12 +581,12 @@ theorem numRaw_eq_sum_sq (d : ℕ) :
   intro k _
   ring
 
-theorem crudo_posicion_sum_eq (d : ℕ) :
-    ∑ j : Fin d, ‖vectorFiedlerCrudo d j‖^2 * (posicionCoord d j)^2 = numRaw d / ((d:ℝ)-1)^2 := by
-  have hterm : ∀ j : Fin d, ‖vectorFiedlerCrudo d j‖^2 * (posicionCoord d j)^2
+theorem raw_position_sum_eq (d : ℕ) :
+    ∑ j : Fin d, ‖fiedlerVecRaw d j‖^2 * (posCoord d j)^2 = numRaw d / ((d:ℝ)-1)^2 := by
+  have hterm : ∀ j : Fin d, ‖fiedlerVecRaw d j‖^2 * (posCoord d j)^2
       = ((2*((j.val:ℝ)+1) - ((d:ℝ)+1))^2 * Real.sin (((j.val:ℝ)+1)*theta d)^2) / ((d:ℝ)-1)^2 := by
     intro j
-    rw [vectorFiedlerCrudo_norm_sq, posicionCoord_apply, div_pow]
+    rw [fiedlerVecRaw_norm_sq, posCoord_apply, div_pow]
     ring
   simp_rw [hterm]
   rw [← Finset.sum_div]
@@ -650,35 +599,33 @@ theorem crudo_posicion_sum_eq (d : ℕ) :
     simp
   rw [← hshift, numRaw_eq_sum_sq]
 
-theorem vectorFiedlerExplicito_norm_sq (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
-    ‖vectorFiedlerExplicito d j‖^2 = ‖vectorFiedlerCrudo d j‖^2 / ‖vectorFiedlerCrudo d‖^2 := by
-  have hcrudo_ne : vectorFiedlerCrudo d ≠ 0 := vectorFiedlerCrudo_ne_zero d hd
-  have hnorm_pos : 0 < ‖vectorFiedlerCrudo d‖ := norm_pos_iff.mpr hcrudo_ne
-  have happly : vectorFiedlerExplicito d j =
-      ((‖vectorFiedlerCrudo d‖:ℂ)⁻¹) * vectorFiedlerCrudo d j := rfl
+theorem fiedlerVec_norm_sq (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
+    ‖fiedlerVec d j‖^2 = ‖fiedlerVecRaw d j‖^2 / ‖fiedlerVecRaw d‖^2 := by
+  have hcrudo_ne : fiedlerVecRaw d ≠ 0 := fiedlerVecRaw_ne_zero d hd
+  have hnorm_pos : 0 < ‖fiedlerVecRaw d‖ := norm_pos_iff.mpr hcrudo_ne
+  have happly : fiedlerVec d j =
+      ((‖fiedlerVecRaw d‖:ℂ)⁻¹) * fiedlerVecRaw d j := rfl
   rw [happly, norm_mul]
   rw [norm_inv, Complex.norm_real]
   rw [Real.norm_of_nonneg hnorm_pos.le]
   field_simp
 
-/-- **Cierre físico**: `RNavaSq(d)` es exactamente `Σⱼ |ψⱼ|² · posicionCoord(j)²`
-sobre `Fin d`, con `ψ = vectorFiedlerExplicito d` -- la varianza de posición
-`⟨ψ|P_d²|ψ⟩` real, no solo una forma cerrada que la reproduce numéricamente. -/
-theorem RNavaSq_eq_varianzaFin (d : ℕ) (hd : 2 ≤ d) :
-    RNavaSq d = ∑ j : Fin d, ‖vectorFiedlerExplicito d j‖^2 * (posicionCoord d j)^2 := by
+/-- `RNavaSq d = Σⱼ |ψ*ⱼ|² x_j²` over `Fin d`, with `ψ* = fiedlerVec d`. -/
+theorem RNavaSq_eq_positionVariance (d : ℕ) (hd : 2 ≤ d) :
+    RNavaSq d = ∑ j : Fin d, ‖fiedlerVec d j‖^2 * (posCoord d j)^2 := by
   have hd1 : 1 ≤ d := by omega
-  have hterm : ∀ j : Fin d, ‖vectorFiedlerExplicito d j‖^2 * (posicionCoord d j)^2
-      = (‖vectorFiedlerCrudo d j‖^2 * (posicionCoord d j)^2) / ‖vectorFiedlerCrudo d‖^2 := by
+  have hterm : ∀ j : Fin d, ‖fiedlerVec d j‖^2 * (posCoord d j)^2
+      = (‖fiedlerVecRaw d j‖^2 * (posCoord d j)^2) / ‖fiedlerVecRaw d‖^2 := by
     intro j
-    rw [vectorFiedlerExplicito_norm_sq d hd1 j]
+    rw [fiedlerVec_norm_sq d hd1 j]
     ring
   simp_rw [hterm]
-  rw [← Finset.sum_div, crudo_posicion_sum_eq]
+  rw [← Finset.sum_div, raw_position_sum_eq]
   have hdm1 : (d:ℝ) - 1 ≠ 0 := by
     have : (2:ℝ) ≤ (d:ℝ) := by exact_mod_cast hd
     intro h; linarith
-  have hcrudonorm : ‖vectorFiedlerCrudo d‖^2 = denRaw d / ((d:ℝ)-1)^2 := by
-    rw [crudo_normSq_eq_sum]
+  have hcrudonorm : ‖fiedlerVecRaw d‖^2 = denRaw d / ((d:ℝ)-1)^2 := by
+    rw [raw_normSq_eq_sum]
     unfold denRaw
     field_simp
     apply Finset.sum_congr rfl
@@ -692,6 +639,6 @@ theorem RNavaSq_eq_varianzaFin (d : ℕ) (hd : 2 ≤ d) :
   unfold RNavaSq
   field_simp
 
-end RNavaVarianzaFiedler
+end FiedlerPositionVariance
 
 end

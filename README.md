@@ -33,14 +33,14 @@ minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never 
 **Localization and tension (the two extremes of NRS).**
 
 * A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
-  (`valor_esperado_conmutador_cero`, `D23`).
+  (`expectation_commutator_eq_zero`, `D23`).
 * The maximal-tension state `ψ*` has a nonzero coordinate at every site
-  (`vectorFiedlerExplicito_coordenada_ne_zero`, `D5`), and `Var T_d · Var P_d > 0` there
-  (`producto_varianzas`, `D21`), so `Var P_d > 0`: no site carries all the weight.
+  (`fiedlerVec_apply_ne_zero`, `D5`), and `Var T_d · Var P_d > 0` there
+  (`variance_mul_variance`, `D21`), so `Var P_d > 0`: no site carries all the weight.
 * From `d = 4` no unit state has maximal tension and minimum uncertainty at once: every
   maximal-tension state satisfies Robertson–Schrödinger strictly
-  (`desigualdad_estricta_estado_maximo`, `D21`), strictly on a whole band below the maximum
-  (`desigualdad_estricta_franja`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
+  (`strict_inequality_of_maxTension`, `D21`), strictly on a whole band below the maximum
+  (`strict_inequality_bandWidth`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
   most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
 
 **NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
@@ -110,7 +110,7 @@ ceiling (`D37b`).
 ![NRS³ star sketches](docs/figures/nrs3_star_sketches.png)
 
 **Pythagoras for uncertainty.** At `4 × 4 × 4` the per-axis variances add to the variance of the
-total transport: `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` (`pitagoras_T`, `D37d`).
+total transport: `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` (`pythagoras_T`, `D37d`).
 
 ![Pythagoras for uncertainty](docs/figures/nrs3_pythagoras.png)
 
@@ -262,7 +262,7 @@ the package has no `sorry`.
 
 Not built by `lake build`. It contains `D23g`: every minimum-uncertainty state of `H₄`
 (Robertson–Schrödinger saturated) carries tension at most `1/φ = (√5 − 1)/2`
-(`CotaMinimaIncertidumbreCuatro.tension_le_of_satura`). With `D23f`, which exhibits a state
+(`MinUncertaintyBoundFour.tension_le_of_saturated`). With `D23f`, which exhibits a state
 attaining it, `1/φ` is the maximum: `3(√5 − 1)/4 ≈ 92.7 %` of the maximal tension `2/3`.
 The proof reduces the claim to an inequality on the densities `|ψⱼ|²` (link currents plus
 Cauchy–Schwarz) and closes it with two exact rational Positivstellensatz certificates
@@ -284,12 +284,12 @@ lake env lean Verification/Certificados.lean          # axioms
 - `D16_TransporteSuperficieCerrada`: finite-sum transport to a closed
   orientable surface, including `Ω(Σ_g) = 2g · δ∞` and its radical form. The
   per-cycle defect `δ∞` and `b₁ = 2g` are inputs of the definition, not theorems.
-- `D25_CuantoDimensional`: the quantum is dimensional. `cuantoDim d = δ_geom(d)`
-  is zero exactly for `d ∈ {2, 3}` (`sin_cuanto_en_d3`), positive and strictly
-  increasing from `d = 4`, below `δ∞` and converging to it (`cuanto_dimensional`).
+- `D25_CuantoDimensional`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
+  is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
+  increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
 - `D26a_OmegaDesdePi`: `omegaPi = (1 − 1/C∞)·e^{−1/C∞} = 0.04954367888809…`, a
   function of `π` only, with `0.049543679` certified as its 9-digit rounding
-  from both sides (`decimal_desde_pi`).
+  from both sides (`decimal_of_pi`).
 - `SumInvSinSq`: the finite cosecant-square identity
   `Σ csc²(kπ/N) = (N²−1)/3` through Chebyshev roots, with the cotangent
   corollaries (v14: the former duplicate `D15` was removed).
@@ -307,7 +307,7 @@ lake env lean Verification/Certificados.lean          # axioms
   `(c/2)² δ_geom (2 + δ_geom)`. The top eigenvalue `2/(d−1)` of
   `K_d = i[T_d, P_d]` is simple, so every unit state with `⟨K_d⟩ = 2/(d−1)` is a
   phase of `ψ*` and the strict inequality holds at every such state.
-- `D22_InstanciaPosicionTransporteTdPd`: the interface `PosicionTransporte d` of
+- `D22_InstanciaPosicionTransporteTdPd`: the interface `PositionTransport d` of
   `D17` instantiated with the concrete operators `(T_d, P_d)`; its saturation
   field is a theorem, and the intrinsic defect equals the Gram defect of `D20`.
 - `D23_SaturacionAutovectores`: Robertson–Schrödinger is an inequality and equality
@@ -342,19 +342,19 @@ lake env lean Verification/Certificados.lean          # axioms
   polynomial identity (the discrete Bochner-Weitzenböck formula,
   `gamma2_eq_bochner`). Neither the curvature lower bound `0` nor the
   effective dimension `2` can be improved: both are witnessed by explicit
-  counterexamples (`kappa_cero_no_mejorable`, `n_dos_no_mejorable`). Ties back
+  counterexamples (`kappa_zero_sharp`, `dim_two_sharp`). Ties back
   to `D3`'s actual graph edges via `adj_im1`/`adj_ip1`, not an unconnected toy.
 - `D28b_CurvaturaOllivier`: the same conclusion, `κ = 0` on the interior,
   from the independent Ollivier-Ricci notion, computed via the
   Kantorovich–Rubinstein dual characterization worked out directly (upper
   bound from the Lipschitz property, lower bound from an explicit witness;
   no Mathlib optimal-transport machinery invoked, to keep the module
-  self-contained). `convergencia_bakry_emery_ollivier` records that the two
+  self-contained). `bakryEmery_ollivier_agree` records that the two
   independent discrete-curvature notions agree exactly on a real edge of
-  `GrafoTP d`.
+  `graphTP d`.
 
   Together, `D28`/`D28b` are a negative result, not a bridge: the interior of
-  the path graph that the whole package is built on (`D3.CanalPreFuerza`, the
+  the path graph that the whole package is built on (`D3.PathUniqueness`, the
   only graph compatible with locality and completeness) carries no curvature
   to extract, by either standard discrete notion. Any hypothesis coupling a
   physical stretching factor to a curvature measured on `T_d:P_d` gets
@@ -370,36 +370,36 @@ unit and no constant to it.
 - `D4_WhyNotDiagonal`: the site of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
   changes one coordinate by one site (lengths `1 < √2 < √3`: the diagonal is never minimal).
 - `D37_PathGraph3D`: one pair `(T, P)` per axis (`liftAlong`, `prodAlong`), commuting across
-  axes (`conmutador_ejes_distintos_*`); NRS on each axis (`saturacion_cubo`, `estricta_cubo`).
-- `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_anguloNRS`), zero only at
-  `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`piso_angular`), below
-  `arccos (1/C_∞)`; one angle per axis of the cube (`angulos_cubo`, `piso_angular_cubo`);
-  finite isotropy (`anguloNRS_isotropia`, `isotropia_finita_cubo`).
+  axes (`conmutador_ejes_distintos_*`); NRS on each axis (`saturation_cube`, `strict_cube`).
+- `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_angleNRS`), zero only at
+  `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`angle_floor`), below
+  `arccos (1/C_∞)`; one angle per axis of the cube (`angles_cube`, `angle_floor_cube`);
+  finite isotropy (`angleNRS_isotropy`, `finite_isotropy_cube`).
 - `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at `Ψ*`
-  (`ortogonal_ejes_xy/xz/yz`); variances add (`pitagoras_T`, `pitagoras_P`); the total pair of
-  the cube `d × d × d` meets at `θ_NRS(d)` (`angulo_total_cubo`, `angulo_total_cuatro`).
-- `D37e_VolumetricQuantum`: `cuantoVolumetrico dx dy dz = δ(dx) δ(dy) δ(dz)`; zero only at a
-  seed axis (`cuantoVolumetrico_eq_cero_iff`), floor `δ(4)³` (`cuantoVolumetrico_piso`),
-  ceiling `δ_∞³` (`cuantoVolumetrico_techo`), strictly increasing per axis, closed form at
-  `4 × 4 × 4` (`cuantoVolumetrico_cuatro`), `𝒱(4,4,4)² = (area quantum)³`
-  (`cuantoVolumetrico_cuatro_sq`); certificate `cuanto_volumetrico`.
+  (`orthogonal_axes_xy/xz/yz`); variances add (`pythagoras_T`, `pythagoras_P`); the total pair of
+  the cube `d × d × d` meets at `θ_NRS(d)` (`angle_total_cube`, `angle_total_four`).
+- `D37e_VolumetricQuantum`: `volQuantum dx dy dz = δ(dx) δ(dy) δ(dz)`; zero only at a
+  seed axis (`volQuantum_eq_zero_iff`), floor `δ(4)³` (`volQuantum_floor`),
+  ceiling `δ_∞³` (`volQuantum_lt_ceiling`), strictly increasing per axis, closed form at
+  `4 × 4 × 4` (`volQuantum_four`), `𝒱(4,4,4)² = (area quantum)³`
+  (`volQuantum_four_sq`); certificate `volQuantum_certificate`.
 - `D37f_LightCone`: generic cone for powers of a local matrix (`pow_apply_eq_zero_of_lt`);
-  on the path `cono_de_luz`, `cono_de_luz_estado` (no signal outruns the cone) and
-  `borde_del_cono` / `borde_del_cono_ne_zero` (the edge is reached); on the cube
-  `cono_de_luz_cubo` for `T_x + T_y + T_z` with the lattice distance.
-- `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entrada_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
+  on the path `lightCone`, `lightCone_state` (no signal outruns the cone) and
+  `lightCone_edge` / `lightCone_edge_ne_zero` (the edge is reached); on the cube
+  `lightCone_cube` for `T_x + T_y + T_z` with the lattice distance.
+- `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entry_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
   (`norm_entry_pow_le`), and the bound `lieb_robinson`.
-- `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_modoSeno`,
-  `velocidadGrupo_le` / `velocidadGrupo_eq_max_iff`; Heisenberg equation `heisenberg`;
-  speed limit `abs_velocidad_le`, `velocidad_psiStar`, phase modes `velocidad_modoFase`;
-  cube `velocidades_le`, `velocidades_PsiStar3D`, `rapidez_sq_PsiStar3D`.
-- `D39_ConjugatePairs`: affine invariance of the angle and of the ratio (`anguloG_afin`,
-  `razonG_afin`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at `ψ*`
-  (`razon_par`), saturates exactly at `d = 2, 3` (`satura_par_iff`), opens strictly with `d`
-  (`angulo_par_lt_of_lt`) below `arccos (1/C_∞)` (`angulo_par_lt_limite`); on the cube, three
-  pairs in their own units give `𝒱(dx, dy, dz)` (`cuantoVolumetrico_pares`,
-  `cuanto_volumetrico_pares`).
-- `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
+- `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
+  `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
+  speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;
+  cube `velocities_le`, `velocities_PsiStar3D`, `speed_sq_PsiStar3D`.
+- `D39_ConjugatePairs`: affine invariance of the angle and of the ratio (`angleG_affineOp`,
+  `ratioG_affineOp`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at `ψ*`
+  (`ratio_pair`), saturates exactly at `d = 2, 3` (`saturated_pair_iff`), opens strictly with `d`
+  (`angle_pair_lt_of_lt`) below `arccos (1/C_∞)` (`angle_pair_lt_limit`); on the cube, three
+  pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
+  `volQuantum_pairs_certificate`).
+- `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
 ## Scope of the formal claims
@@ -408,9 +408,9 @@ The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
 closed-surface statements are formal mathematical theorems in Lean, with no
 input beyond Mathlib. The Cauchy–Gram and Robertson–Schrödinger inequalities
 are proved in `D1_CauchyGram` and `D2_Robertson` (including the bridge from
-any two vectors of a complex Hilbert space, `evaluacionSchrodingerDeGram`).
+any two vectors of a complex Hilbert space, `schrodingerEvaluationOfGram`).
 
-`T_d:P_d` is not one graph picked among others: `D3.CanalPreFuerza` proves
+`T_d:P_d` is not one graph picked among others: `D3.PathUniqueness` proves
 that any channel satisfying ordered locality (no step skips a neighbor) and
 completeness (no minimal step is missing) is forced to be exactly
 `SimpleGraph.pathGraph d`. `pathGraph` is the Mathlib name for that unique

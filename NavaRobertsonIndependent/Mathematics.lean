@@ -51,96 +51,28 @@ public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 public import NavaRobertsonIndependent.Mathematics.D39_ConjugatePairs
 
 /-!
-# Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
+# NRS and NRS³
 
-The theorems are about the operators `T_d` (normalized adjacency of the path graph) and `P_d`
-(equispaced diagonal) on `ℂ^d`, and their lifts to the product of three path graphs (`D37`).
-They are stated over Mathlib; the only other import is physlib's algebraic uncertainty
-framework, used by `PhyslibBridge` alone. No physical constant, no unit and no laboratory
-anchor appears anywhere in the import closure of this module.
+`T_d` (normalized adjacency of the path graph) and `P_d` (equispaced diagonal) on `ℂ^d`, and
+their lifts to the product of three paths (`D37`). Stated over Mathlib; physlib is imported by
+`PhyslibBridge` only. No physical constant or unit appears. Reading `T_d : P_d` as motion in
+discrete space, with the three factors of the cube as `x, y, z`, is a declared bridge, not a
+theorem.
 
-**Declared physical bridge** (a premise, not a theorem): `T_d:P_d` is motion in discrete space —
-`P_d` position on the cells of a row, `T_d` transport between neighbouring cells — and the three
-factors of the cube are the directions `x, y, z`. The size of a cell in SI units is Layer 2. The
-    dependency is
-one-way: this layer does not import `Physics`, and that is checked by
-`Verification/Layer1_Mathematics.lean`.
+## Contents
 
-## The theorem
-
-The Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty Inequality for
-the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
-`H_d = ℂ^d`:
-
-* at the state of maximal tension `ψ*` (the explicit Fiedler mode): `cov = 0`,
-  `Var T · Var P = (c/2)² (1 + δ_geom)²` with `c = −2/(d−1)`, and the
-  Robertson–Schrödinger gap is `(c/2)² δ_geom (2 + δ_geom)`, with
-  `δ_geom(d) = C_Nava(d) − 1` (`D20`, `D21`);
-* the gap vanishes exactly for `d ∈ {2, 3}` and is strictly positive for
-  `d ≥ 4` (`D7` Niven, `D21`, `D22`);
-* the top eigenvalue `2/(d−1)` of `K_d = i[T_d, P_d]` is simple, so the strict
-  inequality holds at every unit state attaining it (`D21`);
-* minimum-uncertainty states carry transport but, for `d ≥ 4`, never the maximal tension
-  (`D23`); at `d = 4` an explicit one, with probabilities `(1/8, 3/8, 3/8, 1/8)`, has tension
-  exactly `1/φ = (√5 − 1)/2`, i.e. `3(√5 − 1)/4` of the maximum (`D23f`);
-* for `d ≥ 4`, `δ_geom` is strictly increasing, with global minimum `δ_geom(4)`
-  and strict upper bound `δ_∞ = C_∞ − 1`, where `C_∞² = π²/3 − 2` (`D8`, `D9`);
-* the ambient inequality is proved from Cauchy–Gram (`D1`, `D2`).
-* the inequality at `ψ*` is physlib's `robertson_schrodinger` instantiated at the
-  vector state of `ψ*` with `T_d`, `P_d` as observables, term by term, and it is
-  strict there for `d ≥ 4` (`PhyslibBridge`).
-* on the cube `Fin dx × Fin dy × Fin dz` of `D4`, one pair `(T, P)` per axis: pairs on
-  different axes commute, and at `ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies the inequality with
-  its own `C_Nava`, saturating exactly for `2` or `3` sites and strict from `4` (`D37`).
-* the gap is an angle: at `ψ*` the fluctuation vectors of `T_d` and `P_d` meet at
-  `θ_NRS(d) = arccos (1 / C_Nava(d))`, zero exactly for `d = 2, 3`, positive and strictly
-  increasing from `d = 4`, strictly below `arccos (1 / C_∞)`; one such angle per axis of
-  the cube, and a universal floor `θ_NRS(d) ≥ θ_NRS(4) = arccos (1/√((99 − 42√5)/5)) > 0`
-  for every `d ≥ 4`, and finite isotropy: axes with at least `D` sites agree to within
-  `arccos (1/C_∞) − θ_NRS(D)` (`D37b`).
-* the spectrum of the cube is axis by axis: eigenvectors of an axis lift with the same
-  eigenvalue, products of eigenvectors add their eigenvalues, and `ψ* ⊗ ψ* ⊗ ψ*` is the
-  top of `K_x + K_y + K_z`, eigenvalue `Σ 2/(d_i − 1)`, which no state exceeds (`D37c`).
-* at `ψ* ⊗ ψ* ⊗ ψ*` the fluctuation vectors of different axes are orthogonal, so variances
-  add like Pythagoras, `Var(T_x + T_y + T_z) = Σ Var T_•` (same for `P`); on `d × d × d` the
-  total pair meets at exactly `θ_NRS(d)`, at `4 × 4 × 4` exactly `θ_NRS(4)` (`D37d`).
-* the volumetric quantum `𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)` vanishes only at a seed axis;
-  from `4 × 4 × 4` it is positive, at least `δ(4)³`, strictly below `δ_∞³`, strictly increasing
-  in each axis, and `𝒱(4,4,4)² = (area quantum of D11)³` (`D37e`).
-* light cone of neighbour transport: `(T_d^k) i j = 0` for `|i − j| > k`, with the edge reached
-  exactly (`(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0`); on the cube, `(T_x + T_y + T_z)^k` vanishes beyond
-  lattice distance `|Δx| + |Δy| + |Δz| > k` (`D37f`).
-* every pair `(a T_d + b, c P_d + e)`, `a, c ≠ 0`, has Robertson–Schrödinger ratio
-  `C_Nava(d)` at `ψ*`: units and origins do not reach NRS; on the cube, three pairs in their own
-  units have volumetric quantum `𝒱(dx, dy, dz)` (`D39`).
-
-## Order of the chain
-
-`D1` Cauchy–Gram → `D2` Robertson–Schrödinger → `D3` path graph → `D5` maximal
-tension → `D6` Fiedler → `D7` Niven → `D8` Szegő → `D9` monotonicity → `D10`
-certificate → `D17`–`D23` instantiation with the concrete operators and
-saturation of eigenvectors. `D11`–`D16b`, `D24` and `SumInvSinSq` are side results
-(dimensionless area quantum `δ_geom(4)²`, finite cosecant-square identity via
-Chebyshev roots in `SumInvSinSq`, transport to closed surfaces, and the
-gap `C_∞ − C_Nava(4)`).
-
-**The quantum is dimensional** (`D25`): the path-graph family `H₂, H₃, H₄, …` is the
-graph of Robertson's bound in every dimension — the graph of an algebraic
-obstruction. Each `H_d` has its own quantum `cuantoDim d = δ_geom(d)`: zero exactly
-at the seeds `d = 2, 3` (`sin_cuanto_en_d3`), strictly positive and increasing from
-`d = 4`, strictly below `δ_∞ > 0` and converging to it (`cuanto_dimensional`).
-
-**`Ω` from `π`** (`D26a`): `omegaPi = (1 − 1/C∞)·e^{−1/C∞}` and the decimal
-`0.049543679` is its 9-digit rounding, enclosed on both sides in `(1.11, 1.12)×10⁻¹⁰`
-(`decimal_desde_pi`). Pure mathematics; the baryonic reading is Layer 3.
-`D28`/`D28b` are a negative result: the interior of the path graph (`D3`) has
-zero discrete curvature, both Bakry-Émery (`CD(0,2)` sharp) and Ollivier-Ricci
-(Kantorovich–Rubinstein), so no curvature-driven bridge to a physical
-stretching hypothesis can be read off the graph itself.
-The cosmological reading (`D26`, `D26b`) is Layer 3 (`Cosmology`), and the
-observer/measurement postulates (`D29`–`D31`) are Layer 4 (`Ontology`); neither
-is imported here.
-
-The word "quantum" in `D11` means the algebraic quantum `δ_geom(4)²`, a pure
-number; its size in metres (the cell `L_sbpk`) is Layer 2.
+- `D0`–`D2` : `H_d`, Cauchy–Schwarz as a Gram defect, Robertson–Schrödinger.
+- `D3`–`D6` : the path graph and its uniqueness, the maximal-tension state, the spectrum.
+- `D7`–`D10` : Niven, the Szegő limit, monotonicity, the joint certificate.
+- `D11`–`D17`, `D24`, `D25`, `SumInvSinSq` : area quantum, scalar commutator, first rupture,
+  excess, closed surfaces, intrinsic defect, the gap at `d = 4`, the dimensional quantum.
+- `D19`–`D23f` : position variance, Gram step, the NRS inequality (`D21`) and its instance,
+  saturation on eigenvectors, the strict band, transport–tension exclusion, `1/φ` at `d = 4`.
+- `D26a` : a rational enclosure of `(1 − 1/C_∞) e^{−1/C_∞}`.
+- `D28`, `D28b` : the interior of the path is flat (Bakry–Émery, Ollivier–Ricci).
+- `D37`–`D37g` : the cube, the NRS angle, spectrum, Pythagoras, volumetric quantum, light
+  cone, Lieb–Robinson.
+- `D38` : dispersion, group velocity, the Heisenberg equation.
+- `D39` : every conjugate pair realized on `T_d : P_d`.
+- `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
