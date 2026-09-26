@@ -69,7 +69,8 @@ beyond the error bars.
   amplitude falls as `(κz)^r / r!` (`D37f`, `D37g`, physlib `norm_inner_unitaryEvolution_le`).
   The intensity along `z` can be imaged by fluorescence microscopy of the waveguides.
 * At `N = 4`, states that saturate Robertson–Schrödinger carry tension at most `1/φ ≈ 0.618`,
-  against a maximum of `2/3` (`D23f`, `D23g`).
+  against a maximum of `2/3` (`D23f`, `D23g`): in velocity, at most `v*(4) ≈ 0.927` of the cone
+  in either direction (`D43`). Section 8 turns this into a measurement.
 
 ## 5. Error budget
 
@@ -168,3 +169,53 @@ prediction of §4 the same number on every platform.
 A waveguide array is a lattice in the two transverse directions; the propagation direction plays
 the role of time. It realizes one axis, or two, of NRS³, not the cube `d × d × d`, which needs a
 three-dimensional platform (for example atoms in a cubic optical lattice).
+
+## 8. Three measurements on one chip
+
+The same fabricated arrays serve three measurements. They differ in the input and in what is
+recorded, and only the last two carry the NRS signature.
+
+**M1 — The cone (intensity only).** Light is injected into a single guide and the intensity
+along `z` is imaged (fluorescence microscopy). In a row of guides the light stays inside the cone
+of `D37f` and the tail outside it falls faster than any exponential (`D37g`). In a square array
+of guides (two axes) the step cone is the rhombus `|Δx| + |Δy| ≤ k`, but propagation is
+continuous: each axis spreads on its own and the camera records a **square with bright
+corners**, at `|Δx|, |Δy| ≈` the front of one axis (`D38`). This tests locality and the speed
+limit; it holds for any lattice with nearest-neighbour coupling, so it is a check of the
+platform, not of NRS.
+
+**M2 — The tilted beam (`N = 4`, holography).** The input is the envelope of `ψ*` with a phase
+step `θ` per guide, `ψ_j ∝ e^{−ijθ} sin((j+1)π/5)`: a beam launched at an angle, with velocity
+`v = sin θ`. At `θ = 90°` it is `ψ*` and `R = C_Nava(4) = 1.00848`, `θ_NRS(4) ≈ 7.43°`, and the
+Mandelstam–Tamm/Cramér–Rao ratio is `5/(99 − 42√5) ≈ 0.9833` (Lean, `D41`, `D43`). Numerically the
+angle stays at `7.43°` for **every** tilt `θ ≠ 0`: the defect is set by the envelope, not by the
+speed. A curve `R(θ)` flat at `1.00848` is a prediction that needs no fitting.
+
+**M3 — The velocity threshold (`N = 4`, SLM and holography).** At each target velocity the
+input is the state with the smallest defect at that velocity. The prediction: `R = 1` up to
+`v*(4) = 3(√5 − 1)/4 = 0.92705` (Lean, `D43`: minimum uncertainty reaches exactly `±v*(4)`,
+never more), then a rise to `R = 1.00848` at `v = 1`. Input states and predictions, reproduced by
+[`simulation/figures_threshold_cone.py`](simulation/figures_threshold_cone.py) (`states`); the
+states below `v*` are not unique, any minimum-uncertainty state of that velocity will do:
+
+| `v` | angle | `R` | amplitudes `|ψ_j|` | phases (deg) |
+|---|---|---|---|---|
+| 0.5000 | 0.00° | 1.00000 | 0.716, 0.628, 0.293, 0.092 | 0.0, −144.0, 78.0, −60.6 |
+| 0.9000 | 0.00° | 1.00000 | 0.386, 0.649, 0.551, 0.357 | 0.0, −50.2, −128.8, 122.1 |
+| 0.9271 (`v*`) | 0.00° | 1.00000 | 0.353, 0.612, 0.613, 0.354 | 0.0, −119.9, 150.1, 90.2 |
+| 0.9500 | 2.17° | 1.00072 | 0.354, 0.612, 0.612, 0.354 | 0.0, −114.6, 155.4, 90.0 |
+| 0.9700 | 4.13° | 1.00260 | 0.354, 0.612, 0.612, 0.354 | 0.0, −108.9, 161.1, 90.0 |
+| 0.9900 | 6.17° | 1.00582 | 0.355, 0.612, 0.612, 0.355 | 0.0, −100.5, 169.5, 90.0 |
+| 1.0000 | 7.43° | 1.00848 | 0.372, 0.602, 0.602, 0.372 | 0.0, −90.0, 180.0, 90.0 |
+
+![Velocity threshold](figures/d43_velocity_threshold.png)
+
+**Resolution.** With the realistic budget of section 5 (`R` at `N = 4` within about `±0.002`),
+the rise is resolved from `v ≈ 0.97` on and is clear at `v ≥ 0.99`; locating `v*` itself to a
+few per cent needs input phases better than `2°`. The end points are theorems; the shape of the
+rise between them is numerical.
+
+**Direction.** Reversing the input across the array (`j ↦ 3 − j`) reverses the velocity and
+leaves `R`, the angle and the ratio unchanged (`D42`); reversing the tilt (`θ ↦ −θ`, the complex
+conjugate input) does the same, by the same computation. Measuring both directions is a free
+control of the alignment.

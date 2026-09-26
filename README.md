@@ -30,7 +30,8 @@ The same holds for every conjugate pair realized on `T_d:P_d`, `(a T_d + b, c P_
 and origins do not change the ratio or the angle (`D39`).
 From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d = 4` the
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
-(`D23f`; upper bound `D23g` in the separate target).
+(`D23f`; upper bound `D23g` in the separate target). In velocity: minimum uncertainty reaches
+exactly `±v*(4) = ±3(√5 − 1)/4 ≈ 0.927` of the cone, and beyond it the defect is forced (`D43`).
 
 **Localization and tension (the two extremes of NRS).**
 
@@ -52,6 +53,18 @@ displacement. Robertson for `(T_d, P_d)` is therefore the Mandelstam–Tamm boun
 (Fisher information at most `4 Var T_d`). At `ψ*` both are attained to the fraction
 `1/C_Nava(d)² = cos² θ_NRS(d)`, exactly only at `d = 2, 3`; on the cube, per axis and for the
 total pair of `d × d × d`. From `d = 4`, no state at the speed limit has minimum uncertainty.
+
+**Direction and the Nava–Robertson–Schrödinger octahedron (`D42`, `D43`).** The direction of
+motion is the sign of `⟨K_d⟩`. The reflection `j ↦ d − 1 − j` commutes with `T_d` and reverses
+`P_d`: it reverses the tension, keeps both variances, the Mandelstam–Tamm/Cramér–Rao ratio and
+the NRS angle, and makes the spectrum of `K_d` symmetric (`D42`). The bounds do not see
+direction. On `4 × 4 × 4` the eight octant states move at `(±1, ±1, ±1)`, one per face of the
+octahedral cone of steps, all at `θ_NRS(4) ≈ 7.43°` on every axis. `D43` collects the
+irreducible elemental dimensional quantum of uncertainty in one theorem,
+`navaRobertsonSchrodinger_octahedron`: the octahedral cone, the eight octants, the angle floor
+and limit, the ratio `5/(99 − 42√5) ≈ 0.9833` at the speed limit, and the velocity threshold
+`v*(4) = 3(√5 − 1)/4` of minimum uncertainty, attained in both directions, beyond which the
+defect is forced.
 
 **NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
 factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
@@ -78,8 +91,10 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 * **light cone**: `T_d` is, up to shift and scale, the Dirichlet discretization of `−d²/dx²` on
   `[−1, 1]` (the particle in a box), so it only connects neighbours; counting time in steps of
   transport, `(T_d^k) i j = 0` whenever `|i − j| > k`, and the edge is reached exactly,
-  `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone is the
-  octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`);
+  `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone of steps is the
+  octahedron `|Δx| + |Δy| + |Δz| ≤ k`, on two axes the rhombus `|Δx| + |Δy| ≤ k` (`D37f`, `D43`).
+  In continuous time each axis spreads on its own, so the front is a cube (a square on two
+  axes), as for the velocities of `D38` below;
 * **Lieb–Robinson bound**: in continuous time, `U(t) = exp(−i t T_d)` satisfies
   `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}` with `r = |i − j|` — outside the cone the amplitude decays
   faster than any exponential in the distance (`D37g`);
@@ -94,7 +109,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -139,8 +154,9 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 
 **The light cone and the Lieb–Robinson bound.** In steps of transport the amplitude is exactly
 zero outside `|i − j| ≤ k` (`D37f`); in continuous time it leaks outside the cone but decays
-faster than any exponential (`D37g`); on the cube the cone is the octahedron
-`|Δx| + |Δy| + |Δz| ≤ k`.
+faster than any exponential (`D37g`). On two axes the cone of steps is the rhombus
+`|Δx| + |Δy| ≤ k` (the octahedron on three); in continuous time, which is what a waveguide chip
+records, the front is a square with bright corners, because each axis spreads on its own (`D38`).
 
 ![Light cone and Lieb–Robinson bound](docs/figures/nrs3_light_cone.png)
 
@@ -157,6 +173,20 @@ maximal-tension state both are attained to the fraction `1/C_Nava(d)²`: exactly
 `0.9833` at `d = 4`, falling towards `3/(π² − 6) ≈ 0.775`, which no `d` reaches.
 
 ![Mandelstam–Tamm and Cramér–Rao](docs/figures/d41_mandelstam_tamm_cramer_rao.png)
+
+**The velocity threshold (`D43`).** On an axis of `4` sites, the smallest Robertson–Schrödinger
+angle a state can have at velocity `v`: zero up to `v*(4) = 3(√5 − 1)/4 ≈ 0.927`, then forced,
+rising to `θ_NRS(4) ≈ 7.43°` at the cone. The end points are Lean theorems; the curve between
+them is numerical. A beam tilted by `θ` per guide (`v = sin θ`) keeps `7.43°` at every tilt: the
+threshold is seen only by preparing the optimal state at each velocity.
+
+![Velocity threshold of minimum uncertainty](docs/figures/d43_velocity_threshold.png)
+
+**The threshold by dimension.** `v*(d)` is `1` at `d = 2, 3` and `3(√5 − 1)/4` at `d = 4`
+(Lean); for `d ≥ 5` the values are numerical. `d = 4` has the widest band `[v*, 1]` where the
+defect is forced; the band narrows with `d` while the defect at the cone grows (`D37b`).
+
+![Threshold by dimension](docs/figures/d43_threshold_by_dimension.png)
 
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
@@ -298,9 +328,9 @@ lake env lean Verification/Certificados.lean          # axioms
 
 It also contains `D43`, **the Nava–Robertson–Schrödinger octahedron**: the irreducible
 elemental dimensional quantum of uncertainty on the base `4 × 4 × 4` of NRS³
-(`NRSOctahedron.navaRobertsonSchrodinger_octahedron`). Transport spreads inside the octahedron
-`|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + |Δy| ≤ k`: `lightCone_rhombus`); its
-eight directions move at the speed limit and meet Robertson–Schrödinger at
+(`NRSOctahedron.navaRobertsonSchrodinger_octahedron`). In `k` steps transport spreads inside
+the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + |Δy| ≤ k`:
+`lightCone_rhombus`); its eight directions move at the speed limit and meet Robertson–Schrödinger at
 `θ_NRS(4) ≈ 7.43°` on every axis; the Mandelstam–Tamm and Cramér–Rao ratio there is
 `5 / (99 − 42√5) ∈ (0.9831, 0.9834)`. Minimum uncertainty reaches exactly
 `±v*(4) = ±3(√5 − 1)/4 ∈ (0.927, 0.9272)` of the cone (`vStar_isGreatest`, `neg_vStar_isLeast`),

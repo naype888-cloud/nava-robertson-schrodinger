@@ -12,9 +12,9 @@ public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 # D43 — The Nava–Robertson–Schrödinger octahedron
 
 The irreducible elemental dimensional quantum of uncertainty, on the base `4 × 4 × 4` of NRS³.
-Transport spreads inside the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`); in each of its eight
-directions the state at the speed limit meets Robertson–Schrödinger at `θ_NRS(4) ≈ 7.43°` on every
-axis (`D42`), and the angle never closes for `d ≥ 4` (`D37b`).
+In `k` steps, transport spreads inside the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`); in
+each of its eight directions the state at the speed limit meets Robertson–Schrödinger at
+`θ_NRS(4) ≈ 7.43°` on every axis (`D42`), and the angle never closes for `d ≥ 4` (`D37b`).
 
 The quantum is set by the velocity. On an axis of `4` sites, minimum uncertainty is possible up
 to `v*(4) = 3(√5 − 1)/4 ≈ 0.927` of the cone, in both directions, and not beyond (`D23f`, `D23g`
@@ -139,7 +139,7 @@ theorem lightCone_rhombus {dx dy : ℕ} (k : ℕ) (p q : Site3D dx dy 1)
 /-- **The Nava–Robertson–Schrödinger octahedron**: the irreducible elemental dimensional quantum
 of uncertainty on the base `4 × 4 × 4` of NRS³.
 
-1. Transport spreads inside the octahedron `|Δx| + |Δy| + |Δz| ≤ k`.
+1. In `k` steps, transport spreads inside the octahedron `|Δx| + |Δy| + |Δz| ≤ k`.
 2. Each of its eight directions moves at the speed limit on every axis, meets
    Robertson–Schrödinger at `θ_NRS(4)` on every axis, and misses Mandelstam–Tamm and Cramér–Rao.
 3. `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` is positive, is the floor of every axis
