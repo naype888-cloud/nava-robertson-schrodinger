@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 
 /-!
 # D39 — Every conjugate pair realized on `T_d : P_d`
@@ -26,7 +33,7 @@ The only thing a pair changes is its floor `|a c| · ½ |⟨[T_d, P_d]⟩| = |a 
 its own units. The catalogue of named pairs is in `docs/PAIRS.md`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP Gnomon
 open PathGraph3DNRS SaturacionAutovectores AnguloNRS CuantoDimensional CuantoVolumetrico

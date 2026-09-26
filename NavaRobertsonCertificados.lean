@@ -1,4 +1,11 @@
-import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 
 /-!
 # Certificates — separate target

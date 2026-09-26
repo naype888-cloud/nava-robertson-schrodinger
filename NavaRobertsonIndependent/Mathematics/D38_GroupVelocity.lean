@@ -1,7 +1,14 @@
-import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
-import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
-import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
+public import NavaRobertsonIndependent.Mathematics.D37c_CubeSpectrum
+public import Mathlib.Analysis.SpecialFunctions.Exponential
+public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 
 /-!
 # D38 — Dispersion and group velocity of transport
@@ -26,7 +33,7 @@ unit of time, and `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` reaches the bound on the three axe
 along a single axis the bound is `1` (`rapidez_sq_PsiStar3D`).
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP SobranteIntermedio
 open LiebRobinson PathGraph3DNRS EspectroCubo

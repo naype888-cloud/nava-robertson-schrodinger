@@ -1,6 +1,13 @@
-import NavaRobertsonIndependent.Mathematics.D23f_MinUncertaintyTensionFour
-import NavaRobertsonCertificados.CotaCasoA
-import NavaRobertsonCertificados.CotaCasoB
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23f_MinUncertaintyTensionFour
+public import NavaRobertsonCertificados.CotaCasoA
+public import NavaRobertsonCertificados.CotaCasoB
 
 /-!
 # D23g — The minimum-uncertainty states of `H₄` carry tension at most `1/φ`
@@ -24,6 +31,8 @@ i.e. `3(√5 − 1)/4 ≈ 92.7 %` of the maximal tension `2/3`.
    (`Certificados/CotaCasoA`, `Certificados/CotaCasoB`: 207 and 229 weighted squares,
    found by semidefinite programming, rounded to exact rationals and checked by `ring`).
 -/
+
+@[expose] public section
 
 /-! ## Density form of the bound -/
 

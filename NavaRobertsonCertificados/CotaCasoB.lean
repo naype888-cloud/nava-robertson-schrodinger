@@ -1,4 +1,13 @@
-import Mathlib
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 /-!
 # Exact Positivstellensatz certificate — case B of the `H_4` minimum-uncertainty bound
@@ -6,6 +15,8 @@ import Mathlib
 Generated certificate: 229 weighted squares. `m` and `g` are the region polynomials
 (`m ≥ 0`: `⟨P⟩ ≥ 0`; `g ≥ 0`: which link is tightest), stated as hypotheses.
 -/
+
+@[expose] public section
 
 namespace CertificadoH4
 
