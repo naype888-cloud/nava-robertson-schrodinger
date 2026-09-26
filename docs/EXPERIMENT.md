@@ -37,9 +37,14 @@ interferometric phase retrieval between neighbouring guides). From it:
 
     σ_P² = ⟨P²⟩ − ⟨P⟩²,   σ_T² = ⟨T²⟩ − ⟨T⟩²,   ½|⟨[T, P]⟩|,
 
-and the ratio
+and the Robertson–Schrödinger ratio
 
-    R = σ_T σ_P / (½ |⟨[T, P]⟩|).
+    R = σ_T σ_P / |⟨x, y⟩|,   x = (T − ⟨T⟩)ψ,   y = (P − ⟨P⟩)ψ,
+
+where `|⟨x, y⟩|² = cov(T, P)² + (½ ⟨i[T, P]⟩)²`: the floor includes the covariance. This is
+`ratioG` of `D39`. At the ideal `ψ*` the covariance vanishes and `R` equals the Robertson ratio
+`σ_T σ_P / (½ |⟨[T, P]⟩|)`; with imperfections it does not, and only the Robertson–Schrödinger
+ratio keeps the controls at `1` (section 5).
 
 ## 4. Predictions
 
@@ -68,25 +73,52 @@ beyond the error bars.
 
 ## 5. Error budget
 
-Imperfections add uncertainty, so they **bias `R` upwards** and can imitate the excess. Simulation
-of the prepared `ψ*` (2000 random samples per entry, mean ± standard deviation):
+Imperfections add uncertainty and bias `R` upwards, which can imitate the excess. Monte Carlo
+of 2000 realizations per entry (mean ± standard deviation), reproduced by
+[`simulation/error_budget.py`](simulation/error_budget.py) (numpy only). Sources: disorder of
+the fabricated couplings, phase and amplitude errors of the SLM, additive noise of the
+holographic reconstruction at the given SNR, and finite photon counts (Poisson intensities,
+phase jitter `0.5/√n`). *Realistic*: 1 % coupling, 2°, 2 % amplitude, 35 dB, 5 × 10⁴ photons.
+*Stressed*: 3 %, 5°, 5 %, 25 dB, 10⁴ photons.
 
-| `N` | ideal `R` | coupling disorder 1 % | 3 % | 5 % | phase error 2° | 5° | 10° |
-|---|---|---|---|---|---|---|---|
-| 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 3 | 1.0000 | 1.0001 ± 0.0001 | 1.0005 ± 0.0007 | 1.0012 ± 0.0017 | 1.0009 ± 0.0013 | 1.0060 ± 0.0088 | 1.024 ± 0.038 |
-| 4 | 1.0085 | 1.0086 ± 0.0015 | 1.0092 ± 0.0043 | 1.0107 ± 0.0077 | 1.0099 ± 0.0015 | 1.018 ± 0.010 | 1.049 ± 0.044 |
-| 6 | 1.0277 | 1.0279 ± 0.0019 | 1.0294 ± 0.0056 | 1.0319 ± 0.0096 | 1.0304 ± 0.0021 | 1.044 ± 0.013 | 1.093 ± 0.053 |
-| 10 | 1.0558 | 1.0562 ± 0.0018 | 1.0595 ± 0.0058 | 1.0656 ± 0.0109 | 1.0614 ± 0.0034 | 1.089 ± 0.020 | 1.189 ± 0.078 |
+Robertson–Schrödinger ratio (the observable of section 3):
+
+| `N` | ideal | coupling 1 % | coupling 3 % | phase 2° | phase 5° | amplitude 2 % | holography 30 dB | 10⁴ photons | realistic | stressed |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2 | 1.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 |
+| 3 | 1.0000 | 1.0000 ± 0.0001 | 1.0005 ± 0.0006 | 1.0000 ± 0.0000 | 1.0000 ± 0.0001 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0001 ± 0.0001 | 1.0006 ± 0.0008 |
+| 4 | 1.0085 | 1.0086 ± 0.0014 | 1.0092 ± 0.0042 | 1.0093 ± 0.0012 | 1.0131 ± 0.0075 | 1.0087 ± 0.0005 | 1.0090 ± 0.0006 | 1.0086 ± 0.0002 | 1.0098 ± 0.0021 | 1.0174 ± 0.0105 |
+| 5 | 1.0184 | 1.0184 ± 0.0017 | 1.0193 ± 0.0052 | 1.0198 ± 0.0015 | 1.0268 ± 0.0094 | 1.0188 ± 0.0044 | 1.0193 ± 0.0040 | 1.0187 ± 0.0020 | 1.0207 ± 0.0054 | 1.0352 ± 0.0190 |
+| 6 | 1.0277 | 1.0278 ± 0.0018 | 1.0293 ± 0.0055 | 1.0298 ± 0.0019 | 1.0408 ± 0.0118 | 1.0285 ± 0.0055 | 1.0294 ± 0.0056 | 1.0282 ± 0.0031 | 1.0311 ± 0.0071 | 1.0531 ± 0.0240 |
+| 8 | 1.0436 | 1.0439 ± 0.0019 | 1.0461 ± 0.0059 | 1.0470 ± 0.0025 | 1.0649 ± 0.0155 | 1.0448 ± 0.0062 | 1.0462 ± 0.0075 | 1.0447 ± 0.0047 | 1.0496 ± 0.0084 | 1.0843 ± 0.0298 |
+| 10 | 1.0558 | 1.0562 ± 0.0018 | 1.0594 ± 0.0058 | 1.0608 ± 0.0032 | 1.0868 ± 0.0193 | 1.0574 ± 0.0062 | 1.0602 ± 0.0084 | 1.0580 ± 0.0059 | 1.0650 ± 0.0094 | 1.1155 ± 0.0347 |
+
+For comparison, the Robertson ratio `σ_T σ_P / (½ |⟨[T, P]⟩|)` under the same noise:
+
+| `N` | ideal | coupling 1 % | coupling 3 % | phase 2° | phase 5° | amplitude 2 % | holography 30 dB | 10⁴ photons | realistic | stressed |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2 | 1.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0000 ± 0.0000 | 1.0001 ± 0.0002 |
+| 3 | 1.0000 | 1.0000 ± 0.0001 | 1.0005 ± 0.0006 | 1.0009 ± 0.0013 | 1.0057 ± 0.0081 | 1.0000 ± 0.0000 | 1.0004 ± 0.0005 | 1.0001 ± 0.0001 | 1.0011 ± 0.0015 | 1.0075 ± 0.0098 |
+| 4 | 1.0085 | 1.0086 ± 0.0014 | 1.0092 ± 0.0042 | 1.0100 ± 0.0015 | 1.0179 ± 0.0095 | 1.0087 ± 0.0005 | 1.0094 ± 0.0008 | 1.0087 ± 0.0002 | 1.0107 ± 0.0024 | 1.0235 ± 0.0135 |
+| 5 | 1.0184 | 1.0184 ± 0.0017 | 1.0193 ± 0.0052 | 1.0204 ± 0.0017 | 1.0305 ± 0.0109 | 1.0188 ± 0.0044 | 1.0197 ± 0.0040 | 1.0188 ± 0.0020 | 1.0215 ± 0.0056 | 1.0407 ± 0.0208 |
+| 6 | 1.0277 | 1.0278 ± 0.0018 | 1.0293 ± 0.0055 | 1.0303 ± 0.0021 | 1.0442 ± 0.0127 | 1.0285 ± 0.0055 | 1.0298 ± 0.0057 | 1.0283 ± 0.0031 | 1.0318 ± 0.0071 | 1.0576 ± 0.0248 |
+| 8 | 1.0436 | 1.0439 ± 0.0019 | 1.0461 ± 0.0059 | 1.0474 ± 0.0026 | 1.0675 ± 0.0160 | 1.0448 ± 0.0062 | 1.0465 ± 0.0076 | 1.0448 ± 0.0047 | 1.0502 ± 0.0084 | 1.0882 ± 0.0304 |
+| 10 | 1.0558 | 1.0562 ± 0.0018 | 1.0594 ± 0.0058 | 1.0612 ± 0.0033 | 1.0891 ± 0.0199 | 1.0574 ± 0.0062 | 1.0605 ± 0.0084 | 1.0582 ± 0.0059 | 1.0655 ± 0.0094 | 1.1189 ± 0.0352 |
 
 Consequences for the design:
 
-1. **Controls are essential.** `N = 3` is the sharpest control: with phase errors above a few
-   degrees it already shows a spurious excess.
-2. **Tolerances.** Input phases within about 2° and coupling uniformity within about 1–3 %.
-3. **Calibrated prediction.** Measure the fabricated couplings and compute the predicted `R` for
-   that array, not only for the ideal one; compare the measured `R` with the calibrated value.
-4. **Use the curve, not one point.** The excess at `N = 4` (0.85 %) is small; measuring
+1. **Use the Robertson–Schrödinger ratio.** Phase and holographic errors create a spurious
+   covariance. The Robertson ratio counts it as excess (at `N = 3` with 5° of phase error it
+   reads `1.0057`); the Robertson–Schrödinger ratio does not (`1.0000`). The controls stay at
+   `1` and `N = 3` against `N = 4` separates by more than four standard deviations in the
+   realistic scenario.
+2. **Controls are essential.** `N = 2, 3` must give `R = 1` within error; they test the
+   instrument, not only the theory.
+3. **Tolerances.** Coupling uniformity within about 1 % (coupling disorder is the one source
+   that also moves the controls), input phases within about 2°.
+4. **Calibrated prediction.** Measure the fabricated couplings and compute the predicted `R` for
+   that array; compare the measured `R` with the calibrated value.
+5. **Use the curve, not one point.** The excess at `N = 4` (0.85 %) is small; measuring
    `N = 2, …, 10` on the same chip tests both the vanishing at the seeds and the growth.
 
 ## 6. Units: from the algebra to the laboratory
@@ -130,3 +162,7 @@ prediction of §4 the same number on every platform.
 * **Superconducting qubit chains** with uniform nearest-neighbour exchange, in the
   single-excitation sector (quantum state transfer), realize `T_N`; populations give `P_N`.
 * **A single `N`-level system** (for `N = 4`, a ququart) driven only between consecutive levels.
+
+A waveguide array is a lattice in the two transverse directions; the propagation direction plays
+the role of time. It realizes one axis, or two, of NRS³, not the cube `d × d × d`, which needs a
+three-dimensional platform (for example atoms in a cubic optical lattice).

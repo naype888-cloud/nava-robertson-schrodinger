@@ -202,7 +202,10 @@ the theorems here do not cover that geometry.
 the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator term
 `½ |⟨[T_N, P_N]⟩| = 1/(N−1)`.
 
-**Prediction.** The ratio `R = σ_T σ_P / (½ |⟨[T_N, P_N]⟩|)` equals `C_Nava(N)`:
+**Prediction.** The Robertson–Schrödinger ratio `R = σ_T σ_P / |⟨x, y⟩|`, with `x`, `y` the
+fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_Nava(N)`; at `ψ*` the
+covariance vanishes and `|⟨x, y⟩| = ½ |⟨[T_N, P_N]⟩|`. Under imperfections only this ratio keeps
+the controls at `1` (error budget in `docs/EXPERIMENT.md`):
 
 | sites `N` | `C_Nava(N)` | excess over the floor | NRS angle |
 |---|---|---|---|
@@ -399,6 +402,10 @@ unit and no constant to it.
   (`angle_pair_lt_of_lt`) below `arccos (1/C_∞)` (`angle_pair_lt_limit`); on the cube, three
   pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
   `volQuantum_pairs_certificate`).
+- `D40_SpeedLimitUncertainty`: a state at the speed limit has maximal tension
+  (`tension_eq_of_velocity_eq_one`), so for `d ≥ 4` it satisfies Robertson–Schrödinger strictly
+  (`surplus_pos_of_velocity_eq_one`); minimum-uncertainty states move slower than the cone
+  (`velocity_lt_one_of_surplus_eq_zero`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 
