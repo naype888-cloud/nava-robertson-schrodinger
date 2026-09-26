@@ -121,6 +121,32 @@ towards the unattained ceiling `δ_∞³ ≈ 2.50 × 10⁻³` (`D37e`).
 
 ![Volumetric quantum](docs/figures/nrs3_volumetric_quantum.png)
 
+**The octahedral envelope of the star.** The six fluctuation vectors of `4 × 4 × 4` and the
+octahedron they span. This is a picture of the star, not a volume: the volumetric quantum of
+`D37e` is the box above.
+
+![Octahedral envelope of the star](docs/figures/nrs3_octahedron_hd.png)
+
+**The light cone and the Lieb–Robinson bound.** In steps of transport the amplitude is exactly
+zero outside `|i − j| ≤ k` (`D37f`); in continuous time it leaks outside the cone but decays
+faster than any exponential (`D37g`); on the cube the cone is the octahedron
+`|Δx| + |Δy| + |Δz| ≤ k`.
+
+![Light cone and Lieb–Robinson bound](docs/figures/nrs3_light_cone.png)
+
+**Group velocity (`D38`).** Dispersion and group velocity of `T_d`; the Heisenberg equation (the
+tension is velocity); the allowed velocities on the cube, `|vᵢ| ≤ 1` per axis with `Ψ*` at the
+corner `(1, 1, 1)`; and the two-dimensional prediction: a square velocity region, `√2` along the
+diagonal, against a circle.
+
+![Group velocity and lattice anisotropy](docs/figures/d38_group_velocity.png)
+
+**The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
+budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
+(see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
+
+![Photonic experiment](docs/figures/nrs_photonic_experiment.png)
+
 ## Declared physical bridge
 
 The theorems above are mathematics. Their physical content rests on one declared
