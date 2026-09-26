@@ -443,7 +443,7 @@ theorem Kmat_mulVec_modoFase
       apply Finset.sum_congr rfl
       intro j _
       by_cases hp : PasoMinimo i j
-      · simp only [hp, if_pos, modoFase]
+      · simp only [hp, ↓reduceIte, modoFase]
         exact termino_vecino_fase hd hp (modoSeno d k j)
       · have hz : Kmat d i j = 0 := by
           rw [Kmat_apply]
@@ -775,8 +775,8 @@ theorem radioEspectral_KdOp_eq_paso
     letI : Nontrivial (Hd d) := inferInstance
     ConstructorEspectralTP.radioEspectral (KdOp d) (KdOp_simetrico d) =
       2 / ((d : ℝ) - 1) := by
-  letI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
-  letI : Nontrivial (Hd d) := inferInstance
+  let : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+  let : Nontrivial (Hd d) := inferInstance
   have hdsub : 0 < (d : ℝ) - 1 := by
     have : (1 : ℝ) < d := by exact_mod_cast (show 1 < d by omega)
     linarith

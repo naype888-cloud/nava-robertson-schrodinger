@@ -105,8 +105,8 @@ theorem fiedler_radio_banda (d : ℕ) (hd : 2 ≤ d) :
     letI : Nontrivial (Hd d) := inferInstance
     ConstructorEspectralTP.radioEspectral (KdOp d) (KdOp_simetrico d) =
       2 / ((d : ℝ) - 1) := by
-  letI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
-  letI : Nontrivial (Hd d) := inferInstance
+  let : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+  let : Nontrivial (Hd d) := inferInstance
   exact radioEspectral_KdOp_eq_paso d hd
 
 /-! ## Szegő: asintótica de la familia finita -/

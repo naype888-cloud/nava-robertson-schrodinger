@@ -237,7 +237,7 @@ theorem Td_isHermitian (d : ℕ) : Matrix.IsHermitian (Td d) := by
     exact Complex.conj_ofReal _
   by_cases h : PasoMinimo i j
   · have h' : PasoMinimo j i := pasoMinimo_simetrico.mp h
-    simp only [Td, Ad, h, h', if_pos]
+    simp only [Td, Ad, h, h', ↓reduceIte]
     rw [one_div, star_inv₀, hrho]
   · have h' : ¬PasoMinimo j i := by
       intro hji
@@ -276,7 +276,7 @@ noncomputable def psiD (d : ℕ) (hd : 1 ≤ d) : Hd d := by
 
 theorem psiD_normalizado (d : ℕ) (hd : 1 ≤ d) :
     ‖psiD d hd‖ = 1 := by
-  letI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
+  let : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   exact estadoExtremal_normalizado (KdOp d) (KdOp_simetrico d)
 
 /-! ## Vector de Fiedler explícito

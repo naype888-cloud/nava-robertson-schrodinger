@@ -266,7 +266,7 @@ theorem estado_maxima_tension_es_fase {d : ℕ} (hd : 2 ≤ d) (v : Hd d) (hv : 
     rw [hre, hre_v]
     exact (Complex.re_le_norm _).trans hle
   have hK : T v = ((T.rayleighQuotient v : ℝ) : ℂ) • v :=
-    hT.eq_smul_self_of_isLocalExtrOn (Or.inr hmax.localize)
+    hT.eq_smul_self_of_isLocalExtrOn (Or.inr hmax.isLocalMaxOn)
   have hray : T.rayleighQuotient v = 2 / ((d : ℝ) - 1) := by
     simp only [ContinuousLinearMap.rayleighQuotient, ContinuousLinearMap.reApplyInnerSelf_apply,
       hTv, hv, RCLike.re_to_complex]
