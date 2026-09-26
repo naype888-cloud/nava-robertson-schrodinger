@@ -6,6 +6,7 @@ Authors: Eduardo Nava-Hernandez
 module
 
 public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
+public import NavaRobertsonCertificados.D43_NRSOctahedron
 
 /-!
 # Certificates
@@ -14,4 +15,7 @@ A separate target, not built by default: `D23g`, the bound `≤ 1/φ` on the ten
 minimum-uncertainty states of `H₄`, and its two exact Positivstellensatz certificates. Build with
 `lake build NavaRobertsonCertificados` (20–30 minutes; `CotaCasoA` is a 1 MB identity checked by
 `ring`).
+
+`D43`: the Nava–Robertson–Schrödinger octahedron, with the velocity threshold `v*(4)` of
+minimum uncertainty.
 -/

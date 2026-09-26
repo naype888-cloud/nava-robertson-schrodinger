@@ -296,6 +296,16 @@ lake build NavaRobertsonCertificados
 lake env lean Verification/Certificados.lean          # axioms
 ```
 
+It also contains `D43`, **the Nava–Robertson–Schrödinger octahedron**: the irreducible
+elemental dimensional quantum of uncertainty on the base `4 × 4 × 4` of NRS³
+(`NRSOctahedron.navaRobertsonSchrodinger_octahedron`). Transport spreads inside the octahedron
+`|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + |Δy| ≤ k`: `lightCone_rhombus`); its
+eight directions move at the speed limit and meet Robertson–Schrödinger at
+`θ_NRS(4) ≈ 7.43°` on every axis; the Mandelstam–Tamm and Cramér–Rao ratio there is
+`5 / (99 − 42√5) ∈ (0.9831, 0.9834)`. Minimum uncertainty reaches exactly
+`±v*(4) = ±3(√5 − 1)/4 ∈ (0.927, 0.9272)` of the cone (`vStar_isGreatest`, `neg_vStar_isLeast`),
+and beyond it the defect is forced (`surplus_pos_of_vStar_lt`).
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,

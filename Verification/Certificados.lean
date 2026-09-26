@@ -13,3 +13,7 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms CertificateH4.bound_caseA
 #print axioms CertificateH4.bound_caseB
 #print axioms MinUncertaintyFour.tension_psiSat
+#print axioms NRSOctahedron.vStar_isGreatest
+#print axioms NRSOctahedron.surplus_pos_of_vStar_lt
+#print axioms NRSOctahedron.mtRatio_psiStar_four_bounds
+#print axioms NRSOctahedron.navaRobertsonSchrodinger_octahedron
