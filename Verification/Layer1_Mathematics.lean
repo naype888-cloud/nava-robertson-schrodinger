@@ -95,3 +95,11 @@ open Lean
 #print axioms VelocidadGrupo.velocidad_modoFase
 #print axioms VelocidadGrupo.velocidades_PsiStar3D
 #print axioms VelocidadGrupo.rapidez_sq_PsiStar3D
+#print axioms ParesConjugados.anguloG_afin
+#print axioms ParesConjugados.razonG_afin
+#print axioms ParesConjugados.razon_par
+#print axioms ParesConjugados.satura_par_iff
+#print axioms ParesConjugados.angulo_par_lt_of_lt
+#print axioms ParesConjugados.angulo_par_lt_limite
+#print axioms ParesConjugados.cuantoVolumetrico_pares
+#print axioms ParesConjugados.cuanto_volumetrico_pares

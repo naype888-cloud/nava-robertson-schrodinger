@@ -41,6 +41,7 @@ import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
 import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
+import NavaRobertsonIndependent.Mathematics.D39_ConjugatePairs
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
@@ -102,6 +103,9 @@ the pair `(T_d, P_d)` on the path graph with `d` vertices (`D3`), acting on
 * light cone of neighbour transport: `(T_d^k) i j = 0` for `|i − j| > k`, with the edge reached
   exactly (`(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0`); on the cube, `(T_x + T_y + T_z)^k` vanishes beyond
   lattice distance `|Δx| + |Δy| + |Δz| > k` (`D37f`).
+* every pair `(a T_d + b, c P_d + e)`, `a, c ≠ 0`, has Robertson–Schrödinger ratio
+  `C_Nava(d)` at `ψ*`: units and origins do not reach NRS; on the cube, three pairs in their own
+  units have volumetric quantum `𝒱(dx, dy, dz)` (`D39`).
 
 ## Order of the chain
 
