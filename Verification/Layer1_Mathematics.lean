@@ -88,3 +88,10 @@ open Lean
 #print axioms ConoDeLuz.borde_del_cono_ne_zero
 #print axioms ConoDeLuz.cono_de_luz_cubo
 #print axioms LiebRobinson.lieb_robinson
+#print axioms VelocidadGrupo.hasDerivAt_dispersion
+#print axioms VelocidadGrupo.heisenberg
+#print axioms VelocidadGrupo.abs_velocidad_le
+#print axioms VelocidadGrupo.velocidad_psiStar
+#print axioms VelocidadGrupo.velocidad_modoFase
+#print axioms VelocidadGrupo.velocidades_PsiStar3D
+#print axioms VelocidadGrupo.rapidez_sq_PsiStar3D

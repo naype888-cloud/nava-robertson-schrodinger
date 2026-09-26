@@ -72,7 +72,14 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   octahedron `|Δx| + |Δy| + |Δz| ≤ k` (`D37f`);
 * **Lieb–Robinson bound**: in continuous time, `U(t) = exp(−i t T_d)` satisfies
   `|U(t)ᵢⱼ| ≤ |t|^r / r! · e^{|t|}` with `r = |i − j|` — outside the cone the amplitude decays
-  faster than any exponential in the distance (`D37g`).
+  faster than any exponential in the distance (`D37g`);
+* **dispersion and group velocity**: `T_d` has dispersion `ε(θ) = 2 cos θ / ρ_d` with group
+  velocity `2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Position obeys the Heisenberg
+  equation `d/dt (U† P_d U) = U† K_d U`, so the tension is velocity: measured in sites, no state
+  moves faster than one site per unit of time and `ψ*` moves at exactly that speed, the slope of
+  the cone. On the cube each axis has that limit and `Ψ*` reaches it on all three at once:
+  velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
+  lattice speed limit is a cube, not a sphere (`D38`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
@@ -350,6 +357,10 @@ unit and no constant to it.
   `cono_de_luz_cubo` for `T_x + T_y + T_z` with the lattice distance.
 - `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entrada_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
   (`norm_entry_pow_le`), and the bound `lieb_robinson`.
+- `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_modoSeno`,
+  `velocidadGrupo_le` / `velocidadGrupo_eq_max_iff`; Heisenberg equation `heisenberg`;
+  speed limit `abs_velocidad_le`, `velocidad_psiStar`, phase modes `velocidad_modoFase`;
+  cube `velocidades_le`, `velocidades_PsiStar3D`, `rapidez_sq_PsiStar3D`.
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`autovector_suma`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
 

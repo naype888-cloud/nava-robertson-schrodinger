@@ -40,6 +40,7 @@ import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
 import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
+import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 
 /-!
 # Layer 1 — NRS (path graph) and NRS³ (product of three path graphs)
