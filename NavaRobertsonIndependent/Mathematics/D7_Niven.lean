@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D2_Robertson
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D2_Robertson
 
 /-!
 # D7 — Teorema de Niven: la saturación sólo ocurre en `d ∈ {2,3}`
@@ -15,6 +22,8 @@ sobre el modo fundamental del camino discreto— se cumple **si y sólo si**
 `C_Nava(d) − 1` es estrictamente positiva (segunda mitad de este archivo,
 `Constructor_GeometricGap_Pos`).
 -/
+
+@[expose] public section
 
 open Real
 
@@ -79,5 +88,3 @@ theorem apertura_no_es_seed_niven (d : ℕ) (hd : 4 ≤ d) :
   omega
 
 end Gnomon
-
-

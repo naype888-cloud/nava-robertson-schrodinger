@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D3_PathGraph
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D3_PathGraph
 
 /-!
 # D4 — Por qué no un paso diagonal
@@ -23,7 +30,7 @@ paso "diagonal" (cambiar más de una coordenada a la vez) como alternativa:
    enunciarse de forma no vacía, dos ejes ya distinguidos entre sí.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace PathGraph3D
 

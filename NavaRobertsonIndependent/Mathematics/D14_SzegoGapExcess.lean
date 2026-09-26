@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 
 /-!
 # El exceso sobre el límite de Szegő
@@ -10,6 +17,8 @@ exactamente en `d = 4`, estrictamente decreciente en `d`, y se disuelve a
 `0`. No es un pilar nuevo: es la misma cadena de `D9_Monotonia.lean` leída
 desde el lado del remanente en vez del valor mismo.
 -/
+
+@[expose] public section
 
 open Filter
 open scoped Topology

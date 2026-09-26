@@ -1,5 +1,12 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.Complex.Norm
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.Complex.Norm
 
 /-!
 # D1 — Cauchy–Schwarz vía el defect de Gram
@@ -15,7 +22,7 @@ obtiene de inmediato la desigualdad de Robertson–Schrödinger (`D2_Robertson.l
 como consecuencia algebraica, no como postulado adicional.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace ObstruccionGramUnificada
 

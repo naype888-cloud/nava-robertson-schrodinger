@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
 
 /-!
 # D23 — Saturación de Robertson–Schrödinger en autovectores de `A − iλB`
@@ -24,7 +31,7 @@ la igualdad está permitida y queda caracterizada por el defect de Gram
   varianzas `0` aunque `T_d` y `P_d` no conmutan; están fuera del dominio con transporte.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace SaturacionAutovectores
 

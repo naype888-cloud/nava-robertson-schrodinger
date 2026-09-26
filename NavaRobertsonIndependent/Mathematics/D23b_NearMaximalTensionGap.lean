@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D23_EigenvectorSaturation
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23_EigenvectorSaturation
 
 /-!
 # D23b — El sobrante en los estados intermedios
@@ -23,7 +30,7 @@ estado unitario, en función de su tensión `⟨K_d⟩`:
 El `ε` se obtiene por compacidad de la esfera unidad; no se da en forma cerrada.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace SobranteIntermedio
 

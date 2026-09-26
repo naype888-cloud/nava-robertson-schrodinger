@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D5_MaximalTension
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D5_MaximalTension
 
 /-!
 # D6 — Descomposición espectral de Fiedler sobre el camino discreto
@@ -12,7 +19,7 @@ descomposición espectral del corpus original — es álgebra lineal y teoría
 espectral de grafos pura, sin ninguna capa interpretativa.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open scoped ComplexConjugate
 

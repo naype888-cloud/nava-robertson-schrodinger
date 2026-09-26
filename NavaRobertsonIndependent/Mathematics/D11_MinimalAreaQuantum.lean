@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D10_Certificate
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D10_Certificate
 
 /-!
 # D11 — Cuanto cuántico elemental de área
@@ -21,7 +28,7 @@ Niven/Szegő/monotonía. No modifica Robertson 1929; lo usa como ancla y
 deriva el piso de área de su realización discreta.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace CuantoMinimoArea
 

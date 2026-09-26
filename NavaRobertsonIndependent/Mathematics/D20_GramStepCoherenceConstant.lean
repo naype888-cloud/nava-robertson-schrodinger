@@ -1,6 +1,13 @@
-import NavaRobertsonIndependent.Mathematics.D19_FiedlerPositionVariance
-import NavaRobertsonIndependent.Mathematics.D6_Fiedler
-import NavaRobertsonIndependent.Mathematics.D8_Szego
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D19_FiedlerPositionVariance
+public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
 # Escalón: defect de Gram de `(T_d ψ, P_d ψ)` y `C_Nava(d)²`
@@ -29,7 +36,7 @@ demuestra sobre `TdOp`, `PdOp`, `KdOp` y `vectorFiedlerExplicito` ya
 existentes.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Gnomon
 
@@ -382,7 +389,6 @@ theorem escalon_gram_eq_zero_iff {d : ℕ} (hd : 2 ≤ d) :
   · intro h
     exact Or.inl (by linarith)
 
-
 /-! ## 7. Las medias son nulas: el defect es el centrado -/
 
 theorem sum_fin_shift (d : ℕ) (g : ℕ → ℝ) (h0 : g 0 = 0) :
@@ -498,8 +504,6 @@ theorem escalon_media_T {d : ℕ} (hd : 2 ≤ d) :
     rw [hz]
     linarith
   exact Complex.ext (by simpa using hre) (by simpa using him)
-
-
 
 end EscalonGramCoherenceConstant
 

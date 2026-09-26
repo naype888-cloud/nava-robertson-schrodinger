@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
 # D23f — A minimum-uncertainty state of `H_4` with tension `1/φ`
@@ -22,7 +29,7 @@ it is the **largest** tension of any minimum-uncertainty state of `H_4` is suppo
 numerical search over all eigenvectors of `T₄ − c P₄`, `c ∈ ℂ`, and is **not** proved here.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real Complex TransportePosicion NavaRobertsonSchrodingerEDUI ConstructorEspectralTP
 open SaturacionAutovectores

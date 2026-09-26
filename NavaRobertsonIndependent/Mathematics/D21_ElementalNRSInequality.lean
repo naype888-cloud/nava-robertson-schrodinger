@@ -1,6 +1,13 @@
-import NavaRobertsonIndependent.Mathematics.D20_GramStepCoherenceConstant
-import NavaRobertsonIndependent.Mathematics.D6_Fiedler
-import NavaRobertsonIndependent.Mathematics.D8_Szego
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D20_GramStepCoherenceConstant
+public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
 # D21 — Nava–Robertson–Schrödinger: Elemental Dimensional Uncertainty Inequality
@@ -23,7 +30,7 @@ Media, varianza y covarianza se definen aquí sobre vectores centrados,
 `Var_ψ(A) = ‖Aψ − ⟨A⟩ψ‖²` y `cov_ψ(A,B) = Re ⟨Ãψ, B̃ψ⟩`, con `⟨A⟩ = Re ⟨ψ, Aψ⟩`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Gnomon
 

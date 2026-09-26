@@ -1,9 +1,16 @@
-import NavaRobertsonIndependent.Mathematics.D1_CauchyGramInequality
-import Mathlib.Algebra.Order.Ring.Star
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Real.Pi.Bounds
-import Mathlib.Data.Rat.Star
-import Mathlib.Tactic.IntervalCases
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D1_CauchyGramInequality
+public import Mathlib.Algebra.Order.Ring.Star
+public import Mathlib.Algebra.Order.Star.Real
+public import Mathlib.Analysis.Real.Pi.Bounds
+public import Mathlib.Data.Rat.Star
+public import Mathlib.Tactic.IntervalCases
 
 /-!
 # D2 — La desigualdad de Robertson (1929)
@@ -26,6 +33,8 @@ También se incluyen aquí cinco lemas aritméticos elementales (`Blindaje`)
 que se usan más adelante para acotar el coseno y para el teorema de Niven
 (`D7_Niven.lean`).
 -/
+
+@[expose] public section
 
 namespace Robertson1929
 
@@ -273,4 +282,3 @@ theorem pisoSchrodinger_evaluacionSchrodingerDeGram_le
   simpa [evaluacionSchrodingerDeGram] using h
 
 end ObstruccionGramUnificada
-

@@ -1,7 +1,14 @@
-import NavaRobertsonIndependent.Mathematics.D6_Fiedler
-import NavaRobertsonIndependent.Mathematics.D7_Niven
-import NavaRobertsonIndependent.Mathematics.D8_Szego
-import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
+public import NavaRobertsonIndependent.Mathematics.D7_Niven
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
+public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 
 /-!
 # D10 — Certificado conjunto: Fiedler + Niven + Szegő en `H_d`
@@ -42,7 +49,7 @@ hospeda en este paquete; a lo más se le ve llegar por la ventana como límite
 (`D8_Szego.lean`), pero nunca cruza la puerta.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real
 open Filter

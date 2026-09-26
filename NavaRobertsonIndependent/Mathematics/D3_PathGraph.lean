@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D0_Habitat
-import Mathlib.Combinatorics.SimpleGraph.Hasse
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D0_Habitat
+public import Mathlib.Combinatorics.SimpleGraph.Hasse
 
 /-!
 # D3 — Operadores de transporte y posición sobre el grafo camino
@@ -18,6 +25,8 @@ compatible con dos condiciones puramente combinatorias: localidad
 elemental). Cualquier grafo local en `Fin d` que no omita un paso mínimo
 **es** `pathGraph d`; no hay otro candidato.
 -/
+
+@[expose] public section
 
 namespace TransportePosicion
 

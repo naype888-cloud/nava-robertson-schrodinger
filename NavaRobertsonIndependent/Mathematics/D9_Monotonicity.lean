@@ -1,4 +1,11 @@
-import NavaRobertsonIndependent.Mathematics.D8_Szego
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
 # D9 — Monotonía estricta de `C_Nava` y `geometricGap`
@@ -17,7 +24,7 @@ un certificado polinómico de Bernstein de que el resto es
 estrictamente negativo en la caja compacta correspondiente.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Set Filter
 open scoped Topology

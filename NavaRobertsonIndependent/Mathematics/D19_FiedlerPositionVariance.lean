@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D6_Fiedler
-import NavaRobertsonIndependent.Mathematics.D8_Szego
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
+public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
 # `RNava`: varianza de posición del estado canónico `ψ` en `H_d`
@@ -55,7 +62,7 @@ literalmente, `Σⱼ |vectorFiedlerExplicito(d)ⱼ|² · posicionCoord(d,j)²` s
 se anula por `sin 0 = 0`) contra las sumas de Fourier de `§2`-`§4`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Finset Complex Real Filter
 open scoped Topology

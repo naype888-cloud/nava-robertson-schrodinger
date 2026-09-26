@@ -1,6 +1,13 @@
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.Matrix.Notation
-import Mathlib.LinearAlgebra.Matrix.Trace
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Mathlib.LinearAlgebra.Matrix.Notation
+public import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!
 # Obstrucción de traza al conmutador escalar en dimensión finita
@@ -21,7 +28,7 @@ Dos afirmaciones, independientes entre sí:
    `W₂ W₁ = -(W₁ W₂)` (`parWeyl_anticonmuta`).
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace ConmutadorEscalarFinito
 

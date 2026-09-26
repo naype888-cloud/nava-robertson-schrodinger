@@ -1,5 +1,12 @@
-import NavaRobertsonIndependent.Mathematics.D3_PathGraph
-import NavaRobertsonIndependent.Mathematics.D7_Niven
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D3_PathGraph
+public import NavaRobertsonIndependent.Mathematics.D7_Niven
 
 /-!
 # La primera ruptura combinatoria es `d = 4`
@@ -20,6 +27,8 @@ Dos rutas independientes hacia la misma dimensión:
 la misma dimensión `d = 4`, sin usar ninguna ecuación espectral en la
 mitad combinatoria.
 -/
+
+@[expose] public section
 
 namespace PrimeraRuptura
 

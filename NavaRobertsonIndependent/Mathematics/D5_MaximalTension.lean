@@ -1,10 +1,17 @@
-import NavaRobertsonIndependent.Mathematics.D3_PathGraph
-import Mathlib.Analysis.CStarAlgebra.Module.Constructions
-import Mathlib.Analysis.InnerProductSpace.Spectrum
-import Mathlib.Analysis.Matrix.Hermitian
-import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.SimpleRing.Principal
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import NavaRobertsonIndependent.Mathematics.D3_PathGraph
+public import Mathlib.Analysis.CStarAlgebra.Module.Constructions
+public import Mathlib.Analysis.InnerProductSpace.Spectrum
+public import Mathlib.Analysis.Matrix.Hermitian
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.PicardGroup
+public import Mathlib.RingTheory.SimpleRing.Principal
 
 /-!
 # D5 — Estado de máxima tensión y observable `i[T_d,P_d]`
@@ -22,7 +29,7 @@ Se cierra con un certificado concreto de no conmutatividad:
 `[T_d,P_d] ≠ 0` para `d ≥ 2`, exhibido en una única entrada de matriz.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace ConstructorEspectralTP
 
@@ -468,4 +475,3 @@ theorem KdOp_no_cero (d : ℕ) (hd : 2 ≤ d) : KdOp d ≠ 0 :=
     (conmutador_TdOp_PdOp_no_cero d hd)
 
 end TransportePosicion
-

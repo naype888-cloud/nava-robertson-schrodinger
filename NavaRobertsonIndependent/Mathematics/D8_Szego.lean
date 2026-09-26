@@ -1,9 +1,16 @@
-import Mathlib.Algebra.Order.Ring.Star
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Real.Pi.Bounds
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Sinc
-import Mathlib.Tactic.IntervalCases
+/-
+Copyright (c) 2026 Eduardo Nava-Hernandez. All rights reserved.
+Released under the NRS Noncommercial License 1.0.0 as described in the file LICENSE.
+Authors: Eduardo Nava-Hernandez
+-/
+module
+
+public import Mathlib.Algebra.Order.Ring.Star
+public import Mathlib.Algebra.Order.Star.Real
+public import Mathlib.Algebra.Ring.IsFormallyReal
+public import Mathlib.Analysis.Real.Pi.Bounds
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Sinc
+public import Mathlib.Tactic.IntervalCases
 
 /-!
 # D8 — El límite de Szegő y la positividad de la gap
@@ -24,7 +31,7 @@ Dos resultados centrales:
    `deltaInf = C_∞ − 1 > 0`, consecuencia exacta de `π > 3`.
 -/
 
-noncomputable section
+@[expose] public noncomputable section
 
 open Real
 open Filter
@@ -650,4 +657,3 @@ theorem geometricGap_pos_of_four_le (d : ℕ) (hd : 4 ≤ d) : 0 < geometricGap 
   linarith [one_lt_CoherenceConstant_of_four_le d hd]
 
 end Gnomon
-
