@@ -11,7 +11,8 @@ public import NavaRobertsonCertificados.D43_NRSOctahedron
 # D44 — The velocity band `Ϙ(d)` of forced defect
 
 On `H_d` the cone speed `|v| = 1` is reached by `ψ*` (`D38`). The minimum-uncertainty states
-reach speeds up to the threshold `v*(d)`, the supremum of their speeds. The band
+reach speeds up to the threshold `v*(d)`, the largest of their speeds: some minimum-uncertainty
+state moves exactly at `v*(d)` (compactness of the unit sphere). The band
 `Ϙ(d) = (v*(d), 1]` is the range of speeds at which every state has a Robertson–Schrödinger
 surplus; its width is `ϙ(d) = 1 − v*(d)` (koppa).
 
@@ -19,10 +20,15 @@ surplus; its width is `ϙ(d) = 1 − v*(d)` (koppa).
 * For `d ≥ 4` the band is never empty: `ϙ(d) ≥ ((d − 1)/2) · bandWidth d > 0` (`D23d`).
 * At `d = 4` the width is exact: `ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D23f`, `D23g`, `D43`).
 
-The exact value of `ϙ(d)` for `d ≥ 5` is not computed here.
+The exact value of `ϙ(d)` for `d ≥ 5` is not computed here. Numerically
+(`docs/simulation/figures_velocity_band.py`), for `d ≥ 5` the fastest minimum-uncertainty state is
+an eigenvector of `T_d − iμ P_d` with `μ` real, and `ϙ(d) ≈ (2 ln d + b)/d²`, with `b` depending
+on the parity of `d`; neither is proved here.
 
 ## Main results
 
+- `VelocityBand.threshold_isGreatest`, `VelocityBand.exists_saturated_threshold` : `v*(d)` is
+  attained by a minimum-uncertainty state.
 - `VelocityBand.surplus_pos_of_mem_band` : on `Ϙ(d)` the defect is forced.
 - `VelocityBand.koppa_eq_zero` : `ϙ(2) = ϙ(3) = 0`.
 - `VelocityBand.koppa_ge`, `VelocityBand.koppa_pos` : for `d ≥ 4`, an explicit positive width.
@@ -71,7 +77,29 @@ theorem threshold_le_one (hd : 2 ≤ d) : threshold d ≤ 1 :=
 theorem koppa_nonneg (hd : 2 ≤ d) : 0 ≤ ϙ d :=
   sub_nonneg.2 (threshold_le_one hd)
 
-/-! ## 2. The defect is forced on the band -/
+/-! ## 2. The threshold is attained -/
+
+theorem satSpeeds_eq_image (d : ℕ) :
+    satSpeeds d =
+      (fun ψ => |velocity d ψ|) '' (Metric.sphere 0 1 ∩ {ψ | surplus d ψ = 0}) := by
+  ext s
+  simp [satSpeeds, and_assoc]
+
+theorem isCompact_satSpeeds (d : ℕ) : IsCompact (satSpeeds d) := by
+  rw [satSpeeds_eq_image]
+  exact ((isCompact_sphere 0 1).inter_right
+    (isClosed_eq (continuous_surplus d) continuous_const)).image
+      (continuous_const.mul (continuous_tension d)).abs
+
+theorem threshold_isGreatest (hd : 1 ≤ d) : IsGreatest (satSpeeds d) (threshold d) :=
+  (isCompact_satSpeeds d).isGreatest_sSup (satSpeeds_nonempty hd)
+
+/-- **The threshold is attained**: a minimum-uncertainty state moves exactly at `v*(d)`. -/
+theorem exists_saturated_threshold (hd : 1 ≤ d) :
+    ∃ ψ : Hd d, ‖ψ‖ = 1 ∧ surplus d ψ = 0 ∧ |velocity d ψ| = threshold d :=
+  (threshold_isGreatest hd).1
+
+/-! ## 3. The defect is forced on the band -/
 
 /-- Faster than `v*(d)`, Robertson–Schrödinger is strict. -/
 theorem surplus_pos_of_threshold_lt (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1)
@@ -84,7 +112,7 @@ theorem surplus_pos_of_mem_band (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1)
     (hv : |velocity d ψ| ∈ Ϙ d) : 0 < surplus d ψ :=
   surplus_pos_of_threshold_lt hd ψ hψ hv.1
 
-/-! ## 3. No band at `d = 2, 3` -/
+/-! ## 4. No band at `d = 2, 3` -/
 
 theorem surplus_psiStar_eq_zero_iff (hd : 2 ≤ d) :
     surplus d (psiStar d) = 0 ↔ d = 2 ∨ d = 3 := by
@@ -102,7 +130,7 @@ theorem koppa_eq_zero (hd : d = 2 ∨ d = 3) : ϙ d = 0 := by
 theorem band_eq_empty (hd : d = 2 ∨ d = 3) : Ϙ d = ∅ := by
   rw [band, threshold_eq_one hd, Set.Ioc_self]
 
-/-! ## 4. A band of explicit width for `d ≥ 4` -/
+/-! ## 5. A band of explicit width for `d ≥ 4` -/
 
 /-- A minimum-uncertainty state has tension at most `2/(d−1) − bandWidth d` (`D23d`). -/
 theorem tension_le_bandWidth (hd : 4 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) (h0 : surplus d ψ = 0) :
@@ -146,7 +174,7 @@ theorem bandWidth_speed_pos (hd : 4 ≤ d) : 0 < ((d : ℝ) - 1) / 2 * bandWidth
 theorem koppa_pos (hd : 4 ≤ d) : 0 < ϙ d :=
   (bandWidth_speed_pos hd).trans_le (koppa_ge hd)
 
-/-! ## 5. The exact band at `d = 4` -/
+/-! ## 6. The exact band at `d = 4` -/
 
 theorem vStar_pos : 0 < NRSOctahedron.vStar := by
   linarith [NRSOctahedron.vStar_bounds.1]
@@ -172,22 +200,25 @@ theorem koppa_four_bounds : 0.0728 < ϙ 4 ∧ ϙ 4 < 0.073 := by
   rw [koppa, threshold_four]
   constructor <;> linarith [h.1, h.2]
 
-/-! ## 6. Certificate -/
+/-! ## 7. Certificate -/
 
 /-- **The velocity band of forced defect.**
 
-1. On `Ϙ(d)` every unit state carries a Robertson–Schrödinger surplus.
+1. A minimum-uncertainty state moves exactly at `v*(d)`; on `Ϙ(d)` every unit state carries a
+   Robertson–Schrödinger surplus.
 2. At `d = 2, 3` the band is empty: `ϙ = 0`.
 3. For `d ≥ 4` its width is at least `((d − 1)/2) · bandWidth d > 0`.
 4. At `d = 4`, `Ϙ(4) = (v*(4), 1]` and `ϙ(4) = (7 − 3√5)/4`. -/
 theorem velocityBand_certificate :
-    (∀ d : ℕ, 2 ≤ d → ∀ ψ : Hd d, ‖ψ‖ = 1 → |velocity d ψ| ∈ Ϙ d → 0 < surplus d ψ) ∧
+    (∀ d : ℕ, 2 ≤ d →
+      (∃ ψ : Hd d, ‖ψ‖ = 1 ∧ surplus d ψ = 0 ∧ |velocity d ψ| = threshold d) ∧
+      ∀ ψ : Hd d, ‖ψ‖ = 1 → |velocity d ψ| ∈ Ϙ d → 0 < surplus d ψ) ∧
     ϙ 2 = 0 ∧ ϙ 3 = 0 ∧
     (∀ d : ℕ, 4 ≤ d →
       0 < ((d : ℝ) - 1) / 2 * bandWidth d ∧ ((d : ℝ) - 1) / 2 * bandWidth d ≤ ϙ d) ∧
     Ϙ 4 = Set.Ioc NRSOctahedron.vStar 1 ∧ ϙ 4 = (7 - 3 * √5) / 4 :=
-  ⟨fun _ hd => surplus_pos_of_mem_band hd, koppa_eq_zero (Or.inl rfl),
-    koppa_eq_zero (Or.inr rfl), fun _ hd => ⟨bandWidth_speed_pos hd, koppa_ge hd⟩, band_four,
-    koppa_four⟩
+  ⟨fun _ hd => ⟨exists_saturated_threshold (by omega), surplus_pos_of_mem_band hd⟩,
+    koppa_eq_zero (Or.inl rfl), koppa_eq_zero (Or.inr rfl),
+    fun _ hd => ⟨bandWidth_speed_pos hd, koppa_ge hd⟩, band_four, koppa_four⟩
 
 end VelocityBand

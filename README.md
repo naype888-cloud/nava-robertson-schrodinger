@@ -193,6 +193,19 @@ with `d` while the defect at the cone grows (`D37b`).
 
 ![Threshold by dimension](docs/figures/d43_threshold_by_dimension.png)
 
+**The velocity band (`D44`).** The width `ϙ(d) = 1 − v*(d)` of the band where the defect is
+forced, next to the defect at the cone `θ_NRS(d)`: the band narrows while the defect grows
+toward `arccos (1/C_∞) ≈ 28.30°`. Exact at `d = 2, 3, 4` (Lean); numerical for `d ≥ 5`.
+
+![Velocity band](docs/figures/d44_velocity_band.png)
+
+**The tail of the band.** For `d ≥ 5` the fastest minimum-uncertainty state is an eigenvector
+of `T_d − iμ P_d`, `μ` real, and `d² ϙ(d)` grows like `2 ln d`, one curve per parity:
+`ϙ(d) ≈ (2 ln d + b)/d²`, positive for every `d` and tending to `0`. Numerical, up to
+`d = 300`; the proof is open.
+
+![Tail of the velocity band](docs/figures/d44_velocity_band_tail.png)
+
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
@@ -342,7 +355,8 @@ the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + 
 and beyond it the defect is forced (`surplus_pos_of_vStar_lt`).
 
 `D44`, **the velocity band of forced defect**, for every `d`: the threshold
-`v*(d) = sup {|v| : ψ of minimum uncertainty}`, the band `Ϙ(d) = (v*(d), 1]` and its width
+`v*(d) = max {|v| : ψ of minimum uncertainty}`, attained by a minimum-uncertainty state
+(`exists_saturated_threshold`), the band `Ϙ(d) = (v*(d), 1]` and its width
 `ϙ(d) = 1 − v*(d)` (koppa). On `Ϙ(d)` every state carries a Robertson–Schrödinger surplus
 (`surplus_pos_of_mem_band`); `ϙ(2) = ϙ(3) = 0` (`koppa_eq_zero`); for `d ≥ 4`,
 `ϙ(d) ≥ ((d − 1)/2) · bandWidth d > 0` (`koppa_ge`, `koppa_pos`); at `d = 4`,
