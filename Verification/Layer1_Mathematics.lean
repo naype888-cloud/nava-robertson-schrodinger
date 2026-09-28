@@ -118,3 +118,5 @@ open Lean
 #print axioms Direction.velocities_octant
 #print axioms Direction.octant_four
 #print axioms StarkPacket.glue_rec
+#print axioms StarkPacket.eigen
+#print axioms StarkPacket.exists_saturated_velocity
