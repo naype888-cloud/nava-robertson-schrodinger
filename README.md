@@ -34,7 +34,9 @@ minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never 
 exactly `±v*(4) = ±3(√5 − 1)/4 ≈ 0.927` of the cone, and beyond it the defect is forced (`D43`).
 The speeds above the threshold form the band `Ϙ(d) = (v*(d), 1]` of forced defect, of width
 `ϙ(d) = 1 − v*(d)`: empty at `d = 2, 3`, never empty from `d = 4` on, and
-`ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D44`).
+`ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D44`). And `d = 4` has the widest band: for every `d ≥ 5` a
+Stark packet moves with minimum uncertainty at `κ = 0.9272 > v*(4)`, so
+`ϙ(d) ≤ 0.0728 < ϙ(4)` (`D45`, `D45d`).
 
 **Localization and tension (the two extremes of NRS).**
 
@@ -112,7 +114,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -188,8 +190,9 @@ threshold is seen only by preparing the optimal state at each velocity.
 **The threshold by dimension.** `v*(d)` is `1` at `d = 2, 3` and `3(√5 − 1)/4` at `d = 4`
 (Lean); for `d ≥ 5` the values are numerical. For every `d ≥ 4` the band `Ϙ(d) = (v*(d), 1]`
 where the defect is forced is proved non-empty, with width `ϙ(d) ≥ ((d − 1)/2) · bandWidth d`
-(`D44`, from `D23d`; not optimal). Numerically `d = 4` has the widest band; the band narrows
-with `d` while the defect at the cone grows (`D37b`).
+(`D44`, from `D23d`; not optimal). `d = 4` has the widest band: `ϙ(d) ≤ 0.0728 < ϙ(4)` for every
+`d ≥ 5` (`D45d`); numerically the band narrows with `d` while the defect at the cone grows
+(`D37b`).
 
 ![Threshold by dimension](docs/figures/d43_threshold_by_dimension.png)
 
@@ -205,6 +208,23 @@ of `T_d − iμ P_d`, `μ` real, and `d² ϙ(d)` grows like `2 ln d`, one curve 
 `d = 300`; the proof is open.
 
 ![Tail of the velocity band](docs/figures/d44_velocity_band_tail.png)
+
+**Stark packets (`D45`).** In the gauge `ψⱼ = (−i)ʲ φⱼ`, an eigenvector of `T_d − iλ P_d` is a
+discrete Wannier–Stark packet: `φⱼ₊₁ = φⱼ₋₁ + (2(c₀ − j)/z) φⱼ`, centre `c₀`, width `√z`. Each
+half is solved from its end and the two are glued where their Casoratian vanishes; every glued
+packet saturates Robertson–Schrödinger and moves at `v = 4 ⟨(j − c₀)²⟩/(ρ_d z)`.
+
+![Stark packets](docs/figures/d45_stark_packet.png)
+
+**`d = 4` has the widest band (`D45d`).** For every `d ≥ 5` a certified Stark packet moves with
+minimum uncertainty at `κ = 0.9272 > v*(4) ≈ 0.92705`, so `ϙ(d) ≤ 0.0728 < ϙ(4)`. The glue
+offset is located by the intermediate value theorem between two points where an interval
+checker fixes the sign of the Casoratian; on the subinterval that contains it the checker
+bounds the speed. The checker runs in fixed-point natural arithmetic (scale `2⁹⁶`), evaluated by
+the kernel (`decide +kernel`, no extra axioms): exactly for `d = 5, …, 27`, and once, truncated
+at depth `12` with `z = 8`, for every `d ≥ 28`. Script: `docs/simulation/figures_widest_band.py`.
+
+![The widest band](docs/figures/d45_widest_band.png)
 
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
@@ -363,6 +383,12 @@ and beyond it the defect is forced (`surplus_pos_of_vStar_lt`).
 `Ϙ(4) = (v*(4), 1]` and `ϙ(4) = (7 − 3√5)/4 ∈ (0.0728, 0.073)` (`band_four`, `koppa_four`).
 All at once: `VelocityBand.velocityBand_certificate`.
 
+`D45b`–`D45d`, **`d = 4` has the widest band**: `WidestBand.koppa_lt_koppa_four`,
+`ϙ(d) < ϙ(4)` for every `d ≥ 5`, with `ϙ(d) ≤ 0.0728` (`koppa_le`) and `0.9272 ≤ v*(d)`
+(`kappa_le_threshold`). The interval checker (`D45b`: continued-fraction ratios of each half,
+`ivs_sound`, `sums_sound`; `D45c`: exact and truncated halves, `half_sound`) is sound for every
+input; `check_sound` turns a passed check into a fast minimum-uncertainty state.
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
@@ -463,6 +489,11 @@ All at once: `VelocityBand.velocityBand_certificate`.
   NRS angle; the spectrum of `K_d` is symmetric (`KdOp_reflect_eigen`). On the cube the eight
   octant states move at `(±1, ±1, ±1)` (`velocities_octant`) with the same ratio and angle on
   every axis; at `4 × 4 × 4`, `θ_NRS(4) ≈ 7.43°` and ratio `< 1` in every octant (`octant_four`).
+- `D45_StarkPackets`: minimum uncertainty in motion. The two halves of a Wannier–Stark packet,
+  solved from each end (`seq`, `seq_pos`), glue into a solution of the recurrence where their
+  Casoratian vanishes (`glue_rec`); the packet is an eigenvector of `T_d − iλ P_d` (`eigen`), on
+  which `⟨K_d⟩ = 2λ Var P_d` (`tension_of_eigen`); normalized, it saturates Robertson–Schrödinger
+  and moves at `4 Σ (j − c₀)² φⱼ² / (ρ_d z Σ φⱼ²)` (`exists_saturated_velocity`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
