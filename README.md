@@ -226,6 +226,17 @@ at depth `12` with `z = 8`, for every `d ≥ 28`. Script: `docs/simulation/figur
 
 ![The widest band](docs/figures/d45_widest_band.png)
 
+**The cone lies in every band (`D46`).** The band narrows with `d` but never lets the cone speed
+out: `1 ∈ Ϙ(d)` for every `d ≥ 4`. Every unit state transported at the cone speed carries a
+Robertson–Schrödinger surplus, whatever `d ≥ 4` is, and so does every state within
+`((d − 1)/2) · bandWidth d` of the cone. The condition is sharp: at `d = 2, 3`, `ψ*` moves at the
+cone and saturates. With the declared bridge (cone speed = speed of light in vacuum), nothing
+transported at `c` in vacuum reaches the minimum uncertainty. A speed `c/n` below the cone stays
+in the band only while `ϙ(d) > 1 − 1/n`: for air (`n = 1.000293`) up to `d ≈ 135` (odd) and
+`d ≈ 150` (even), numerically. Script: `docs/simulation/figures_cone_in_band.py`.
+
+![The cone lies in every band](docs/figures/d46_cone_in_band.png)
+
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
