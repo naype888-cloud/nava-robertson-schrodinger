@@ -7,6 +7,7 @@ module
 
 public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 public import NavaRobertsonCertificados.D43_NRSOctahedron
+public import NavaRobertsonCertificados.D44_VelocityBand
 
 /-!
 # Certificates
@@ -18,4 +19,6 @@ minimum-uncertainty states of `H₄`, and its two exact Positivstellensatz certi
 
 `D43`: the Nava–Robertson–Schrödinger octahedron, with the velocity threshold `v*(4)` of
 minimum uncertainty.
+
+`D44`: the velocity band `Ϙ(d) = (v*(d), 1]` of forced defect and its width `ϙ(d) = 1 − v*(d)`.
 -/

@@ -32,6 +32,9 @@ From `d = 4` minimum uncertainty and maximal tension exclude each other: at `d =
 minimum-uncertainty states reach tension exactly `1/φ = (√5 − 1)/2`, never more
 (`D23f`; upper bound `D23g` in the separate target). In velocity: minimum uncertainty reaches
 exactly `±v*(4) = ±3(√5 − 1)/4 ≈ 0.927` of the cone, and beyond it the defect is forced (`D43`).
+The speeds above the threshold form the band `Ϙ(d) = (v*(d), 1]` of forced defect, of width
+`ϙ(d) = 1 − v*(d)`: empty at `d = 2, 3`, never empty from `d = 4` on, and
+`ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D44`).
 
 **Localization and tension (the two extremes of NRS).**
 
@@ -109,7 +112,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -183,8 +186,10 @@ threshold is seen only by preparing the optimal state at each velocity.
 ![Velocity threshold of minimum uncertainty](docs/figures/d43_velocity_threshold.png)
 
 **The threshold by dimension.** `v*(d)` is `1` at `d = 2, 3` and `3(√5 − 1)/4` at `d = 4`
-(Lean); for `d ≥ 5` the values are numerical. `d = 4` has the widest band `[v*, 1]` where the
-defect is forced; the band narrows with `d` while the defect at the cone grows (`D37b`).
+(Lean); for `d ≥ 5` the values are numerical. For every `d ≥ 4` the band `Ϙ(d) = (v*(d), 1]`
+where the defect is forced is proved non-empty, with width `ϙ(d) ≥ ((d − 1)/2) · bandWidth d`
+(`D44`, from `D23d`; not optimal). Numerically `d = 4` has the widest band; the band narrows
+with `d` while the defect at the cone grows (`D37b`).
 
 ![Threshold by dimension](docs/figures/d43_threshold_by_dimension.png)
 
@@ -335,6 +340,14 @@ the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + 
 `5 / (99 − 42√5) ∈ (0.9831, 0.9834)`. Minimum uncertainty reaches exactly
 `±v*(4) = ±3(√5 − 1)/4 ∈ (0.927, 0.9272)` of the cone (`vStar_isGreatest`, `neg_vStar_isLeast`),
 and beyond it the defect is forced (`surplus_pos_of_vStar_lt`).
+
+`D44`, **the velocity band of forced defect**, for every `d`: the threshold
+`v*(d) = sup {|v| : ψ of minimum uncertainty}`, the band `Ϙ(d) = (v*(d), 1]` and its width
+`ϙ(d) = 1 − v*(d)` (koppa). On `Ϙ(d)` every state carries a Robertson–Schrödinger surplus
+(`surplus_pos_of_mem_band`); `ϙ(2) = ϙ(3) = 0` (`koppa_eq_zero`); for `d ≥ 4`,
+`ϙ(d) ≥ ((d − 1)/2) · bandWidth d > 0` (`koppa_ge`, `koppa_pos`); at `d = 4`,
+`Ϙ(4) = (v*(4), 1]` and `ϙ(4) = (7 − 3√5)/4 ∈ (0.0728, 0.073)` (`band_four`, `koppa_four`).
+All at once: `VelocityBand.velocityBand_certificate`.
 
 ## NRS — base theorem, modules
 
