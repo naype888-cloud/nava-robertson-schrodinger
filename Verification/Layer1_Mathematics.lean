@@ -117,3 +117,4 @@ open Lean
 #print axioms Direction.KdOp_reflect_eigen
 #print axioms Direction.velocities_octant
 #print axioms Direction.octant_four
+#print axioms StarkPacket.glue_rec

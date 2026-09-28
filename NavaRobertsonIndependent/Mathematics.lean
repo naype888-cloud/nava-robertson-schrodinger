@@ -52,6 +52,7 @@ public import NavaRobertsonIndependent.Mathematics.D39_ConjugatePairs
 public import NavaRobertsonIndependent.Mathematics.D40_SpeedLimitUncertainty
 public import NavaRobertsonIndependent.Mathematics.D41_MandelstamTammCramerRao
 public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
+public import NavaRobertsonIndependent.Mathematics.D45_StarkPackets
 
 /-!
 # NRS and NRS³
@@ -80,5 +81,6 @@ theorem.
 - `D40` : the speed limit excludes minimum uncertainty.
 - `D41` : Mandelstam–Tamm and Cramér–Rao on `T_d : P_d` and on the cube.
 - `D42` : direction is a sign; the eight octants of the cube share the bounds.
+- `D45` : Stark packets, minimum-uncertainty states in motion.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
