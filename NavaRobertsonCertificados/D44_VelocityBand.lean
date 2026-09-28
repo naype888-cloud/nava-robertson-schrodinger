@@ -20,10 +20,10 @@ surplus; its width is `ϙ(d) = 1 − v*(d)` (koppa).
 * For `d ≥ 4` the band is never empty: `ϙ(d) ≥ ((d − 1)/2) · bandWidth d > 0` (`D23d`).
 * At `d = 4` the width is exact: `ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D23f`, `D23g`, `D43`).
 
-The exact value of `ϙ(d)` for `d ≥ 5` is not computed here. Numerically
-(`docs/simulation/figures_velocity_band.py`), for `d ≥ 5` the fastest minimum-uncertainty state is
-an eigenvector of `T_d − iμ P_d` with `μ` real, and `ϙ(d) ≈ (2 ln d + b)/d²`, with `b` depending
-on the parity of `d`; neither is proved here.
+The exact value of `ϙ(d)` for `d ≥ 5` is not computed here; `D45d` proves
+`ϙ(d) ≤ 0.0728 < ϙ(4)`. Numerically (`docs/simulation/figures_velocity_band.py`), for `d ≥ 5` the
+fastest minimum-uncertainty state is an eigenvector of `T_d − iμ P_d` with `μ` real, and
+`ϙ(d) ≈ (2 ln d + b)/d²`, with `b` depending on the parity of `d`; neither is proved here.
 
 ## Main results
 

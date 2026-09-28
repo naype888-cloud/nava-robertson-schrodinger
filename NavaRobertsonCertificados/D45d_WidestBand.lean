@@ -20,6 +20,8 @@ exactly; for `d ≥ 28` one truncated check (`z = 8`, depth `12`) covers every `
 ## Main results
 
 - `BandCertificate.check_sound` : a passed check gives a fast minimum-uncertainty state.
+- `WidestBand.kappa_le_threshold` : `0.9272 ≤ v*(d)` for `d ≥ 5`.
+- `WidestBand.koppa_lt_koppa_four` : `ϙ(d) < ϙ(4)` for `d ≥ 5`.
 -/
 
 @[expose] public noncomputable section
@@ -260,6 +262,132 @@ theorem check_sound (hd : 5 ≤ d) {la lb nsub Kn Kd : ℕ}
     _ ≤ 4 * spread d g z c₀ := by linarith
     _ = velocity d ψ * (rho d * z * normSq d g z c₀) := by rw [← hv]; ring
 
+/-! ## C. The spectral radius -/
+
+/-- The upper bound `2(1 − y²/2 + 5y⁴/96)`, `y = 3.14/(d + 1)`, of `ρ_d`. -/
+def rhoBar (d : ℕ) : ℝ := 2 * (1 - (157 / 50 / (d + 1)) ^ 2 / 2 + 5 * (157 / 50 / (d + 1)) ^ 4 / 96)
+
+lemma rho_le_rhoBar {d : ℕ} (hd : 3 ≤ d) : rho d ≤ rhoBar d := by
+  have hd' : (4 : ℝ) ≤ d + 1 := by exact_mod_cast (by omega : 4 ≤ d + 1)
+  set x := Real.pi / (d + 1)
+  set y : ℝ := 157 / 50 / (d + 1)
+  have hy : 0 < y := by positivity
+  have hyx : y ≤ x := div_le_div_of_nonneg_right (by linarith [Real.pi_gt_d2]) (by positivity)
+  have hx1 : x ≤ 1 := by rw [div_le_one (by linarith)]; linarith [Real.pi_le_four]
+  have hc := Real.cos_bound (x := x) (by rw [abs_le]; constructor <;> linarith)
+  rw [abs_le, abs_of_pos (hy.trans_le hyx)] at hc
+  have hx2 : x ^ 2 - y ^ 2 ≥ 0 := by nlinarith
+  rw [rho, rhoBar]
+  nlinarith [mul_nonneg hx2 (by nlinarith : (0 : ℝ) ≤ 1 / 2 - 5 * (x ^ 2 + y ^ 2) / 96)]
+
+lemma rho_le_two (d : ℕ) : rho d ≤ 2 := by
+  rw [rho]; linarith [Real.cos_le_one (Real.pi / ((d : ℝ) + 1))]
+
+/-- `K = κ ρ̄_d z/4` as a fraction. -/
+def Kfrac (d zn zd : ℕ) : ℕ × ℕ :=
+  let Y := 50 * (d + 1)
+  (9272 * (192 * Y ^ 4 + 10 * 157 ^ 4 - 96 * 157 ^ 2 * Y ^ 2) * zn, 40000 * (96 * Y ^ 4) * zd)
+
+lemma Kfrac_spec {d : ℕ} (hd : 3 ≤ d) (zn : ℕ) {zd : ℕ} (hzd : 0 < zd) :
+    ((Kfrac d zn zd).1 : ℝ) / (Kfrac d zn zd).2 = kappa * rhoBar d * (zn / zd) / 4 := by
+  have hY : 157 ^ 2 * 96 * (50 * (d + 1)) ^ 2 ≤ 192 * (50 * (d + 1)) ^ 4 := by
+    have : 200 ≤ 50 * (d + 1) := by omega
+    have : 157 ^ 2 ≤ 2 * (50 * (d + 1)) ^ 2 := by nlinarith
+    nlinarith
+  simp only [Kfrac, kappa, rhoBar]
+  rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (by nlinarith)]
+  push_cast
+  field_simp
+  ring
+
+/-! ## D. `d = 4` has the widest band -/
+
+theorem small_sound {d : ℕ} (hd : 5 ≤ d) (zn zd ud la lb nsub : ℕ)
+    (hc : check ((d - 1) / 2) (d - 1 - (d - 1) / 2) zn zd ud la lb nsub (Kfrac d zn zd).1
+      (Kfrac d zn zd).2 none = true) :
+    ∃ ψ : Hd d, ‖ψ‖ = 1 ∧ surplus d ψ = 0 ∧ kappa ≤ velocity d ψ := by
+  have hzd : 0 < zd := by
+    simp only [check, Bool.and_eq_true, decide_eq_true_eq] at hc; exact hc.1.1.1.1.1.1.1.2
+  refine check_sound hd hc trivial trivial ?_
+  rw [Kfrac_spec (by omega) zn hzd]
+  have : 0 ≤ kappa * ((zn : ℝ) / zd) := by unfold kappa; positivity
+  nlinarith [rho_le_rhoBar (d := d) (by omega)]
+
+lemma check_trunc (tL tR tL' tR' zn zd ud la lb nsub Kn Kd : ℕ) (q : ℕ × ℕ) :
+    check tL tR zn zd ud la lb nsub Kn Kd (some q) =
+      check tL' tR' zn zd ud la lb nsub Kn Kd (some q) := rfl
+
+theorem large_sound {d : ℕ} (hd : 28 ≤ d) :
+    ∃ ψ : Hd d, ‖ψ‖ = 1 ∧ surplus d ψ = 0 ∧ kappa ≤ velocity d ψ := by
+  have hc : check 13 13 8 1 64 60 68 4 37088 10000 (some (12, 12)) = true := by decide +kernel
+  refine check_sound (o := some (12, 12)) (by omega) (check_trunc _ _ _ _ _ _ _ _ _ _ _ _ _ ▸ hc)
+    (show 12 < (d - 1) / 2 by omega) (show 12 < d - 1 - (d - 1) / 2 by omega) ?_
+  have := rho_le_two d
+  unfold kappa
+  push_cast
+  nlinarith
+
 end BandCertificate
+
+namespace WidestBand
+
+open BandCertificate
+
+/-- For every `d ≥ 5`, a minimum-uncertainty state of `H_d` moves at least at `κ = 0.9272`. -/
+theorem exists_fast {d : ℕ} (hd : 5 ≤ d) :
+    ∃ ψ : Hd d, ‖ψ‖ = 1 ∧ surplus d ψ = 0 ∧ kappa ≤ velocity d ψ := by
+  rcases lt_or_ge d 28 with h | h
+  · interval_cases d
+    · exact small_sound (by norm_num) 7 4 256 255 257 1 (by decide +kernel)
+    · exact small_sound (by norm_num) 2 1 128 145 146 1 (by decide +kernel)
+    · exact small_sound (by norm_num) 2 1 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 9 4 256 245 247 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 5 2 256 255 257 1 (by decide +kernel)
+    · exact small_sound (by norm_num) 5 2 512 512 516 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 11 4 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 11 4 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 3 1 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 3 1 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 3 1 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 13 4 1024 1020 1028 8 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 256 255 257 2 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 512 510 514 4 (by decide +kernel)
+    · exact small_sound (by norm_num) 7 2 512 510 514 4 (by decide +kernel)
+  · exact large_sound h
+
+/-- **The threshold beyond `d = 4`.** `0.9272 ≤ v*(d)` for every `d ≥ 5`. -/
+theorem kappa_le_threshold {d : ℕ} (hd : 5 ≤ d) : kappa ≤ threshold d := by
+  obtain ⟨ψ, hψ, h0, hv⟩ := exists_fast hd
+  exact hv.trans ((le_abs_self _).trans
+    (le_csSup (satSpeeds_bddAbove (by omega)) ⟨ψ, hψ, h0, rfl⟩))
+
+theorem threshold_four_lt {d : ℕ} (hd : 5 ≤ d) : threshold 4 < threshold d := by
+  have h := kappa_le_threshold hd
+  have h4 := NRSOctahedron.vStar_bounds.2
+  rw [threshold_four]
+  norm_num [kappa] at h h4 ⊢
+  linarith
+
+/-- **`d = 4` has the widest band:** `ϙ(d) < ϙ(4)` for every `d ≥ 5`. -/
+theorem koppa_lt_koppa_four {d : ℕ} (hd : 5 ≤ d) : ϙ d < ϙ 4 := by
+  have := threshold_four_lt hd
+  simp only [koppa]
+  linarith
+
+/-- Beyond `d = 4` every band is narrower than `0.0728`. -/
+theorem koppa_le {d : ℕ} (hd : 5 ≤ d) : ϙ d ≤ 0.0728 := by
+  have := kappa_le_threshold hd
+  simp only [koppa, kappa] at *
+  linarith
+
+end WidestBand
 
 end

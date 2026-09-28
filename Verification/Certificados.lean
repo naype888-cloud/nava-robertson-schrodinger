@@ -22,3 +22,10 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms VelocityBand.koppa_pos
 #print axioms VelocityBand.koppa_four
 #print axioms VelocityBand.velocityBand_certificate
+#print axioms BandCertificate.sums_sound
+#print axioms BandCertificate.half_sound
+#print axioms BandCertificate.check_sound
+#print axioms WidestBand.exists_fast
+#print axioms WidestBand.kappa_le_threshold
+#print axioms WidestBand.koppa_lt_koppa_four
+#print axioms WidestBand.koppa_le
