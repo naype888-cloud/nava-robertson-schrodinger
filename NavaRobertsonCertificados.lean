@@ -9,6 +9,7 @@ public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 public import NavaRobertsonCertificados.D43_NRSOctahedron
 public import NavaRobertsonCertificados.D44_VelocityBand
 public import NavaRobertsonCertificados.D45d_WidestBand
+public import NavaRobertsonCertificados.D46_ConeInBand
 
 /-!
 # Certificates
@@ -25,4 +26,7 @@ minimum uncertainty.
 
 `D45b`–`D45d`: an interval checker for Stark packets, evaluated by the kernel, and with it
 `ϙ(d) ≤ 0.0728 < ϙ(4)` for every `d ≥ 5`: `d = 4` has the widest band.
+
+`D46`: the cone speed lies in every band: for every `d ≥ 4`, every unit state at the cone speed
+carries a Robertson–Schrödinger surplus, and `d ≥ 4` is sharp.
 -/

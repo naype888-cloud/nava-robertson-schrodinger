@@ -29,3 +29,6 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms WidestBand.kappa_le_threshold
 #print axioms WidestBand.koppa_lt_koppa_four
 #print axioms WidestBand.koppa_le
+#print axioms ConeInBand.surplus_pos_of_near_cone
+#print axioms ConeInBand.cone_forced_iff
+#print axioms ConeInBand.coneInBand_certificate
