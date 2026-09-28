@@ -21,6 +21,7 @@ inequalities.
 
 - `StarkPacket.ratio_rec` : the continued fraction of the ratios.
 - `BandCertificate.ivs_sound` : the intervals enclose the ratios.
+- `BandCertificate.sums_sound` : the checked lower bound of the weighted sum.
 -/
 
 @[expose] public noncomputable section
@@ -223,6 +224,138 @@ theorem ivs_sound (hp : Fits p z u K) (hk : ∀ m, 0 < kLo p m) {Q : ℕ → ℝ
     rw [ivs, hrec _ (by omega), show top - (j + 1) + 1 = top - j by omega,
       show top - j - 1 = top - (j + 1) by omega]
     exact step_sound (kLo_le hp _) (le_kHi hp _) (ih (by omega)) (hk _)
+
+/-! ## D. Soundness of the weighted sum -/
+
+lemma wsq_le (hp : Fits p z u K) (m : ℕ) : (wsq p m : ℝ) / p.ud ^ 2 ≤ (m + u - 1) ^ 2 := by
+  have hud : (0 : ℝ) < p.ud := by exact_mod_cast hp.ud_pos
+  set a : ℤ := m * p.ud + p.ulo - p.ud with ha_def
+  set b : ℤ := m * p.ud + p.uhi - p.ud with hb_def
+  have h1 : (a : ℝ) / p.ud ≤ m + u - 1 := by
+    have := hp.hlo
+    rw [div_le_iff₀ hud] at this ⊢
+    push_cast [ha_def]
+    nlinarith
+  have h2 : m + u - 1 ≤ (b : ℝ) / p.ud := by
+    have := hp.hhi
+    rw [le_div_iff₀ hud] at this ⊢
+    push_cast [hb_def]
+    nlinarith
+  have hcast : ∀ x : ℤ, 0 ≤ x → ((x.toNat : ℕ) : ℝ) = (x : ℝ) := fun x hx => by
+    rw [← Int.cast_natCast, Int.toNat_of_nonneg hx]
+  unfold wsq
+  dsimp only
+  rw [← ha_def, ← hb_def]
+  split_ifs with ha hb
+  · rw [hcast _ (mul_nonneg ha ha), Int.cast_mul, ← sq, ← div_pow]
+    exact pow_le_pow_left₀ (by positivity) h1 2
+  · rw [hcast _ (mul_nonneg_of_nonpos_of_nonpos hb hb), Int.cast_mul, ← sq, ← div_pow]
+    have : (b : ℝ) / p.ud ≤ 0 := div_nonpos_of_nonpos_of_nonneg (by exact_mod_cast hb) hud.le
+    nlinarith
+  · simp only [CharP.cast_eq_zero, zero_div]
+    positivity
+
+lemma term_sound (hp : Fits p z u K) {m lo hi : ℕ} {v : ℝ} (hlo : (lo : ℝ) / S ≤ v)
+    (hhi : v ≤ hi / S) :
+    ((term p m lo hi).1 : ℝ) / S - (term p m lo hi).2 / S ≤ ((m + u - 1) ^ 2 - K) * v := by
+  have hS := S_pos
+  have hv : 0 ≤ v := le_trans (by positivity) hlo
+  have hden : 0 < p.ud * p.ud * p.Kd := by have := hp.ud_pos; have := hp.Kd_pos; positivity
+  set W := wsq p m * p.Kd
+  set k := p.Kn * p.ud * p.ud
+  set den := p.ud * p.ud * p.Kd
+  set c : ℝ := ((W : ℝ) - k) / den
+  have hc : c * v ≤ ((m + u - 1) ^ 2 - K) * v := by
+    refine mul_le_mul_of_nonneg_right ?_ hv
+    have hw := wsq_le hp m
+    have hud : (0 : ℝ) < p.ud := by exact_mod_cast hp.ud_pos
+    have hKd : (0 : ℝ) < p.Kd := by exact_mod_cast hp.Kd_pos
+    simp only [c, W, k, den, hp.hK]
+    push_cast
+    rw [div_le_iff₀ (by positivity)] at hw
+    rw [div_le_iff₀ (by positivity)]
+    field_simp
+    nlinarith
+  refine le_trans ?_ hc
+  unfold term
+  dsimp only
+  split_ifs with h
+  · have hkW : k ≤ W := h
+    have e : ((S * (W - k) / den : ℕ) : ℝ) ≤ S * c := by
+      refine Nat.cast_div_le.trans (le_of_eq ?_)
+      simp only [c]
+      rw [Nat.cast_mul, Nat.cast_sub hkW]
+      ring
+    have e' : ((S * (W - k) / den * lo / S : ℕ) : ℝ) ≤ S * c * lo / S :=
+      Nat.cast_div_le.trans (by push_cast; gcongr)
+    have hc0 : 0 ≤ c := div_nonneg (sub_nonneg.mpr (by exact_mod_cast h)) (by positivity)
+    calc ((S * (W - k) / den * lo / S : ℕ) : ℝ) / S - ((0 : ℕ) : ℝ) / S
+        ≤ S * c * lo / S / S := by simpa using div_le_div_of_nonneg_right e' hS.le
+      _ = c * (lo / S) := by field_simp
+      _ ≤ c * v := mul_le_mul_of_nonneg_left hlo hc0
+  · have hlt : W < k := not_le.mp h
+    have hc0 : c ≤ 0 :=
+      div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr (by exact_mod_cast hlt.le)) (by positivity)
+    have e : S * -c ≤ (cdiv (S * (k - W)) den : ℝ) := by
+      refine le_trans (le_of_eq ?_) (le_cdiv _ hden)
+      simp only [c]
+      push_cast [Nat.cast_sub hlt.le]
+      ring
+    have e' : S * -c * hi / S ≤ (cdiv (cdiv (S * (k - W)) den * hi) S : ℝ) :=
+      le_trans (by push_cast; gcongr) (le_cdiv _ (by unfold S; positivity))
+    calc ((0 : ℕ) : ℝ) / S - (cdiv (cdiv (S * (k - W)) den * hi) S : ℝ) / S
+        ≤ -(S * -c * hi / S / S) := by
+          rw [Nat.cast_zero, zero_div, zero_sub, neg_le_neg_iff]
+          exact div_le_div_of_nonneg_right e' hS.le
+      _ = c * (hi / S) := by field_simp
+      _ ≤ c * v := mul_le_mul_of_nonpos_left hhi hc0
+
+/-- `∏_{i<n} Q i²`. -/
+def vprod (Q : ℕ → ℝ) (n : ℕ) : ℝ := ∏ i ∈ Finset.range n, Q i ^ 2
+
+/-- `Σ_{m0 ≤ m < n} ((m + u − 1)² − K) vₘ`. -/
+def wsum (Q : ℕ → ℝ) (u K : ℝ) (m0 n : ℕ) : ℝ :=
+  ∑ m ∈ Finset.range n, if m0 ≤ m then ((m + u - 1) ^ 2 - K) * vprod Q m else 0
+
+/-- **The checked sum is a lower bound.** -/
+theorem sums_sound (hp : Fits p z u K) {Q : ℕ → ℝ} {top m0 : ℕ} {start : ℕ × ℕ}
+    (hQ0 : ∀ m, 0 ≤ Q m) (hQ : ∀ m ≤ top, Mem (ivs p top start (top - m)) (Q m)) :
+    ∀ n ≤ top + 1, Mem ((sums p top start m0 n).1, (sums p top start m0 n).2.1) (vprod Q n) ∧
+      (((sums p top start m0 n).2.2.1 : ℝ) - (sums p top start m0 n).2.2.2) / S ≤
+        wsum Q u K m0 n := by
+  have hS := S_pos
+  intro n
+  induction n with
+  | zero => simp [sums, Mem, vprod, wsum, hS.ne']
+  | succ n ih =>
+    intro hn
+    obtain ⟨⟨hlo, hhi⟩, hsum⟩ := ih (by omega)
+    obtain ⟨ha, hb⟩ := hQ n (by omega)
+    set r := sums p top start m0 n with hr
+    set q := ivs p top start (top - n)
+    simp only at hlo hhi
+    have hv0 : 0 ≤ vprod Q n := Finset.prod_nonneg fun i _ => sq_nonneg _
+    have hvn : vprod Q (n + 1) = vprod Q n * Q n ^ 2 := Finset.prod_range_succ _ _
+    refine ⟨⟨?_, ?_⟩, ?_⟩
+    · simp only [sums, hvn]
+      calc ((r.1 * q.1 * q.1 / (S * S) : ℕ) : ℝ) / S ≤ (r.1 / S) * (q.1 / S) ^ 2 := by
+            refine (div_le_div_of_nonneg_right Nat.cast_div_le hS.le).trans (le_of_eq ?_)
+            push_cast
+            field_simp
+        _ ≤ vprod Q n * Q n ^ 2 := by gcongr
+    · simp only [sums, hvn]
+      calc vprod Q n * Q n ^ 2 ≤ (r.2.1 / S) * (q.2 / S) ^ 2 := by gcongr; exact hQ0 n
+        _ = ((r.2.1 * q.2 * q.2 : ℕ) : ℝ) / (S * S : ℕ) / S := by push_cast; field_simp
+        _ ≤ (cdiv (r.2.1 * q.2 * q.2) (S * S) : ℝ) / S := by
+            gcongr; exact le_cdiv _ (by unfold S; positivity)
+    · simp only [sums, wsum, Finset.sum_range_succ, ← hr] at hsum ⊢
+      split_ifs with h
+      · have := term_sound (m := n) hp hlo hhi
+        push_cast
+        simp only [add_sub_add_comm, add_div, sub_div] at hsum ⊢
+        linarith
+      · push_cast
+        simpa using hsum
 
 end BandCertificate
 
