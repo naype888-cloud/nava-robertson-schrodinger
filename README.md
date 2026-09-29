@@ -76,7 +76,7 @@ motion is the sign of `⟨K_d⟩`. The reflection `j ↦ d − 1 − j` commutes
 `P_d`: it reverses the tension, keeps both variances, the Mandelstam–Tamm/Cramér–Rao ratio and
 the NRS angle, and makes the spectrum of `K_d` symmetric (`D42`). The bounds do not see
 direction. On `4 × 4 × 4` the eight octant states move at `(±1, ±1, ±1)`, one per face of the
-octahedral cone of steps, all at `θ_NRS(4) ≈ 7.43°` on every axis. `D43` collects the
+octahedral cone of steps `k·β₃`, all at `θ_NRS(4) ≈ 7.43°` on every axis. `D43` collects the
 irreducible elemental dimensional quantum of uncertainty in one theorem,
 `navaRobertsonSchrodinger_octahedron`: the octahedral cone, the eight octants, the angle floor
 and limit, the ratio `5/(99 − 42√5) ≈ 0.9833` at the speed limit, and the velocity threshold
@@ -109,7 +109,8 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   `[−1, 1]` (the particle in a box), so it only connects neighbours; counting time in steps of
   transport, `(T_d^k) i j = 0` whenever `|i − j| > k`, and the edge is reached exactly,
   `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone of steps is the
-  octahedron `|Δx| + |Δy| + |Δz| ≤ k`, on two axes the rhombus `|Δx| + |Δy| ≤ k` (`D37f`, `D43`).
+  octahedron `k·β₃ = {|Δx| + |Δy| + |Δz| ≤ k}` (`β₃`: the cross-polytope in Coxeter's notation),
+  on two axes the rhombus `|Δx| + |Δy| ≤ k` (`D37f`, `D43`).
   In continuous time each axis spreads on its own, so the front is a cube (a square on two
   axes), as for the velocities of `D38` below;
 * **Lieb–Robinson bound**: in continuous time, `U(t) = exp(−i t T_d)` satisfies

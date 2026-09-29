@@ -12,7 +12,8 @@ public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 `T_d` only connects neighbours (`D3`). Counting time in steps of transport, after `k` steps an
 amplitude has moved at most `k` sites, and exactly `k` is reached: the speed limit is one site
-per step. On the cube the cone is the octahedron `|Δx| + |Δy| + |Δz| ≤ k`.
+per step. On the cube the cone is the octahedron `k·β₃`: `|Δx| + |Δy| + |Δz| ≤ k`, where `β₃` is
+the cross-polytope in Coxeter's notation.
 
 ## Main results
 
