@@ -39,10 +39,12 @@ The original Robertson–Schrödinger inequality is not contradicted by the tran
 - `SpectrumBounds.defect_pos_of_velocity_eq_one` : at the cone velocity the defect is strict.
 - `SpectrumBounds.spectrum_band` : the open forced-defect band of `D23d`.
 
-**Not proved here (work in progress).** The global maximality of `θ(ψ)` over *all* unit
-states of a fixed `d` — `θ(ψ) ≤ θ_NRS(d)` for every `ψ` — is not established anywhere in
-the package; `D48` records exactly what is proved. The maximum statement above is
-restricted to the maximal-tension states, where `D21` forces the strict inequality.
+**Scope.** The statement is about the velocity band `Ϙ(d) = (v*(d), 1]` between the
+minimum-uncertainty threshold and the cone, not about every unit state. On `Ϙ(d)` every
+unit state carries a Robertson–Schrödinger surplus, so `θ(ψ) > 0`; `Ϙ(2) = Ϙ(3) = ∅`, and
+`Ϙ(4) = (3(√5 − 1)/4, 1]` exactly. These are proved in the separate target
+`NavaRobertsonCertificados` (`D44_VelocityBand`, `D46_ConeInBand`); `spectrum_band` below is
+the explicit sub-band of `D23d` that this layer proves without certificates.
 -/
 
 @[expose] public noncomputable section
