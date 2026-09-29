@@ -38,6 +38,15 @@ The speeds above the threshold form the band `Ϙ(d) = (v*(d), 1]` of forced defe
 Stark packet moves with minimum uncertainty at `κ = 0.9272 > v*(4)`, so
 `ϙ(d) ≤ 0.0728 < ϙ(4)` (`D45`, `D45d`).
 
+**Spectrum bounds (`D48`).** Robertson–Schrödinger 1929–30 is not contradicted by `(T_d, P_d)`;
+it is bounded, with exact restrictions, in the angle `θ(ψ)` between the two fluctuation vectors.
+`θ(ψ) ∈ [0, π/2]`, and `θ(ψ) = 0` exactly when the Gram defect vanishes; on the maximal-tension
+states `θ(ψ) = θ_NRS(d)`; for every `d ≥ 4`,
+`θ_NRS(4) ≈ 7.43° ≤ θ_NRS(d) < arccos (1/C_∞) ≈ 28.30°`, a ceiling no `d` attains. At the
+cone speed the defect is strict, and below the cone there is an open band where the inequality
+is strict (`D23d`). The statement is about the band
+`Ϙ(d) = (v*(d), 1]`, not every state: its exact form is `D44` and `D46`, in the separate target.
+
 **Localization and tension (the two extremes of NRS).**
 
 * A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
@@ -50,6 +59,9 @@ Stark packet moves with minimum uncertainty at `κ = 0.9272 > v*(4)`, so
   (`strict_inequality_of_maxTension`, `D21`), strictly on a whole band below the maximum
   (`strict_inequality_bandWidth`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
   most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
+* A position eigenstate (a single-site excitation) saturates Robertson–Schrödinger trivially,
+  `0 = 0`, so it cannot witness the defect; for `d ≥ 4`, `ψ*` does, and every defect witness
+  fluctuates in both `T_d` and `P_d` and is an eigenstate of neither (`D47`).
 
 **Mandelstam–Tamm and Cramér–Rao (`D40`, `D41`).** By the Heisenberg equation (`D38`),
 `⟨K_d⟩ = ⟨i[T_d, P_d]⟩` is the rate of `⟨P_d⟩` under transport, in time or in an imprinted
@@ -114,7 +126,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -236,6 +248,15 @@ in the band only while `ϙ(d) > 1 − 1/n`: for air (`n = 1.000293`) up to `d �
 `d ≈ 150` (even), numerically. Script: `docs/simulation/figures_cone_in_band.py`.
 
 ![The cone lies in every band](docs/figures/d46_cone_in_band.png)
+
+**Platform blindness (`D47`).** Waveguide-array quantum walks (Perets 2008, Peruzzo 2010,
+Tang 2018) start from a single-guide excitation, an eigenstate of `P_d`. There both sides of
+Robertson–Schrödinger are `0`, so the Gram defect is `0` and the state cannot witness the
+defect. For `d ≥ 4`, `ψ*` is a witness, with tension `2/(d − 1)`. The figure plots tension
+against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tension and Gram defect
+`1/(18 ρ₄²)`. Script: `docs/simulation/figures_platform_blindness.py`.
+
+![Platform blindness](docs/figures/d47_platform_blindness.png)
 
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
@@ -400,6 +421,11 @@ All at once: `VelocityBand.velocityBand_certificate`.
 `ivs_sound`, `sums_sound`; `D45c`: exact and truncated halves, `half_sound`) is sound for every
 input; `check_sound` turns a passed check into a fast minimum-uncertainty state.
 
+`D46`, **the cone lies in every band**: `ConeInBand.one_mem_band`, `1 ∈ Ϙ(d)` for every `d ≥ 4`;
+every unit state at the cone speed carries a surplus (`surplus_pos_of_cone`), and so does every
+state within `((d − 1)/2) · bandWidth d` of the cone (`surplus_pos_of_near_cone`); the defect at
+the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
@@ -505,6 +531,16 @@ input; `check_sound` turns a passed check into a fast minimum-uncertainty state.
   Casoratian vanishes (`glue_rec`); the packet is an eigenvector of `T_d − iλ P_d` (`eigen`), on
   which `⟨K_d⟩ = 2λ Var P_d` (`tension_of_eigen`); normalized, it saturates Robertson–Schrödinger
   and moves at `4 Σ (j − c₀)² φⱼ² / (ρ_d z Σ φⱼ²)` (`exists_saturated_velocity`).
+- `D47_PlatformBlindness`: a unit eigenvector of `P_d` has zero Gram defect
+  (`gramDefectAt_eq_zero_of_P_eigenvector`), so it is not a defect witness
+  (`not_isDefectWitness_of_P_eigenvector`); for `d ≥ 4`, `ψ*` is one
+  (`isDefectWitness_psiStar`), and every witness has both variances positive
+  (`variance_pos_of_isDefectWitness`).
+- `D48_SpectrumBounds`: the per-state angle `angleState` in `[0, π/2]` (`angleState_mem_Icc`),
+  zero exactly at saturation (`angleState_eq_zero_iff`), equal to `θ_NRS(d)` on the
+  maximal-tension states (`angleState_eq_angleNRS_of_maxTension`); the uniform ceiling
+  `θ_NRS(4) ≤ θ_NRS(d) < arccos (1/C_∞)` (`angleNRS_spectrum_bounds`); the strict defect at the
+  cone (`defect_pos_of_velocity_eq_one`) and the forced-defect band (`spectrum_band`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
