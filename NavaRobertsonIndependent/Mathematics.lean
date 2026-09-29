@@ -54,6 +54,7 @@ public import NavaRobertsonIndependent.Mathematics.D41_MandelstamTammCramerRao
 public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 public import NavaRobertsonIndependent.Mathematics.D45_StarkPackets
 public import NavaRobertsonIndependent.Mathematics.D47_PlatformBlindness
+public import NavaRobertsonIndependent.Mathematics.D48_SpectrumBounds
 
 /-!
 # NRS and NRS³
@@ -85,5 +86,7 @@ theorem.
 - `D45` : Stark packets, minimum-uncertainty states in motion.
 - `D47` : platform blindness; position eigenstates saturate trivially and cannot witness
   the defect, while `ψ*` does for `d ≥ 4`.
+- `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
+  per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
