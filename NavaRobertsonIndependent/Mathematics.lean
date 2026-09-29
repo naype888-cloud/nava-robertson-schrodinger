@@ -53,6 +53,7 @@ public import NavaRobertsonIndependent.Mathematics.D40_SpeedLimitUncertainty
 public import NavaRobertsonIndependent.Mathematics.D41_MandelstamTammCramerRao
 public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 public import NavaRobertsonIndependent.Mathematics.D45_StarkPackets
+public import NavaRobertsonIndependent.Mathematics.D47_PlatformBlindness
 
 /-!
 # NRS and NRS³
@@ -82,5 +83,7 @@ theorem.
 - `D41` : Mandelstam–Tamm and Cramér–Rao on `T_d : P_d` and on the cube.
 - `D42` : direction is a sign; the eight octants of the cube share the bounds.
 - `D45` : Stark packets, minimum-uncertainty states in motion.
+- `D47` : platform blindness; position eigenstates saturate trivially and cannot witness
+  the defect, while `ψ*` does for `d ≥ 4`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
