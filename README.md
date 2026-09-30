@@ -265,6 +265,16 @@ budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 
 ![Photonic experiment](docs/figures/nrs_photonic_experiment.png)
 
+**The Physlib port.** NRS and NRS³ restated on physlib's open tight binding chain (`H`, `X` and
+the current `J = i(HX − XH)`): 6 pull requests merged, 3 in review, 12 ready, then the seal
+(`D8`, `D9`). PR 20 gives a new proof that the band `Ϙ` is open from four sites on, by time
+reversal and compactness (see [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PORT.md)). Script:
+`docs/simulation/figures_physlib_port.py`.
+
+![The Physlib port](docs/figures/physlib_port_ladder.png)
+
+![The band is open from four sites on](docs/figures/physlib_band_time_reversal.png)
+
 ## Declared physical bridge
 
 The theorems above are mathematics. Their physical content rests on one declared

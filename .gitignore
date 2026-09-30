@@ -5,3 +5,4 @@
 # Local Lean/editor artifacts
 build/
 .DS_Store
+__pycache__/
