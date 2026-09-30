@@ -296,6 +296,19 @@ against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tensi
 
 ![Platform blindness](docs/figures/d47_platform_blindness.png)
 
+**The Solvay certificates.** Poincaré 1911: Planck's mean energy `ε / (e^{βε} − 1)` lies strictly
+below the classical `1/β` for every `βε > 0` (`Poincare1911`). Poincaré 1912: the mean-energy law
+alone forces the weight `c · ∑ₙ δ_{nε}`; levels smeared by a Gaussian of width `σ` give exactly
+`U = U_Planck − βσ²` and miss Planck for every `σ > 0` (`Poincare1912`). Dirac 1928: 16
+independent monomials need `n² ≥ 16`, and the `4 × 4` matrices attain it (`Dirac1928`). Script:
+`docs/simulation/figures_solvay.py`.
+
+![Poincaré 1911](docs/figures/poincare1911_planck_vs_rj.png)
+
+![Poincaré 1912](docs/figures/poincare1912_discreteness.png)
+
+![Dirac 1928](docs/figures/dirac1928_minimal_dimension.png)
+
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
