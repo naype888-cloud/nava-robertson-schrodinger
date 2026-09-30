@@ -32,3 +32,6 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms ConeInBand.surplus_pos_of_near_cone
 #print axioms ConeInBand.cone_forced_iff
 #print axioms ConeInBand.coneInBand_certificate
+#print axioms Poincare1911.quantum_mean_energy
+#print axioms Poincare1911.classical_mean_energy
+#print axioms Poincare1911.planck_lt_rayleigh_jeans

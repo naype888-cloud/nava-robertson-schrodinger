@@ -474,6 +474,11 @@ every unit state at the cone speed carries a surplus (`surplus_pos_of_cone`), an
 state within `((d − 1)/2) · bandWidth d` of the cone (`surplus_pos_of_near_cone`); the defect at
 the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 
+`Poincare1911`, **Planck against the classical oscillator**: the Gibbs mean energy of the levels
+`nε` is Planck's `ε / (e^{βε} − 1)` (`quantum_mean_energy`), that of the continuous Boltzmann
+weight is `1/β` (`classical_mean_energy`), and the first is strictly below the second for every
+`β, ε > 0` (`planck_lt_rayleigh_jeans`, `quantum_ne_classical`).
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
