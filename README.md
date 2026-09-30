@@ -170,6 +170,15 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 
 ![Octahedral envelope of the star](docs/figures/nrs3_octahedron_hd.png)
 
+**The octahedral symmetry (`D37h`).** The `48` signed permutations of the axes of `d × d × d`
+(the group `O_h`) act faithfully on the sites and send `(T, P)` of axis `i` to `(T, ±P)` of axis
+`σ i`, so the NRS angle follows the axis at every state; at `Ψ*` all three angles are `θ_NRS(d)`
+for all `48`. With unequal axes each keeps its own angle and only the reflections and the
+exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `100 × 100 × 4`,
+`67 × 25 × 1600` (counted in the figure; `D37h` proves the case of equal axes).
+
+![Octahedral symmetry of the cube](docs/figures/d37h_octahedral_symmetry.png)
+
 **The light cone and the Lieb–Robinson bound.** In steps of transport the amplitude is exactly
 zero outside `|i − j| ≤ k` (`D37f`); in continuous time it leaks outside the cone but decays
 faster than any exponential (`D37g`). On two axes the cone of steps is the rhombus
