@@ -5,6 +5,7 @@ Authors: Eduardo Nava-Hernandez
 -/
 module
 
+public import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 public import NavaRobertsonIndependent.Mathematics.D37h_OctahedralSymmetry
 
 /-!
@@ -33,11 +34,16 @@ turned. Orbit and stabilizer multiply to `3! = 6` (`card_orbit_mul_card_stab`).
 - `BoxFamilies.card_orbit_regular`, `_twoEqual`, `_distinct` : orbits of `1`, `3`, `6` boxes.
 - `BoxFamilies.count_ten` : with `4` to `10` sites per axis, `7 + 126 + 210 = 343` boxes, that is
   `7 + 42 + 35 = 84` different figures.
+- `BoxFamilies.quantum_never_erased` : for every box with `4` or more sites per axis, of any
+  family and turned or reflected in any of the `48` ways, every axis opens between `θ_NRS(4) > 0`
+  and the unattained `arccos (1 / C_∞)`, and `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes,
+  turns and deforms, but it is not erased.
+- `BoxFamilies.quantum_erased_iff` : it is erased only when some axis has `2` or `3` sites.
 -/
 
 @[expose] public section
 
-open OctahedralSymmetry NRSAngle
+open OctahedralSymmetry NRSAngle VolumetricQuantum DimensionalQuantum Gnomon
 
 namespace BoxFamilies
 
@@ -210,5 +216,48 @@ theorem count_ten :
       ((boxesUpTo 10).filter fun t => IsDistinct (ofTriple t)).card = 210 ∧
       (boxesUpTo 10).card = 343 ∧ 7 / 1 + 126 / 3 + 210 / 6 = 84 := by
   refine ⟨?_, ?_, ?_, ?_, by norm_num⟩ <;> decide +kernel
+
+/-! ## 5. The quantum is never erased -/
+
+/-- The volumetric quantum of a box, the product of the quanta of its three axes. -/
+theorem volQuantum_eq_prod (b : Box) :
+    volQuantum (b 0) (b 1) (b 2) = ∏ i, dimQuantum (b i) := by
+  simp [volQuantum, Fin.prod_univ_three]
+
+/-- Reordering the axes does not change the volumetric quantum. -/
+theorem volQuantum_perm (b : Box) (σ : Equiv.Perm (Fin 3)) :
+    volQuantum (b (σ 0)) (b (σ 1)) (b (σ 2)) = volQuantum (b 0) (b 1) (b 2) := by
+  have h := volQuantum_eq_prod (b ∘ σ)
+  simp only [Function.comp_apply] at h
+  rw [h, volQuantum_eq_prod b]
+  exact Equiv.prod_comp σ fun i => dimQuantum (b i)
+
+/-- **The quantum is never erased.** Take any box with `4` or more sites on every axis. Whatever its
+family, each axis opens at an angle between `θ_NRS(4) > 0` (the regular `4 × 4 × 4`) and the
+ceiling `arccos (1 / C_∞)` that no box attains; the volumetric quantum lies between the floor
+`δ(4)³ > 0` and the unattained ceiling `δ_∞³`; and turning or reflecting the box, in any of the
+`48` ways, leaves the quantum as it is. -/
+theorem quantum_never_erased (b : Box) (h4 : ∀ i, 4 ≤ b i) :
+    (IsRegular b ∨ IsTwoEqual b ∨ IsDistinct b) ∧
+      (∀ i, 0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS (b i) ∧
+        angleNRS (b i) < Real.arccos (1 / CoherenceConstantInf)) ∧
+      (0 < dimQuantum 4 ^ 3 ∧ dimQuantum 4 ^ 3 ≤ volQuantum (b 0) (b 1) (b 2) ∧
+        volQuantum (b 0) (b 1) (b 2) < deltaInf ^ 3) ∧
+      ∀ g : Equiv.Perm (Fin 3) × (Fin 3 → Bool),
+        volQuantum (b (g.1 0)) (b (g.1 1)) (b (g.1 2)) = volQuantum (b 0) (b 1) (b 2) :=
+  ⟨(family_partition b).1, fun i => angle_floor (h4 i),
+    ⟨pow_pos (dimQuantum_pos le_rfl) 3, (volQuantum_certificate (h4 0) (h4 1) (h4 2)).2⟩,
+    fun g => volQuantum_perm b g.1⟩
+
+/-- **The only way to erase it** is to leave the rule: some axis with `2` or `3` sites. -/
+theorem quantum_erased_iff (b : Box) (h2 : ∀ i, 2 ≤ b i) :
+    volQuantum (b 0) (b 1) (b 2) = 0 ↔ ∃ i, b i = 2 ∨ b i = 3 := by
+  rw [volQuantum_eq_zero_iff (h2 0) (h2 1) (h2 2)]
+  constructor
+  · rintro (h | h | h)
+    exacts [⟨0, h⟩, ⟨1, h⟩, ⟨2, h⟩]
+  · rintro ⟨i, h⟩
+    fin_cases i
+    exacts [Or.inl h, Or.inr (Or.inl h), Or.inr (Or.inr h)]
 
 end BoxFamilies

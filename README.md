@@ -196,6 +196,13 @@ Symmetries: `card_keepsAngles_family`; orbits: `card_orbit_regular`, `_twoEqual`
 at `N = 10`, `7 + 126 + 210 = 343` boxes are `7 + 42 + 35 = 84` different figures
 (`count_ten`). The formulas in `m` are elementary combinatorics, checked in Lean at `N = 10`.
 
+**The quantum is never erased (`quantum_never_erased`).** For every box with `4` or more sites
+per axis, of any family and turned or reflected in any of the `48` ways, every axis opens between
+`θ_NRS(4) ≈ 7.43° > 0` and the unattained `arccos (1/C_∞) ≈ 28.30°`, and the volumetric quantum
+stays between the floor and the ceiling, `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes, turns and
+deforms, but it is not erased; finite or infinite, it never reaches `0`. The only way to erase it
+is to leave the rule, an axis with `2` or `3` sites (`quantum_erased_iff`).
+
 ![The three families of boxes](docs/figures/d37i_families_table.png)
 
 ![Boxes, stars and counts](docs/figures/d37i_box_families.png)
@@ -626,7 +633,9 @@ unit and no constant to it.
   different axes (`family_partition`); stabilizers `6`, `2`, `1` (`card_axisStab_*`), symmetries
   `48`, `16`, `8` (`card_keepsAngles_family`), orbit × stabilizer = `6`
   (`card_orbit_mul_card_stab`), orbits `1`, `3`, `6` (`card_orbit_*`); at `N = 10`, `84` figures
-  (`count_ten`).
+  (`count_ten`); `quantum_never_erased`: every box with `4` or more sites per axis keeps
+  `θ_NRS(4) ≤ θ < arccos (1/C_∞)` on each axis and `0 < δ(4)³ ≤ 𝒱 < δ_∞³` under all `48`
+  symmetries; `quantum_erased_iff`: `𝒱 = 0` only with an axis of `2` or `3` sites.
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;

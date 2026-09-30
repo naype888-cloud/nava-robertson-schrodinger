@@ -131,3 +131,5 @@ open Lean
 #print axioms BoxFamilies.card_keepsAngles_family
 #print axioms BoxFamilies.card_orbit_mul_card_stab
 #print axioms BoxFamilies.count_ten
+#print axioms BoxFamilies.quantum_never_erased
+#print axioms BoxFamilies.quantum_erased_iff
