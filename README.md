@@ -479,6 +479,14 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 weight is `1/β` (`classical_mean_energy`), and the first is strictly below the second for every
 `β, ε > 0` (`planck_lt_rayleigh_jeans`, `quantum_ne_classical`).
 
+`Poincare1912`, **Planck's law forces discrete levels** (Poincaré's theorem): a weight `μ` on
+energies (continuous, discrete or mixed, possibly of infinite mass) whose Boltzmann factors
+`e^{−βE}` are integrable and whose mean energy is Planck's at every `β > 0` is `c · ∑ₙ δ_{nε}`
+with `c > 0` (`planck_forces_levels`); no density `w(E) dE` does it (`no_density_planck`). The
+mean-energy law makes `Z(β) (1 − e^{−βε})` constant, and the Laplace transform on `β > 0`
+determines the weight (`eq_of_laplace`: tilt by `e^{−E}`, analytic continuation of the complex
+moment generating function to `Re z < 1`, characteristic functions).
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
