@@ -5,7 +5,7 @@ Writes to docs/figures/:
   physlib_band_time_reversal.png   why the velocity band is open from four sites on (PR 20)
 
 The port states NRS on physlib's open tight binding chain: Hamiltonian H (hopping t), position X
-(spacing a), current J = i(HX − XH). The ladder records the status on 2026-09-29. In the second
+(spacing a), current J = i(HX − XH). The ladder records the status on 2026-09-30. In the second
 figure the currents, the phases and the defects are exact closed forms evaluated numerically; the
 thresholds v*(N) for N ≥ 5 are numerical (D44 figures), v*(4) = 3(√5 − 1)/4 is exact (D43).
 
@@ -43,22 +43,30 @@ NODES = {
     "10": (4, 5.6, "10\nmaximal\ncurrent state", "local"),
     "11": (5, 5.6, "11\nsaturation\niff N = 2, 3", "local"),
     "12": (6, 5.6, "12\nNRS: C_Nava ≥ 1,\n= 1 iff N = 2, 3", "local"),
-    "C": (6, 2.8, "round C\nSzegő limit,\nmonotonicity", "planned"),
     "15": (7, 5.6, "15\nNRS³: the cube,\naxis by axis", "local"),
     "17": (8, 4.3, "17\nMT/CR ratio\n= 1/C_Nava²", "local"),
-    "18": (7, 2.8, "18\nspeed limit\n|<J>| ≤ maxCurrent", "local"),
-    "19": (8, 2.8, "19\nvelocity band Ϙ,\nforced defect", "local"),
-    "20": (9, 2.8, "20\nϘ open for N ≥ 4\n(time reversal)", "local"),
+    "18": (5, 2.55, "18\nspeed limit\n|<J>| ≤ maxCurrent", "local"),
+    "19": (6, 2.55, "19\nvelocity band Ϙ,\nforced defect", "local"),
+    "20": (7, 2.55, "20\nϘ open for N ≥ 4\n(time reversal)", "local"),
+    "21": (7, 1.2, "21\nVar H, Var X,\nC_Nava² closed", "local"),
+    "22": (8, 1.2, "22\nlimit\nC_Nava → C∞", "local"),
+    "23": (9, 1.2, "23\nC_Nava strictly\nincreasing, < C∞", "local"),
 }
 
-CURVE = {("1695", "14"): 0.35, ("9", "10"): -0.35}
+CURVE = {("1695", "14"): 0.35, ("9", "10"): -0.35, ("18", "17"): -0.22,
+         ("1699", "20"): 0.3, ("14", "15"): -0.3}
+# edges that leave from the top or bottom of their box instead of its side
+VERTICAL_START = {("1695", "14"), ("9", "10"), ("1699", "20")}
+# edges that arrive at the bottom of their target box
+BOTTOM_END = {("14", "15")}
 
 EDGES = [
     ("1649", "1690"), ("1650", "1690"), ("1660", "1690"), ("1676", "1690"), ("1689", "1690"),
     ("1689", "1696"), ("1690", "9"), ("1695", "9"), ("1695", "14"), ("1699", "14"),
     ("1696", "8"), ("1696", "16"), ("9", "16"), ("8", "10"), ("9", "10"), ("10", "11"),
-    ("11", "12"), ("12", "15"), ("14", "15"), ("15", "17"), ("16", "17"), ("17", "18"),
-    ("18", "19"), ("19", "20"), ("12", "C"),
+    ("11", "12"), ("12", "15"), ("14", "15"), ("15", "17"), ("16", "17"), ("18", "17"),
+    ("10", "18"), ("16", "18"), ("11", "19"), ("18", "19"), ("19", "20"), ("1699", "20"),
+    ("12", "21"), ("21", "22"), ("22", "23"),
 ]
 
 STYLE = {
@@ -87,8 +95,11 @@ def fig_ladder():
             start, end = (x0 - W / 4, y0 - H / 2), (x1 + W / 4, y1 + H / 2)
         else:
             start, end = (x0 + W / 2, y0), (x1 - W / 2, y1)
-        if (a, b) in CURVE:
-            start, end = (x0 + W / 4, y0 + (H / 2 if y1 > y0 else -H / 2)), (x1 - W / 2, y1)
+        if (a, b) in VERTICAL_START:
+            up = y1 > y0 and (a, b) != ("1699", "20")
+            start, end = (x0 + W / 4, y0 + (H / 2 if up else -H / 2)), (x1 - W / 2, y1)
+        if (a, b) in BOTTOM_END:
+            end = (x1 - W / 4, y1 - H / 2)
         ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=9, lw=0.9,
                                      color=MUTED, alpha=0.8, shrinkA=2, shrinkB=2, zorder=1,
                                      connectionstyle=f"arc3,rad={CURVE.get((a, b), 0)}"))
@@ -104,24 +115,23 @@ def fig_ladder():
                 color=s["tc"], linespacing=1.15, zorder=3)
     bands = [(-W / 2, DX + W / 2, "algebraic Robertson–Schrödinger\nand the open chain"),
              (2 * DX - W / 2, 9 * DX + W / 2,
-              "NRS, NRS³, the quantum-information bridge and the band Ϙ")]
+              "NRS, NRS³, the quantum-information bridge, the band Ϙ and round C")]
     for x0, x1, t in bands:
         ax.plot([x0, x1], [6.45, 6.45], color=GRID, lw=2)
         ax.text((x0 + x1) / 2, 6.62, t, ha="center", va="bottom", fontsize=9.5, color=INK2)
     for x, status, t in [(0.0, "merged", "merged"), (2.4, "open", "open, in review"),
-                         (5.2, "local", "ready, not yet submitted"),
-                         (9.0, "planned", "planned")]:
+                         (5.2, "local", "ready, not yet submitted")]:
         s = STYLE[status]
-        ax.add_patch(FancyBboxPatch((x, 0.05), 0.34, 0.26, boxstyle="round,pad=0.01,"
+        ax.add_patch(FancyBboxPatch((x, -0.45), 0.34, 0.26, boxstyle="round,pad=0.01,"
                      "rounding_size=0.05", fc=s["fc"], ec=s["ec"], ls=s["ls"], lw=1.2))
-        ax.text(x + 0.45, 0.18, t, va="center", fontsize=9.5, color=INK2)
+        ax.text(x + 0.45, -0.32, t, va="center", fontsize=9.5, color=INK2)
     ax.set_xlim(-0.8, 9 * DX + 0.8)
-    ax.set_ylim(-0.1, 7.1)
+    ax.set_ylim(-0.6, 7.1)
     ax.set_title("The Physlib port of NRS and NRS³: pull requests and dependencies "
-                 "(29 Sep 2026)", loc="left", fontsize=13.5, color=INK)
+                 "(30 Sep 2026)", loc="left", fontsize=13.5, color=INK)
     fig.text(0.012, 0.012, "All on physlib's open tight binding chain (PhyslibAlpha): H, X and "
-             "the current J = i(HX − XH). Round C (D8, D9) is the seal: C_Nava strictly "
-             "increasing, below C∞.", fontsize=8.5, color=MUTED)
+             "the current J = i(HX − XH). Round C (21–23; D8, D9, D19, D20) is the seal: C_Nava "
+             "strictly increasing, below C∞.", fontsize=8.5, color=MUTED)
     fig.savefig(OUT / "physlib_port_ladder.png", bbox_inches="tight")
     plt.close(fig)
 

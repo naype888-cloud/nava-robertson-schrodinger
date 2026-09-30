@@ -9,7 +9,7 @@ a result of the corpus in the vocabulary of a mainstream physical model.
 
 Every file is Mathlib, Physlib and PhyslibAlpha only, at most 300 lines, lines of at most 100
 characters, no `sorry`, only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`),
-and passes every PhyslibAlpha linter. Status on 29 September 2026.
+and passes every PhyslibAlpha linter. Status on 30 September 2026.
 
 ![The Physlib port](figures/physlib_port_ladder.png)
 
@@ -34,11 +34,49 @@ and passes every PhyslibAlpha linter. Status on 29 September 2026.
 | 14 | `…/FiniteTarget/ProductState` | 236 | product states: one-coordinate statistics are the factor's | `D37` | ready |
 | 15 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_Nava` per axis; `nava_robertson_schrodinger_cube` | `D37` | ready |
 | 16 | `…/TightBindingChain/MandelstamTamm` | 139 | `|⟨J⟩| ≤ 2 ΔH ΔX` (Mandelstam–Tamm), `⟨J⟩²/Var X ≤ 4 Var H` (Cramér–Rao) | `D41` | ready |
-| 17 | `…/TightBindingChain/MandelstamTammMaxCurrent` | 134 | the ratio is `1/C_Nava²`, `= 1` iff `N = 2, 3`; per axis of the cube | `D41` | ready |
-| 18 | `…/TightBindingChain/SpeedLimit` | 207 | orthonormal basis of current eigenstates; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | ready |
-| 19 | `…/TightBindingChain/VelocityBand` | 171 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | ready |
-| 20 | `…/TightBindingChain/VelocityBandWidth` | 265 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | ready |
-| C | — | ~1250 | Szegő limit and strict monotonicity of `C_Nava` | `D8`, `D9` | planned |
+| 17 | `…/TightBindingChain/MandelstamTammMaxCurrent` | 126 | the ratio is `1/C_Nava²`, `= 1` iff `N = 2, 3`; per axis of the cube | `D41` | ready |
+| 18 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | ready |
+| 19 | `…/TightBindingChain/VelocityBand` | 172 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | ready |
+| 20 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | ready |
+| 21 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | ready |
+| 22 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | ready |
+| 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four sites on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
+
+## Order of submission
+
+At most three pull requests are open at a time; each wave goes up when the previous one is
+merged. The dependencies are those of the `import` lines.
+
+| Wave | Pull requests | Depends on |
+|---|---|---|
+| 0 | #1695, #1696, #1699 | merged work |
+| 1 | 8, 9, 14 | #1696; #1695; #1699 |
+| 2 | 10, 16 | 8, 9; #1696, 9 |
+| 3 | 11, 18 | 10; 10, 16 |
+| 4 | 12 (NRS), 19 | 11; 11, 18 |
+| 5 | 15 (NRS³), 20, 21 | 12, 14; 19, #1699; 12 |
+| 6 | 17 (Mandelstam–Tamm, Cramér–Rao), 22 | 15, 16, 18; 21 |
+| 7 | 23 (monotonicity) | 22 |
+
+## Round C: shorter than the corpus (PRs 21–23)
+
+The corpus reaches `C_Nava < C_∞` through `D19` and `D20` (the closed form, 1142 lines) and `D8`,
+`D9` (limit and monotonicity, 1248 lines). The port needs 654 lines in three files, for two
+reasons.
+
+* **One sum at a root of unity.** The position variance of the maximal current state rests on
+  `∑ j < n, (j − n/2)² cos(2jθ) = n/(2 sin²θ)` with `n = N + 1`, `θ = π/n`. Summation by parts
+  against the powers of `z = e^{2iθ}`, a root of unity of order `n`, gives
+  `∑ j < n, (j − n/2)² zʲ = −2nz/(z − 1)²`, which is real and equal to `n/(2 sin²θ)`. The
+  weighted root, period and angle sums of the earlier series are not needed.
+* **A certificate in one variable.** `D9` bounds the remainder of the derivative of `C_Nava²` by a
+  Bernstein certificate in two variables `(x/π, π)` of degree `(12, 12)`: 169 terms and
+  `maxHeartbeats 4000000`. Written in `x = π/(N + 1)` the remainder has degree three in `π`;
+  with `3.141592 < π < 3.141593` each power of `π` is bounded by the sign of its coefficient, and
+  what is left is one polynomial of degree twelve in `x ∈ [0, 1571/2500]` whose thirteen
+  Bernstein coefficients are negative (the largest is `≈ −1169`). The file builds with the
+  default heartbeats. The positivity `C_Nava > 1` for `N ≥ 4` (the Taylor half of `D8`) is not
+  ported: it is the Gram defect of PRs 11 and 12.
 
 ## A new proof that the band is open (PR 20)
 
