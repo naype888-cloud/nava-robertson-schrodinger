@@ -584,6 +584,12 @@ unit and no constant to it.
   `lightCone_cube` for `T_x + T_y + T_z` with the lattice distance.
 - `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entry_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
   (`norm_entry_pow_le`), and the bound `lieb_robinson`.
+- `D37h_OctahedralSymmetry`: the cube `d × d × d` on sites `Fin 3 → Fin d`; the `48` signed
+  permutations of the axes (`card_signedPerm`), acting faithfully for `d ≥ 2`
+  (`cubeSym_injective`), move `T`, `P` of axis `i` to `T`, `±P` of axis `σ i`
+  (`reindex_liftAxis`), so the angle follows the axis at every state (`angleAxis_cubeSym`); at
+  `Ψ*` all three angles are `θ_NRS(d)` and stay so under all of `O_h`
+  (`octahedral_symmetry`, `octahedral_angle_bounds`).
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;

@@ -120,3 +120,7 @@ open Lean
 #print axioms StarkPacket.glue_rec
 #print axioms StarkPacket.eigen
 #print axioms StarkPacket.exists_saturated_velocity
+#print axioms OctahedralSymmetry.cubeSym_injective
+#print axioms OctahedralSymmetry.angleAxis_cubeSym
+#print axioms OctahedralSymmetry.octahedral_symmetry
+#print axioms OctahedralSymmetry.octahedral_angle_bounds
