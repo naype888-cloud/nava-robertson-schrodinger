@@ -487,6 +487,12 @@ mean-energy law makes `Z(β) (1 − e^{−βε})` constant, and the Laplace tran
 determines the weight (`eq_of_laplace`: tilt by `e^{−E}`, analytic continuation of the complex
 moment generating function to `Re z < 1`, characteristic functions).
 
+`Dirac1928`, **the gamma matrices need dimension 4**: for `γ₀, …, γ₃ ∈ Matₙ(ℂ)` with
+`{γ_μ, γ_ν} = 2η_μν · 1`, the 16 ordered monomials are linearly independent
+(`monomial_linearIndependent`), so `4 ≤ n` (`four_le_dim`) and there are no `2 × 2` gamma
+matrices (`no_dirac_two_by_two`); Dirac's `4 × 4` matrices, checked by `decide` over `ℤ[i]`,
+attain the bound (`isLeast_dim`).
+
 ## NRS — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
