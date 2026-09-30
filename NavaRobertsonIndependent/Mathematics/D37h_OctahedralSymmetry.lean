@@ -36,6 +36,11 @@ with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of
 - `OctahedralSymmetry.octahedral_symmetry` : for all `48` elements and all three axes, the angle
   at the image of `Ψ*` is `θ_NRS(d)`; from `d = 4` on it is positive and below
   `arccos (1 / C_∞)`.
+- `OctahedralSymmetry.keepsAngles_iff` : with unequal axes, all with `4` or more sites, a signed
+  permutation keeps the angle of every axis iff it only exchanges axes of the same length.
+- `OctahedralSymmetry.card_keepsAngles_equal`, `card_keepsAngles_two_equal`,
+  `card_keepsAngles_distinct` : `48` for `d × d × d`, `16` for `100 × 100 × 4`, `8` for
+  `67 × 25 × 1600`.
 -/
 
 @[expose] public noncomputable section
@@ -348,5 +353,51 @@ theorem octahedral_angle_bounds (hd : 4 ≤ d) (σ : Equiv.Perm (Fin 3)) (s : Fi
   exact ⟨angleNRS_pos hd, angleNRS_lt_limit hd⟩
 
 end Star
+
+/-! ## 5. Unequal axes: which signed permutations keep every angle -/
+
+section Unequal
+
+/-- The signed permutation `(σ, s)` keeps the NRS angle of every axis of the box with `dims i`
+sites on axis `i`: axis `i` and axis `σ i` have the same angle. A reflection never changes an
+angle (it depends only on the number of sites), so only `σ` matters. -/
+def KeepsAngles (dims : Fin 3 → ℕ) (g : Equiv.Perm (Fin 3) × (Fin 3 → Bool)) : Prop :=
+  ∀ i, angleNRS (dims (g.1 i)) = angleNRS (dims i)
+
+/-- With `4` or more sites on every axis, a signed permutation keeps every angle iff it only
+exchanges axes of the same length: `θ_NRS` is strictly increasing from `4` on (`D37b`). -/
+theorem keepsAngles_iff {dims : Fin 3 → ℕ} (h4 : ∀ i, 4 ≤ dims i)
+    (g : Equiv.Perm (Fin 3) × (Fin 3 → Bool)) :
+    KeepsAngles dims g ↔ ∀ i, dims (g.1 i) = dims i :=
+  forall_congr' fun i => angleNRS_strictMonoOn.injOn.eq_iff (h4 (g.1 i)) (h4 i)
+
+/-- The number of signed permutations that keep every angle equals the number that only exchange
+axes of the same length. -/
+theorem card_keepsAngles {dims : Fin 3 → ℕ} (h4 : ∀ i, 4 ≤ dims i)
+    [DecidablePred (KeepsAngles dims)] :
+    Fintype.card {g // KeepsAngles dims g} =
+      Fintype.card {g : Equiv.Perm (Fin 3) × (Fin 3 → Bool) // ∀ i, dims (g.1 i) = dims i} :=
+  Fintype.card_congr (Equiv.subtypeEquivRight (keepsAngles_iff h4))
+
+/-- **Equal axes, `d × d × d`:** all `48` signed permutations keep every angle. -/
+theorem card_keepsAngles_equal {d : ℕ} (hd : 4 ≤ d) [DecidablePred (KeepsAngles fun _ => d)] :
+    Fintype.card {g // KeepsAngles (fun _ => d) g} = 48 := by
+  rw [card_keepsAngles fun _ => hd,
+    Fintype.card_congr (Equiv.subtypeUnivEquiv fun _ _ => rfl)]
+  exact card_signedPerm
+
+/-- **Two equal axes, `100 × 100 × 4`:** `16` signed permutations keep every angle. -/
+theorem card_keepsAngles_two_equal [DecidablePred (KeepsAngles ![100, 100, 4])] :
+    Fintype.card {g // KeepsAngles ![100, 100, 4] g} = 16 := by
+  rw [card_keepsAngles (by decide)]
+  decide
+
+/-- **Three different axes, `67 × 25 × 1600`:** only the `8` reflections keep every angle. -/
+theorem card_keepsAngles_distinct [DecidablePred (KeepsAngles ![67, 25, 1600])] :
+    Fintype.card {g // KeepsAngles ![67, 25, 1600] g} = 8 := by
+  rw [card_keepsAngles (by decide)]
+  decide
+
+end Unequal
 
 end OctahedralSymmetry

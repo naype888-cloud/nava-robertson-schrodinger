@@ -175,9 +175,30 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 `σ i`, so the NRS angle follows the axis at every state; at `Ψ*` all three angles are `θ_NRS(d)`
 for all `48`. With unequal axes each keeps its own angle and only the reflections and the
 exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `100 × 100 × 4`,
-`67 × 25 × 1600` (counted in the figure; `D37h` proves the case of equal axes).
+`67 × 25 × 1600` (`keepsAngles_iff`, `card_keepsAngles_two_equal`,
+`card_keepsAngles_distinct`).
 
 ![Octahedral symmetry of the cube](docs/figures/d37h_octahedral_symmetry.png)
+
+**The three families of boxes (`D37i`).** With `4` or more sites on every axis, each box is a
+deformation of the regular `4 × 4 × 4`: every axis opens, each at its own angle. The boxes split
+into exactly three families (`family_partition`), by how many axes have the same length. The
+orbit of a box, the boxes obtained by reordering its axes, is one figure turned; orbit ×
+stabilizer = `3! = 6` (`card_orbit_mul_card_stab`).
+
+| Family | Condition | Examples | Symmetries | Group | Orbit | Figures up to `N` (`m = N − 3`) | `N = 10` |
+|---|---|---|---|---|---|---|---|
+| regular | `dx = dy = dz` | `4 × 4 × 4`, `10 × 10 × 10` | `48` | `O_h` | `1` | `m` | `7` |
+| two equal axes | exactly two equal | `4 × 10 × 10`, `100 × 100 × 4` | `16` | `D_4h` | `3` | `m(m − 1)` | `42` |
+| three different axes | all different | `4 × 7 × 10`, `67 × 25 × 1600` | `8` | `D_2h` | `6` | `C(m, 3)` | `35` |
+
+Symmetries: `card_keepsAngles_family`; orbits: `card_orbit_regular`, `_twoEqual`, `_distinct`;
+at `N = 10`, `7 + 126 + 210 = 343` boxes are `7 + 42 + 35 = 84` different figures
+(`count_ten`). The formulas in `m` are elementary combinatorics, checked in Lean at `N = 10`.
+
+![The three families of boxes](docs/figures/d37i_families_table.png)
+
+![Boxes, stars and counts](docs/figures/d37i_box_families.png)
 
 **The light cone and the Lieb–Robinson bound.** In steps of transport the amplitude is exactly
 zero outside `|i − j| ≤ k` (`D37f`); in continuous time it leaks outside the cone but decays
@@ -598,7 +619,14 @@ unit and no constant to it.
   (`cubeSym_injective`), move `T`, `P` of axis `i` to `T`, `±P` of axis `σ i`
   (`reindex_liftAxis`), so the angle follows the axis at every state (`angleAxis_cubeSym`); at
   `Ψ*` all three angles are `θ_NRS(d)` and stay so under all of `O_h`
-  (`octahedral_symmetry`, `octahedral_angle_bounds`).
+  (`octahedral_symmetry`, `octahedral_angle_bounds`); with unequal axes a signed permutation
+  keeps every angle iff it exchanges only axes of equal length (`keepsAngles_iff`): `48`, `16`,
+  `8` for `d × d × d`, `100 × 100 × 4`, `67 × 25 × 1600` (`card_keepsAngles_*`).
+- `D37i_BoxFamilies`: the boxes `b : Fin 3 → ℕ` split into regular, two equal axes and three
+  different axes (`family_partition`); stabilizers `6`, `2`, `1` (`card_axisStab_*`), symmetries
+  `48`, `16`, `8` (`card_keepsAngles_family`), orbit × stabilizer = `6`
+  (`card_orbit_mul_card_stab`), orbits `1`, `3`, `6` (`card_orbit_*`); at `N = 10`, `84` figures
+  (`count_ten`).
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;

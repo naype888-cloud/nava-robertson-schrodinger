@@ -8,7 +8,8 @@ Writes to docs/figures/:
 (b) The same at Ψ* = ψ* ⊗ ψ* ⊗ ψ*: all three angles are θ_NRS(4) for every element
     (octahedral_symmetry).
 (c) Cubes with unequal axes: each axis keeps its own angle θ_NRS(d) (closed form of D8, D37b);
-    only the reflections and the exchanges of axes of equal length preserve the triple.
+    only the reflections and the exchanges of axes of equal length preserve the triple:
+    48, 16, 8 (keepsAngles_iff, card_keepsAngles_equal / _two_equal / _distinct in D37h).
 
 Panels (a) and (b) are computed from the matrices of D3 on the 64 sites; the check
 angle(σ i, g Ψ) = angle(i, Ψ) is printed. Panel (c) evaluates the closed form numerically.
@@ -163,7 +164,7 @@ def fig_octahedral():
     fig.text(0.01, -0.02, "(a), (b): the 64-site cube 4 × 4 × 4 with T and P of D3 on each axis; "
              "a signed permutation sends (T, P) of axis i to (T, ±P) of axis σ i. "
              "(c): closed form of C_Nava (D8); the defect is there on every axis with d ≥ 4, "
-             "its symmetry depends on which axes have equal length.",
+             "its symmetry depends on which axes have equal length (48, 16, 8: D37h).",
              fontsize=8.5, color=MUTED)
     fig.tight_layout()
     fig.savefig(OUT / "d37h_octahedral_symmetry.png", bbox_inches="tight")

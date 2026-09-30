@@ -124,3 +124,10 @@ open Lean
 #print axioms OctahedralSymmetry.angleAxis_cubeSym
 #print axioms OctahedralSymmetry.octahedral_symmetry
 #print axioms OctahedralSymmetry.octahedral_angle_bounds
+#print axioms OctahedralSymmetry.keepsAngles_iff
+#print axioms OctahedralSymmetry.card_keepsAngles_two_equal
+#print axioms OctahedralSymmetry.card_keepsAngles_distinct
+#print axioms BoxFamilies.family_partition
+#print axioms BoxFamilies.card_keepsAngles_family
+#print axioms BoxFamilies.card_orbit_mul_card_stab
+#print axioms BoxFamilies.count_ten

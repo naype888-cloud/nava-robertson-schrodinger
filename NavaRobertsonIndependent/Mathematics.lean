@@ -48,6 +48,7 @@ public import NavaRobertsonIndependent.Mathematics.D37e_VolumetricQuantum
 public import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 public import NavaRobertsonIndependent.Mathematics.D37g_LiebRobinson
 public import NavaRobertsonIndependent.Mathematics.D37h_OctahedralSymmetry
+public import NavaRobertsonIndependent.Mathematics.D37i_BoxFamilies
 public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 public import NavaRobertsonIndependent.Mathematics.D39_ConjugatePairs
 public import NavaRobertsonIndependent.Mathematics.D40_SpeedLimitUncertainty
@@ -77,8 +78,8 @@ theorem.
   saturation on eigenvectors, the strict band, transport–tension exclusion, `1/φ` at `d = 4`.
 - `D26a` : a rational enclosure of `(1 − 1/C_∞) e^{−1/C_∞}`.
 - `D28`, `D28b` : the interior of the path is flat (Bakry–Émery, Ollivier–Ricci).
-- `D37`–`D37h` : the cube, the NRS angle, spectrum, Pythagoras, volumetric quantum, light
-  cone, Lieb–Robinson, octahedral symmetry.
+- `D37`–`D37i` : the cube, the NRS angle, spectrum, Pythagoras, volumetric quantum, light
+  cone, Lieb–Robinson, octahedral symmetry, the three families of boxes.
 - `D38` : dispersion, group velocity, the Heisenberg equation.
 - `D39` : every conjugate pair realized on `T_d : P_d`.
 - `D40` : the speed limit excludes minimum uncertainty.
