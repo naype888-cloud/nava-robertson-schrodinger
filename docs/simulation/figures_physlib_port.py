@@ -15,6 +15,7 @@ Run:  python3 docs/simulation/figures_physlib_port.py
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.path import Path
 
 from figures_threshold_cone import BLUE, GRID, INK, INK2, MUTED, ORANGE, OUT, SURFACE, VSTAR4
 from figures_velocity_band import vstar_imag
@@ -26,39 +27,34 @@ GREEN, LIGHT, PALE = "#2f8f5b", "#e8f1fc", "#f3f2ef"
 # ---------------------------------------------------------------------------------------------
 
 # name: (column, row, label, status)   status: merged, open, local, planned
+# columns 0-1: merged; column 2 + k: submission wave k (docs/PHYSLIB_PORT.md)
+TOP, MID, LOW, BOT, LANE = 5.6, 4.1, 2.7, 1.3, 4.85
 NODES = {
-    "1649": (0, 5.0, "#1649\nequality in\nuncertainty", "merged"),
-    "1650": (0, 3.8, "#1650\nnormalized\nvariance bounds", "merged"),
-    "1660": (0, 2.6, "#1660\nvector states:\nvariance, defect", "merged"),
-    "1676": (0, 1.4, "#1676\nRS for\ndensity states", "merged"),
-    "1689": (1, 5.0, "#1689\nopen tight\nbinding chain", "merged"),
-    "1690": (1, 3.2, "#1690\nenergy–position\nuncertainty", "merged"),
-    "1695": (1, 1.4, "#1695\nSelfAdjoint-\nDecompose on H[d]", "open"),
-    "1696": (2, 5.0, "#1696\ncurrent\nJ = i[H, X]", "open"),
-    "9": (2, 3.2, "9\nuncertainty on\nits own space", "local"),
-    "1699": (2, 1.4, "#1699\noperators on one\ncoordinate", "open"),
-    "8": (3, 5.6, "8\ncurrent\neigenstates", "local"),
-    "16": (3, 4.1, "16\nMandelstam–Tamm,\nCramér–Rao", "local"),
-    "14": (3, 1.4, "14\nproduct\nstates", "local"),
-    "10": (4, 5.6, "10\nmaximal\ncurrent state", "local"),
-    "11": (5, 5.6, "11\nsaturation\niff N = 2, 3", "local"),
-    "12": (6, 5.6, "12\nNRS: C_Nava ≥ 1,\n= 1 iff N = 2, 3", "local"),
-    "15": (7, 5.6, "15\nNRS³: the cube,\naxis by axis", "local"),
-    "17": (8, 4.3, "17\nMT/CR ratio\n= 1/C_Nava²", "local"),
-    "18": (5, 2.55, "18\nspeed limit\n|<J>| ≤ maxCurrent", "local"),
-    "19": (6, 2.55, "19\nvelocity band Ϙ,\nforced defect", "local"),
-    "20": (7, 2.55, "20\nϘ open for N ≥ 4\n(time reversal)", "local"),
-    "21": (7, 1.2, "21\nVar H, Var X,\nC_Nava² closed", "local"),
-    "22": (8, 1.2, "22\nlimit\nC_Nava → C∞", "local"),
-    "23": (9, 1.2, "23\nC_Nava strictly\nincreasing, < C∞", "local"),
+    "1649": (0, 5.6, "#1649\nequality in\nuncertainty", "merged"),
+    "1650": (0, 4.35, "#1650\nnormalized\nvariance bounds", "merged"),
+    "1660": (0, 3.1, "#1660\nvector states:\nvariance, defect", "merged"),
+    "1676": (0, 1.85, "#1676\nRS for\ndensity states", "merged"),
+    "1689": (1, TOP, "#1689\nopen tight\nbinding chain", "merged"),
+    "1690": (1, MID, "#1690\nenergy–position\nuncertainty", "merged"),
+    "1696": (2, TOP, "#1696\ncurrent\nJ = i[H, X]", "open"),
+    "1695": (2, LOW, "#1695\nSelfAdjoint-\nDecompose on H[d]", "open"),
+    "1699": (2, BOT, "#1699\noperators on one\ncoordinate", "open"),
+    "8": (3, TOP, "8\ncurrent\neigenstates", "local"),
+    "9": (3, MID, "9\nuncertainty on\nits own space", "local"),
+    "14": (3, BOT, "14\nproduct\nstates", "local"),
+    "10": (4, TOP, "10\nmaximal\ncurrent state", "local"),
+    "16": (4, MID, "16\nMandelstam–Tamm,\nCramér–Rao", "local"),
+    "11": (5, TOP, "11\nsaturation\niff N = 2, 3", "local"),
+    "18": (5, MID, "18\nspeed limit\n|<J>| ≤ maxCurrent", "local"),
+    "12": (6, TOP, "12\nNRS: C_Nava ≥ 1,\n= 1 iff N = 2, 3", "local"),
+    "19": (6, MID, "19\nvelocity band Ϙ,\nforced defect", "local"),
+    "15": (7, TOP, "15\nNRS³: the cube,\naxis by axis", "local"),
+    "20": (7, MID, "20\nϘ open for N ≥ 4\n(time reversal)", "local"),
+    "21": (7, LOW, "21\nVar H, Var X,\nC_Nava² closed", "local"),
+    "17": (8, LANE, "17\nMT/CR ratio\n= 1/C_Nava²", "local"),
+    "22": (8, LOW, "22\nlimit\nC_Nava → C∞", "local"),
+    "23": (9, LOW, "23\nC_Nava strictly\nincreasing, < C∞", "local"),
 }
-
-CURVE = {("1695", "14"): 0.35, ("9", "10"): -0.35, ("18", "17"): -0.22,
-         ("1699", "20"): 0.3, ("14", "15"): -0.3}
-# edges that leave from the top or bottom of their box instead of its side
-VERTICAL_START = {("1695", "14"), ("9", "10"), ("1699", "20")}
-# edges that arrive at the bottom of their target box
-BOTTOM_END = {("14", "15")}
 
 EDGES = [
     ("1649", "1690"), ("1650", "1690"), ("1660", "1690"), ("1676", "1690"), ("1689", "1690"),
@@ -76,7 +72,8 @@ STYLE = {
     "planned": dict(fc=PALE, ec=MUTED, tc=INK2, ls="--"),
 }
 
-W, H, DX = 1.3, 0.98, 1.62
+W, H, DX = 1.34, 0.98, 1.78
+WAVES = ["in review", "", "", "", "NRS", "NRS³", "", "seal"]
 
 
 def centre(name):
@@ -84,25 +81,51 @@ def centre(name):
     return c * DX, r
 
 
+def left(name, dy=0.0):
+    x, y = centre(name)
+    return x - W / 2, y + dy
+
+
+def right(name, dy=0.0):
+    x, y = centre(name)
+    return x + W / 2, y + dy
+
+
+def route(a, b):
+    """Waypoints of the edge a → b; long edges run in the free lanes between the rows."""
+    g = lambda c: c * DX - W / 2 - 0.13  # the gap just left of column c
+    special = {
+        ("1696", "16"): [right("1696", -0.25), (g(3), LANE), (g(4), LANE), left("16", 0.2)],
+        ("16", "17"): [right("16", 0.2), (4 * DX + W / 2 + 0.13, LANE), left("17")],
+        ("18", "17"): [right("18", 0.2), (5 * DX + W / 2 + 0.13, LANE)],
+        ("14", "15"): [right("14"), (g(7), BOT), (g(7), TOP - 0.25), left("15", -0.25)],
+        ("1699", "20"): [(2 * DX, BOT - H / 2), (2 * DX, 0.5), (g(7) - 0.16, 0.5),
+                         (g(7) - 0.16, MID - 0.2), left("20", -0.2)],
+        ("1689", "1690"): [(DX, TOP - H / 2), (DX, MID + H / 2)],
+    }
+    return special.get((a, b), [right(a), left(b)])
+
+
 def fig_ladder():
-    fig, ax = plt.subplots(figsize=(17.5, 7.4), dpi=150)
+    fig, ax = plt.subplots(figsize=(18.5, 7.8), dpi=150)
     ax.set_axis_off()
+    ax.add_patch(plt.Rectangle((-DX / 2, 0.2), 2 * DX, 6.35, fc=LIGHT, ec="none", alpha=0.45,
+                               zorder=0))
+    ax.text(DX / 2, 6.7, "merged\nalgebraic RS and the open chain", ha="center", va="bottom",
+            fontsize=9.5, color=INK2)
+    for k in range(8):
+        x = (2 + k) * DX
+        ax.add_patch(plt.Rectangle((x - DX / 2, 0.2), DX, 6.35, fc=PALE if k % 2 else SURFACE,
+                                   ec="none", zorder=0))
+        ax.text(x, 6.7, f"wave {k}" + (f"\n{WAVES[k]}" if WAVES[k] else "\n"), ha="center",
+                va="bottom", fontsize=9.5, color=INK2, fontweight="bold" if k == 0 else None)
     for a, b in EDGES:
-        (x0, y0), (x1, y1) = centre(a), centre(b)
-        if abs(x0 - x1) < 1e-9:
-            start, end = (x0, y0 - H / 2), (x1, y1 + H / 2)
-        elif x1 < x0:
-            start, end = (x0 - W / 4, y0 - H / 2), (x1 + W / 4, y1 + H / 2)
-        else:
-            start, end = (x0 + W / 2, y0), (x1 - W / 2, y1)
-        if (a, b) in VERTICAL_START:
-            up = y1 > y0 and (a, b) != ("1699", "20")
-            start, end = (x0 + W / 4, y0 + (H / 2 if up else -H / 2)), (x1 - W / 2, y1)
-        if (a, b) in BOTTOM_END:
-            end = (x1 - W / 4, y1 - H / 2)
-        ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=9, lw=0.9,
-                                     color=MUTED, alpha=0.8, shrinkA=2, shrinkB=2, zorder=1,
-                                     connectionstyle=f"arc3,rad={CURVE.get((a, b), 0)}"))
+        pts = route(a, b)
+        arrow = (a, b) != ("18", "17")  # joins the lane of 16 → 17, which carries the head
+        codes = [Path.MOVETO] + [Path.LINETO] * (len(pts) - 1)
+        ax.add_patch(FancyArrowPatch(path=Path(pts, codes), lw=0.9, color=MUTED, alpha=0.85,
+                                     arrowstyle="-|>" if arrow else "-", mutation_scale=9,
+                                     zorder=1, joinstyle="round"))
     for name, (c, r, label, status) in NODES.items():
         s = STYLE[status]
         ax.add_patch(FancyBboxPatch(
@@ -113,26 +136,22 @@ def fig_ladder():
                 fontweight="bold", color=s["tc"], zorder=3)
         ax.text(c * DX, r - 0.1, "\n".join(rest), ha="center", va="center", fontsize=7.6,
                 color=s["tc"], linespacing=1.15, zorder=3)
-    bands = [(-W / 2, DX + W / 2, "algebraic Robertson–Schrödinger\nand the open chain"),
-             (2 * DX - W / 2, 9 * DX + W / 2,
-              "NRS, NRS³, the quantum-information bridge, the band Ϙ and round C")]
-    for x0, x1, t in bands:
-        ax.plot([x0, x1], [6.45, 6.45], color=GRID, lw=2)
-        ax.text((x0 + x1) / 2, 6.62, t, ha="center", va="bottom", fontsize=9.5, color=INK2)
     for x, status, t in [(0.0, "merged", "merged"), (2.4, "open", "open, in review"),
                          (5.2, "local", "ready, not yet submitted")]:
         s = STYLE[status]
         ax.add_patch(FancyBboxPatch((x, -0.45), 0.34, 0.26, boxstyle="round,pad=0.01,"
                      "rounding_size=0.05", fc=s["fc"], ec=s["ec"], ls=s["ls"], lw=1.2))
         ax.text(x + 0.45, -0.32, t, va="center", fontsize=9.5, color=INK2)
-    ax.set_xlim(-0.8, 9 * DX + 0.8)
-    ax.set_ylim(-0.6, 7.1)
-    ax.set_title("The Physlib port of NRS and NRS³: pull requests and dependencies "
-                 "(30 Sep 2026)", loc="left", fontsize=13.5, color=INK)
+    ax.text(9 * DX + DX / 2, -0.32, "at most three open at a time; each wave goes up when the "
+            "previous one is merged", ha="right", va="center", fontsize=9.5, color=INK2)
+    ax.set_xlim(-DX / 2 - 0.1, 9 * DX + DX / 2 + 0.1)
+    ax.set_ylim(-0.6, 7.35)
+    ax.set_title("The Physlib port of NRS and NRS³: pull requests, dependencies and submission "
+                 "waves (30 Sep 2026)", loc="left", fontsize=13.5, color=INK)
     fig.text(0.012, 0.012, "All on physlib's open tight binding chain (PhyslibAlpha): H, X and "
              "the current J = i(HX − XH). Round C (21–23; D8, D9, D19, D20) is the seal: C_Nava "
              "strictly increasing, below C∞.", fontsize=8.5, color=MUTED)
-    fig.savefig(OUT / "physlib_port_ladder.png", bbox_inches="tight")
+    fig.savefig(OUT / "physlib_port_ladder.png", bbox_inches="tight", facecolor=SURFACE)
     plt.close(fig)
 
 
