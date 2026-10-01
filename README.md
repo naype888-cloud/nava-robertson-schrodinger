@@ -497,6 +497,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D16_ClosedSurfaceTransport`: finite-sum transport to a closed
   orientable surface, including `Ω(Σ_g) = 2g · δ∞` and its radical form. The
   per-cycle defect `δ∞` and `b₁ = 2g` are inputs of the definition, not theorems.
+- `D16c_DefectExcitation`: the step `g → g + 1` as the elementary excitation of the
+  `D16` defect. With quantum `q` per cycle the defect rises by `2q` and, under the
+  `HGaussBonnet` hypothesis of `D16b`, the total curvature falls by `4π` for every `q`;
+  for `q ≠ 0` the defect fixes the curvature with coupling `2π/q`, and two genera differ by
+  at least `2q`. At `d = 2, 3` (`δ(d) = 0`) the defect is zero while the curvature still
+  jumps; from `d = 4` the step `2δ(d)` is positive and below `2δ∞`. Propagation, spin and
+  mass of the excitation are not part of the package.
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
