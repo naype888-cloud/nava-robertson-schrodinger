@@ -12,7 +12,6 @@ public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.Poincare1911_QuantumNecessity
 public import NavaRobertsonCertificados.Poincare1912_Discreteness
-public import NavaRobertsonCertificados.DiracMinimalDimension
 public import NavaRobertsonCertificados.Penrose1996_SpeedLimit
 
 /-!
