@@ -51,6 +51,10 @@
   .card .hint { position: absolute; right: 12px; top: 10px; font-size: 0.75rem; color: var(--muted); }
   canvas { width: 100%; aspect-ratio: 1 / 1; display: block; touch-action: none; cursor: grab; }
   canvas:active { cursor: grabbing; }
+  .bandcard { margin-top: 14px; }
+  .bandcard .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 6px; max-width: 760px; }
+  #band { aspect-ratio: 16 / 5; cursor: default; }
+  @media (max-width: 640px) { #band { aspect-ratio: 4 / 3; } }
   .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .badge { border: 1px solid var(--grid); background: var(--panel); border-radius: 10px;
     padding: 6px 10px; font-size: 0.88rem; }
@@ -104,6 +108,13 @@
       <canvas id="star" aria-label="The star of fluctuation vectors of the three axes, in 3D"></canvas></div>
   </div>
 
+  <div class="card bandcard"><h2>The band of the quantum</h2>
+    <span class="hint"><label><input type="checkbox" id="showband" checked> show the band in the star</label></span>
+    <p class="sub">At Ψ* every axis with 4 or more sites opens between θ<sub>NRS</sub>(4) and arccos(1/C<sub>∞</sub>), never on the
+      ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at Ψ* · ● θ at Ψ(t).
+      Press Tour or Random to see it hold; press Transport to see Ψ(t) leave it.</p>
+    <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
+
   <div class="badges" aria-live="polite">
     <div class="badge"><span class="k">family (D37i)</span><span class="fam" id="b-fam">–</span></div>
     <div class="badge"><span class="k">orbit under axis permutations</span><span id="b-orb">–</span></div>
@@ -118,13 +129,14 @@
   </table></div>
 
   <p class="note">Exact in Lean (repository <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a>):
-    <code>cos θ<sub>NRS</sub>(d) = 1/C<sub>Nava</sub>(d)</code> and <code>θ<sub>NRS</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b);
+    the angle is <code>angleG = arccos(‖⟨δT, δP⟩‖ / (σ<sub>T</sub> σ<sub>P</sub>))</code>, the same formula as here, with <code>cos θ<sub>NRS</sub>(d) = 1/C<sub>Nava</sub>(d)</code> and <code>θ<sub>NRS</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b); the band <code>θ<sub>NRS</sub>(4) ≤ θ<sub>NRS</sub>(d) < arccos(1/C<sub>∞</sub>)</code>, <code>C<sub>∞</sub> = √(π²/3 − 2)</code>, holds at Ψ* and at its 48 images under turns and reflections (<code>angleNRS_spectrum_bounds</code>, D48; <code>octahedral_symmetry</code>, D37h), not at Ψ(t) under transport (<code>angleAxis</code> at any state);
     at Ψ* each axis has its own angle and the axes commute (D37, D37h); the three families, orbits of 1, 3, 6
     boxes and 48, 16, 8 angle-keeping symmetries, and the quantum is never erased from 4 sites on (D37i);
     transport spreads at most one site per step (D37f). The numbers on this page are computed in your browser
     from the same matrices (T = path adjacency / ρ<sub>d</sub>, P = centred position); the star is drawn
     schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.</p>
 </main>
+<script src="nrs3-draw.js"></script>
 <script src="nrs3-box.js"></script>
 </body>
 </html>

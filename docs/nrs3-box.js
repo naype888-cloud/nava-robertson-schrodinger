@@ -45,20 +45,26 @@
     }
     let mT = 0, mP = 0;
     for (let j = 0; j < d; j++) { mT += v.re[j] * Tr[j] + v.im[j] * Ti[j]; mP += a.p[j] * (v.re[j] ** 2 + v.im[j] ** 2); }
+    const xr = new Float64Array(d), xi = new Float64Array(d), yr = new Float64Array(d), yi = new Float64Array(d);
     let sT = 0, sP = 0, ir = 0, ii = 0;
     for (let j = 0; j < d; j++) {
-      const xr = Tr[j] - mT * v.re[j], xi = Ti[j] - mT * v.im[j];
-      const yr = (a.p[j] - mP) * v.re[j], yi = (a.p[j] - mP) * v.im[j];
-      sT += xr * xr + xi * xi; sP += yr * yr + yi * yi;
-      ir += xr * yr + xi * yi; ii += xr * yi - xi * yr;
+      xr[j] = Tr[j] - mT * v.re[j]; xi[j] = Ti[j] - mT * v.im[j];
+      yr[j] = (a.p[j] - mP) * v.re[j]; yi[j] = (a.p[j] - mP) * v.im[j];
+      sT += xr[j] ** 2 + xi[j] ** 2; sP += yr[j] ** 2 + yi[j] ** 2;
+      ir += xr[j] * yr[j] + xi[j] * yi[j]; ii += xr[j] * yi[j] - xi[j] * yr[j];
+    }
+    // angleG = arccos(‖⟨δT, δP⟩‖ / (σT σP)), evaluated stably as atan2(σT ‖δP⊥‖, ‖⟨δT, δP⟩‖)
+    let perp = 0;
+    if (sT > 1e-24) {
+      const cr = ir / sT, ci = ii / sT;
+      for (let j = 0; j < d; j++) perp += (yr[j] - cr * xr[j] + ci * xi[j]) ** 2 + (yi[j] - cr * xi[j] - ci * xr[j]) ** 2;
     }
     sT = Math.sqrt(sT); sP = Math.sqrt(sP);
-    const c = sT * sP > 1e-12 ? Math.min(1, Math.hypot(ir, ii) / (sT * sP)) : 1;
-    return { sT, sP, theta: Math.acos(c), mP };
+    return { sT, sP, theta: Math.atan2(sT * Math.sqrt(perp), Math.hypot(ir, ii)), mP };
   }
 
   // ---------- state ----------
-  let box = [4, 7, 10], t = 0, playing = false, touring = false, tourIdx = 0, tourNext = 0;
+  let showBand = true, box = [4, 7, 10], t = 0, playing = false, touring = false, tourIdx = 0, tourNext = 0;
   let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
   let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
   const TOUR = [[4, 4, 4], [4, 4, 10], [4, 10, 10], [10, 10, 10], [4, 7, 10], [16, 5, 8],
@@ -146,36 +152,14 @@
     }
     return out;
   }
-  function hull(ps) {
-    const n = ps.length, faces = new Map(), eps = 1e-7;
-    const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-    const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) for (let k = j + 1; k < n; k++) {
-      let nv = cross(sub(ps[j], ps[i]), sub(ps[k], ps[i]));
-      const L = Math.hypot(...nv); if (L < 1e-9) continue;
-      nv = nv.map((v) => v / L);
-      let d0 = dot(nv, ps[i]), pos = 0, neg = 0;
-      for (const q of ps) { const s = dot(nv, q) - d0; if (s > eps) pos++; else if (s < -eps) neg++; }
-      if (pos && neg) continue;
-      if (pos) { nv = nv.map((v) => -v); d0 = -d0; }
-      const key = nv.map((v) => Math.round(v * 1e4)).join(",") + "|" + Math.round(d0 * 1e4);
-      if (faces.has(key)) continue;
-      const on = ps.filter((q) => Math.abs(dot(nv, q) - d0) < 1e-6);
-      const c = on.reduce((a, q) => a.map((v, m) => v + q[m] / on.length), [0, 0, 0]);
-      const u = sub(on[0], c), Lu = Math.hypot(...u) || 1, uu = u.map((v) => v / Lu), vv = cross(nv, uu);
-      on.sort((p, q) => Math.atan2(dot(sub(p, c), vv), dot(sub(p, c), uu)) - Math.atan2(dot(sub(q, c), vv), dot(sub(q, c), uu)));
-      faces.set(key, on);
-    }
-    return [...faces.values()];
-  }
   function drawStar(st) {
     const [g, w, h] = setup($("star")), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.5;
     const col = css(FAM[family(box)]);
     drawAxes(g, cx, cy, S, 0.95);
     const P = (v) => proj(W(v), cx, cy, S);
+    if (showBand) NRS3Draw.arcs(g, P, E3, Math.max(...tips.map((q) => Math.hypot(...q))) * 1.08, css("--ink2"));
     // hull faces, back to front
-    const polys = hull(tips).map((f) => { const q = f.map(P); return [q, q.reduce((a, p) => a + p[2], 0) / q.length]; });
+    const polys = NRS3Draw.hull(tips).map((f) => { const q = f.map(P); return [q, q.reduce((a, p) => a + p[2], 0) / q.length]; });
     polys.sort((a, b) => b[1] - a[1]);
     g.lineJoin = "round";
     for (const [q] of polys) {
@@ -258,6 +242,8 @@
       tips = starTips(st);
     }
     drawBox(); drawStar(st); readouts(st);
+    NRS3Draw.gauge($("band"), st.map((s, i) => ({ name: "xyz"[i], d: box[i], th0: axis(box[i]).theta0, tht: s.theta,
+      col: css(FAM[family(box)]) })), SPECTRUM, css, t);
     requestAnimationFrame(frame);
   }
 
@@ -295,6 +281,8 @@
     const r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
     r.dataset.theme = (r.dataset.theme || (dark ? "dark" : "light")) === "dark" ? "light" : "dark";
   });
+  const SPECTRUM = Array.from({ length: 63 }, (_, k) => ({ d: k + 2, th: axis(k + 2).theta0 }));
+  $("showband").addEventListener("change", (e) => { showBand = e.target.checked; });
   setBox(box, false);
   requestAnimationFrame(frame);
 })();
