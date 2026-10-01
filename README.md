@@ -27,7 +27,7 @@ repository):
 | [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime |
 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | exclusion, shells `2n²`, three spin matrices in `2 × 2`; with time, `4 × 4` (Dirac) |
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
-| [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | each non-local link closes a cycle with one quantum `δ∞`; `2g` links fix the curvature of `Σ_g`; the change stays in the cone (`D16`–`D16f`) — [▶ interactive](https://naype888-cloud.github.io/nrs3-defect-curvature/) |
+| [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | each non-local link closes a cycle with one quantum `δ∞`; `2g` links fix the curvature of `Σ_g`; the entropy of a cut counts its quanta and its horizon hides them (`D16`–`D16i`) — [▶ interactive](https://naype888-cloud.github.io/nrs3-defect-curvature/) |
 
 ## Main theorems
 
