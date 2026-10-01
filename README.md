@@ -532,6 +532,11 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   never above `M log 2` (`simpleEntropy_le_max`). Under the declared Bekenstein–Hawking
   bridge `S = A/(4ℓ_P²)`, `A = a₀ Ω`, the area per unit of defect is forced:
   `a₀ = 4ℓ_P² log M / δ∞` (`HBekensteinHawking.areaPerDefect_eq`).
+- `D16h_CutCycles`: the configurations of a cut are graphs. The path with any set `S` of
+  crossing links has cycle rank exactly `|S|` (`cycleRank_linksGraph`), so each
+  configuration of `k` links carries `k δ∞` (`defect_of_config`); different sets give
+  different graphs, and the entropy of `D16g` is the logarithm of the number of graphs of
+  transport whose new cycles cross the cut (`simpleEntropy_eq_log_card_graphs`).
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).

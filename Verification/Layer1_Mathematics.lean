@@ -74,6 +74,9 @@ open Lean
 #print axioms CutEntropy.entropy_eq_mul_defect
 #print axioms CutEntropy.simpleEntropy_le_max
 #print axioms CutEntropy.HBekensteinHawking.areaPerDefect_eq
+#print axioms CutCycles.cycleRank_linksGraph
+#print axioms CutCycles.defect_of_config
+#print axioms CutCycles.simpleEntropy_eq_log_card_graphs
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
 #print axioms PathGraph3DNRS.commutator_axes_xy
