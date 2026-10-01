@@ -41,3 +41,7 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms Dirac1928.monomial_linearIndependent
 #print axioms Dirac1928.four_le_dim
 #print axioms Dirac1928.isLeast_dim
+#print axioms Penrose1996.one_sub_le_norm_amplitude
+#print axioms Penrose1996.half_le_norm_amplitude
+#print axioms Penrose1996.twoBranch_orthogonal
+#print axioms Penrose1996.twoBranch_periodic

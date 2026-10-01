@@ -309,6 +309,13 @@ independent monomials need `n² ≥ 16`, and the `4 × 4` matrices attain it (`D
 
 ![Dirac 1928](docs/figures/dirac1928_minimal_dimension.png)
 
+**Penrose's time is a bound.** Survival amplitudes of two equal branches and of random finite
+spectra stay above the Lean bound `1 − (ΔE t)²/2`, at least `1/2` until Penrose's time `ħ/ΔE`;
+unitary evolution revives with period `πħ/ΔE`, while the Diósi–Penrose collapse would decay
+(`Penrose1996`). Script: `docs/simulation/figures_penrose.py`.
+
+![Penrose 1996](docs/figures/penrose1996_speed_limit.png)
+
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
@@ -505,6 +512,15 @@ moment generating function to `Re z < 1`, characteristic functions).
 (`monomial_linearIndependent`), so `4 ≤ n` (`four_le_dim`) and there are no `2 × 2` gamma
 matrices (`no_dirac_two_by_two`); Dirac's `4 × 4` matrices, checked by `decide` over `ℤ[i]`,
 attain the bound (`isLeast_dim`).
+
+`Penrose1996`, **the time–energy relation is a bound, not a lifetime**: for weights `p_k` on
+energies `E_k` (the spectral form of a finite-dimensional state, `ħ = 1`), the survival amplitude
+`A(t) = ∑ p_k e^{−i E_k t}` satisfies `‖A(t)‖ ≥ 1 − ΔE² t² / 2` (`one_sub_le_norm_amplitude`), so
+no state is orthogonal before `√2 / ΔE` (`speed_limit`) and at Penrose's collapse time `1 / ΔE`
+(Diósi–Penrose) the amplitude is still at least `1/2` (`half_le_norm_amplitude`). Two equal
+branches give `‖A(t)‖ = |cos (ΔE t)|`: first orthogonal exactly at `π / (2 ΔE)`, Mandelstam–Tamm
+saturated (`twoBranch_orthogonal`, `twoBranch_ne_zero`), and back to `1` with period `π / ΔE`
+(`twoBranch_periodic`). A collapse at rate `ΔE / ħ` needs non-unitary dynamics.
 
 ## NRS — base theorem, modules
 
