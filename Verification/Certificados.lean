@@ -38,7 +38,3 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms Poincare1912.eq_of_laplace
 #print axioms Poincare1912.planck_forces_levels
 #print axioms Poincare1912.no_density_planck
-#print axioms Penrose1996.one_sub_le_norm_amplitude
-#print axioms Penrose1996.half_le_norm_amplitude
-#print axioms Penrose1996.twoBranch_orthogonal
-#print axioms Penrose1996.twoBranch_periodic
