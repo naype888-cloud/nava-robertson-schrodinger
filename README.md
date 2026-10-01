@@ -1,5 +1,7 @@
 # NRS and NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
+**[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)**
+
 Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
 external academic review. Lake fetches the exact Mathlib and physlib revisions recorded in
 `lake-manifest.json`; the package does not depend on the BACQM source tree.
