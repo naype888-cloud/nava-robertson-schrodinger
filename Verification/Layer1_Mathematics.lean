@@ -77,6 +77,10 @@ open Lean
 #print axioms CutCycles.cycleRank_linksGraph
 #print axioms CutCycles.defect_of_config
 #print axioms CutCycles.simpleEntropy_eq_log_card_graphs
+#print axioms CutHorizon.links_unseen
+#print axioms CutHorizon.nearLinks_nonempty
+#print axioms CutHorizon.horizon_hides
+#print axioms CutHorizon.hidden_configurations
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
 #print axioms PathGraph3DNRS.commutator_axes_xy

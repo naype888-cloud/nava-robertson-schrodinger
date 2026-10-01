@@ -537,6 +537,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   configuration of `k` links carries `k δ∞` (`defect_of_config`); different sets give
   different graphs, and the entropy of `D16g` is the logarithm of the number of graphs of
   transport whose new cycles cross the cut (`simpleEntropy_eq_log_card_graphs`).
+- `D16i_CutHorizon`: the cut is a horizon. Transport with a set of links differs from `T_d`
+  only on the rows of their ends, so it is unseen outside their cone (`links_unseen`). A
+  site with `i + k + w ≤ c + 1` cannot tell apart any two configurations of links within
+  `w` sites of the cut for `k` steps (`horizon_hides`); the window is not empty from
+  `w = 2` (`nearLinks_nonempty`). What is hidden is the `C(M_w, m)` configurations of
+  `D16g`, each with defect `m δ∞` (`hidden_configurations`). The horizon is the
+  finite-time cone of `D37f`, not a black hole.
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
