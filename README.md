@@ -511,6 +511,14 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   `s = i + k` is unseen at `i` after `k` steps and differs by `ε ρ_d^{−k} ≠ 0` after
   `k + 1` (`onSite_front`). That such a change creates a cycle (the bridge to `D16c`) is
   not part of the package.
+- `D16e_DefectCycle`: cycles come from non-local links. The path `graphTP (n + 1)` has
+  `n` edges and is a tree; adding a link `{a, b}` creates a cycle iff `2 ≤ |a − b|`
+  (`withLink_isAcyclic_iff`), so every cycle of transport costs locality. Each new link
+  raises the cycle rank `|E| + 1 − |V|` by one, and the defect by one quantum `q`; two
+  links give the step `2q` of `D16c` (`two_links_step`). The transport with a link
+  differs from `T_d` only on rows `a`, `b`, so by `D16d` the cycle is unseen outside the
+  cone (`link_unseen`). Identifying the graph's cycle rank with `b₁` of the `D16` surface
+  is a premise, not a theorem.
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
