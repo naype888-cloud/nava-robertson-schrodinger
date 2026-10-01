@@ -38,6 +38,8 @@
   button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   .sliders { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 8px 16px; }
   @media (max-width: 760px) { .sliders { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .sliders { grid-template-columns: 1fr; } }
+  .tablewrap { overflow-x: auto; }
   .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
   .sl input { flex: 1; min-width: 0; accent-color: var(--blue); }
   .sl b { min-width: 2.2em; text-align: right; }
@@ -109,11 +111,11 @@
     <div class="badge"><span class="k">the quantum</span><span id="b-q">–</span></div>
   </div>
 
-  <table aria-label="Axis statistics">
+  <div class="tablewrap"><table aria-label="Axis statistics">
     <thead><tr><th>axis</th><th>sites</th><th>θ(t)</th><th>θ<sub>NRS</sub>(d) at t = 0</th>
       <th>C<sub>Nava</sub> = 1/cos θ<sub>NRS</sub></th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
     <tbody id="rows"></tbody>
-  </table>
+  </table></div>
 
   <p class="note">Exact in Lean (repository <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a>):
     <code>cos θ<sub>NRS</sub>(d) = 1/C<sub>Nava</sub>(d)</code> and <code>θ<sub>NRS</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b);
