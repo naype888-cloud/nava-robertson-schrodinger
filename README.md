@@ -23,8 +23,7 @@ table of Lean theorems and its own build (Mathlib only):
 | [`nrs3-cramer-rao`](https://github.com/naype888-cloud/nrs3-cramer-rao) | quantum Cramér–Rao `F_X ≤ 4 Var H`; on NRS³ the efficiency is `1/C_Nava(d)²` |
 | [`nrs3-mandelstam-tamm`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm) | no orthogonality before `πħ/(2ΔE)`, sharp constant, on `ℂ^d` |
 | [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime |
-| [`nrs3-dirac`](https://github.com/naype888-cloud/nrs3-dirac) | no `2 × 2` gamma matrices; the least dimension is 4 |
-| [`nrs3-pauli`](https://github.com/naype888-cloud/nrs3-pauli) | exclusion, shells `2n²`, three spin matrices and no fourth in `2 × 2` |
+| [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | exclusion, shells `2n²`, three spin matrices in `2 × 2`; with time, `4 × 4` (Dirac) |
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
 
 ## Main theorems
