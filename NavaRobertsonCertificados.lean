@@ -11,7 +11,6 @@ public import NavaRobertsonCertificados.D44_VelocityBand
 public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.Poincare1911_QuantumNecessity
-public import NavaRobertsonCertificados.Poincare1912_Discreteness
 
 /-!
 # Certificates
