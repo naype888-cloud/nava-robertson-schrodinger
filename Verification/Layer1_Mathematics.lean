@@ -59,6 +59,9 @@ open Lean
 #print axioms DefectExcitation.HGaussBonnet.totalCurvature_of_defectWith
 #print axioms DefectExcitation.HGaussBonnet.blind_at_saturation
 #print axioms DefectExcitation.dimStep_pos_lt
+#print axioms DefectPropagation.pow_row_eq_of_le
+#print axioms DefectPropagation.change_unseen
+#print axioms DefectPropagation.onSite_front_ne_zero
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
 #print axioms PathGraph3DNRS.commutator_axes_xy

@@ -504,6 +504,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   at least `2q`. At `d = 2, 3` (`δ(d) = 0`) the defect is zero while the curvature still
   jumps; from `d = 4` the step `2δ(d)` is positive and below `2δ∞`. Propagation, spin and
   mass of the excitation are not part of the package.
+- `D16d_DefectPropagation`: a local change of transport travels inside the cone of
+  `D37f`. If `M'` differs from `T_d` only on the rows of a set `S`, then after `k` steps
+  every site at distance `≥ k` from `S` sees exactly what it saw before
+  (`change_unseen`, for any state). The bound is sharp: an on-site change `ε` at
+  `s = i + k` is unseen at `i` after `k` steps and differs by `ε ρ_d^{−k} ≠ 0` after
+  `k + 1` (`onSite_front`). That such a change creates a cycle (the bridge to `D16c`) is
+  not part of the package.
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
