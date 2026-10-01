@@ -517,8 +517,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   raises the cycle rank `|E| + 1 − |V|` by one, and the defect by one quantum `q`; two
   links give the step `2q` of `D16c` (`two_links_step`). The transport with a link
   differs from `T_d` only on rows `a`, `b`, so by `D16d` the cycle is unseen outside the
-  cone (`link_unseen`). Identifying the graph's cycle rank with `b₁` of the `D16` surface
-  is a premise, not a theorem.
+  cone (`link_unseen`).
+- `D16f_HandleGraph`: the path on `n + 1` sites with the `k` non-local links `{0, j + 2}`
+  has cycle rank exactly `k` (`cycleRank_handleGraph`). With `k = 2g` its defect is the
+  defect `Ω(Σ_g) = 2g δ∞` of `D16` (`handleGraph_defect`) and, under `HGaussBonnet`, it
+  fixes the total curvature of `Σ_g` (`handleGraph_curvature`); one handle is two links
+  and `2δ∞` (`handleGraph_step`). What stays declared is `HGaussBonnet` and the classical
+  cell structure of `Σ_g` with `2g` independent cycles in its `1`-skeleton.
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).

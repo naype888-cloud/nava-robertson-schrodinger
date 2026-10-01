@@ -66,6 +66,10 @@ open Lean
 #print axioms DefectCycle.withLink_isAcyclic_iff
 #print axioms DefectCycle.two_links_step
 #print axioms DefectCycle.link_unseen
+#print axioms HandleGraph.cycleRank_handleGraph
+#print axioms HandleGraph.handleGraph_defect
+#print axioms HandleGraph.handleGraph_curvature
+#print axioms HandleGraph.handleGraph_step
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
 #print axioms PathGraph3DNRS.commutator_axes_xy

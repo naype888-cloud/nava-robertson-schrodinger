@@ -28,8 +28,8 @@ module connects them on the graph of `T_d`.
   applies: the new cycle is unseen at `i` for `k` steps while `k ≤ |i − a|` and `k ≤ |i − b|`
   (`link_unseen`).
 
-Identifying the cycle rank of the graph with `b₁` of the surface of `D16`, and so with its
-curvature under `HGaussBonnet`, is a premise; it is not proved here.
+`D16f` builds the path with `2g` links, whose cycle rank is the `b₁ = 2g` of the surface of
+`D16`, and so fixes its curvature under `HGaussBonnet`.
 
 ## Main results
 
