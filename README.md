@@ -13,6 +13,20 @@ cube `dx × dy × dz`, with one such pair per factor. All statements are theorem
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
+## The mosaic
+
+Topics that grew out of NRS³ live in their own short repositories, each with one figure, one
+table of Lean theorems and its own build (Mathlib only):
+
+| Repository | In one line |
+|---|---|
+| [`nrs3-cramer-rao`](https://github.com/naype888-cloud/nrs3-cramer-rao) | quantum Cramér–Rao `F_X ≤ 4 Var H`; on NRS³ the efficiency is `1/C_Nava(d)²` |
+| [`nrs3-mandelstam-tamm`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm) | no orthogonality before `πħ/(2ΔE)`, sharp constant, on `ℂ^d` |
+| [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime |
+| [`nrs3-dirac`](https://github.com/naype888-cloud/nrs3-dirac) | no `2 × 2` gamma matrices; the least dimension is 4 |
+| [`nrs3-pauli`](https://github.com/naype888-cloud/nrs3-pauli) | exclusion, shells `2n²`, three spin matrices and no fourth in `2 × 2` |
+| [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
+
 ## Main theorems
 
 **NRS — base theorem (one row, `d` sites).** At the state of maximal tension `ψ*`,
@@ -296,26 +310,6 @@ against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tensi
 
 ![Platform blindness](docs/figures/d47_platform_blindness.png)
 
-**The Solvay certificates.** Poincaré 1911: Planck's mean energy `ε / (e^{βε} − 1)` lies strictly
-below the classical `1/β` for every `βε > 0` (`Poincare1911`). Poincaré 1912: the mean-energy law
-alone forces the weight `c · ∑ₙ δ_{nε}`; levels smeared by a Gaussian of width `σ` give exactly
-`U = U_Planck − βσ²` and miss Planck for every `σ > 0` (`Poincare1912`). Dirac 1928: 16
-independent monomials need `n² ≥ 16`, and the `4 × 4` matrices attain it (`Dirac1928`). Script:
-`docs/simulation/figures_solvay.py`.
-
-![Poincaré 1911](docs/figures/poincare1911_planck_vs_rj.png)
-
-![Poincaré 1912](docs/figures/poincare1912_discreteness.png)
-
-![Dirac 1928](docs/figures/dirac1928_minimal_dimension.png)
-
-**Penrose's time is a bound.** Survival amplitudes of two equal branches and of random finite
-spectra stay above the Lean bound `1 − (ΔE t)²/2`, at least `1/2` until Penrose's time `ħ/ΔE`;
-unitary evolution revives with period `πħ/ΔE`, while the Diósi–Penrose collapse would decay
-(`Penrose1996`). Script: `docs/simulation/figures_penrose.py`.
-
-![Penrose 1996](docs/figures/penrose1996_speed_limit.png)
-
 **The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
@@ -493,34 +487,6 @@ input; `check_sound` turns a passed check into a fast minimum-uncertainty state.
 every unit state at the cone speed carries a surplus (`surplus_pos_of_cone`), and so does every
 state within `((d − 1)/2) · bandWidth d` of the cone (`surplus_pos_of_near_cone`); the defect at
 the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
-
-`Poincare1911`, **Planck against the classical oscillator**: the Gibbs mean energy of the levels
-`nε` is Planck's `ε / (e^{βε} − 1)` (`quantum_mean_energy`), that of the continuous Boltzmann
-weight is `1/β` (`classical_mean_energy`), and the first is strictly below the second for every
-`β, ε > 0` (`planck_lt_rayleigh_jeans`, `quantum_ne_classical`).
-
-`Poincare1912`, **Planck's law forces discrete levels** (Poincaré's theorem): a weight `μ` on
-energies (continuous, discrete or mixed, possibly of infinite mass) whose Boltzmann factors
-`e^{−βE}` are integrable and whose mean energy is Planck's at every `β > 0` is `c · ∑ₙ δ_{nε}`
-with `c > 0` (`planck_forces_levels`); no density `w(E) dE` does it (`no_density_planck`). The
-mean-energy law makes `Z(β) (1 − e^{−βε})` constant, and the Laplace transform on `β > 0`
-determines the weight (`eq_of_laplace`: tilt by `e^{−E}`, analytic continuation of the complex
-moment generating function to `Re z < 1`, characteristic functions).
-
-`Dirac1928`, **the gamma matrices need dimension 4**: for `γ₀, …, γ₃ ∈ Matₙ(ℂ)` with
-`{γ_μ, γ_ν} = 2η_μν · 1`, the 16 ordered monomials are linearly independent
-(`monomial_linearIndependent`), so `4 ≤ n` (`four_le_dim`) and there are no `2 × 2` gamma
-matrices (`no_dirac_two_by_two`); Dirac's `4 × 4` matrices, checked by `decide` over `ℤ[i]`,
-attain the bound (`isLeast_dim`).
-
-`Penrose1996`, **the time–energy relation is a bound, not a lifetime**: for weights `p_k` on
-energies `E_k` (the spectral form of a finite-dimensional state, `ħ = 1`), the survival amplitude
-`A(t) = ∑ p_k e^{−i E_k t}` satisfies `‖A(t)‖ ≥ 1 − ΔE² t² / 2` (`one_sub_le_norm_amplitude`), so
-no state is orthogonal before `√2 / ΔE` (`speed_limit`) and at Penrose's collapse time `1 / ΔE`
-(Diósi–Penrose) the amplitude is still at least `1/2` (`half_le_norm_amplitude`). Two equal
-branches give `‖A(t)‖ = |cos (ΔE t)|`: first orthogonal exactly at `π / (2 ΔE)`, Mandelstam–Tamm
-saturated (`twoBranch_orthogonal`, `twoBranch_ne_zero`), and back to `1` with period `π / ΔE`
-(`twoBranch_periodic`). A collapse at rate `ΔE / ħ` needs non-unitary dynamics.
 
 ## NRS — base theorem, modules
 
