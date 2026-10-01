@@ -70,6 +70,10 @@ open Lean
 #print axioms HandleGraph.handleGraph_defect
 #print axioms HandleGraph.handleGraph_curvature
 #print axioms HandleGraph.handleGraph_step
+#print axioms CutEntropy.crossLink_closes_cycle
+#print axioms CutEntropy.entropy_eq_mul_defect
+#print axioms CutEntropy.simpleEntropy_le_max
+#print axioms CutEntropy.HBekensteinHawking.areaPerDefect_eq
 #print axioms PhyslibBridge.robertson_schrodinger_eq_D21
 #print axioms PhyslibBridge.physlib_robertson_schrodinger_strict
 #print axioms PathGraph3DNRS.commutator_axes_xy

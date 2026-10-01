@@ -525,6 +525,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   fixes the total curvature of `Σ_g` (`handleGraph_curvature`); one handle is two links
   and `2δ∞` (`handleGraph_step`). What stays declared is `HGaussBonnet` and the classical
   cell structure of `Σ_g` with `2g` independent cycles in its `1`-skeleton.
+- `D16g_CutEntropy`: the entropy of a cut counts its quanta. The `M` non-local links across
+  the cut between `c` and `c + 1` each close a cycle (`crossLink_closes_cycle`); `k`
+  distinguishable quanta on them have entropy `k log M`, proportional to their defect
+  `k δ∞`: `S = (log M / δ∞) Ω` (`entropy_eq_mul_defect`). Distinct links stay below, and
+  never above `M log 2` (`simpleEntropy_le_max`). Under the declared Bekenstein–Hawking
+  bridge `S = A/(4ℓ_P²)`, `A = a₀ Ω`, the area per unit of defect is forced:
+  `a₀ = 4ℓ_P² log M / δ∞` (`HBekensteinHawking.areaPerDefect_eq`).
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
