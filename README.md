@@ -18,7 +18,8 @@ reading is a separate, declared bridge (see *Declared physical bridge* below).
 ## The mosaic
 
 Topics that grew out of NRS³ live in their own short repositories, each with one figure, one
-table of Lean theorems and its own build (Mathlib only):
+table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature` builds on this
+repository):
 
 | Repository | In one line |
 |---|---|
