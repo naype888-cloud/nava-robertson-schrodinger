@@ -209,6 +209,67 @@
     }
   }
 
+  // ---------- speed and the quantum (D44) ----------
+  // v = ((d − 1)/2)·⟨K⟩, K = i[T, P] (D38); on the path this is −(2/ρ)·Σ Im(z̄_j z_{j+1})
+  function speedOf(a, v) {
+    let s = 0;
+    for (let j = 0; j < a.d - 1; j++) s += v.re[j] * v.im[j + 1] - v.im[j] * v.re[j + 1];
+    return -2 / a.rho * s;
+  }
+  function drawSpeed() {
+    const [g, w, h] = setup($("speed")), stack = w < 640;
+    const deg = (r) => r * 180 / Math.PI;
+    const XS = (u) => (u <= 0.9 ? u / 0.9 * 0.35 : 0.35 + (u - 0.9) / 0.1 * 0.65);  // stretched above 0.9
+    for (let a = 0; a < 3; a++) {
+      const d = box[a], ax = axis(d), bad = low(d), data = NRS3Speed[d];
+      const pw = stack ? w : w / 3, ph = stack ? h / 3 : h, ox = stack ? 0 : a * pw, oy = stack ? a * ph : 0;
+      const L = ox + 40, R = ox + pw - 12, T = oy + 26, B = oy + ph - 26;
+      const X = (u) => L + XS(Math.min(1, Math.max(0, u))) * (R - L), Y = (th) => B - Math.min(90, th) / 90 * (B - T);
+      const col = bad ? css("--red") : css(FAM[family(box)]);
+      g.font = "12px system-ui, sans-serif";
+      // frame and ticks
+      g.strokeStyle = css("--grid"); g.lineWidth = 1; g.strokeRect(L, T, R - L, B - T);
+      g.fillStyle = css("--muted");
+      for (const u of [0, 0.5, 0.9, 0.95, 1]) {
+        g.beginPath(); g.moveTo(X(u), B); g.lineTo(X(u), B + 4); g.stroke();
+        g.fillText(String(u), X(u) - (u === 1 ? 6 : 9), B + 15);
+      }
+      for (const th of [0, 30, 60, 90]) { g.beginPath(); g.moveTo(L - 4, Y(th)); g.lineTo(L, Y(th)); g.stroke(); g.fillText(th + "°", ox + 6, Y(th) + 4); }
+      g.setLineDash([2, 3]); g.beginPath(); g.moveTo(X(0.9), T); g.lineTo(X(0.9), B); g.stroke(); g.setLineDash([]);
+      // title
+      g.font = "600 12.5px system-ui, sans-serif"; g.fillStyle = bad ? css("--red") : css("--ink");
+      const title = bad ? `✕ ${"xyz"[a]}: ${d} sites · Ϙ(${d}) empty, no quantum` :
+        `${"xyz"[a]}: ${d} sites · v* = ${data.vstar.toFixed(4)}${d === 4 ? " (exact)" : " (numerical)"}`;
+      g.fillText(title, L, T - 9);
+      g.font = "11px system-ui, sans-serif";
+      if (!bad) {
+        // minimum uncertainty possible up to v*, the band, the envelope and the quantum
+        g.strokeStyle = css("--ink2"); g.lineWidth = 3; g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(data.vstar), Y(0)); g.stroke();
+        g.fillStyle = css("--ink2"); g.fillText("θ = 0 possible", X(0.2), Y(0) - 6);
+        g.fillStyle = css("--blue"); g.globalAlpha = 0.13; g.fillRect(X(data.vstar), T, X(1) - X(data.vstar), B - T); g.globalAlpha = 1;
+        g.fillStyle = css("--blue"); g.fillText(`Ϙ(${d})`, X(data.vstar) + 3, T + 13);
+        g.strokeStyle = css("--blue"); g.lineWidth = 1.4; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(data.vstar), Y(0));
+        for (const [u, th] of data.env) g.lineTo(X(u), Y(th));
+        g.stroke(); g.setLineDash([]);
+        const q = deg(ax.theta0);
+        g.lineWidth = 2; g.beginPath(); g.arc(X(1), Y(q), 6, 0, 2 * Math.PI); g.stroke();
+        g.fillText(`quantum ${q.toFixed(2)}°`, X(1) - 92, Y(q) - 9);
+      }
+      // the path of Ψ(t) on this axis
+      const n = Math.min(600, Math.ceil(t / 0.05)), pts = [];
+      for (let k = 0; k <= n; k++) {
+        const tk = n ? t * k / n : 0, vk = evolve(ax, tk);
+        pts.push([Math.abs(speedOf(ax, vk)), deg(stats(ax, vk).theta)]);
+      }
+      g.strokeStyle = col; g.lineWidth = 1.3; g.globalAlpha = 0.75; g.beginPath();
+      pts.forEach(([u, th], k) => (k ? g.lineTo(X(u), Y(th)) : g.moveTo(X(u), Y(th)))); g.stroke(); g.globalAlpha = 1;
+      const [u1, th1] = pts[pts.length - 1];
+      g.fillStyle = col; g.beginPath(); g.arc(X(u1), Y(th1), 4.5, 0, 2 * Math.PI); g.fill();
+      g.fillStyle = css("--ink2");
+      g.fillText(`now: |v| = ${u1.toFixed(3)}, θ = ${th1.toFixed(2)}°`, L + 4, T + 28);
+    }
+  }
+
   // ---------- readouts ----------
   function readouts(st) {
     const fam = family(box), names = { regular: "regular", two: "two equal axes", distinct: "three different axes" };
@@ -274,7 +335,7 @@
     } else if (playing || ts - lastInteract < 50) {
       tips = starTips(st);
     }
-    drawBox(); drawStar(st); readouts(st);
+    drawBox(); drawStar(st); readouts(st); drawSpeed();
     NRS3Draw.gauge($("band"), st.map((s, i) => ({ name: "xyz"[i], d: box[i], th0: axis(box[i]).theta0, tht: s.theta,
       col: low(box[i]) ? css("--red") : css(FAM[family(box)]) })), SPECTRUM, css, t);
     requestAnimationFrame(frame);

@@ -60,6 +60,8 @@
   .bandcard .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 6px; max-width: 760px; }
   #band { aspect-ratio: 16 / 5; cursor: default; }
   @media (max-width: 640px) { #band { aspect-ratio: 4 / 3; } }
+  #speed { aspect-ratio: 16 / 5.2; cursor: default; }
+  @media (max-width: 700px) { #speed { aspect-ratio: 3 / 4; } }
   .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .badge { border: 1px solid var(--grid); background: var(--panel); border-radius: 10px;
     padding: 6px 10px; font-size: 0.88rem; }
@@ -123,6 +125,18 @@
       Press Tour or Random to see it hold; press Transport to see Ψ(t) leave it.</p>
     <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
 
+  <div class="card bandcard"><h2>Speed and the quantum (D44)</h2>
+    <span class="hint">|v(t)| against θ(t), one panel per axis</span>
+    <p class="sub">The speed of an axis is <code>v = ((d − 1)/2)·⟨K⟩</code>, <code>K = i[T, P]</code> (D38). Minimum
+      uncertainty (θ = 0) is possible only up to <code>v*(d)</code>; on the band <code>Ϙ(d) = (v*(d), 1]</code> every
+      state has a forced defect, and at the cone <code>v = 1</code> the angle is exactly the quantum
+      <code>θ<sub>NRS</sub>(d)</code>. Press Transport: Ψ(t) starts at the quantum and leaves it as it slows down.</p>
+    <canvas id="speed" aria-label="Speed against angle, with the velocity band of each axis"></canvas>
+    <p class="sub">Exact in Lean: <code>v*(4) = 3(√5 − 1)/4</code> (D23f, D23g, D43); the band is empty for 2 or 3
+      sites and non-empty from 4 on (D44); θ = θ<sub>NRS</sub>(d) at <code>v = 1</code> (D48). Numerical: <code>v*(d)</code>
+      for <code>d ≥ 5</code> and the dotted envelope (the smallest angle at each speed). The horizontal scale is
+      stretched above <code>v = 0.9</code>.</p></div>
+
   <div class="badges" aria-live="polite">
     <div class="badge"><span class="k">family (D37i)</span><span class="fam" id="b-fam">–</span></div>
     <div class="badge"><span class="k">orbit under axis permutations</span><span id="b-orb">–</span></div>
@@ -144,6 +158,7 @@
     from the same matrices (T = path adjacency / ρ<sub>d</sub>, P = centred position); the star is drawn
     schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.</p>
 </main>
+<script src="nrs3-speed-data.js"></script>
 <script src="nrs3-draw.js"></script>
 <script src="nrs3-box.js"></script>
 </body>
