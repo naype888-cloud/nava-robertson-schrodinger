@@ -1,7 +1,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const FAM = { regular: "--blue", two: "--orange", distinct: "--green" };
+  const FAM = { regular: "--blue", two: "--violet", distinct: "--green" };  // red is reserved for d < 4
   // ---------- the pair (T_d, P_d) and the state ψ* on one axis ----------
   const cache = {};
   function axis(d) {
