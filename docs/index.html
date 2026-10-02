@@ -8,17 +8,17 @@
 <style>
   :root {
     --bg: #fcfcfb; --panel: #ffffff; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8985;
-    --grid: #e4e3df; --blue: #2a78d6; --orange: #eb6834; --green: #2f8f5b;
+    --grid: #e4e3df; --blue: #2a78d6; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
-      --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d;
+      --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
-    --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d;
+    --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
@@ -42,6 +42,11 @@
   .tablewrap { overflow-x: auto; }
   .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
   .sl input { flex: 1; min-width: 0; accent-color: var(--blue); }
+  .sl.bad b, .sl.bad { color: var(--red); } .sl.bad input { accent-color: var(--red); }
+  .alert { border: 1.5px solid var(--red); color: var(--red); border-radius: 10px; padding: 8px 12px;
+    margin: 0 0 12px; font-size: .9rem; background: color-mix(in srgb, var(--red) 8%, transparent); }
+  .alert[hidden] { display: none; }
+  tr.bad td { color: var(--red); font-weight: 600; }
   .sl b { min-width: 2.2em; text-align: right; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
@@ -77,7 +82,8 @@
   <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
     pair transport <code>T</code> and position <code>P</code>. At the maximal-tension state
     <code>Ψ* = ψ*<sub>x</sub> ⊗ ψ*<sub>y</sub> ⊗ ψ*<sub>z</sub></code> their fluctuations open the angle
-    <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. Change the box and the
+    <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
+    4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. Change the box and the
     star deforms; press ▶ and transport moves Ψ through the lattice. Drag either panel to turn both.</p>
 
   <div class="bar">
@@ -100,6 +106,8 @@
     <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="16" value="10"><b id="vz">10</b></label>
     <label class="sl">t<input type="range" id="tt" min="0" max="40" step="0.05" value="0"><b id="vt">0.0</b></label>
   </div>
+
+  <div class="alert" id="alert" role="alert" hidden></div>
 
   <div class="grid">
     <div class="card"><h2>The box: Ψ on every site</h2><span class="hint">size |Ψ|² · colour phase</span>

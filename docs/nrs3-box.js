@@ -68,8 +68,10 @@
   let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
   let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
   const TOUR = [[4, 4, 4], [4, 4, 10], [4, 10, 10], [10, 10, 10], [4, 7, 10], [16, 5, 8],
-                [2, 3, 12], [6, 6, 15], [12, 3, 4], [16, 16, 16], [9, 4, 13], [4, 4, 4]];
-  const randomBox = () => [0, 0, 0].map(() => 2 + Math.floor(Math.random() * 15));
+                [5, 9, 12], [6, 6, 15], [12, 6, 4], [16, 16, 16], [9, 4, 13], [4, 4, 4]];
+  // the quantum needs 4 or more sites on every axis: Random and Tour stay in 4..16
+  const randomBox = () => [0, 0, 0].map(() => 4 + Math.floor(Math.random() * 13));
+  const low = (d) => d < 4;
   const family = (b) => { const k = new Set(b).size; return k === 1 ? "regular" : k === 2 ? "two" : "distinct"; };
 
   // ---------- 3D ----------
@@ -137,6 +139,11 @@
     }
     g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
     g.fillText(`${box[0]} × ${box[1]} × ${box[2]} = ${box[0] * box[1] * box[2]} sites`, 10, h - 10);
+    const bad = box.map((d, i) => (low(d) ? `${"xyz"[i]} = ${d}` : null)).filter(Boolean);
+    if (bad.length) {
+      g.fillStyle = css("--red"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`✕ ${bad.join(", ")}: below 4 sites, no quantum`, 10, h - 28);
+    }
   }
 
   // ---------- the star ----------
@@ -154,7 +161,7 @@
   }
   function drawStar(st) {
     const [g, w, h] = setup($("star")), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.5;
-    const col = css(FAM[family(box)]);
+    const famCol = css(FAM[family(box)]), col = box.some(low) ? css("--red") : famCol;
     drawAxes(g, cx, cy, S, 0.95);
     const P = (v) => proj(W(v), cx, cy, S);
     if (showBand) NRS3Draw.arcs(g, P, E3, Math.max(...tips.map((q) => Math.hypot(...q))) * 1.08, css("--ink2"));
@@ -169,6 +176,7 @@
     // wedges and rays
     const O = P([0, 0, 0]);
     for (let a = 0; a < 3; a++) {
+      const col = low(box[a]) ? css("--red") : famCol;
       for (let sgn = 0; sgn < 2; sgn++) {
         const T = P(tips[4 * a + 2 * sgn]), Q = P(tips[4 * a + 1 + 2 * sgn]);
         g.beginPath(); g.moveTo(O[0], O[1]); g.lineTo(T[0], T[1]); g.lineTo(Q[0], Q[1]); g.closePath();
@@ -182,12 +190,14 @@
         const q = P(tips[4 * a + k]);
         g.fillStyle = col; g.beginPath(); g.arc(q[0], q[1], 3.2 * q[3], 0, 2 * Math.PI); g.fill();
       }
-      const lab = P(E3[a].map((v) => v * 0.98)), txt = `${"xyz"[a]}: ${box[a]} sites, ${(st[a].theta * 180 / Math.PI).toFixed(2)}°`;
+      const lab = P(E3[a].map((v) => v * 0.98));
+      const txt = low(box[a]) ? `✕ ${"xyz"[a]}: ${box[a]} sites < 4` :
+        `${"xyz"[a]}: ${box[a]} sites, ${(st[a].theta * 180 / Math.PI).toFixed(2)}°`;
       g.font = "12px system-ui, sans-serif";
       const tw = g.measureText(txt).width;
       const lx = Math.max(6, Math.min(w - tw - 6, lab[0] + 6)), ly = Math.max(16, Math.min(h - 26, lab[1]));
       g.fillStyle = css("--panel"); g.globalAlpha = 0.8; g.fillRect(lx - 3, ly - 12, tw + 6, 16); g.globalAlpha = 1;
-      g.fillStyle = css("--ink2"); g.fillText(txt, lx, ly);
+      g.fillStyle = low(box[a]) ? css("--red") : css("--ink2"); g.fillText(txt, lx, ly);
     }
     g.fillStyle = css("--muted"); g.font = "11.5px system-ui, sans-serif";
     g.fillText("solid: δT   dashed: δP   wedge: θ", 10, h - 10);
@@ -199,12 +209,14 @@
     const f = $("b-fam"); f.textContent = names[fam]; f.style.color = css(FAM[fam]);
     $("b-orb").textContent = { regular: "1 box", two: "3 boxes", distinct: "6 boxes" }[fam];
     $("b-sym").textContent = box.every((d) => d >= 4) ? { regular: "48", two: "16", distinct: "8" }[fam] : "— (needs ≥ 4 sites)";
-    const low = box.map((d, i) => (d <= 3 ? "xyz"[i] : null)).filter(Boolean);
-    $("b-q").textContent = low.length ? `erased on ${low.join(", ")} (2 or 3 sites)` : "present on every axis";
+    const lows = box.map((d, i) => (low(d) ? "xyz"[i] : null)).filter(Boolean);
+    const q = $("b-q");
+    q.textContent = lows.length ? `✕ none on ${lows.join(", ")} (below 4 sites)` : "present on every axis";
+    q.style.color = lows.length ? css("--red") : "";
     $("rows").innerHTML = st.map((s, i) => {
       const a = axis(box[i]), th0 = a.theta0 * 180 / Math.PI;
       const C = a.theta0 > 1e-9 ? (1 / Math.cos(a.theta0)).toFixed(4) : "1";
-      return `<tr><td>${"xyz"[i]}</td><td>${box[i]}</td><td>${(s.theta * 180 / Math.PI).toFixed(2)}°</td>` +
+      return `<tr${low(box[i]) ? ' class="bad"' : ""}><td>${"xyz"[i]}</td><td>${box[i]}</td><td>${(s.theta * 180 / Math.PI).toFixed(2)}°</td>` +
         `<td>${th0.toFixed(2)}°</td><td>${C}</td><td>${s.sT.toFixed(4)}</td><td>${s.sP.toFixed(4)}</td><td>${s.mP.toFixed(3)}</td></tr>`;
     }).join("");
   }
@@ -219,7 +231,15 @@
   }
   function setBox(b, animate = true) {
     box = b.slice();
-    ["dx", "dy", "dz"].forEach((id, i) => { $(id).value = box[i]; $("v" + "xyz"[i]).textContent = box[i]; });
+    ["dx", "dy", "dz"].forEach((id, i) => {
+      $(id).value = box[i]; $("v" + "xyz"[i]).textContent = box[i];
+      $(id).closest(".sl").classList.toggle("bad", low(box[i]));
+    });
+    const bad = box.map((d, i) => (low(d) ? `d${"xyz"[i]} = ${d}` : null)).filter(Boolean);
+    $("alert").hidden = !bad.length;
+    $("alert").textContent = bad.length ? `✕ ${bad.join(", ")} < 4: on ${bad.length > 1 ? "these axes" : "this axis"} ` +
+      "Robertson saturates (θ = 0, D37b) and there is no quantum. The quantum needs 4 or more sites on " +
+      "every axis: dx, dy, dz ≥ 4." : "";
     document.querySelectorAll("[data-box]").forEach((el) =>
       el.setAttribute("aria-pressed", String(el.dataset.box === box.join(","))));
     retarget(animate);
@@ -243,7 +263,7 @@
     }
     drawBox(); drawStar(st); readouts(st);
     NRS3Draw.gauge($("band"), st.map((s, i) => ({ name: "xyz"[i], d: box[i], th0: axis(box[i]).theta0, tht: s.theta,
-      col: css(FAM[family(box)]) })), SPECTRUM, css, t);
+      col: low(box[i]) ? css("--red") : css(FAM[family(box)]) })), SPECTRUM, css, t);
     requestAnimationFrame(frame);
   }
 

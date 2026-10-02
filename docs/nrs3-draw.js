@@ -80,19 +80,20 @@ window.NRS3Draw = (() => {
       g.strokeStyle = css("--blue"); g.globalAlpha = 0.35 + 0.65 * Math.exp(-(d - 4) / 20); g.lineWidth = 1.4;
       g.beginPath(); g.moveTo(x, Y(0) - hgt); g.lineTo(x, Y(0) + hgt); g.stroke(); g.globalAlpha = 1;
     }
-    g.fillStyle = css("--orange"); g.font = "bold 13px system-ui, sans-serif"; g.fillText("×", X(0) - 4, Y(0) + 5);
+    g.fillStyle = css("--red"); g.font = "bold 13px system-ui, sans-serif"; g.fillText("×", X(0) - 4, Y(0) + 5);
     g.font = "11px system-ui, sans-serif"; g.fillStyle = css("--ink2");
-    g.fillText("d = 2, 3: 0°", X(0) + 6, Y(0) + 16); g.fillText("d = 4", X(spectrum.find((s) => s.d === 4).th) - 12, Y(0) - 12);
+    g.fillStyle = css("--red"); g.fillText("d = 2, 3: 0°, no quantum", X(0) + 6, Y(0) + 16);
+    g.fillStyle = css("--ink2"); g.fillText("d = 4", X(spectrum.find((s) => s.d === 4).th) - 12, Y(0) - 12);
     g.fillText(`d = ${spectrum[spectrum.length - 1].d} →`, X(spectrum[spectrum.length - 1].th) - 44, Y(0) - 12);
     // rows 1..3: the axes of this box
     rows.forEach((row, i) => {
       const y = Y(i + 1);
-      g.font = "12.5px system-ui, sans-serif"; g.fillStyle = css("--ink");
+      g.font = "12.5px system-ui, sans-serif"; g.fillStyle = row.d <= 3 ? css("--red") : css("--ink");
       g.fillText(`${row.name}: ${row.d} sites`, 6, y - 2);
-      const star = row.d <= 3 ? "Ψ*: erased (0°)" : "Ψ*: in the band";
+      const star = row.d <= 3 ? "✕ below 4 sites: no quantum (0°)" : "Ψ*: in the band";
       const inb = row.tht >= TH4 - 1e-9 && row.tht < THINF;
       const now = t > 0 ? (inb ? " · Ψ(t): inside" : " · Ψ(t): outside") : "";
-      g.font = "11px system-ui, sans-serif"; g.fillStyle = row.d <= 3 ? css("--orange") : css("--muted");
+      g.font = "11px system-ui, sans-serif"; g.fillStyle = row.d <= 3 ? css("--red") : css("--muted");
       g.fillText(star + now, 6, y + 13);
       g.strokeStyle = css("--grid"); g.lineWidth = 1; g.beginPath(); g.moveTo(X(0), y); g.lineTo(X(MAX * Math.PI / 180), y); g.stroke();
       g.strokeStyle = row.col; g.lineWidth = 2; g.beginPath(); g.arc(X(row.th0), y, 7, 0, 2 * Math.PI); g.stroke();
