@@ -61,6 +61,13 @@
   #band { aspect-ratio: 16 / 5; cursor: default; }
   @media (max-width: 640px) { #band { aspect-ratio: 4 / 3; } }
   #speed { aspect-ratio: 16 / 5.2; cursor: default; }
+  .octagrid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 12px; align-items: start; }
+  @media (max-width: 820px) { .octagrid { grid-template-columns: 1fr; } }
+  #delta { aspect-ratio: 5 / 4; cursor: default; }
+  .octabadges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 4px 2px; }
+  @media (max-width: 640px) { .octabadges { grid-template-columns: 1fr 1fr; } }
+  .octabadges div { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 9px; font-variant-numeric: tabular-nums; }
+  .octabadges .k { color: var(--muted); font-size: 0.75rem; display: block; }
   @media (max-width: 700px) { #speed { aspect-ratio: 3 / 4; } }
   .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .badge { border: 1px solid var(--grid); background: var(--panel); border-radius: 10px;
@@ -124,6 +131,25 @@
       ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at Ψ* · ● θ at Ψ(t).
       Press Tour or Random to see it hold; press Transport to see Ψ(t) leave it.</p>
     <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
+
+  <div class="card bandcard"><h2>The octahedron of the quantum (D25, D37e)</h2>
+    <span class="hint">drag to turn · dashed: d → ∞</span>
+    <p class="sub">Each axis with <code>d</code> sites carries the excess over saturation <code>δ(d) = C<sub>Nava</sub>(d) − 1</code>,
+      zero only with 2 or 3 sites (D25). Put a vertex at <code>±δ</code> on every axis: the octahedron of the box. The regular
+      <code>4 × 4 × 4</code> gives the smallest, <code>δ(4) ≈ 0.00848</code> on every axis; no box reaches the dashed one of
+      <code>d → ∞</code>, <code>δ<sub>∞</sub> = C<sub>∞</sub> − 1 ≈ 0.13572</code> on every axis. Its volume is
+      <code>(4/3)·𝒱</code>, with <code>𝒱 = δ(d<sub>x</sub>) δ(d<sub>y</sub>) δ(d<sub>z</sub>)</code> the volumetric quantum and
+      <code>δ(4)³ ≤ 𝒱 &lt; δ<sub>∞</sub>³</code> (D37e).</p>
+    <div class="octagrid">
+      <canvas id="octa" aria-label="The octahedron of the box, vertices at plus or minus delta on every axis, inside the one of d to infinity"></canvas>
+      <canvas id="delta" aria-label="The excess delta of d against the number of sites, with the three axes of the box"></canvas>
+    </div>
+    <div class="octabadges" aria-live="polite">
+      <div><span class="k">δ on x, y, z</span><span id="o-d">–</span></div>
+      <div><span class="k">𝒱 = δ<sub>x</sub>δ<sub>y</sub>δ<sub>z</sub></span><span id="o-v">–</span></div>
+      <div><span class="k">𝒱 / δ(4)³ (floor = 1)</span><span id="o-f">–</span></div>
+      <div><span class="k">𝒱 / δ<sub>∞</sub>³ (ceiling = 1, never)</span><span id="o-c">–</span></div>
+    </div></div>
 
   <div class="card bandcard"><h2>Speed and the quantum (D44)</h2>
     <span class="hint">|v(t)| against θ(t), one panel per axis</span>

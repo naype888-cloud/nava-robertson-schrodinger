@@ -318,6 +318,100 @@
       el.setAttribute("aria-pressed", String(el.dataset.box === box.join(","))));
     retarget(animate);
   }
+
+  // ---------- the octahedron of the quantum (D25, D37e) ----------
+  const C_INF = Math.sqrt(Math.PI ** 2 / 3 - 2), D_INF = C_INF - 1;
+  const deltaOf = (d) => { const th = axis(d).theta0; return th > 1e-9 ? 1 / Math.cos(th) - 1 : 0; };
+  let octaCur = null;
+  const OCTA_FACES = [];
+  for (const sx of [1, -1]) for (const sy of [1, -1]) for (const sz of [1, -1]) OCTA_FACES.push([[sx, 0, 0], [0, sy, 0], [0, 0, sz]]);
+  function octaEdges(g, ab, cx, cy, S, color, dash, width) {
+    g.strokeStyle = color; g.lineWidth = width; g.setLineDash(dash);
+    const V = [[ab[0], 0, 0], [-ab[0], 0, 0], [0, ab[1], 0], [0, -ab[1], 0], [0, 0, ab[2]], [0, 0, -ab[2]]];
+    for (let i = 0; i < 6; i++) for (let j = i + 1; j < 6; j++) {
+      if (Math.floor(i / 2) === Math.floor(j / 2)) continue;
+      const p = proj(W(V[i]), cx, cy, S), q = proj(W(V[j]), cx, cy, S);
+      g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
+    }
+    g.setLineDash([]);
+  }
+  function drawOcta() {
+    const [g, w, h] = setup($("octa")), cx = w / 2, cy = h / 2, S = Math.min(w, h) * 0.36;
+    const target = box.map((d) => deltaOf(d) / D_INF);
+    if (!octaCur) octaCur = target.slice();
+    octaCur = octaCur.map((v, i) => v + (target[i] - v) * 0.12);
+    drawAxes(g, cx, cy, S, 1.25, box.map((d, i) => `${"xyz"[i]}: ${d} sites`));
+    octaEdges(g, [1, 1, 1], cx, cy, S, css("--muted"), [5, 5], 1);
+    const f4 = deltaOf(4) / D_INF;
+    octaEdges(g, [f4, f4, f4], cx, cy, S, css("--blue"), [2, 3], 1);
+    const col = box.some(low) ? css("--red") : css(FAM[family(box)]);
+    const faces = OCTA_FACES.map((f) => f.map((e) => proj(W(e.map((v, k) => v * octaCur[k])), cx, cy, S)));
+    faces.sort((a, b) => (b[0][2] + b[1][2] + b[2][2]) - (a[0][2] + a[1][2] + a[2][2]));
+    g.fillStyle = col; g.globalAlpha = 0.18;
+    for (const f of faces) { g.beginPath(); g.moveTo(f[0][0], f[0][1]); g.lineTo(f[1][0], f[1][1]); g.lineTo(f[2][0], f[2][1]); g.closePath(); g.fill(); }
+    g.globalAlpha = 1;
+    octaEdges(g, octaCur, cx, cy, S, col, [], 1.6);
+    g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
+    g.fillText("dashed: d → ∞, δ∞ ≈ 0.13572 (never reached)", 10, h - 28);
+    g.fillStyle = css("--blue"); g.fillText("dotted: 4 × 4 × 4, δ(4) ≈ 0.00848 (the smallest)", 10, h - 10);
+    const zero = box.map((d, i) => (low(d) ? "xyz"[i] : null)).filter(Boolean);
+    if (zero.length) {
+      g.fillStyle = css("--red"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`δ = 0 on ${zero.join(", ")}: the octahedron collapses, no quantum (D37i)`, 10, 18);
+    }
+  }
+  function drawDelta() {
+    const [g, w, h] = setup($("delta"));
+    const L = 52, R = 52, T = 14, B = 34, Wd = w - L - R, H = h - T - B, DMAX = 64;
+    const X = (d) => L + (Math.log(d) - Math.log(2)) / (Math.log(DMAX) - Math.log(2)) * Wd * 0.86;
+    const XI = L + Wd * 0.97, Y = (v) => T + (1 - v / 0.15) * H;
+    g.font = "11px system-ui, sans-serif"; g.lineWidth = 1;
+    g.strokeStyle = css("--grid"); g.fillStyle = css("--muted");
+    for (let v = 0; v <= 0.1501; v += 0.025) {
+      g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(L + Wd, Y(v)); g.stroke(); g.fillText(v.toFixed(3), 6, Y(v) + 4);
+    }
+    for (const d of [2, 4, 8, 16, 32, 64]) {
+      g.beginPath(); g.moveTo(X(d), T); g.lineTo(X(d), T + H); g.stroke(); g.fillText(String(d), X(d) - 5, T + H + 16);
+    }
+    g.fillText("∞", XI - 4, T + H + 16);
+    g.fillStyle = css("--ink2"); g.fillText("sites on the axis d (log)", L + Wd * 0.3, T + H + 30);
+    // angle ticks on the right: θ = arccos(1/(1 + δ))
+    g.fillStyle = css("--muted");
+    for (const deg of [10, 15, 20, 25]) {
+      const v = 1 / Math.cos(deg * Math.PI / 180) - 1;
+      g.fillText(`${deg}°`, L + Wd + 6, Y(v) + 4);
+    }
+    g.fillText("θ", L + Wd + 6, T + 8);
+    // ceiling and floor
+    g.strokeStyle = css("--ink2"); g.setLineDash([6, 4]); g.beginPath(); g.moveTo(L, Y(D_INF)); g.lineTo(L + Wd, Y(D_INF)); g.stroke();
+    const d4 = deltaOf(4);
+    g.strokeStyle = css("--blue"); g.setLineDash([2, 3]); g.beginPath(); g.moveTo(L, Y(d4)); g.lineTo(L + Wd, Y(d4)); g.stroke();
+    g.setLineDash([]);
+    g.fillStyle = css("--ink2"); g.fillText("δ∞ = C∞ − 1 ≈ 0.13572 · 28.30°", L + 6, Y(D_INF) - 6);
+    g.fillStyle = css("--blue"); g.fillText("δ(4) ≈ 0.00848 · 7.43°", L + Wd * 0.55, Y(d4) - 6);
+    // the curve δ(d)
+    g.strokeStyle = css("--violet"); g.lineWidth = 2; g.beginPath();
+    SPECTRUM.forEach(({ d }, k) => { const v = deltaOf(d); (k ? g.lineTo : g.moveTo).call(g, X(d), Y(v)); });
+    g.stroke();
+    g.fillStyle = css("--muted");
+    for (const { d } of SPECTRUM) { g.beginPath(); g.arc(X(d), Y(deltaOf(d)), 1.6, 0, 2 * Math.PI); g.fill(); }
+    g.fillStyle = css("--ink2"); g.beginPath(); g.arc(XI, Y(D_INF), 3, 0, 2 * Math.PI); g.stroke();
+    // the three axes of the box
+    const seen = {};
+    box.forEach((d, i) => {
+      const v = deltaOf(d), x = X(Math.min(d, DMAX)), y = Y(v), n = (seen[d] = (seen[d] || 0) + 1) - 1;
+      g.fillStyle = low(d) ? css("--red") : css(FAM[family(box)]);
+      g.beginPath(); g.arc(x, y, 5.5, 0, 2 * Math.PI); g.fill();
+      g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`${"xyz"[i]} = ${d}`, x + 8, y - 6 - 14 * n);
+    });
+    // readouts
+    const ds = box.map(deltaOf), V = ds[0] * ds[1] * ds[2];
+    $("o-d").textContent = ds.map((v) => v.toFixed(5)).join(", ");
+    $("o-v").textContent = V.toExponential(3);
+    $("o-f").textContent = V > 0 ? (V / d4 ** 3).toFixed(1) : "0 (erased)";
+    $("o-c").textContent = (V / D_INF ** 3).toFixed(4);
+  }
   let lastTs = 0;
   function frame(ts) {
     const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0; lastTs = ts;
@@ -335,7 +429,7 @@
     } else if (playing || ts - lastInteract < 50) {
       tips = starTips(st);
     }
-    drawBox(); drawStar(st); readouts(st); drawSpeed();
+    drawBox(); drawStar(st); readouts(st); drawSpeed(); drawOcta(); drawDelta();
     NRS3Draw.gauge($("band"), st.map((s, i) => ({ name: "xyz"[i], d: box[i], th0: axis(box[i]).theta0, tht: s.theta,
       col: low(box[i]) ? css("--red") : css(FAM[family(box)]) })), SPECTRUM, css, t);
     requestAnimationFrame(frame);
@@ -360,7 +454,7 @@
     e.target.textContent = playing ? "❚❚ Transport" : "▶ Transport";
   });
   $("reset").addEventListener("click", () => { t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; retarget(true); });
-  for (const c of [$("box"), $("star")]) {
+  for (const c of [$("box"), $("star"), $("octa")]) {
     let drag = null;
     c.addEventListener("pointerdown", (e) => { drag = [e.clientX, e.clientY, yaw, pitch]; c.setPointerCapture(e.pointerId); lastInteract = performance.now(); });
     c.addEventListener("pointermove", (e) => {
