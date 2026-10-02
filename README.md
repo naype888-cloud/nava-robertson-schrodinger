@@ -208,6 +208,25 @@ towards the unattained ceiling `δ_∞³ ≈ 2.50 × 10⁻³` (`D37e`).
 
 ![Volumetric quantum](docs/figures/nrs3_volumetric_quantum.png)
 
+**The band of the quantum on one axis.** `C_Nava(d)` is `1` at `d = 2, 3` and grows strictly
+from `d = 4` towards `C∞ = √(π²/3 − 2) ≈ 1.13572`, never reached; the excess `δ(d) = C_Nava(d) − 1`
+tends to `δ_∞ ≈ 0.13572`. The angle `θ_NRS(d) = arccos(1/C_Nava(d))` is `0` at `d = 2, 3`, jumps to
+`θ_NRS(4) ≈ 7.435°` and stays below `arccos(1/C∞) ≈ 28.298°` (`angleNRS_eq`, `angle_floor`, `D37b`;
+`D8`, `D9`).
+
+![The band of the quantum](docs/figures/nrs_band.png)
+
+**The octahedron of the quantum.** Put a vertex at `±δ(d)` on every axis of a box: the octahedron
+of the box, of volume `(4/3)·𝒱` with `𝒱 = δ(dx) δ(dy) δ(dz)` the volumetric quantum above. The
+regular `4 × 4 × 4` gives the smallest; no box reaches the octahedron of `d → ∞`, with `δ_∞` on
+every axis (`dimQuantum`, `D25`; `deltaInf`, `D8`; `volQuantum_certificate`, `D37e`). Every other
+box is a deformation of `4 × 4 × 4`, in one of the three families of `D37i`. This octahedron is
+built from the excess `δ`; the octahedral envelope of the star below is built from the fluctuation
+vectors. The [interactive page](https://naype888-cloud.github.io/nava-robertson-schrodinger/)
+draws it for any box.
+
+![The octahedron of the quantum](docs/figures/nrs_quantum_octahedron.png)
+
 **The octahedral envelope of the star.** The six fluctuation vectors of `4 × 4 × 4` and the
 octahedron they span. This is a picture of the star, not a volume: the volumetric quantum of
 `D37e` is the box above.
