@@ -191,8 +191,10 @@
         g.fillStyle = col; g.beginPath(); g.arc(q[0], q[1], 3.2 * q[3], 0, 2 * Math.PI); g.fill();
       }
       const lab = P(E3[a].map((v) => v * 0.98));
+      const th0 = (axis(box[a]).theta0 * 180 / Math.PI).toFixed(2), tht = (st[a].theta * 180 / Math.PI).toFixed(2);
       const txt = low(box[a]) ? `✕ ${"xyz"[a]}: ${box[a]} sites < 4` :
-        `${"xyz"[a]}: ${box[a]} sites, ${(st[a].theta * 180 / Math.PI).toFixed(2)}°`;
+        t > 0 ? `${"xyz"[a]}: ${box[a]} sites, Ψ(t) ${tht}° · θ_NRS ${th0}°` :
+        `${"xyz"[a]}: ${box[a]} sites, ${tht}°`;
       g.font = "12px system-ui, sans-serif";
       const tw = g.measureText(txt).width;
       const lx = Math.max(6, Math.min(w - tw - 6, lab[0] + 6)), ly = Math.max(16, Math.min(h - 26, lab[1]));
@@ -201,6 +203,10 @@
     }
     g.fillStyle = css("--muted"); g.font = "11.5px system-ui, sans-serif";
     g.fillText("solid: δT   dashed: δP   wedge: θ", 10, h - 10);
+    if (t > 0) {
+      g.fillStyle = css("--ink2"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`t = ${t.toFixed(1)}: the star shows Ψ(t), not the quantum (press t = 0)`, 10, h - 28);
+    }
   }
 
   // ---------- readouts ----------
@@ -229,7 +235,14 @@
     if (!tips || !animate) { tips = target; tipsTo = null; return; }
     tipsFrom = tips.map((p) => p.slice()); tipsTo = target; morph0 = performance.now();
   }
+  // a new box always starts at Ψ* (t = 0): the quantum θ_NRS(d) is read there, not at Ψ(t)
+  function stopTransport() {
+    playing = false; $("play").setAttribute("aria-pressed", "false"); $("play").textContent = "▶ Transport";
+  }
   function setBox(b, animate = true) {
+    if (b.join(",") !== box.join(",")) {
+      t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; stopTransport();
+    }
     box = b.slice();
     ["dx", "dy", "dz"].forEach((id, i) => {
       $(id).value = box[i]; $("v" + "xyz"[i]).textContent = box[i];
@@ -279,10 +292,10 @@
     touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(randomBox());
   });
   $("tour").addEventListener("click", (e) => {
-    touring = !touring; e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
+    touring = !touring; if (touring) stopTransport(); e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
   });
   $("play").addEventListener("click", (e) => {
-    playing = !playing; e.target.setAttribute("aria-pressed", String(playing));
+    playing = !playing; if (playing) { touring = false; $("tour").setAttribute("aria-pressed", "false"); } e.target.setAttribute("aria-pressed", String(playing));
     e.target.textContent = playing ? "❚❚ Transport" : "▶ Transport";
   });
   $("reset").addEventListener("click", () => { t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; retarget(true); });
