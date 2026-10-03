@@ -24,6 +24,8 @@ table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature` 
 | Repository | In one line |
 |---|---|
 | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | no orthogonality before `πħ/(2ΔE)`, sharp; Cramér–Rao `F_X ≤ 4 Var H`, efficiency `1/C_Nava(d)²` on NRS³ — [▶ interactive](https://naype888-cloud.github.io/nrs3-mandelstam-tamm-cramer-rao/) |
+| [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | erasing a bit costs `k_B T ln 2`; no engine beats `1 − T_c/T_h`; one bath gives no work (Physlib) — [▶ interactive](https://naype888-cloud.github.io/nrs3-landauer-carnot/) |
+| [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | the horizon entropy fixes the cosmological constant, `Λ = 3π/(ℓ_P² S)`, solving both Friedmann equations (Physlib) — [▶ interactive](https://naype888-cloud.github.io/nrs3-de-sitter/) |
 | [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime (proposal, outside NRS³) |
 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | exclusion, shells `2n²`, three spin matrices in `2 × 2`; with time, `4 × 4` (Dirac) |
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
@@ -41,6 +43,7 @@ not part of NRS³.
 | 1911 | First Solvay conference: radiation and the quanta | |
 | 1911–12 | Poincaré: Planck's law forces discrete levels | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
 | 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C∞`, `D8`) | **[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
+| 1917–27 | Einstein and de Sitter: `Λ` and the empty universe; Friedmann and Lemaître: the expanding universe | [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) |
 | 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
 | 1927 | Heisenberg's relation; fifth Solvay conference: electrons and photons | |
 | 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
