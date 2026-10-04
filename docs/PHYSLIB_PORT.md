@@ -9,7 +9,7 @@ a result of the corpus in the vocabulary of a mainstream physical model.
 
 Every file is Mathlib, Physlib and PhyslibAlpha only, at most 300 lines, lines of at most 100
 characters, no `sorry`, only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`),
-and passes every PhyslibAlpha linter. Status on 30 September 2026.
+and passes every PhyslibAlpha linter. Status on 3 October 2026.
 
 ![The Physlib port](figures/physlib_port_ladder.png)
 
@@ -25,22 +25,23 @@ and passes every PhyslibAlpha linter. Status on 30 September 2026.
 | #1690 | `…/TightBindingChain/Uncertainty` | 95 | energy–position uncertainty, `⁅H, X⁆` moves one site | `D3`, `D21` | merged |
 | #1695 | `QuantumMechanics/HilbertSpaces/FiniteTarget/Operators` | 47 | `SelfAdjointDecompose` on operators of `𝓗[d]` | — | merged |
 | #1696 | `…/TightBindingChain/Current` | 112 | current `J`, stationary and localized states carry none | `D38` | merged |
-| #1699 | `…/FiniteTarget/Product` | 176 | operators on one coordinate of `𝓗[α × β]` commute across coordinates | `D37` | open |
+| #1699 | `…/FiniteTarget/Product` | 176 | operators on one coordinate of `𝓗[α × β]` commute across coordinates | `D37` | merged |
 | #1708 | `…/TightBindingChain/CurrentEigenstates` | 180 | `J ψ_k = 2at cos(kπ/(N+1)) ψ_k`, `‖ψ_k‖² = (N+1)/2` | `D5`, `D6` | merged |
-| #1709 | `…/TightBindingChain/Uncertainty` | 93 (refactor) | the uncertainty relation on the chain's own Hilbert space | — | open |
-| 10 | `…/TightBindingChain/MaxCurrentState` | 298 | maximal current state; `⟨H⟩ = E0`, `⟨X⟩ = a(N−1)/2`, `⟨⁅H, X⁆⟩ = −at cos(π/(N+1))` | `D5`, `D21` | ready |
-| 11 | `…/TightBindingChain/Saturation` | 216 | Robertson–Schrödinger is an equality iff `N = 2, 3`, strict for `N ≥ 4` | `D23` | ready |
-| 12 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `CNava ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | ready |
-| 14 | `…/FiniteTarget/ProductState` | 236 | product states: one-coordinate statistics are the factor's | `D37` | ready |
-| 15 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_Nava` per axis; `nava_robertson_schrodinger_cube` | `D37` | ready |
-| 16 | `…/TightBindingChain/MandelstamTamm` | 139 | `|⟨J⟩| ≤ 2 ΔH ΔX` (Mandelstam–Tamm), `⟨J⟩²/Var X ≤ 4 Var H` (Cramér–Rao) | `D41` | ready |
+| #1709 | `…/TightBindingChain/Uncertainty` | 93 (refactor) | the uncertainty relation on the chain's own Hilbert space | — | merged |
+| #1716 | `…/TightBindingChain/MaxCurrentState` | 298 | maximal current state; `⟨H⟩ = E0`, `⟨X⟩ = a(N−1)/2`, `⟨⁅H, X⁆⟩ = −at cos(π/(N+1))` | `D5`, `D21` | merged |
+| #1718 | `…/TightBindingChain/Saturation` | 216 | Robertson–Schrödinger is an equality iff `N = 2, 3`, strict for `N ≥ 4` | `D23` | merged |
+| #1723 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `CNava ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | open |
+| #1717 | `…/FiniteTarget/ProductState` | 236 | product states: one-coordinate statistics are the factor's | `D37` | merged |
+| #1725 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_Nava` per axis; `nava_robertson_schrodinger_cube` | `D37` | open |
+| #1711 | `…/TightBindingChain/MandelstamTamm` | 139 | `|⟨J⟩| ≤ 2 ΔH ΔX` (Mandelstam–Tamm), `⟨J⟩²/Var X ≤ 4 Var H` (Cramér–Rao) | `D41` | merged |
 | 17 | `…/TightBindingChain/MandelstamTammMaxCurrent` | 126 | the ratio is `1/C_Nava²`, `= 1` iff `N = 2, 3`; per axis of the cube | `D41` | ready |
-| 18 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | ready |
+| #1724 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | open |
 | 19 | `…/TightBindingChain/VelocityBand` | 172 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | ready |
 | 20 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | ready |
 | 21 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | ready |
 | 22 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | ready |
 | 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four sites on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
+| 24 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `|det Ω| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | ready |
 
 ## Order of submission
 
@@ -57,6 +58,16 @@ merged. The dependencies are those of the `import` lines.
 | 5 | 15 (NRS³), 20, 21 | 12, 14; 19, #1699; 12 |
 | 6 | 17 (Mandelstam–Tamm, Cramér–Rao), 22 | 15, 16, 18; 21 |
 | 7 | 23 (monotonicity) | 22 |
+| any | 24 (Robertson 1934) | master |
+
+## det|NRS³ (PR 24 and after)
+
+PR 24 brings Robertson's 1934 relation for several observables to the algebraic states of
+`PhyslibAlpha`, in the file of Robertson–Schrödinger. In this repository the same bound is
+`D49`, and its instances on the cube are `D49b`–`D49d`: the three conjugate pairs give
+`det Σ ≥ (t_x t_y t_z / 8)²` for every state, the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²` at
+`Ψ*`, and the bound is strict for product states in the band `Ϙ`. Their port to the open cube
+follows #1725.
 
 ## Round C: shorter than the corpus (PRs 21–23)
 
