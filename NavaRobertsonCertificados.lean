@@ -11,6 +11,7 @@ public import NavaRobertsonCertificados.D44_VelocityBand
 public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
+public import NavaRobertsonCertificados.D49e_AxisDefectEntangled
 
 /-!
 # Certificates
@@ -33,4 +34,7 @@ carries a Robertson–Schrödinger surplus, and `d ≥ 4` is sharp.
 
 `D49d`: det|NRS³ in the band: product states with the speed of each axis in `Ϙ(d)`, and in
 particular at the cone speed, satisfy `det Σ > (t_x t_y t_z / 8)²`.
+
+`D49e`: the defect of every axis in the band, for every state, entangled or not: speeds in
+`Ϙ(dx)`, `Ϙ(dy)`, `Ϙ(dz)` force the three defects, and their product is positive.
 -/

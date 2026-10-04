@@ -34,3 +34,5 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms ConeInBand.coneInBand_certificate
 #print axioms RobertsonDeterminantBand.robertson_det_band
 #print axioms RobertsonDeterminantBand.robertson_det_cone
+#print axioms AxisDefectEntangled.gramDefect_pos_of_band
+#print axioms AxisDefectEntangled.axis_defects_pos

@@ -794,8 +794,16 @@ the three tensions — x, y, z, none can be dropped.
 - `D49d_RobertsonDeterminantBand` (certificates target): product states whose speed on each axis
   lies in `Ϙ(d)` satisfy `det Σ > (t_x t_y t_z / 8)²` (`robertson_det_band`); since the cone lies
   in every band, so do product states at the cone speed on `x`, `y`, `z` (`robertson_det_cone`).
-  States entangled across axes are not covered by a theorem: a numerical search on `4 × 4 × 4`
-  with the three speeds in `Ϙ(4)` found ratios no lower than `1.0036`, at almost-product states.
+- `D49e_AxisDefectEntangled` (certificates target): the defect of every axis in the band, for
+  every state, entangled across axes or not. A vanishing defect would make the fluctuation
+  vectors parallel, `(T − αP − μ)Φ = 0`; column by column this is the recurrence of the
+  tridiagonal `T_d − αP_d`, whose solutions are fixed by their first entry
+  (`eq_zero_of_eigen`), so `Φ` would be a product `φ ⊗ χ` (`exists_prodAlong_of_eigen`) whose
+  factor `φ` moves in `Ϙ(d)` and carries a defect (`D44`). Hence speeds in `Ϙ(dx)`, `Ϙ(dy)`,
+  `Ϙ(dz)` force the three defects (`gramDefect_pos_of_band`), and their product is positive
+  (`axis_defects_pos`). What remains open is the full `6 × 6` determinant for entangled states:
+  a numerical search on `4 × 4 × 4` with the three speeds in `Ϙ(4)` found ratios no lower than
+  `1.0036`, at almost-product states.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
