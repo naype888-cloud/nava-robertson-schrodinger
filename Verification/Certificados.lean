@@ -42,3 +42,5 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms DeterminantEqualityRelation.exists_sigma_of_det_eq
 #print axioms SplitAxis.robertson_det_strict_of_orthogonal
 #print axioms SplitAxis.robertson_det_strict_of_split
+#print axioms CanonicalAxes.det_ratio_canonical
+#print axioms CanonicalAxes.robertson_det_canonical_strict

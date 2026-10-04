@@ -15,6 +15,7 @@ public import NavaRobertsonCertificados.D49e_AxisDefectEntangled
 public import NavaRobertsonCertificados.D49f_MaxTensionCube
 public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
 public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
+public import NavaRobertsonCertificados.D49k_RobertsonDeterminantCanonicalAxes
 
 /-!
 # Certificates
@@ -50,4 +51,7 @@ state is a phase times `ψ* ⊗ ψ* ⊗ ψ*`, and det|NRS³ holds with ratio
 
 `D49j`: an axis on its own keeps det|NRS³ strict in the band: if `Φ = w ⊗ χ` splits off `z`,
 however entangled `x` and `y` are, `|det Ω| < det Σ`.
+
+`D49k`: det|NRS³ on canonical axes: orthogonal fluctuations of `x`, `y`, `z` give
+`det Σ = Π (1 + g_i/ω_i²) · |det Ω|`, strict in the band.
 -/

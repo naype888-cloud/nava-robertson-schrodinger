@@ -13,7 +13,10 @@ completeness (`D3`). **NRS** is the Robertson–Schrödinger inequality for the 
 computed exactly. **NRS³** is its extension to the Cartesian product of three path graphs, the
 cube `dx × dy × dz`, with one such pair per factor. **det|NRS³** is Robertson's 1934 relation
 for several observables on that cube: the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` at
-once, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`D49`, `D49b`). All statements are theorems in Lean 4 over
+once, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`D49`, `D49b`); on canonical axes
+(the fluctuations of `x`, `y`, `z` orthogonal from one vertex) the ratio is
+`det Σ / |det Ω| = Π (1 + g_i/ω_i²)`, a product of three factors above `1` in the velocity
+band (`D49k`). All statements are theorems in Lean 4 over
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
@@ -174,10 +177,34 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   lattice speed limit is a cube, not a sphere (`D38`).
 
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49k`).** The covariance matrix `Σ` and the
+tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
+`|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
+so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
+dropped.
+
+* **Canonical axes** (the fluctuation vectors of different axes orthogonal, the three axes
+  meeting at one vertex): `Σ` splits as well, `det Σ = Π (g_i + ω_i²)` with `g_i` the defect of
+  axis `i`, and `det Σ / |det Ω| = Π (1 + g_i/ω_i²)` (`D49k`). In the band `Ϙ(d)` every defect is
+  positive, for every state (`D49e`), so det|NRS³ is strict on every box with `4` or more sites
+  per axis. Product states are canonical (`D49c`); so is any state with one axis split off
+  (`D49j`).
+* **At the state of the cube** `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exactly
+  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` sites
+  (`D49c`); at `4 × 4 × 4` it is `C_Nava(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
+  axes, there is no room for entanglement: every state is `Ψ*` in its octant (`D49f`).
+* **Why `2` and `3`.** The commutators of transport and position close, `[T_d, [T_d, P_d]]` in
+  the span of `T_d`, `P_d`, `[T_d, P_d]`, exactly when `d = 2` or `d = 3` (`D49i`): there they close
+  like a spin, as `x`, `p`, `iħ` close in the continuum; from `d = 4` on they do not, which is
+  the rupture of Niven (`D7`) and of the first interior edge (`D13`) seen in the algebra.
+* **Equality needs a relation among the three tensions** (`D49g`, `D49h`): if
+  `det Σ = |det Ω|` with the speeds in the band, then
+  `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` for some `σ ≠ 0`.
+
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`: det\|NRS³ strict in the band, for product states. | Lean theorems. |
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49k`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -391,6 +418,11 @@ identification, which is a premise and not a Lean theorem:
 * **The cube of `D37` is three-dimensional space.** Its three factors are the directions
   `x, y, z`; a site is a cell with three coordinates, and motion changes one coordinate by one
   cell at a time (`D4`: the diagonal is never the minimal step).
+* **The three directions are canonical axes.** `x`, `y`, `z` are orthogonal from one vertex:
+  the fluctuations of position and transport along one direction are orthogonal to those along
+  the others. On canonical axes det|NRS³ is strict in the whole velocity band (`D49k`); states
+  whose fluctuations mix the three directions do not generate three-dimensional space and are
+  outside the bridge.
 
 Under this bridge, a particle localized at one cell carries no transport tension; at maximal
 tension it cannot be localized — it is spread over all the cells, with positive probability at
@@ -822,9 +854,10 @@ the three tensions — x, y, z, none can be dropped.
   `[L_a, L_b] = Σ_i σ_i [T_i, P_i]` (`commutator_sum`); if every `σ_i` vanished, one axis would
   carry a relation alone (`exists_single_axis`), a vanishing defect excluded by `D49e`. In the
   continuum the commutators are one constant and such a relation is free; here
-  `i[T, P] = K_d` is an operator. What remains open is to exclude this relation strictly inside
-  the band, `v*(d) < |v| < 1`: a numerical search on `4 × 4 × 4` found ratios no lower than
-  `1.0036`, at almost-product states.
+  `i[T, P] = K_d` is an operator. On canonical axes the question does not arise (`D49k`). For
+  vectors of `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` that mix the three directions, outside the canonical bridge,
+  excluding this relation strictly inside the band is a separate mathematical question; a
+  numerical search on `4 × 4 × 4` found ratios no lower than `1.0036`, at almost-product states.
 - `D49i_TransportPositionLieClosure`: the commutators of transport and position close only at
   `d = 2, 3`. The bracket with position always closes, `[P_d, [T_d, P_d]] = −h² T_d` with
   `h = 2/(d − 1)` (`commutator_P_C`); the bracket with transport, `[T_d, [T_d, P_d]]`, is diagonal,
@@ -845,6 +878,12 @@ the three tensions — x, y, z, none can be dropped.
   `|det Ω| < det Σ` (`robertson_det_strict_of_orthogonal`). In particular when `Φ = w ⊗ χ`
   splits off `z`, however entangled `x` and `y` are in `χ` (`robertson_det_strict_of_split`):
   two axes glued together leave the third on its own, and the band does the work through it.
+- `D49k_RobertsonDeterminantCanonicalAxes` (certificates target): det|NRS³ on canonical axes.
+  If the fluctuation vectors of different axes are orthogonal, `Σ` is block diagonal
+  (`covMatrix_canonical`), `det Σ = (g_x + ω_x²)(g_y + ω_y²)(g_z + ω_z²)` with `g_i` the Gram defect
+  of axis `i` (`det_covMatrix_canonical`), `det Σ = Π (1 + g_i/ω_i²) · |det Ω|`
+  (`det_ratio_canonical`), and in the band, three positive defects, `|det Ω| < det Σ`
+  (`robertson_det_canonical_strict`). No product structure of the state is assumed.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
