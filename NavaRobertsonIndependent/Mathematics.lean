@@ -66,6 +66,7 @@ public import NavaRobertsonIndependent.Mathematics.D47_PlatformBlindness
 public import NavaRobertsonIndependent.Mathematics.D48_SpectrumBounds
 public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 public import NavaRobertsonIndependent.Mathematics.D49b_RobertsonDeterminant3D
+public import NavaRobertsonIndependent.Mathematics.D49c_RobertsonDeterminantProduct
 
 /-!
 # NRS, NRS³ and det|NRS³
@@ -99,7 +100,8 @@ theorem.
   the defect, while `ψ*` does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
-- `D49`, `D49b` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
-  cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`.
+- `D49`–`D49c` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
+  cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`; on product states the defects
+  multiply, and at `Ψ*` the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
