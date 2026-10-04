@@ -25,7 +25,7 @@ its floor `|a c| / (d − 1)`. The catalogue of named pairs is in `docs/PAIRS.md
 - `ConjugatePairs.angle_pair_lt_of_lt`, `ConjugatePairs.angle_pair_lt_limit` : the angle grows
   strictly with `d`, whatever the units, below `arccos (1 / C_∞)`.
 - `ConjugatePairs.volQuantum_pairs_certificate` : three pairs on the cube, each in its own
-  units, give `𝒱(dx, dy, dz)`: zero iff some axis has `2` or `3` sites, positive from
+  units, give `𝒱(dx, dy, dz)`: zero iff some axis has `2` or `3` positions, positive from
   `4 × 4 × 4`, below `δ_∞³`.
 -/
 
@@ -36,7 +36,7 @@ open PathGraph3DNRS EigenvectorSaturation NRSAngle DimensionalQuantum Volumetric
 
 namespace ConjugatePairs
 
-/-! ## 1. Affine invariance on any finite site set -/
+/-! ## 1. Affine invariance on any finite position set -/
 
 section General
 

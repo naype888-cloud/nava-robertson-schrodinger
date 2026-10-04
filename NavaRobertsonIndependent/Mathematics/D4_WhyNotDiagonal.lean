@@ -29,7 +29,7 @@ at once, is never an alternative:
 
 namespace PathGraph3D
 
-/-- A site of the cube: a product of three rows. -/
+/-- A position of the cube: a product of three rows. -/
 abbrev Site3D (dx dy dz : ℕ) := Fin dx × Fin dy × Fin dz
 
 /-- Orthogonal adjacency: one coordinate changes, by a minimal step. -/
@@ -47,7 +47,7 @@ namespace OrthogonalStep
 open PathGraph3D
 open TransportPosition
 
-/-- Euclidean distance between two sites, coordinates cast to `ℝ`. -/
+/-- Euclidean distance between two positions, coordinates cast to `ℝ`. -/
 noncomputable def dist3D {dx dy dz : ℕ} (p q : Site3D dx dy dz) : ℝ :=
   Real.sqrt (
     ((p.1 : ℝ) - (q.1 : ℝ)) ^ 2 +

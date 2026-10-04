@@ -133,7 +133,7 @@ theorem robertson_det_cube :
   convert h using 1
   ring
 
-/-- **det|NRS³** in the velocities of `D38`: on a box with at least two sites per axis,
+/-- **det|NRS³** in the velocities of `D38`: on a box with at least two positions per axis,
 `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`. -/
 theorem robertson_det_cube_velocity (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (velocityX Φ * velocityY Φ * velocityZ Φ / (((dx : ℝ) - 1) * ((dy : ℝ) - 1) * ((dz : ℝ) - 1)))

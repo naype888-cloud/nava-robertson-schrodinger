@@ -21,7 +21,7 @@ Robertson–Schrödinger is Cauchy–Schwarz for the fluctuation vectors `x = (T
 - `NRSAngle.angleNRS_eq_zero_iff` : `θ_NRS(d) = 0 ↔ d = 2 ∨ d = 3`.
 - `NRSAngle.angle_floor` : for `d ≥ 4`, `0 < θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`, with
   `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` (`angleNRS_four`).
-- `NRSAngle.finite_isotropy_cube` : axes with at least `D ≥ 4` sites differ in angle by less
+- `NRSAngle.finite_isotropy_cube` : axes with at least `D ≥ 4` positions differ in angle by less
   than `arccos (1 / C_∞) − θ_NRS(D)`.
 -/
 
@@ -34,7 +34,7 @@ namespace NRSAngle
 
 /-! ## 1. The angle between two fluctuation vectors -/
 
-/-- Angle between the fluctuation vectors of `L` and `M` at `Ψ`, on any finite site set. -/
+/-- Angle between the fluctuation vectors of `L` and `M` at `Ψ`, on any finite position set. -/
 def angleG {ι : Type*} [Fintype ι] (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι)
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   arccos (‖inner ℂ (centeredG L Ψ) (centeredG M Ψ)‖ / (‖centeredG L Ψ‖ * ‖centeredG M Ψ‖))
@@ -94,7 +94,7 @@ theorem angleNRS_eq_zero_iff {d : ℕ} (hd : 2 ≤ d) : angleNRS d = 0 ↔ d = 2
     ← CoherenceConstant_eq_one_iff d hd]
   constructor <;> intro h <;> linarith
 
-/-- **The algebraic quantum as an angle.** On every axis with `4` or more sites the two
+/-- **The algebraic quantum as an angle.** On every axis with `4` or more positions the two
 fluctuation vectors are never parallel. -/
 theorem angleNRS_pos {d : ℕ} (hd : 4 ≤ d) : 0 < angleNRS d := by
   have hC : 1 < CoherenceConstant d := by
@@ -141,7 +141,7 @@ theorem angleNRS_four :
     angleNRS 4 = arccos (1 / Real.sqrt ((99 - 42 * Real.sqrt 5) / 5)) := by
   rw [angleNRS_eq (by norm_num), CoherenceConstant, CoherenceConstantSq_four_eq]
 
-/-- **Universal angular floor.** Every axis with `4` or more sites opens at least `θ_NRS(4)`,
+/-- **Universal angular floor.** Every axis with `4` or more positions opens at least `θ_NRS(4)`,
 and never reaches `arccos (1 / C_∞)`. -/
 theorem angle_floor {d : ℕ} (hd : 4 ≤ d) :
     0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS d ∧
@@ -150,7 +150,7 @@ theorem angle_floor {d : ℕ} (hd : 4 ≤ d) :
     angleNRS_strictMonoOn.monotoneOn (show (4 : ℕ) ≤ 4 from le_rfl) hd hd,
     angleNRS_lt_limit hd⟩
 
-/-- **Finite isotropy for two rows.** If both rows have at least `D ≥ 4` sites, their angles
+/-- **Finite isotropy for two rows.** If both rows have at least `D ≥ 4` positions, their angles
 differ by less than `arccos (1 / C_∞) − θ_NRS(D)`: a statement about finite rows only, with the
 unattained ceiling `arccos (1 / C_∞)` as the sole reference. -/
 theorem angleNRS_isotropy {D a b : ℕ} (hD : 4 ≤ D) (ha : D ≤ a) (hb : D ≤ b) :
@@ -214,7 +214,7 @@ theorem angles_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
   exact ⟨⟨angleNRS_pos hx, angleNRS_lt_limit hx⟩, ⟨angleNRS_pos hy, angleNRS_lt_limit hy⟩,
     ⟨angleNRS_pos hz, angleNRS_lt_limit hz⟩⟩
 
-/-- **The angular floor on the cube.** With `4` or more sites on every axis, each of the three
+/-- **The angular floor on the cube.** With `4` or more positions on every axis, each of the three
 axes opens at least `θ_NRS(4)`. -/
 theorem angle_floor_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     angleNRS 4 ≤ angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ∧
@@ -224,10 +224,10 @@ theorem angle_floor_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     angleG_axis_z (by omega) (by omega)]
   exact ⟨(angle_floor hx).2.1, (angle_floor hy).2.1, (angle_floor hz).2.1⟩
 
-/-- **Finite isotropy of the cube.** In any cube with at least `D ≥ 4` sites on every axis, the
+/-- **Finite isotropy of the cube.** In any cube with at least `D ≥ 4` positions on every axis, the
 angles of any two axes differ by less than `arccos (1 / C_∞) − θ_NRS(D)`. With `D = 100` this is
-about `1.05°`: the three axes agree more closely the more sites each has, with no appeal
-to an infinite lattice. -/
+about `1.05°`: the three axes agree more closely the more positions each has, with no appeal
+to infinitely many positions. -/
 theorem finite_isotropy_cube {D : ℕ} (hD : 4 ≤ D) (hx : D ≤ dx) (hy : D ≤ dy) (hz : D ≤ dz) :
     |angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -
         angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz)| <

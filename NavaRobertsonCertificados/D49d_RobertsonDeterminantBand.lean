@@ -48,7 +48,7 @@ theorem robertson_det_band (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (hu :
   robertson_det_prod3_strict hu hv hw (surplus_pos_of_mem_band hx u hu hbx)
     (surplus_pos_of_mem_band hy v hv hby) (surplus_pos_of_mem_band hz w hw hbz)
 
-/-- **det|NRS³ at the cone.** On every box with at least `4` sites on each axis, unit factors
+/-- **det|NRS³ at the cone.** On every box with at least `4` positions on each axis, unit factors
 moving at the cone speed on `x`, `y` and `z` make the bound strict. -/
 theorem robertson_det_cone (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) (hu : ‖u‖ = 1)
     (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) (hcx : |velocity dx u| = 1) (hcy : |velocity dy v| = 1)

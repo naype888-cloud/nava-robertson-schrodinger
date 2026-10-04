@@ -12,7 +12,7 @@ public import NavaRobertsonCertificados.D45b_IntervalChecker
 
 A half is checked either exactly, from its end, or truncated at depth `D` when it is deeper,
 which makes one check valid for every `d` large enough. The weighted sum of a glued packet splits
-into its two halves, and the Casoratian at the glue site is read from the first ratios.
+into its two halves, and the Casoratian at the glue position is read from the first ratios.
 
 ## Main results
 

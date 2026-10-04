@@ -15,9 +15,9 @@ Let `C = [T_d, P_d]`. The bracket with `P_d` always closes,
   `[P_d, C] = −h² T_d`,  `h = 2/(d − 1)`,
 
 because neighbouring positions differ by `h`. The bracket with `T_d` is `D = [T_d, C]`, a
-diagonal matrix: on an interior site the two neighbours cancel, at the two ends they do not. So
+diagonal matrix: on an interior position the two neighbours cancel, at the two ends they do not. So
 `D` lies in `span {T_d, P_d, C}` exactly when `D` is proportional to `P_d`, that is, when `P_d`
-vanishes on every interior site: `d = 2` (`P = diag(−1, 1)`) or `d = 3` (`P = diag(−1, 0, 1)`).
+vanishes on every interior position: `d = 2` (`P = diag(−1, 1)`) or `d = 3` (`P = diag(−1, 0, 1)`).
 
 At `d = 2, 3` the three operators `T_d`, `P_d`, `[T_d, P_d]` close like a spin, a Lie algebra of
 dimension three, as `x`, `p`, `iħ` close in the continuum. From `d = 4` on the bracket of
@@ -27,8 +27,8 @@ rupture at `d = 4` of `D7` (Niven) and `D13` (the first interior edge), seen in 
 ## Main results
 
 - `LieClosure.commutator_P_C` : `[P_d, [T_d, P_d]] = −h² T_d` for every `d`.
-- `LieClosure.D_zero_zero` : `[T_d, [T_d, P_d]]` at the first site is `−2h/ρ_d² ≠ 0`.
-- `LieClosure.D_one_one` : `[T_d, [T_d, P_d]]` vanishes on the first interior site.
+- `LieClosure.D_zero_zero` : `[T_d, [T_d, P_d]]` at the first position is `−2h/ρ_d² ≠ 0`.
+- `LieClosure.D_one_one` : `[T_d, [T_d, P_d]]` vanishes on the first interior position.
 - `LieClosure.closure_iff` : `[T_d, [T_d, P_d]] ∈ span {T_d, P_d, [T_d, P_d]}` iff `d ∈ {2, 3}`.
 -/
 
@@ -102,7 +102,7 @@ theorem D_diag (i : Fin d) :
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
-/-- At the first site `[T_d, [T_d, P_d]]` is `−2h/ρ_d²`, not zero. -/
+/-- At the first position `[T_d, [T_d, P_d]]` is `−2h/ρ_d²`, not zero. -/
 theorem D_zero_zero (hd : 2 ≤ d) :
     D d ⟨0, by omega⟩ ⟨0, by omega⟩ = -(2 * (2 / ((d : ℝ) - 1)) / rho d ^ 2 : ℝ) := by
   rw [D_diag, Finset.sum_eq_single (⟨1, by omega⟩ : Fin d)]
@@ -126,7 +126,7 @@ theorem D_zero_zero (hd : 2 ≤ d) :
     simp [Td_apply, this]
   · simp
 
-/-- On the first interior site the two neighbours cancel: `[T_d, [T_d, P_d]]` vanishes there. -/
+/-- On the first interior position the two neighbours cancel: `[T_d, [T_d, P_d]]` vanishes there. -/
 theorem D_one_one (hd : 3 ≤ d) : D d ⟨1, by omega⟩ ⟨1, by omega⟩ = 0 := by
   rw [D_diag, Finset.sum_eq_add (⟨0, by omega⟩ : Fin d) (⟨2, by omega⟩ : Fin d)
     (by simp [Fin.ext_iff])]

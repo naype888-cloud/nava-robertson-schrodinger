@@ -12,7 +12,7 @@ public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 
 In the gauge `ψⱼ = (−i)ʲ φⱼ`, `φ` real, the equation `(T_d − iλ P_d) ψ = μ ψ` with
 `λ = (d − 1)/(ρ_d z)` is the recurrence `φⱼ₊₁ = φⱼ₋₁ + (2(c₀ − j)/z) φⱼ`, `φ₋₁ = φ_d = 0`: a
-discrete Wannier–Stark packet of centre `c₀`. It is solved from each end and glued at a site
+discrete Wannier–Stark packet of centre `c₀`. It is solved from each end and glued at a position
 `g`; the only condition is that the Casoratian of the two halves vanishes there. Every glued
 packet saturates Robertson–Schrödinger and moves at `v = 4 ⟨(j − c₀)²⟩ / (ρ_d z)`.
 
@@ -87,7 +87,7 @@ variable (d g : ℕ) (z c₀ : ℝ)
 /-- The left half. -/
 def left (j : ℕ) : ℝ := seq z c₀ j
 
-/-- The right half, solved from the site `d − 1`, with centre `d − 1 − c₀`. -/
+/-- The right half, solved from the position `d − 1`, with centre `d − 1 − c₀`. -/
 def right (j : ℕ) : ℝ := seq z ((d : ℝ) - 1 - c₀) (d - 1 - j)
 
 /-- The packet: the left half up to `g`, the right half from `g`. -/
@@ -131,7 +131,7 @@ lemma phi_of_le {j : ℕ} (h : j ≤ g) : phi d g z c₀ j = left z c₀ j * rig
 lemma phi_of_lt {j : ℕ} (h : g < j) : phi d g z c₀ j = right d z c₀ j * left z c₀ g := by
   simp [phi, show ¬ j ≤ g by omega]
 
-/-- **Gluing.** If the Casoratian vanishes, the packet solves the recurrence at every site. -/
+/-- **Gluing.** If the Casoratian vanishes, the packet solves the recurrence at every position. -/
 theorem glue_rec (hg : g + 1 < d) (hW : casoratian d g z c₀ = 0) {j : ℕ} (hj : j < d) :
     (if j + 1 < d then phi d g z c₀ (j + 1) else 0) -
         (if 0 < j then phi d g z c₀ (j - 1) else 0) =

@@ -11,14 +11,14 @@ public import NavaRobertsonIndependent.Mathematics.D16h_CutCycles
 # D16i — The cut is a horizon: its configurations are hidden inside the cone
 
 `D16h` counts the graphs of a cut; `D16d` says a change of transport is unseen outside its
-cone. Together they say which information a site cannot read.
+cone. Together they say which information a position cannot read.
 
 * `linksMatrix S ε` is `T_d` with amplitude `ε` on every link of `S`. It differs from `T_d`
-  only on the rows of the ends of `S` (`linksMatrix_row`), so after `k` steps a site at
+  only on the rows of the ends of `S` (`linksMatrix_row`), so after `k` steps a position at
   distance `≥ k` from every end sees exactly `T_d^k` (`links_unseen`), for every state.
-* `nearLinks n c w` are the crossing links with both ends within `w` sites of the cut. A site
-  `i` with `i + k + w ≤ c + 1` cannot tell any two configurations of `nearLinks` apart for `k`
-  steps (`horizon_hides`).
+* `nearLinks n c w` are the crossing links with both ends within `w` positions of the cut.
+  A position `i` with `i + k + w ≤ c + 1` cannot tell any two configurations of `nearLinks`
+  apart for `k` steps (`horizon_hides`).
 * So the information hidden from `i` is the entropy of `D16g` on `nearLinks`: there are
   `C(M_w, m)` configurations of `m` links, all read identically at `i`, each carrying the
   defect `m δ_∞` (`hidden_configurations`).
@@ -62,7 +62,7 @@ theorem links_unseen {m : ℕ} (S : Finset (Fin m × Fin m)) (ε : ℂ) (k : ℕ
       Matrix.toEuclideanLin (Td m ^ k) ψ i :=
   DefectPropagation.change_unseen _ (ends S) (linksMatrix_row S ε) k i hi ψ
 
-/-- The crossing links with both ends within `w` sites of the cut. -/
+/-- The crossing links with both ends within `w` positions of the cut. -/
 def nearLinks (n c w : ℕ) : Finset (Fin (n + 1) × Fin (n + 1)) :=
   (crossLinks n c).filter fun p => c + 1 ≤ p.1.val + w ∧ p.2.val ≤ c + w
 
@@ -76,7 +76,7 @@ theorem nearLinks_nonempty {n c w : ℕ} (hc : 1 ≤ c) (hcn : c + 1 ≤ n) (hw 
     simp only [nearLinks, Finset.mem_filter, mem_crossLinks]
     omega⟩
 
-/-- A site far to the left is outside the cone of every end of `nearLinks`. -/
+/-- A position far to the left is outside the cone of every end of `nearLinks`. -/
 theorem far_of_near {n c w k : ℕ} {S : Finset (Fin (n + 1) × Fin (n + 1))}
     (hS : S ⊆ nearLinks n c w) {i : Fin (n + 1)} (hi : i.val + k + w ≤ c + 1) :
     ∀ a ∈ ends S, k ≤ distPath i a := by
@@ -87,7 +87,7 @@ theorem far_of_near {n c w k : ℕ} {S : Finset (Fin (n + 1) × Fin (n + 1))}
   rcases ha with rfl | rfl <;> omega
 
 /-- **The horizon hides the configuration.** Two sets of links near the cut give the same
-amplitude at a far site for `k` steps, for every state. -/
+amplitude at a far position for `k` steps, for every state. -/
 theorem horizon_hides {n c w k : ℕ} {S S' : Finset (Fin (n + 1) × Fin (n + 1))}
     (hS : S ⊆ nearLinks n c w) (hS' : S' ⊆ nearLinks n c w) (ε : ℂ) {i : Fin (n + 1)}
     (hi : i.val + k + w ≤ c + 1) (ψ : Hd (n + 1)) :
@@ -95,7 +95,7 @@ theorem horizon_hides {n c w k : ℕ} {S S' : Finset (Fin (n + 1) × Fin (n + 1)
       Matrix.toEuclideanLin (linksMatrix S' ε ^ k) ψ i := by
   rw [links_unseen S ε k i (far_of_near hS hi), links_unseen S' ε k i (far_of_near hS' hi)]
 
-/-- **What the horizon hides.** For `m` links near the cut and a site `i` with
+/-- **What the horizon hides.** For `m` links near the cut and a position `i` with
 `i + k + w ≤ c + 1`: every configuration reads as `T_d^k` at `i`, each carries the defect
 `m δ_∞`, and there are `C(M_w, m)` of them, whose logarithm is the entropy of `D16g`. -/
 theorem hidden_configurations {n c w k m : ℕ} (ε : ℂ) {i : Fin (n + 1)}

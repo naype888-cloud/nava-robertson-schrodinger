@@ -16,8 +16,8 @@ public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 The sine modes of `D6` have energy `ε(θ) = 2 cos θ / ρ_d`, with group velocity
 `v(θ) = −ε'(θ) = 2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Under
 `U(t) = exp(−i t T_d)` position obeys `d/dt (U† P_d U) = U† K_d U`: the tension is velocity.
-In sites, the velocity of a state is `((d−1)/2) ⟨K_d⟩`; it never exceeds one site per unit of
-time, and `ψ*` moves at exactly that speed, the slope of the cone of `D37f`. On the cube
+In positions, the velocity of a state is `((d−1)/2) ⟨K_d⟩`; it never exceeds one position per
+unit of time, and `ψ*` moves at exactly that speed, the slope of the cone of `D37f`. On the cube
 `Ψ*` reaches the bound on the three axes at once: velocity `(1, 1, 1)`, length `√3`.
 
 ## Main results
@@ -44,7 +44,7 @@ variable {d : ℕ}
 /-- Dispersion relation of transport: energy of the plane wave of angle `θ`. -/
 def dispersion (d : ℕ) (θ : ℝ) : ℝ := 2 * Real.cos θ / rho d
 
-/-- Group velocity `v(θ) = −ε'(θ)`, in sites per unit of time. -/
+/-- Group velocity `v(θ) = −ε'(θ)`, in positions per unit of time. -/
 def groupVelocity (d : ℕ) (θ : ℝ) : ℝ := 2 * Real.sin θ / rho d
 
 theorem hasDerivAt_dispersion (θ : ℝ) :
@@ -136,9 +136,9 @@ theorem heisenberg (t : ℝ) :
     mul_smul_comm, neg_smul, neg_mul, mul_neg, Matrix.mul_sub, Matrix.sub_mul, smul_sub]
   abel
 
-/-! ## 3. Velocity: one site per unit of time, reached at `ψ*` -/
+/-! ## 3. Velocity: one position per unit of time, reached at `ψ*` -/
 
-/-- Velocity of a state, in sites per unit of time: `((d−1)/2)·⟨K_d⟩`. -/
+/-- Velocity of a state, in positions per unit of time: `((d−1)/2)·⟨K_d⟩`. -/
 def velocity (d : ℕ) (ψ : Hd d) : ℝ := ((d : ℝ) - 1) / 2 * tension d ψ
 
 theorem abs_tension_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
@@ -149,7 +149,7 @@ theorem abs_tension_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
   rw [specRadius_KdOp_eq_step d hd] at hle
   exact (Complex.abs_re_le_norm _).trans hle
 
-/-- **Speed limit.** No unit state moves faster than one site per unit of time. -/
+/-- **Speed limit.** No unit state moves faster than one position per unit of time. -/
 theorem abs_velocity_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) : |velocity d ψ| ≤ 1 := by
   have h1 : (0 : ℝ) < (d : ℝ) - 1 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
@@ -190,7 +190,7 @@ section Cubo
 
 variable {dx dy dz : ℕ}
 
-/-- Velocity along `x`, in sites per unit of time. -/
+/-- Velocity along `x`, in positions per unit of time. -/
 def velocityX (Φ : H3D dx dy dz) : ℝ :=
   ((dx : ℝ) - 1) / 2 * tensionG (TX dx dy dz) (PX dx dy dz) Φ
 /-- Velocity along `y`. -/
@@ -209,7 +209,7 @@ theorem mul_tension_le {a : ℕ} (ha : 2 ≤ a) {x n : ℝ} (hx : x ≤ 2 / ((a 
         mul_le_mul_of_nonneg_left hx (by positivity)
     _ = n := by field_simp
 
-/-- **One speed limit per axis.** Along each axis, no state moves faster than one site per
+/-- **One speed limit per axis.** Along each axis, no state moves faster than one position per
 unit of time (`‖Φ‖ = 1`). -/
 theorem velocities_le (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (Φ : H3D dx dy dz)
     (hΦ : ‖Φ‖ = 1) : velocityX Φ ≤ 1 ∧ velocityY Φ ≤ 1 ∧ velocityZ Φ ≤ 1 := by
@@ -244,7 +244,7 @@ theorem velocities_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
       (stats_axis (norm_rest hx hy) hz (eZ dx dy dz)).2.2.2, mul_tension_eq hz]
 
 /-- **Anisotropy.** Along the diagonal, `Ψ*` moves with squared Euclidean speed `3`, while each
-axis alone is bounded by `1`: the lattice speed limit is a cube, not a sphere. -/
+axis alone is bounded by `1`: the speed limit of transport is a cube, not a sphere. -/
 theorem speed_sq_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     velocityX (PsiStar3D dx dy dz) ^ 2 + velocityY (PsiStar3D dx dy dz) ^ 2 +
       velocityZ (PsiStar3D dx dy dz) ^ 2 = 3 := by

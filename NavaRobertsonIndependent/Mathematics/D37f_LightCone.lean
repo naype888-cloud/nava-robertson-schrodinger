@@ -11,16 +11,16 @@ public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 # D37f — The light cone of transport
 
 `T_d` only connects neighbours (`D3`). Counting time in steps of transport, after `k` steps an
-amplitude has moved at most `k` sites, and exactly `k` is reached: the speed limit is one site
-per step. On the cube the cone is the octahedron `k·β₃`: `|Δx| + |Δy| + |Δz| ≤ k`, where `β₃` is
-the cross-polytope in Coxeter's notation.
+amplitude has moved at most `k` positions, and exactly `k` is reached: the speed limit is one
+position per step. On the cube the cone is the octahedron `k·β₃`: `|Δx| + |Δy| + |Δz| ≤ k`,
+where `β₃` is the cross-polytope in Coxeter's notation.
 
 ## Main results
 
 - `LightCone.pow_apply_eq_zero_of_lt` : powers of a local matrix are local.
 - `LightCone.lightCone` : `(T_d^k) i j = 0` for `|i − j| > k`.
 - `LightCone.lightCone_edge_ne_zero` : `(T_d^k) i (i + k) = ρ_d^{−k} ≠ 0`.
-- `LightCone.lightCone_cube` : `(T_x + T_y + T_z)^k` vanishes beyond lattice distance `k`.
+- `LightCone.lightCone_cube` : `(T_x + T_y + T_z)^k` vanishes beyond step distance `k`.
 -/
 
 @[expose] public noncomputable section
@@ -53,7 +53,7 @@ theorem pow_apply_eq_zero_of_lt {ι : Type*} [Fintype ι] [DecidableEq ι] (dist
 
 /-! ## 2. The path -/
 
-/-- Distance between sites of the path: `|i − j|`. -/
+/-- Distance between positions of the path: `|i − j|`. -/
 def distPath {d : ℕ} (i j : Fin d) : ℕ := (i.val - j.val) + (j.val - i.val)
 
 theorem distPath_self {d : ℕ} (i : Fin d) : distPath i i = 0 := by simp [distPath]
@@ -67,13 +67,13 @@ theorem Td_local {d : ℕ} (i j : Fin d) (h : 1 < distPath i j) : Td d i j = 0 :
     unfold MinStep distPath at *; omega
   simp [Td, Ad, hnp]
 
-/-- **Light cone on the path.** After `k` steps of transport, nothing connects sites more than
+/-- **Light cone on the path.** After `k` steps of transport, nothing connects positions more than
 `k` apart. -/
 theorem lightCone {d : ℕ} (k : ℕ) (i j : Fin d) (h : k < distPath i j) :
     (Td d ^ k) i j = 0 :=
   pow_apply_eq_zero_of_lt distPath distPath_self distPath_tri (Td d) Td_local k i j h
 
-/-- **No signal outruns the cone.** If `ψ` vanishes on every site within `k` of `i`, then after
+/-- **No signal outruns the cone.** If `ψ` vanishes on every position within `k` of `i`, then after
 `k` steps of transport the amplitude at `i` is still zero. -/
 theorem lightCone_state {d : ℕ} (k : ℕ) (ψ : Hd d) (i : Fin d)
     (hψ : ∀ j, distPath i j ≤ k → ψ j = 0) :
@@ -85,7 +85,7 @@ theorem lightCone_state {d : ℕ} (k : ℕ) (ψ : Hd d) (i : Fin d)
   · simp [lightCone k i j h]
 
 /-- **The edge of the cone is reached.** For `j = i + k` the amplitude after `k` steps is
-`ρ_d^{−k} ≠ 0`: the maximal speed is exactly one site per step. -/
+`ρ_d^{−k} ≠ 0`: the maximal speed is exactly one position per step. -/
 theorem lightCone_edge {d : ℕ} (k : ℕ) (i j : Fin d) (hij : j.val = i.val + k) :
     (Td d ^ k) i j = ((rho d : ℂ)⁻¹) ^ k := by
   induction k generalizing j with
@@ -118,7 +118,7 @@ theorem lightCone_edge_ne_zero {d : ℕ} (hd : 2 ≤ d) (k : ℕ) (i j : Fin d)
 
 /-! ## 3. The cube -/
 
-/-- Lattice distance on the cube: `|Δx| + |Δy| + |Δz|`. -/
+/-- Step distance on the cube: `|Δx| + |Δy| + |Δz|`. -/
 def distCube {dx dy dz : ℕ} (p q : Site3D dx dy dz) : ℕ :=
   distPath p.1 q.1 + distPath p.2.1 q.2.1 + distPath p.2.2 q.2.2
 
@@ -163,8 +163,8 @@ theorem T3_local {dx dy dz : ℕ} (p q : Site3D dx dy dz) (h : 1 < distCube p q)
     · simp [hc]
   rw [ex, ey, ez]; ring
 
-/-- **Light cone on the cube.** After `k` steps of total transport, nothing connects sites at
-lattice distance `|Δx| + |Δy| + |Δz| > k`. -/
+/-- **Light cone on the cube.** After `k` steps of total transport, nothing connects positions at
+step distance `|Δx| + |Δy| + |Δz| > k`. -/
 theorem lightCone_cube {dx dy dz : ℕ} (k : ℕ) (p q : Site3D dx dy dz)
     (h : k < distCube p q) : (T3 dx dy dz ^ k) p q = 0 :=
   pow_apply_eq_zero_of_lt distCube distCube_self distCube_tri (T3 dx dy dz) T3_local k p q h

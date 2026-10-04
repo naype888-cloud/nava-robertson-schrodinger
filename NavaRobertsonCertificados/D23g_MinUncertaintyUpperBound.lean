@@ -99,7 +99,7 @@ theorem mP_nonneg (h0 : 0 ≤ n0) (h1 : 0 ≤ n1) (h2 : 0 ≤ n2) (h3 : 0 ≤ n3
       · subst hs; norm_num
       · rw [hc2] at hc
         rcases mul_eq_zero.mp hc with hm1 | hn3
-        · -- ⟨P⟩ = 1: all weight on site 3, Var P = 0
+        · -- ⟨P⟩ = 1: all weight on position 3, Var P = 0
           have : n0 = 0 ∧ n1 = 0 ∧ n2 = 0 := by
             unfold mP at hm1; unfold S at hS; refine ⟨?_, ?_, ?_⟩ <;> nlinarith
           obtain ⟨a, b, c⟩ := this

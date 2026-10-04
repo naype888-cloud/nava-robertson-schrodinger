@@ -103,7 +103,7 @@ theorem mtRatio_psiStar_lt_one (hd : 4 ≤ d) : mtRatio d (psiStar d) < 1 := by
 
 /-! ## The cube -/
 
-/-- The Mandelstam–Tamm ratio of a pair `(L, M)` at `Ψ` on any finite site set. -/
+/-- The Mandelstam–Tamm ratio of a pair `(L, M)` at `Ψ` on any finite position set. -/
 def mtRatioG {ι : Type*} [Fintype ι] (L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι)
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   tensionG L M Ψ ^ 2 / (4 * (varianceG L Ψ * varianceG M Ψ))

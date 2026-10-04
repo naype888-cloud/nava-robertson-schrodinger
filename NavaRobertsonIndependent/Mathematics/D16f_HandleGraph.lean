@@ -13,7 +13,7 @@ public import NavaRobertsonIndependent.Mathematics.D16e_DefectCycle
 `D16` defines the defect of `Σ_g` as `δ_∞` on each of `b₁ = 2g` cycles; `D16e` shows that each
 non-local link of the path adds one cycle. This module builds the graph that realizes `b₁ = 2g`.
 
-* `handleGraph n k` is the path on `n + 1` sites with the `k` links `{0, j + 2}`, `j < k`. Every
+* `handleGraph n k` is the path on `n + 1` positions with the `k` links `{0, j + 2}`, `j < k`. Every
   link is non-local (`two_le_distPath_link`) and new (`not_adj_link`).
 * Its cycle rank is exactly `k` for `k + 1 ≤ n` (`cycleRank_handleGraph`).
 * With `k = 2g` and quantum `δ_∞`, its defect is the defect of `Σ_g` of `D16`
@@ -45,7 +45,7 @@ def link (n j : ℕ) : Fin (n + 1) := ⟨(j + 2) % (n + 1), Nat.mod_lt _ n.succ_
 theorem link_val {n j : ℕ} (h : j + 2 ≤ n) : (link n j).val = j + 2 :=
   Nat.mod_eq_of_lt (by omega)
 
-/-- The path on `n + 1` sites with the links `{0, j + 2}` for `j < k`. -/
+/-- The path on `n + 1` positions with the links `{0, j + 2}` for `j < k`. -/
 def handleGraph (n : ℕ) : ℕ → SimpleGraph (Fin (n + 1))
   | 0 => graphTP (n + 1)
   | k + 1 => handleGraph n k ⊔ edge 0 (link n k)

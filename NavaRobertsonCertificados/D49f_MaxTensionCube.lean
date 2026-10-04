@@ -27,7 +27,7 @@ phase times `ψ* ⊗ ψ* ⊗ ψ*` (each factor in its direction): no entanglemen
   octant state `ψ* ⊗ ψ* ⊗ ψ*`.
 - `MaxTensionCube.det_covMatrix_maxTension` : then
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`, for every state.
-- `MaxTensionCube.robertson_det_maxTension_strict` : strict on every box with `4` or more sites
+- `MaxTensionCube.robertson_det_maxTension_strict` : strict on every box with `4` or more positions
   on each axis.
 -/
 
@@ -263,7 +263,7 @@ theorem det_covMatrix_maxTension (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
     one_pow, one_mul, block_psiDir hx, block_psiDir hy, block_psiDir hz]
   ring
 
-/-- **Strict at maximal tension, for every state**, on every box with `4` or more sites on each
+/-- **Strict at maximal tension, for every state**, on every box with `4` or more positions on each
 of `x`, `y`, `z`. -/
 theorem robertson_det_maxTension_strict (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz)
     {Φ : H3D dx dy dz} (hΦ : ‖Φ‖ = 1) (hvx : |velocityX Φ| = 1) (hvy : |velocityY Φ| = 1)

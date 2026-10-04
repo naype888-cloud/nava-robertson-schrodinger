@@ -76,7 +76,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 `T_d` (normalized adjacency of the path graph) and `P_d` (equispaced diagonal) on `ℂ^d`, and
 their lifts to the product of three paths (`D37`). Stated over Mathlib; physlib is imported by
 `PhyslibBridge` only. No physical constant or unit appears. Reading `T_d : P_d` as motion in
-discrete space, with the three factors of the cube as `x, y, z`, is a declared bridge, not a
+space, with the three factors of the cube as `x, y, z`, is a declared bridge, not a
 theorem.
 
 ## Contents

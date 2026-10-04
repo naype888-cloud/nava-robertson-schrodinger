@@ -26,7 +26,7 @@ curvature. The elementary excitation is the step `g → g + 1`, which adds two c
 
 Not here: propagation of the excitation inside the cone of `D37f`/`D37g`, its spin and its
 mass. By `D28`/`D28b` the path carries no local curvature, so the excitation is a change of
-`b₁`, global, not a site state. `HGaussBonnet` stays a declared hypothesis.
+`b₁`, global, not a position state. `HGaussBonnet` stays a declared hypothesis.
 
 ## Main results
 

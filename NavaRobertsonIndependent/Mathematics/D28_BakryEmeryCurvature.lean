@@ -126,7 +126,7 @@ theorem adj_ip1 {d : ℕ} (i : Fin d) (h : i.val + 1 < d) :
   show i.val + 1 = (ip1 i h).val
   simp [ip1]
 
-/-- An index with two sites on each side: `i−2, …, i+2` all exist in `Fin d`. -/
+/-- An index with two positions on each side: `i−2, …, i+2` all exist in `Fin d`. -/
 def IsDeepInterior (d : ℕ) (i : Fin d) : Prop := 2 ≤ i.val ∧ i.val + 2 < d
 
 /-- The Laplacian of `f : Fin d → ℝ` at an interior vertex of `graphTP d`. -/

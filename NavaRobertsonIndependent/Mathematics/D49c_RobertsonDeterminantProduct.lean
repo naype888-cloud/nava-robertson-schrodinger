@@ -24,7 +24,7 @@ cube `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` every block is `C_Nava(d)² t²/4`, so
 
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`,
 
-strictly above the bound on every box with at least `4` sites on each of `x`, `y`, `z`.
+strictly above the bound on every box with at least `4` positions on each of `x`, `y`, `z`.
 
 ## Main results
 
@@ -179,7 +179,7 @@ theorem det_covMatrix_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) 
     block_psiStar hy, block_psiStar hz]
   ring
 
-/-- **Strict on every box with `4` or more sites on each of `x`, `y`, `z`.** -/
+/-- **Strict on every box with `4` or more positions on each of `x`, `y`, `z`.** -/
 theorem robertson_det_PsiStar3D_strict (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     ((tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) *
         tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) *

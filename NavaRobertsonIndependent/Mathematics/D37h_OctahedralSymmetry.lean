@@ -10,13 +10,13 @@ public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 /-!
 # D37h — The octahedral symmetry of the cube `d × d × d`
 
-The cube with `d` sites on each of its three axes has sites `Fin 3 → Fin d`, and each axis `i`
-carries the pair `(T_d, P_d)` of `D3` on its coordinate (`liftAlong` of `D37` along
+The cube with `d` positions on each of its three axes has positions `Fin 3 → Fin d`, and each
+axis `i` carries the pair `(T_d, P_d)` of `D3` on its coordinate (`liftAlong` of `D37` along
 `Equiv.piSplitAt i`). Its symmetry group is the octahedral group `O_h`: the `3! · 2³ = 48`
 signed permutations `(σ, s)`, where `σ` permutes the axes and `s i` reflects axis `i`,
 `j ↦ d − 1 − j`.
 
-Relabelling the sites by `(σ, s)` sends `T` of axis `i` to `T` of axis `σ i` (the path is
+Relabelling the positions by `(σ, s)` sends `T` of axis `i` to `T` of axis `σ i` (the path is
 symmetric under reflection) and `P` of axis `i` to `± P` of axis `σ i` (reflection reverses the
 position). A sign does not change the angle between the fluctuation vectors, so the NRS angle of
 axis `σ i` in the relabelled state is the NRS angle of axis `i` in the original one, for every
@@ -26,7 +26,7 @@ with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of
 ## Main results
 
 - `OctahedralSymmetry.card_signedPerm` : there are `48` signed permutations of the three axes.
-- `OctahedralSymmetry.cubeSym_injective` : for `d ≥ 2` they act on the sites in `48` different
+- `OctahedralSymmetry.cubeSym_injective` : for `d ≥ 2` they act on the positions in `48` different
   ways.
 - `OctahedralSymmetry.reindex_liftAxis` : relabelling by `(σ, s)` moves an operator of axis `i`
   to axis `σ i`, reflected when `s (σ i)` is set.
@@ -36,7 +36,7 @@ with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of
 - `OctahedralSymmetry.octahedral_symmetry` : for all `48` elements and all three axes, the angle
   at the image of `Ψ*` is `θ_NRS(d)`; from `d = 4` on it is positive and below
   `arccos (1 / C_∞)`.
-- `OctahedralSymmetry.keepsAngles_iff` : with unequal axes, all with `4` or more sites, a signed
+- `OctahedralSymmetry.keepsAngles_iff` : with unequal axes, all with `4` or more positions, a signed
   permutation keeps the angle of every axis iff it only exchanges axes of the same length.
 - `OctahedralSymmetry.card_keepsAngles_equal`, `card_keepsAngles_two_equal`,
   `card_keepsAngles_distinct` : `48` for `d × d × d`, `16` for `100 × 100 × 4`, `8` for
@@ -49,13 +49,13 @@ open TransportPosition NRSInequality SpectralExtremal PathGraph3DNRS NRSAngle
 
 namespace OctahedralSymmetry
 
-/-! ## 1. Relabelling the sites preserves the angle -/
+/-! ## 1. Relabelling the positions preserves the angle -/
 
 section Relabel
 
 variable {ι : Type*}
 
-/-- The state relabelled by a permutation `π` of the sites: `(π • Ψ) p = Ψ (π⁻¹ p)`. -/
+/-- The state relabelled by a permutation `π` of the positions: `(π • Ψ) p = Ψ (π⁻¹ p)`. -/
 def permState (π : Equiv.Perm ι) (Ψ : EuclideanSpace ℂ ι) : EuclideanSpace ℂ ι :=
   WithLp.toLp 2 fun p => Ψ (π.symm p)
 
@@ -119,7 +119,7 @@ theorem centeredG_reindex (π : Equiv.Perm ι) (A : Matrix ι ι ℂ) (Ψ : Eucl
     permState_smul]
 
 /-- **Relabelling invariance.** The angle between the fluctuation vectors is unchanged when the
-sites, the operators and the state are relabelled together. -/
+positions, the operators and the state are relabelled together. -/
 theorem angleG_reindex (π : Equiv.Perm ι) (A B : Matrix ι ι ℂ) (Ψ : EuclideanSpace ℂ ι) :
     angleG (Matrix.toEuclideanLin (Matrix.reindex π π A))
         (Matrix.toEuclideanLin (Matrix.reindex π π B)) (permState π Ψ) =
@@ -160,16 +160,16 @@ theorem Pd_submatrix_rev : (Pd d).submatrix Fin.revPerm Fin.revPerm = -Pd d := b
 
 end Reflection
 
-/-! ## 3. The cube with `d` sites on each axis -/
+/-! ## 3. The cube with `d` positions on each axis -/
 
 section Cube
 
 variable (d : ℕ)
 
-/-- The sites of the cube `d × d × d`: a coordinate in `Fin d` for each of the three axes. -/
+/-- The positions of the cube `d × d × d`: a coordinate in `Fin d` for each of the three axes. -/
 abbrev CubeSite := Fin 3 → Fin d
 
-/-- Splitting a site into its coordinate on axis `i` and the other two. -/
+/-- Splitting a position into its coordinate on axis `i` and the other two. -/
 abbrev axisSplit (i : Fin 3) : CubeSite d ≃ Fin d × ({j // j ≠ i} → Fin d) :=
   Equiv.piSplitAt i fun _ => Fin d
 
@@ -191,7 +191,7 @@ def flip (b : Bool) : Equiv.Perm (Fin d) := if b then Fin.revPerm else Equiv.ref
 theorem flip_flip (b : Bool) (a : Fin d) : flip b (flip b a) = a := by
   cases b <;> simp [flip]
 
-/-- The signed permutation `(σ, s)` on the sites: axis `σ⁻¹ j` goes to axis `j`, reflected when
+/-- The signed permutation `(σ, s)` on the positions: axis `σ⁻¹ j` goes to axis `j`, reflected when
 `s j` is set. -/
 def cubeSym (σ : Equiv.Perm (Fin 3)) (s : Fin 3 → Bool) : Equiv.Perm (CubeSite d) where
   toFun p j := flip (s j) (p (σ.symm j))
@@ -211,7 +211,7 @@ theorem card_signedPerm : Fintype.card (Equiv.Perm (Fin 3) × (Fin 3 → Bool)) 
   rw [Fintype.card_prod, Fintype.card_perm, Fintype.card_fun]
   rfl
 
-/-- **The action is faithful.** For `d ≥ 2` the `48` signed permutations move the sites in `48`
+/-- **The action is faithful.** For `d ≥ 2` the `48` signed permutations move the positions in `48`
 different ways: `s` is read off the corner `0`, then `σ` off one step along each axis. -/
 theorem cubeSym_injective (hd : 2 ≤ d) :
     Function.Injective fun g : Equiv.Perm (Fin 3) × (Fin 3 → Bool) => cubeSym (d := d) g.1 g.2 := by
@@ -359,12 +359,12 @@ end Star
 section Unequal
 
 /-- The signed permutation `(σ, s)` keeps the NRS angle of every axis of the box with `dims i`
-sites on axis `i`: axis `i` and axis `σ i` have the same angle. A reflection never changes an
-angle (it depends only on the number of sites), so only `σ` matters. -/
+positions on axis `i`: axis `i` and axis `σ i` have the same angle. A reflection never changes an
+angle (it depends only on the number of positions), so only `σ` matters. -/
 def KeepsAngles (dims : Fin 3 → ℕ) (g : Equiv.Perm (Fin 3) × (Fin 3 → Bool)) : Prop :=
   ∀ i, angleNRS (dims (g.1 i)) = angleNRS (dims i)
 
-/-- With `4` or more sites on every axis, a signed permutation keeps every angle iff it only
+/-- With `4` or more positions on every axis, a signed permutation keeps every angle iff it only
 exchanges axes of the same length: `θ_NRS` is strictly increasing from `4` on (`D37b`). -/
 theorem keepsAngles_iff {dims : Fin 3 → ℕ} (h4 : ∀ i, 4 ≤ dims i)
     (g : Equiv.Perm (Fin 3) × (Fin 3 → Bool)) :

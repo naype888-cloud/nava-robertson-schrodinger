@@ -13,7 +13,7 @@ public import NavaRobertsonIndependent.Mathematics.D23d_BandWidth
 # D48 — Robertson–Schrödinger 1929–30 with discrete transport: spectrum bounds
 
 The original Robertson–Schrödinger inequality is not contradicted by the transport pair
-`(T_d, P_d)`; it is bounded, with exact restrictions. On every path with `d ≥ 4` sites:
+`(T_d, P_d)`; it is bounded, with exact restrictions. On every path with `d ≥ 4` positions:
 
 * **Minimum `0°`, attained.** The per-state angle `θ(ψ)` lies in `[0, π/2]`, and
   `θ(ψ) = 0` exactly at saturation, i.e. when the Gram defect of `D23` vanishes (`D23`).

@@ -11,9 +11,10 @@ public import NavaRobertsonIndependent.Mathematics.D37h_OctahedralSymmetry
 /-!
 # D37i — The three families of boxes
 
-A box is the number of sites on each of the three axes, `b : Fin 3 → ℕ`. With `4` or more sites on
-every axis, each axis has its own NRS angle `θ_NRS(b i)` (`D37b`), and a box is a deformation of
-the regular `4 × 4 × 4`. The boxes split into three families by how many axes have the same length:
+A box is the number of positions on each of the three axes, `b : Fin 3 → ℕ`. With `4` or more
+positions on every axis, each axis has its own NRS angle `θ_NRS(b i)` (`D37b`), and a box is a
+deformation of the regular `4 × 4 × 4`. The boxes split into three families by how many axes have
+the same length:
 
 * **regular**, `b 0 = b 1 = b 2` (`4 × 4 × 4`, `5 × 5 × 5`, …): `48` symmetries (`O_h`), orbit `1`;
 * **two equal axes** (`4 × 10 × 10`, `100 × 100 × 4`): `16` symmetries (`D₄h`), orbit `3`;
@@ -32,13 +33,13 @@ turned. Orbit and stabilizer multiply to `3! = 6` (`card_orbit_mul_card_stab`).
 - `BoxFamilies.card_keepsAngles_family` : `48`, `16`, `8` signed permutations keep every angle.
 - `BoxFamilies.card_orbit_mul_card_stab` : orbit × stabilizer = `6`.
 - `BoxFamilies.card_orbit_regular`, `_twoEqual`, `_distinct` : orbits of `1`, `3`, `6` boxes.
-- `BoxFamilies.count_ten` : with `4` to `10` sites per axis, `7 + 126 + 210 = 343` boxes, that is
-  `7 + 42 + 35 = 84` different figures.
-- `BoxFamilies.quantum_never_erased` : for every box with `4` or more sites per axis, of any
+- `BoxFamilies.count_ten` : with `4` to `10` positions per axis, `7 + 126 + 210 = 343` boxes,
+  that is `7 + 42 + 35 = 84` different figures.
+- `BoxFamilies.quantum_never_erased` : for every box with `4` or more positions per axis, of any
   family and turned or reflected in any of the `48` ways, every axis opens between `θ_NRS(4) > 0`
   and the unattained `arccos (1 / C_∞)`, and `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes,
   turns and deforms, but it is not erased.
-- `BoxFamilies.quantum_erased_iff` : it is erased only when some axis has `2` or `3` sites.
+- `BoxFamilies.quantum_erased_iff` : it is erased only when some axis has `2` or `3` positions.
 -/
 
 @[expose] public section
@@ -47,7 +48,7 @@ open OctahedralSymmetry NRSAngle VolumetricQuantum DimensionalQuantum Gnomon
 
 namespace BoxFamilies
 
-/-- A box: the number of sites on each of the three axes. -/
+/-- A box: the number of positions on each of the three axes. -/
 abbrev Box := Fin 3 → ℕ
 
 /-! ## 1. The three families -/
@@ -136,7 +137,7 @@ theorem card_signedStab (b : Box) :
         rw [Fintype.card_prod, Fintype.card_fun, Fintype.card_subtype, axisStab]
         simp [mul_comm]
 
-/-- **The symmetries of each family.** With `4` or more sites on every axis, `48`, `16` or `8`
+/-- **The symmetries of each family.** With `4` or more positions on every axis, `48`, `16` or `8`
 signed permutations keep the NRS angle of every axis. -/
 theorem card_keepsAngles_family {b : Box} (h4 : ∀ i, 4 ≤ b i)
     [DecidablePred (KeepsAngles b)] :
@@ -197,9 +198,9 @@ theorem card_orbit_distinct {b : Box} (h : IsDistinct b) : (axisOrbit b).card = 
   rw [card_axisStab_distinct h] at this
   omega
 
-/-! ## 4. Counting up to ten sites per axis -/
+/-! ## 4. Counting up to ten positions per axis -/
 
-/-- The boxes with `4` to `N` sites on every axis, as triples. -/
+/-- The boxes with `4` to `N` positions on every axis, as triples. -/
 def boxesUpTo (N : ℕ) : Finset (ℕ × ℕ × ℕ) :=
   Finset.Icc 4 N ×ˢ Finset.Icc 4 N ×ˢ Finset.Icc 4 N
 
@@ -207,7 +208,7 @@ def boxesUpTo (N : ℕ) : Finset (ℕ × ℕ × ℕ) :=
 def ofTriple (t : ℕ × ℕ × ℕ) : Box := ![t.1, t.2.1, t.2.2]
 
 set_option maxRecDepth 100000 in
-/-- **The count at `N = 10`.** Of the `343` boxes with `4` to `10` sites per axis, `7` are
+/-- **The count at `N = 10`.** Of the `343` boxes with `4` to `10` positions per axis, `7` are
 regular, `126` have two equal axes and `210` three different axes. Dividing by the orbits
 `1`, `3`, `6`, they are `7 + 42 + 35 = 84` different figures. -/
 theorem count_ten :
@@ -232,11 +233,11 @@ theorem volQuantum_perm (b : Box) (σ : Equiv.Perm (Fin 3)) :
   rw [h, volQuantum_eq_prod b]
   exact Equiv.prod_comp σ fun i => dimQuantum (b i)
 
-/-- **The quantum is never erased.** Take any box with `4` or more sites on every axis. Whatever its
-family, each axis opens at an angle between `θ_NRS(4) > 0` (the regular `4 × 4 × 4`) and the
-ceiling `arccos (1 / C_∞)` that no box attains; the volumetric quantum lies between the floor
-`δ(4)³ > 0` and the unattained ceiling `δ_∞³`; and turning or reflecting the box, in any of the
-`48` ways, leaves the quantum as it is. -/
+/-- **The quantum is never erased.** Take any box with `4` or more positions on every axis.
+Whatever its family, each axis opens at an angle between `θ_NRS(4) > 0` (the regular
+`4 × 4 × 4`) and the ceiling `arccos (1 / C_∞)` that no box attains; the volumetric quantum lies
+between the floor `δ(4)³ > 0` and the unattained ceiling `δ_∞³`; and turning or reflecting the
+box, in any of the `48` ways, leaves the quantum as it is. -/
 theorem quantum_never_erased (b : Box) (h4 : ∀ i, 4 ≤ b i) :
     (IsRegular b ∨ IsTwoEqual b ∨ IsDistinct b) ∧
       (∀ i, 0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS (b i) ∧
@@ -249,7 +250,7 @@ theorem quantum_never_erased (b : Box) (h4 : ∀ i, 4 ≤ b i) :
     ⟨pow_pos (dimQuantum_pos le_rfl) 3, (volQuantum_certificate (h4 0) (h4 1) (h4 2)).2⟩,
     fun g => volQuantum_perm b g.1⟩
 
-/-- **The only way to erase it** is to leave the rule: some axis with `2` or `3` sites. -/
+/-- **The only way to erase it** is to leave the rule: some axis with `2` or `3` positions. -/
 theorem quantum_erased_iff (b : Box) (h2 : ∀ i, 2 ≤ b i) :
     volQuantum (b 0) (b 1) (b 2) = 0 ↔ ∃ i, b i = 2 ∨ b i = 3 := by
   rw [volQuantum_eq_zero_iff (h2 0) (h2 1) (h2 2)]

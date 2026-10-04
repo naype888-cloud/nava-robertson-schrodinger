@@ -14,7 +14,7 @@ public import NavaRobertsonIndependent.Mathematics.D16g_CutEntropy
 is a graph of transport with exactly `k` cycles, so the entropy of `D16g` counts graphs, not
 labels.
 
-* `linksGraph n S` is the path on `n + 1` sites with the links of `S`.
+* `linksGraph n S` is the path on `n + 1` positions with the links of `S`.
 * For any set `S` of crossing links of one cut, its cycle rank is `|S|`
   (`cycleRank_linksGraph`): distinct crossing links never repeat an edge, and no crossing link
   is an edge of the path.
@@ -35,7 +35,7 @@ open SimpleGraph TransportPosition LightCone DefectCycle CutEntropy
 
 namespace CutCycles
 
-/-- The path on `n + 1` sites with the links of `S`. -/
+/-- The path on `n + 1` positions with the links of `S`. -/
 def linksGraph (n : ℕ) (S : Finset (Fin (n + 1) × Fin (n + 1))) : SimpleGraph (Fin (n + 1)) :=
   graphTP (n + 1) ⊔ S.sup fun p => edge p.1 p.2
 

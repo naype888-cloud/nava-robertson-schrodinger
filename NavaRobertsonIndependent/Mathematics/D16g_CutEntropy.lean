@@ -12,7 +12,7 @@ public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 /-!
 # D16g — The entropy of a cut counts its quanta
 
-Cut the path on `n + 1` sites between `c` and `c + 1`. A crossing link joins `a ≤ c` to
+Cut the path on `n + 1` positions between `c` and `c + 1`. A crossing link joins `a ≤ c` to
 `b > c` with `b − a ≥ 2`; there are `M` of them (`crossLinks`). Each one closes a cycle
 (`crossLink_closes_cycle`, from `D16e`) and so carries one quantum `δ_∞` of defect (`D16f`).
 
@@ -74,7 +74,7 @@ theorem crossLink_closes_cycle {n c : ℕ} {p : Fin (n + 1) × Fin (n + 1)}
   rw [withLink_isAcyclic_iff hne]
   omega
 
-/-- A cut with at least two sites on the left and one on the right has a crossing link. -/
+/-- A cut with at least two positions on the left and one on the right has a crossing link. -/
 theorem one_le_numCross {n c : ℕ} (hc : 1 ≤ c) (hcn : c + 1 ≤ n) : 1 ≤ numCross n c := by
   unfold numCross
   rw [Nat.one_le_iff_ne_zero, Ne, Finset.card_eq_zero, ← Ne, ← Finset.nonempty_iff_ne_empty]

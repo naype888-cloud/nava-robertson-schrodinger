@@ -12,14 +12,14 @@ public import NavaRobertsonIndependent.Mathematics.D37f_LightCone
 
 `D16c` describes the excitation of the defect globally, as a change of `b₁`. This module asks
 how fast a local change of transport is felt. Replace `T_d` by any `M'` that differs from it
-only on the rows of a set `S` of sites.
+only on the rows of a set `S` of positions.
 
-* After `k` steps, every site `i` with `k ≤ |i − a|` for all `a ∈ S` sees exactly what it saw
+* After `k` steps, every position `i` with `k ≤ |i − a|` for all `a ∈ S` sees exactly what it saw
   without the change (`pow_row_eq_of_le`, `change_unseen`). No modification of transport is
   felt outside the cone of `D37f`.
-* The bound is sharp. An on-site change `ε` at `s = i + k` is unseen at `i` after `k` steps,
+* The bound is sharp. A local change `ε` at `s = i + k` is unseen at `i` after `k` steps,
   and after `k + 1` steps the amplitude from `i` to `s` differs by `ε ρ_d^{−k} ≠ 0`
-  (`onSite_front`). The front moves at one site per step, the speed of `D37f`.
+  (`onSite_front`). The front moves at one position per step, the speed of `D37f`.
 
 Not here: that a local change of this kind creates a cycle (the bridge to `D16c`), and the
 spin and mass of the excitation. The continuous-time version would follow `D37g`.
@@ -62,7 +62,7 @@ theorem pow_row_eq_of_le {ι : Type*} [Fintype ι] [DecidableEq ι] (dist : ι �
 /-! ## 2. The path -/
 
 /-- **A local change is unseen outside the cone.** Change `T_d` on the rows of `S`. After `k`
-steps, a site `i` with `k ≤ |i − a|` for all `a ∈ S` carries the same amplitude as before. -/
+steps, a position `i` with `k ≤ |i − a|` for all `a ∈ S` carries the same amplitude as before. -/
 theorem change_unseen {d : ℕ} (M' : Matrix (Fin d) (Fin d) ℂ) (S : Set (Fin d))
     (hrow : ∀ p, p ∉ S → M' p = Td d p) (k : ℕ) (i : Fin d)
     (hi : ∀ a ∈ S, k ≤ distPath i a) (ψ : Hd d) :
@@ -70,7 +70,7 @@ theorem change_unseen {d : ℕ} (M' : Matrix (Fin d) (Fin d) ℂ) (S : Set (Fin 
   have h := pow_row_eq_of_le distPath distPath_self distPath_tri (Td d) M' Td_local S hrow k i hi
   simp only [Matrix.toEuclideanLin, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct, h]
 
-/-- `T_d` with an on-site change `ε` at `s`. -/
+/-- `T_d` with a local change `ε` at `s`. -/
 def onSite {d : ℕ} (s : Fin d) (ε : ℂ) : Matrix (Fin d) (Fin d) ℂ :=
   Td d + Matrix.diagonal (Pi.single s ε)
 

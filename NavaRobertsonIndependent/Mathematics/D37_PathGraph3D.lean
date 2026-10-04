@@ -21,7 +21,7 @@ identity on the other two. Everything is proved once for a general axis (`liftAl
 - `PathGraph3DNRS.commutator_axes_xy` (and `_xz`, `_yz`) : pairs on different axes commute.
 - `PathGraph3DNRS.stats_axis_x` (and `_y`, `_z`) : at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the mean, variance,
   covariance and tension of an axis are those of `D21` for that axis.
-- `PathGraph3DNRS.saturation_cube` : an axis saturates iff it has `2` or `3` sites.
+- `PathGraph3DNRS.saturation_cube` : an axis saturates iff it has `2` or `3` positions.
 - `PathGraph3DNRS.strict_cube` : from `4 × 4 × 4`, strict on all three axes.
 -/
 
@@ -109,7 +109,7 @@ theorem inner_self_of_norm_one {φ : EuclideanSpace ℂ β} (hφ : ‖φ‖ = 1)
   rw [inner_self_eq_norm_sq_to_K, hφ]
   simp
 
-/-! ## 2. The `D21` statistics on any finite site set -/
+/-! ## 2. The `D21` statistics on any finite position set -/
 
 /-- Mean `Re ⟨Ψ, LΨ⟩`: `D21`'s `mean` on `ℂ^ι` (it is `mean` itself when `ι = Fin d`). -/
 def meanG (L : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) : ℝ :=
@@ -169,7 +169,7 @@ theorem tensionG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
 
 /-! ## 4. NRS on one axis of a product -/
 
-/-- On any axis with `d ≥ 2` sites, lifted into a product with a unit state `φ` on the rest,
+/-- On any axis with `d ≥ 2` positions, lifted into a product with a unit state `φ` on the rest,
 the four statistics of `(T, P)` at `ψ* ⊗ φ` are those of `(T_d, P_d)` at `ψ*` (`D21`). -/
 theorem stats_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
     varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) =
@@ -185,7 +185,7 @@ theorem stats_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
   ⟨varianceG_lift e hφ _ _, varianceG_lift e hφ _ _, covarianceG_lift e hφ _ _ _,
     (tensionG_lift e hφ _ _ _).trans (NearMaxTension.tension_psiStar hd)⟩
 
-/-- NRS on one axis: saturation exactly for `2` or `3` sites on that axis. -/
+/-- NRS on one axis: saturation exactly for `2` or `3` positions on that axis. -/
 theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
@@ -197,7 +197,7 @@ theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
   rw [h1, h2, h3]
   exact saturation_iff hd
 
-/-- NRS on one axis: from `4` sites on, the inequality is strict (the algebraic quantum). -/
+/-- NRS on one axis: from `4` positions on, the inequality is strict (the algebraic quantum). -/
 theorem strict_axis {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
@@ -216,7 +216,7 @@ section Cubo
 
 variable (dx dy dz : ℕ)
 
-/-- States on the cube: amplitudes on its `dx·dy·dz` sites. -/
+/-- States on the cube: amplitudes on its `dx·dy·dz` positions. -/
 abbrev H3D := EuclideanSpace ℂ (Site3D dx dy dz)
 
 /-- The `x` axis and the rest `(y, z)`. -/
@@ -366,7 +366,7 @@ theorem stats_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
   exact stats_axis (norm_rest hx hy) hz _
 
 /-- **NRS on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
-`3` sites, independently of the other two axes. -/
+`3` positions, independently of the other two axes. -/
 theorem saturation_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 =
@@ -385,7 +385,7 @@ theorem saturation_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
   · rw [PsiStar3D_eq_eY]; exact saturation_axis (norm_rest hx hz) hy _
   · rw [PsiStar3D_eq_eZ]; exact saturation_axis (norm_rest hx hy) hz _
 
-/-- **The algebraic quantum on the `4 × 4 × 4` cube and beyond.** With at least `4` sites on
+/-- **The algebraic quantum on the `4 × 4 × 4` cube and beyond.** With at least `4` positions on
 every axis, the inequality is strict on all three axes at once. -/
 theorem strict_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +

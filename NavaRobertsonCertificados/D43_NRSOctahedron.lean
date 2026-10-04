@@ -17,7 +17,7 @@ cross-polytope `β₃` in Coxeter's notation (`D37f`); in each of its eight dire
 at the speed limit meets Robertson–Schrödinger at `θ_NRS(4) ≈ 7.43°` on every axis (`D42`), and
 the angle never closes for `d ≥ 4` (`D37b`).
 
-The quantum is set by the velocity. On an axis of `4` sites, minimum uncertainty is possible up
+The quantum is set by the velocity. On an axis of `4` positions, minimum uncertainty is possible up
 to `v*(4) = 3(√5 − 1)/4 ≈ 0.927` of the cone, in both directions, and not beyond (`D23f`, `D23g`
 and the reflection of `D42`). Past `v*(4)` the defect is forced. At the speed limit the
 Mandelstam–Tamm and Cramér–Rao ratio is `5 / (99 − 42√5) ≈ 0.9833`.
@@ -144,7 +144,7 @@ of uncertainty on the base `4 × 4 × 4` of NRS³.
 2. Each of its eight directions moves at the speed limit on every axis, meets
    Robertson–Schrödinger at `θ_NRS(4)` on every axis, and misses Mandelstam–Tamm and Cramér–Rao.
 3. `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` is positive, is the floor of every axis
-   with `d ≥ 4` sites, and no axis reaches `arccos (1 / C_∞)`.
+   with `d ≥ 4` positions, and no axis reaches `arccos (1 / C_∞)`.
 4. At the speed limit the Mandelstam–Tamm and Cramér–Rao ratio is `5 / (99 − 42√5) < 1`.
 5. Minimum uncertainty reaches exactly `±v*(4) = ±3(√5 − 1)/4`, below the cone; beyond it the
    defect is forced. -/

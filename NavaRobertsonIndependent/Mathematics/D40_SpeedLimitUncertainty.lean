@@ -18,7 +18,7 @@ limit with minimum uncertainty, and every minimum-uncertainty state moves strict
 
 - `GroupVelocity.surplus_pos_of_velocity_eq_one` : at the speed limit the surplus is positive.
 - `GroupVelocity.velocity_lt_one_of_surplus_eq_zero` : minimum-uncertainty states move at
-  less than one site per unit of time.
+  less than one position per unit of time.
 -/
 
 @[expose] public section

@@ -35,7 +35,7 @@ open SimpleGraph
 abbrev graphTP (d : ℕ) : SimpleGraph (Fin d) :=
   SimpleGraph.pathGraph d
 
-/-- Adjacency on the path is a step of one site. -/
+/-- Adjacency on the path is a step of one position. -/
 theorem graphTP_adj {d : ℕ} {i j : Fin d} :
     (graphTP d).Adj i j ↔ i.val + 1 = j.val ∨ j.val + 1 = i.val := by
   simpa [graphTP] using
@@ -74,7 +74,7 @@ noncomputable def rho (d : ℕ) : ℝ :=
 noncomputable def Td (d : ℕ) : Matrix (Fin d) (Fin d) ℂ :=
   fun i j => Ad d i j / (rho d : ℂ)
 
-/-- The position of site `j`, centred in `[-1, 1]`. -/
+/-- The coordinate of position `j`, centred in `[-1, 1]`. -/
 noncomputable def posCoord (d : ℕ) (j : Fin d) : ℝ :=
   (2 * ((j.val : ℝ) + 1) - ((d : ℝ) + 1)) / ((d : ℝ) - 1)
 
@@ -103,7 +103,7 @@ theorem Pd_eq_zero_offdiag {d : ℕ} {i j : Fin d} (hij : i ≠ j) :
     Pd d i j = 0 := by
   simp [Pd, hij]
 
-/-- The diagonal of `P_d` is the site position. -/
+/-- The diagonal of `P_d` is the position coordinate. -/
 theorem Pd_diag {d : ℕ} (i : Fin d) :
     Pd d i i = (posCoord d i : ℂ) := by
   simp [Pd]

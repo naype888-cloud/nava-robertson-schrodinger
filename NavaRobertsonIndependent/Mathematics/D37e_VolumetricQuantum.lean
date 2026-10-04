@@ -14,11 +14,11 @@ public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 
 Each axis carries its dimensional quantum `δ(d) = C_Nava(d) − 1` (`D25`), with
 `θ_NRS(d) = arccos (1 / (1 + δ(d)))`. The volumetric quantum of the cube is
-`𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)`; adding sites never cancels it.
+`𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)`; adding positions never cancels it.
 
 ## Main results
 
-- `VolumetricQuantum.volQuantum_eq_zero_iff` : `𝒱 = 0` iff some axis has `2` or `3` sites.
+- `VolumetricQuantum.volQuantum_eq_zero_iff` : `𝒱 = 0` iff some axis has `2` or `3` positions.
 - `VolumetricQuantum.volQuantum_certificate` : from `4 × 4 × 4`, `δ(4)³ ≤ 𝒱 < δ_∞³`, strictly
   increasing in each axis.
 - `VolumetricQuantum.volQuantum_four_sq` : `𝒱(4, 4, 4)² = (δ(4)²)³`, the area quantum of `D11`.
@@ -61,7 +61,7 @@ theorem volQuantum_pos (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     0 < volQuantum dx dy dz :=
   mul_pos (mul_pos (dimQuantum_pos hx) (dimQuantum_pos hy)) (dimQuantum_pos hz)
 
-/-- **Floor.** With at least `4` sites per axis, the volumetric quantum is at least `δ(4)³`. -/
+/-- **Floor.** With at least `4` positions per axis, the volumetric quantum is at least `δ(4)³`. -/
 theorem volQuantum_floor (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     dimQuantum 4 ^ 3 ≤ volQuantum dx dy dz := by
   have h4 := (dimQuantum_pos (le_refl 4)).le
@@ -94,7 +94,7 @@ theorem volQuantum_four_sq :
     volQuantum 4 4 4 ^ 2 = areaQuantum ^ 3 := by
   rw [volQuantum_cube, areaQuantum, dimQuantum]; ring
 
-/-- Adding sites along `x` strictly enlarges the volumetric quantum. -/
+/-- Adding positions along `x` strictly enlarges the volumetric quantum. -/
 theorem volQuantum_strictMono_x {dx' : ℕ} (hx : 4 ≤ dx) (h : dx < dx') (hy : 4 ≤ dy)
     (hz : 4 ≤ dz) : volQuantum dx dy dz < volQuantum dx' dy dz := by
   unfold volQuantum
