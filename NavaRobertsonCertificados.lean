@@ -12,6 +12,7 @@ public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
 public import NavaRobertsonCertificados.D49e_AxisDefectEntangled
+public import NavaRobertsonCertificados.D49f_MaxTensionCube
 
 /-!
 # Certificates
@@ -37,4 +38,8 @@ particular at the cone speed, satisfy `det Σ > (t_x t_y t_z / 8)²`.
 
 `D49e`: the defect of every axis in the band, for every state, entangled or not: speeds in
 `Ϙ(dx)`, `Ϙ(dy)`, `Ϙ(dz)` force the three defects, and their product is positive.
+
+`D49f`: maximal tension leaves no room for entanglement: with `|v| = 1` on `x`, `y`, `z` every
+state is a phase times `ψ* ⊗ ψ* ⊗ ψ*`, and det|NRS³ holds with ratio
+`C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4` sites per axis.
 -/

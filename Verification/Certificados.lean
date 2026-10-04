@@ -36,3 +36,6 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms RobertsonDeterminantBand.robertson_det_cone
 #print axioms AxisDefectEntangled.gramDefect_pos_of_band
 #print axioms AxisDefectEntangled.axis_defects_pos
+#print axioms MaxTensionCube.eq_smul_octant
+#print axioms MaxTensionCube.det_covMatrix_maxTension
+#print axioms MaxTensionCube.robertson_det_maxTension_strict

@@ -801,9 +801,17 @@ the three tensions — x, y, z, none can be dropped.
   (`eq_zero_of_eigen`), so `Φ` would be a product `φ ⊗ χ` (`exists_prodAlong_of_eigen`) whose
   factor `φ` moves in `Ϙ(d)` and carries a defect (`D44`). Hence speeds in `Ϙ(dx)`, `Ϙ(dy)`,
   `Ϙ(dz)` force the three defects (`gramDefect_pos_of_band`), and their product is positive
-  (`axis_defects_pos`). What remains open is the full `6 × 6` determinant for entangled states:
-  a numerical search on `4 × 4 × 4` with the three speeds in `Ϙ(4)` found ratios no lower than
-  `1.0036`, at almost-product states.
+  (`axis_defects_pos`).
+- `D49f_MaxTensionCube` (certificates target): maximal tension leaves no room for entanglement.
+  The tension of an axis is the sum of the tensions of the columns of `Φ`
+  (`tensionG_eq_sum_col`); at `|v| = 1` every column is at the top, hence a multiple of `ψ*` in
+  its direction (`cols_of_maxTension`), and with `|v| = 1` on `x`, `y`, `z` the state is a phase
+  times `ψ* ⊗ ψ* ⊗ ψ*` (`eq_smul_octant`). For every state at maximal tension,
+  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
+  (`det_covMatrix_maxTension`), strict on every box with `4` or more sites per axis
+  (`robertson_det_maxTension_strict`). What remains open is the full `6 × 6` determinant for
+  entangled states strictly inside the band, `v*(d) < |v| < 1`: a numerical search on
+  `4 × 4 × 4` found ratios no lower than `1.0036`, at almost-product states.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
