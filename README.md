@@ -177,7 +177,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS and NRS³, over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`: det\|NRS³ strict in the band, for product states. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -782,6 +782,20 @@ the three tensions — x, y, z, none can be dropped.
   `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`robertson_det_cube_velocity`), and at
   the cone `|v_x| = |v_y| = |v_z| = 1` the floor `1/((dx − 1)(dy − 1)(dz − 1))²`
   (`robertson_det_cube_cone`).
+- `D49c_RobertsonDeterminantProduct`: on a product state `u ⊗ v ⊗ w` the covariance matrix is block
+  diagonal too (`covMatrix_prod3`) and the defects multiply:
+  `det Σ = (s_x + t_x²/4)(s_y + t_y²/4)(s_z + t_z²/4)` (`det_covMatrix_prod3`), with `s` the
+  Robertson–Schrödinger surplus of each axis; a positive surplus on `x`, `y` and `z` makes
+  det|NRS³ strict (`robertson_det_prod3_strict`). At `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exact,
+  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
+  (`det_covMatrix_PsiStar3D`), strictly above the bound on every box with `4` or more sites on
+  each axis (`robertson_det_PsiStar3D_strict`); at `4 × 4 × 4` the ratio is
+  `C_Nava(4)⁶ ≈ 1.0520`.
+- `D49d_RobertsonDeterminantBand` (certificates target): product states whose speed on each axis
+  lies in `Ϙ(d)` satisfy `det Σ > (t_x t_y t_z / 8)²` (`robertson_det_band`); since the cone lies
+  in every band, so do product states at the cone speed on `x`, `y`, `z` (`robertson_det_cone`).
+  States entangled across axes are not covered by a theorem: a numerical search on `4 × 4 × 4`
+  with the three speeds in `Ϙ(4)` found ratios no lower than `1.0036`, at almost-product states.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and

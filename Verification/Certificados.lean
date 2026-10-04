@@ -32,3 +32,5 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms ConeInBand.surplus_pos_of_near_cone
 #print axioms ConeInBand.cone_forced_iff
 #print axioms ConeInBand.coneInBand_certificate
+#print axioms RobertsonDeterminantBand.robertson_det_band
+#print axioms RobertsonDeterminantBand.robertson_det_cone

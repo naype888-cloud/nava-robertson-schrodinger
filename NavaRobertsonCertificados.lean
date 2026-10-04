@@ -10,6 +10,7 @@ public import NavaRobertsonCertificados.D43_NRSOctahedron
 public import NavaRobertsonCertificados.D44_VelocityBand
 public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
+public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
 
 /-!
 # Certificates
@@ -29,4 +30,7 @@ minimum uncertainty.
 
 `D46`: the cone speed lies in every band: for every `d ≥ 4`, every unit state at the cone speed
 carries a Robertson–Schrödinger surplus, and `d ≥ 4` is sharp.
+
+`D49d`: det|NRS³ in the band: product states with the speed of each axis in `Ϙ(d)`, and in
+particular at the cone speed, satisfy `det Σ > (t_x t_y t_z / 8)²`.
 -/
