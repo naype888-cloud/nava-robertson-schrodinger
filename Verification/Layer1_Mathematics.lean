@@ -164,3 +164,4 @@ open Lean
 #print axioms RobertsonDeterminant3D.robertson_det_cube_velocity
 #print axioms RobertsonDeterminantProduct.det_covMatrix_PsiStar3D
 #print axioms RobertsonDeterminantProduct.robertson_det_PsiStar3D_strict
+#print axioms Matrix.PosDef.add_mul_inv_mul_sub_eq_zero
