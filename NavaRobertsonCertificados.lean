@@ -13,6 +13,7 @@ public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
 public import NavaRobertsonCertificados.D49e_AxisDefectEntangled
 public import NavaRobertsonCertificados.D49f_MaxTensionCube
+public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
 
 /-!
 # Certificates
@@ -42,4 +43,7 @@ particular at the cone speed, satisfy `det Σ > (t_x t_y t_z / 8)²`.
 `D49f`: maximal tension leaves no room for entanglement: with `|v| = 1` on `x`, `y`, `z` every
 state is a phase times `ψ* ⊗ ψ* ⊗ ψ*`, and det|NRS³ holds with ratio
 `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4` sites per axis.
+
+`D49h`: equality in det|NRS³ with the three speeds in the band needs a relation
+`σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with `σ ≠ 0`.
 -/

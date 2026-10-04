@@ -809,9 +809,22 @@ the three tensions — x, y, z, none can be dropped.
   times `ψ* ⊗ ψ* ⊗ ψ*` (`eq_smul_octant`). For every state at maximal tension,
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
   (`det_covMatrix_maxTension`), strict on every box with `4` or more sites per axis
-  (`robertson_det_maxTension_strict`). What remains open is the full `6 × 6` determinant for
-  entangled states strictly inside the band, `v*(d) < |v| < 1`: a numerical search on
-  `4 × 4 × 4` found ratios no lower than `1.0036`, at almost-product states.
+  (`robertson_det_maxTension_strict`).
+- `D49g_RobertsonDeterminantEquality`: the equality case of Robertson 1934. If
+  `‖det B‖ = det A`, every eigenvalue of `T B Tᴴ` is `±1` and `(A + B) A⁻¹ (A − B) = 0`
+  (`Matrix.PosDef.add_mul_inv_mul_sub_eq_zero`); the kernels of `A + B` and `A − B` span
+  everything (`Matrix.exists_add_of_norm_det_eq`) and have the same dimension when
+  `A − B = (A + B)ᵀ` (`Matrix.finrank_ker_transpose`).
+- `D49h_DeterminantEqualityRelation` (certificates target): equality in det|NRS³ with the three
+  speeds in the band forces `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with
+  `σ ≠ 0` (`exists_sigma_of_det_eq`). The kernel of `Σ + iΩ` has dimension at least `3`; each
+  kernel vector makes `Φ` an eigenvector of a combination `L_a`, and
+  `[L_a, L_b] = Σ_i σ_i [T_i, P_i]` (`commutator_sum`); if every `σ_i` vanished, one axis would
+  carry a relation alone (`exists_single_axis`), a vanishing defect excluded by `D49e`. In the
+  continuum the commutators are one constant and such a relation is free; here
+  `i[T, P] = K_d` is an operator. What remains open is to exclude this relation strictly inside
+  the band, `v*(d) < |v| < 1`: a numerical search on `4 × 4 × 4` found ratios no lower than
+  `1.0036`, at almost-product states.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
