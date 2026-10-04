@@ -41,7 +41,8 @@ and passes every PhyslibAlpha linter. Status on 3 October 2026.
 | 21 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | ready |
 | 22 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | ready |
 | 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four sites on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
-| 24 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `|det Ω| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | ready |
+| 24 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `\|det Ω\| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | ready |
+| 25 | `…/TightBindingChain/Cube` (E–F) | +319 | the six observables `(H, X)` of the cube: `Ω` block diagonal in every state, `(⟨⁅H,X⁆⟩_x ⟨⁅H,X⁆⟩_y ⟨⁅H,X⁆⟩_z)² ≤ det Σ` (`robertson_det_cube`); at the maximal current state `det Σ = (C_Nava(x) C_Nava(y) C_Nava(z))² \|det Ω\|`, strict from `4 × 4 × 4` (`robertson_det_maxCurrentCubeState_strict`) | `D49b`, `D49c` | ready |
 
 ## Order of submission
 
@@ -59,6 +60,7 @@ merged. The dependencies are those of the `import` lines.
 | 6 | 17 (Mandelstam–Tamm, Cramér–Rao), 22 | 15, 16, 18; 21 |
 | 7 | 23 (monotonicity) | 22 |
 | any | 24 (Robertson 1934) | master |
+| after 15 | 25 (det\|NRS³ on the cube) | 15, 24 |
 
 ## det|NRS³ (PR 24 and after)
 
@@ -66,8 +68,10 @@ PR 24 brings Robertson's 1934 relation for several observables to the algebraic 
 `PhyslibAlpha`, in the file of Robertson–Schrödinger. In this repository the same bound is
 `D49`, and its instances on the cube are `D49b`–`D49d`: the three conjugate pairs give
 `det Σ ≥ (t_x t_y t_z / 8)²` for every state, the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²` at
-`Ψ*`, and the bound is strict for product states in the band `Ϙ`. Their port to the open cube
-follows #1725.
+`Ψ*`, and the bound is strict for product states in the band `Ϙ`. PR 25 ports `D49b` and the
+`Ψ*` part of `D49c` to the open cube (branch `feat-physlibalpha-tight-binding-cube-determinant`,
+two commits of 138 and 181 lines on #1725 and PR 24). The band part (`D49d`) waits for PRs 19
+and 20.
 
 ## Round C: shorter than the corpus (PRs 21–23)
 

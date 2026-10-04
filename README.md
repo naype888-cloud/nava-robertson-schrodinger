@@ -413,32 +413,37 @@ reversal and compactness (see [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PORT.md)). S
 The theorems above are mathematics. Their physical content rests on one declared
 identification, which is a premise and not a Lean theorem:
 
-* **`T_d:P_d` is motion in discrete space.** `P_d` is position on the `d` cells of a row and
-  `T_d` is transport, which only connects neighbouring cells.
+* **`T_d:P_d` is motion in space.** `P_d` is position along one direction, with `d` resolvable
+  positions, and `T_d` is transport, which moves the position by one step.
+* **States are vectors of a complex Hilbert space.** A state is a unit vector of `ℂ^d` (of
+  `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` on the cube); its amplitudes carry phases, and transport lives in the
+  relative phases between neighbouring positions: `T_d` and `P_d` are real symmetric, so a state
+  with real amplitudes has `⟨i[T_d, P_d]⟩ = 0`, while the phase modes of `D38` are eigenvectors
+  of the velocity, at the group velocity. A global phase leaves the surplus unchanged (`D23b`).
 * **The cube of `D37` is three-dimensional space.** Its three factors are the directions
-  `x, y, z`; a site is a cell with three coordinates, and motion changes one coordinate by one
-  cell at a time (`D4`: the diagonal is never the minimal step).
+  `x, y, z`; a point has three coordinates, and motion changes one coordinate by one step at a
+  time (`D4`: the diagonal is never the minimal step).
 * **The three directions are canonical axes.** `x`, `y`, `z` are orthogonal from one vertex:
   the fluctuations of position and transport along one direction are orthogonal to those along
   the others. On canonical axes det|NRS³ is strict in the whole velocity band (`D49k`); states
   whose fluctuations mix the three directions do not generate three-dimensional space and are
   outside the bridge.
 
-Under this bridge, a particle localized at one cell carries no transport tension; at maximal
-tension it cannot be localized — it is spread over all the cells, with positive probability at
-each and certainty at none (the discrete form of "exact position, completely uncertain
-momentum"). From `4` cells on, the most definite states and the most loaded with transport are
-never the same. More generally, NRS and NRS³ are statements about discrete space: in every direction with at
-least `4` cells the state of maximal tension carries an irreducible angle between position and
-transport (at least `≈ 7.43°`, below `≈ 28.30°`), and the three directions agree more closely the
-more cells each has. The volumetric quantum `𝒱` is the three-dimensional precision limit of
-position and transport: no refinement lowers it (adding cells enlarges it); it is cancelled
-only by reducing some direction to `2` or `3` levels.
+Under this bridge, a particle localized at one position carries no transport tension; at maximal
+tension it cannot be localized — it is spread over all the positions, with positive probability
+at each and certainty at none ("exact position, completely uncertain momentum" with `d`
+resolvable positions). From `4` positions on, the most definite states and the most loaded with
+transport are never the same. More generally, NRS and NRS³ are statements about space: in every
+direction with at least `4` positions the state of maximal tension carries an irreducible angle
+between position and transport (at least `≈ 7.43°`, below `≈ 28.30°`), and the three directions
+agree more closely the more positions each has. The volumetric quantum `𝒱` is the
+three-dimensional precision limit of position and transport: no refinement lowers it (adding
+positions enlarges it); it is cancelled only by reducing some direction to `2` or `3` levels.
 
 **Units.** The theorems carry no unit. Units enter through one laboratory datum: the slope of the
-light cone (`D37f`, exactly one cell per step; `D37g` in continuous time) is identified with the
+light cone (`D37f`, exactly one position per step; `D37g` in continuous time) is identified with the
 measured limiting speed — `c` for motion in space, the coupling `κ` in a waveguide array. That
-ties cell to step and leaves a single scale, set by one more measurement. Ratios such as
+ties position to step and leaves a single scale, set by one more measurement. Ratios such as
 `C_Nava(d)` and the NRS angle need no calibration: they are the same number on every platform
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md), §6).
 
