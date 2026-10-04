@@ -418,7 +418,7 @@ identification, which is a premise and not a Lean theorem:
 * **States are vectors of a complex Hilbert space.** A state is a unit vector of `ℂ^d` (of
   `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` on the cube); its amplitudes carry phases, and transport lives in the
   relative phases between neighbouring positions: `T_d` and `P_d` are real symmetric, so a state
-  with real amplitudes has `⟨i[T_d, P_d]⟩ = 0`, while the phase modes of `D38` are eigenvectors
+  with real amplitudes has `⟨i[T_d, P_d]⟩ = 0` (`D23b`, `tension_eq_zero_of_real`), while the phase modes of `D38` are eigenvectors
   of the velocity, at the group velocity. A global phase leaves the surplus unchanged (`D23b`).
 * **The cube of `D37` is three-dimensional space.** Its three factors are the directions
   `x, y, z`; a point has three coordinates, and motion changes one coordinate by one step at a

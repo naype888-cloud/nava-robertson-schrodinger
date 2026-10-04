@@ -18,6 +18,7 @@ compactness of the unit sphere, not in closed form.
 ## Main results
 
 - `NearMaxTension.surplus_eq` : `surplus ψ = Var T_d · Var P_d − (cov² + ⟨K_d⟩²/4)`.
+- `NearMaxTension.tension_eq_zero_of_real` : a state with real amplitudes has `⟨K_d⟩ = 0`.
 - `NearMaxTension.tension_le` : `⟨K_d⟩ ≤ 2/(d−1)` at every unit state.
 - `NearMaxTension.surplus_near_max` : states with tension near `2/(d−1)` have surplus near
   `defectGram d`.
@@ -58,6 +59,23 @@ theorem surplus_phase {d : ℕ} (ψ : Hd d) (c : ℂ) (hc : ‖c‖ = 1) :
     centered_phase _ _ _ hc, inner_smul_left, inner_smul_right, norm_mul, norm_mul,
     Complex.norm_conj, hc]
   simp
+
+/-- A matrix with real entries keeps real amplitudes real. -/
+theorem im_mulVec_eq_zero {d : ℕ} {M : Matrix (Fin d) (Fin d) ℂ}
+    (hM : ∀ i j, (M i j).im = 0) {v : Fin d → ℂ} (hv : ∀ i, (v i).im = 0) (i : Fin d) :
+    (M.mulVec v i).im = 0 := by
+  simp [Matrix.mulVec, dotProduct, Complex.im_sum, Complex.mul_im, hM, hv]
+
+/-- **Transport lives in the phases.** `T_d` and `P_d` have real entries, so a state with real
+amplitudes has `⟨K_d⟩ = ⟨i[T_d, P_d]⟩ = 0`: tension needs relative phases between positions. -/
+theorem tension_eq_zero_of_real {d : ℕ} {ψ : Hd d} (hψ : ∀ i, (ψ i).im = 0) :
+    tension d ψ = 0 := by
+  have hT : ∀ i j, (Td d i j).im = 0 := fun i j => by
+    simp only [Td, Ad]; split_ifs <;> simp
+  have hP : ∀ i j, (Pd d i j).im = 0 := fun i j => by
+    simp only [Pd]; split_ifs <;> simp
+  rw [tension, re_inner_KdOp, PiLp.inner_apply, Complex.im_sum]
+  simp [Complex.mul_im, TdOp, PdOp, im_mulVec_eq_zero hT hψ, im_mulVec_eq_zero hP hψ]
 
 theorem tension_psiStar {d : ℕ} (hd : 2 ≤ d) : tension d (psiStar d) = 2 / ((d : ℝ) - 1) := by
   unfold tension
