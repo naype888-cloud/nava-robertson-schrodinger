@@ -64,6 +64,7 @@ public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 public import NavaRobertsonIndependent.Mathematics.D45_StarkPackets
 public import NavaRobertsonIndependent.Mathematics.D47_PlatformBlindness
 public import NavaRobertsonIndependent.Mathematics.D48_SpectrumBounds
+public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 
 /-!
 # NRS and NRS³
@@ -97,5 +98,6 @@ theorem.
   the defect, while `ψ*` does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
+- `D49` : Robertson 1934 for several observables, `|det Ω| ≤ det Σ`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
