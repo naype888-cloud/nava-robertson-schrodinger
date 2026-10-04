@@ -40,3 +40,5 @@ Only `propext`, `Classical.choice` and `Quot.sound` are expected.
 #print axioms MaxTensionCube.det_covMatrix_maxTension
 #print axioms MaxTensionCube.robertson_det_maxTension_strict
 #print axioms DeterminantEqualityRelation.exists_sigma_of_det_eq
+#print axioms SplitAxis.robertson_det_strict_of_orthogonal
+#print axioms SplitAxis.robertson_det_strict_of_split

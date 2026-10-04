@@ -837,6 +837,14 @@ the three tensions — x, y, z, none can be dropped.
   It is the rupture at `d = 4` of `D7` and `D13`, seen in the algebra, and the engine of the open
   step for entangled states: a state annihilated by `L_a − λ_a` is annihilated by every nested
   commutator, and those do not stop.
+- `D49j_RobertsonDeterminantSplitAxis` (certificates target): an axis on its own keeps
+  det|NRS³ strict in the band. If the fluctuation vectors of `z` are orthogonal to those of `x`
+  and `y`, the matrices split, `det Σ = det Σ_xy · det Σ_z` and `|det Ω| = |det Ω_xy| · |det Ω_z|`;
+  Robertson 1934 on the four observables of `x`, `y` gives `|det Ω_xy| ≤ det Σ_xy` (`D49`) and on
+  `z` the gap is the defect of the axis, positive in the band for every state (`D49e`), so
+  `|det Ω| < det Σ` (`robertson_det_strict_of_orthogonal`). In particular when `Φ = w ⊗ χ`
+  splits off `z`, however entangled `x` and `y` are in `χ` (`robertson_det_strict_of_split`):
+  two axes glued together leave the third on its own, and the band does the work through it.
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and

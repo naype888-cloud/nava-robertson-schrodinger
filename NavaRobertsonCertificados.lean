@@ -14,6 +14,7 @@ public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
 public import NavaRobertsonCertificados.D49e_AxisDefectEntangled
 public import NavaRobertsonCertificados.D49f_MaxTensionCube
 public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
+public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 
 /-!
 # Certificates
@@ -46,4 +47,7 @@ state is a phase times `ψ* ⊗ ψ* ⊗ ψ*`, and det|NRS³ holds with ratio
 
 `D49h`: equality in det|NRS³ with the three speeds in the band needs a relation
 `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with `σ ≠ 0`.
+
+`D49j`: an axis on its own keeps det|NRS³ strict in the band: if `Φ = w ⊗ χ` splits off `z`,
+however entangled `x` and `y` are, `|det Ω| < det Σ`.
 -/
