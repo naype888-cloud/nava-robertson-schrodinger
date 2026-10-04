@@ -1,8 +1,9 @@
-# Experimental test of NRS in a photonic waveguide array
+# Experimental calibration of NRS in a photonic waveguide array
 
-This note turns the theorems of the package into a concrete experiment. The mathematics is proved
-in Lean; the experiment tests the declared physical bridge, namely that a physical system realizes
-the pair `(T_N, P_N)`.
+This note turns the theorems of the package into a concrete measurement. The mathematics is proved
+in Lean and needs no experiment, as Robertson 1929 needs none. The experiment is a calibration:
+the values below are the noise-free ideal of any physical system that realizes the pair
+`(T_N, P_N)`, and a measurement shows how close a real platform comes to them.
 
 ## 1. System
 
@@ -59,9 +60,10 @@ ratio keeps the controls at `1` (section 5).
 | 10 | 1.055806 | 5.58 % | 18.71° |
 | limit | 1.135724 | 13.57 % (never reached) | 28.30° |
 
-What confirms the bridge: `R = 1` within error at `N = 2, 3`; `R > 1` from `N = 4`; `R` growing
-with `N` along the table. What refutes it: a correctly built array with `R` outside the table
-beyond the error bars.
+What a well-built platform reaches: `R = 1` within error at `N = 2, 3`; `R > 1` from `N = 4`; `R`
+growing with `N` along the table. An array with `R` outside the table beyond the error bars does
+not realize `(T_N, P_N)` as built; the controls `N = 2, 3` locate the fault, and the table does not
+move.
 
 **Further predictions on the same chip.**
 
@@ -115,14 +117,14 @@ Consequences for the design:
    reads `1.0057`); the Robertson–Schrödinger ratio does not (`1.0000`). The controls stay at
    `1` and `N = 3` against `N = 4` separates by more than four standard deviations in the
    realistic scenario.
-2. **Controls are essential.** `N = 2, 3` must give `R = 1` within error; they test the
-   instrument, not only the theory.
+2. **Controls are essential.** `N = 2, 3` must give `R = 1` within error; they calibrate the
+   instrument; the theorems are not under test.
 3. **Tolerances.** Coupling uniformity within about 1 % (coupling disorder is the one source
    that also moves the controls), input phases within about 2°.
 4. **Calibrated prediction.** Measure the fabricated couplings and compute the predicted `R` for
    that array; compare the measured `R` with the calibrated value.
 5. **Use the curve, not one point.** The excess at `N = 4` (0.85 %) is small; measuring
-   `N = 2, …, 10` on the same chip tests both the vanishing at the seeds and the growth.
+   `N = 2, …, 10` on the same chip shows both the vanishing at the seeds and the growth.
 
 ## 6. Units: from the algebra to the laboratory
 

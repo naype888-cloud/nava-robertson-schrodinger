@@ -448,8 +448,9 @@ ties position to step and leaves a single scale, set by one more measurement. Ra
 
 ## Experimental proposal
 
-The mathematics is proved. The declared bridge is tested by measuring the predicted excess over
-the Robertson–Schrödinger floor in a physical system that realizes `T_N:P_N`.
+The mathematics is proved and needs no experiment, as Robertson 1929 needs none. The experiment is
+a calibration: it measures the predicted excess over the Robertson–Schrödinger floor in a physical
+system that realizes `T_N:P_N`, and shows how close the platform comes to the ideal values.
 
 **Systems.** Any system with `N` levels arranged as a line and coupled only to nearest
 neighbours with uniform strength:
@@ -498,9 +499,9 @@ the table with its explanation, as a PDF: [`docs/NRS_Pairs_Table.pdf`](docs/NRS_
 A full design for a photonic waveguide array — state preparation, holographic measurement, error
 budget and tolerances — is in [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md).
 
-What would test the bridge: `R = 1` within error for `N = 2, 3`, `R > 1` from `N = 4`, and `R`
-growing with `N` along the table. Since the excess at `N = 4` is below 1 %, longer chains give a
-larger signal and test the growth at the same time. At `N = 4` a second prediction is available:
+What a well-built platform reaches: `R = 1` within error for `N = 2, 3`, `R > 1` from `N = 4`, and
+`R` growing with `N` along the table. Since the excess at `N = 4` is below 1 %, longer chains give
+a larger signal and show the growth at the same time. At `N = 4` a second prediction is available:
 states that saturate Robertson–Schrödinger carry tension at most `1/φ ≈ 0.618`, against a
 maximal tension of `2/3` (`D23f`, `D23g`). In three dimensions, the same holds on each axis of an
 `N × N × N` cube, and the variances of the three axes add (`D37d`).
