@@ -22,7 +22,7 @@ and passes every PhyslibAlpha linter. Status on 3 October 2026.
 | #1660 | `…/HilbertSpace/State/VectorUncertainty` | 69 | variance and Gram defect of vector states | `D21` | merged |
 | #1676 | `…/HilbertSpace/State/DensityUncertainty` | 107 | Robertson–Schrödinger for density states | `D2` | merged |
 | #1689 | `CondensedMatter/TightBindingChain/OpenBoundary` | 145 | open chain, position, `⟨m|[A, X]|n⟩ = a(n − m)⟨m|A|n⟩` | `D3` | merged |
-| #1690 | `…/TightBindingChain/Uncertainty` | 95 | energy–position uncertainty, `⁅H, X⁆` moves one site | `D3`, `D21` | merged |
+| #1690 | `…/TightBindingChain/Uncertainty` | 95 | energy–position uncertainty, `⁅H, X⁆` moves one position | `D3`, `D21` | merged |
 | #1695 | `QuantumMechanics/HilbertSpaces/FiniteTarget/Operators` | 47 | `SelfAdjointDecompose` on operators of `𝓗[d]` | — | merged |
 | #1696 | `…/TightBindingChain/Current` | 112 | current `J`, stationary and localized states carry none | `D38` | merged |
 | #1699 | `…/FiniteTarget/Product` | 176 | operators on one coordinate of `𝓗[α × β]` commute across coordinates | `D37` | merged |
@@ -40,7 +40,7 @@ and passes every PhyslibAlpha linter. Status on 3 October 2026.
 | 20 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | ready |
 | 21 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | ready |
 | 22 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | ready |
-| 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four sites on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
+| 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four positions on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
 | 24 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `\|det Ω\| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | ready |
 | 25 | `…/TightBindingChain/Cube` (E–F) | +319 | the six observables `(H, X)` of the cube: `Ω` block diagonal in every state, `(⟨⁅H,X⁆⟩_x ⟨⁅H,X⁆⟩_y ⟨⁅H,X⁆⟩_z)² ≤ det Σ` (`robertson_det_cube`); at the maximal current state `det Σ = (C_Nava(x) C_Nava(y) C_Nava(z))² \|det Ω\|`, strict from `4 × 4 × 4` (`robertson_det_maxCurrentCubeState_strict`) | `D49b`, `D49c` | ready |
 
@@ -99,9 +99,9 @@ reasons.
 `Ϙ ≠ ∅` without it: time reversal `Θ` (complex conjugation) commutes with `H` and `X`, reverses
 `J` and keeps the defect; the extremes `±maxCurrent` of the current are simple, with eigenvectors
 the maximal current state `ψ₁` and `ψ_N = Θψ₁`; a unit vector at the speed limit is a phase times
-one of them, so it carries the defect of `ψ₁`, positive from four sites on; the threshold `v*` is
+one of them, so it carries the defect of `ψ₁`, positive from four positions on; the threshold `v*` is
 attained (compactness), hence `v* < maxCurrent`. The explicit width stays in `D23d`.
 
-![The band is open from four sites on](figures/physlib_band_time_reversal.png)
+![The band is open from four positions on](figures/physlib_band_time_reversal.png)
 
 Script for both figures: `docs/simulation/figures_physlib_port.py`.

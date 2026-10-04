@@ -3,7 +3,7 @@
 Writes docs/figures/d45_widest_band.png and d45_stark_packet.png.
 
 A Stark packet (D45) is ψⱼ = (−i)ʲ φⱼ with φⱼ₊₁ = φⱼ₋₁ + (2(c₀ − j)/z) φⱼ, φ₋₁ = φ_d = 0: the left
-half is solved from site 0, the right half from site d − 1, glued at g = ⌊(d − 1)/2⌋ where the
+half is solved from position 0, the right half from position d − 1, glued at g = ⌊(d − 1)/2⌋ where the
 Casoratian vanishes. The packets below use the parameters of the Lean certificates of D45d
 (z and the window of the glue offset δ = c₀ − g); δ is located by bisection. Every such packet
 is an exact eigenvector of T_d − iλ P_d, saturates Robertson–Schrödinger and moves at
@@ -44,7 +44,7 @@ TRUNC = (8, 60 / 64, 68 / 64)  # every d ≥ 28
 
 
 def halves(d, z, c0):
-    """The two halves: left from site 0, right from site d − 1 (as in D45)."""
+    """The two halves: left from position 0, right from position d − 1 (as in D45)."""
     left, prev = [mpf(1)], mpf(0)
     for j in range(d - 1):
         left.append(prev + 2 * (c0 - j) / z * left[j])
@@ -121,7 +121,7 @@ def fig_widest_band():
     ax.set_xlim(3, 61)
     ax.set_ylim(0.914, 1.008)
     ax.set_axisbelow(True)
-    ax.set_xlabel("sites per axis  d")
+    ax.set_xlabel("positions per axis  d")
     ax.set_ylabel("speed of a minimum-uncertainty state")
     ax.legend(loc="center right", bbox_to_anchor=(1.0, 0.42), fontsize=9.5)
     ax.set_title("d = 4 has the widest band: ϙ(d) ≤ 1 − κ = 0.0728 < ϙ(4) for every d ≥ 5",
@@ -142,14 +142,14 @@ def fig_stark_packet():
         ax.bar(j, phi ** 2, color=colors, width=0.8)
         ax.axvline(c0, color=INK2, lw=1, ls="--")
         ax.text(c0 + 0.3, max(phi ** 2) * 1.02, f"c₀ = {c0:.4f}", color=INK2, fontsize=9.5)
-        ax.set_xlabel("site  j")
+        ax.set_xlabel("position  j")
         ax.set_title(f"d = {d}, z = {z:g}: v = {v:.4f}", loc="left", fontsize=11.5)
     axes[0].set_ylabel("|ψⱼ|²")
-    axes[0].text(0.98, 0.84, "left half (from site 0)", color=BLUE, transform=axes[0].transAxes,
+    axes[0].text(0.98, 0.84, "left half (from position 0)", color=BLUE, transform=axes[0].transAxes,
                  fontsize=9.5, va="top", ha="right")
-    axes[0].text(0.98, 0.76, "right half (from site d − 1)", color=ORANGE,
+    axes[0].text(0.98, 0.76, "right half (from position d − 1)", color=ORANGE,
                  transform=axes[0].transAxes, fontsize=9.5, va="top", ha="right")
-    fig.suptitle("Stark packets: phase −90° per site, width √z, glued where the Casoratian "
+    fig.suptitle("Stark packets: phase −90° per position, width √z, glued where the Casoratian "
                  "vanishes", x=0.02, ha="left", fontsize=12.5)
     fig.tight_layout()
     fig.savefig(OUT / "d45_stark_packet.png")

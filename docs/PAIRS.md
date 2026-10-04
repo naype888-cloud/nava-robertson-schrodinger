@@ -58,7 +58,7 @@ operator. Counted in steps of transport it gives the light cone (`D37f`); in con
 `U(t) = exp(−i t T_d)` obeys the Lieb–Robinson bound (`D37g`). Energy is `T_d`: its sine modes
 have energy `ε(θ) = 2 cos θ / ρ_d`, the dispersion relation, which is also the frequency of each
 mode (`Td_mulVec_sineMode`, `D38`). The Heisenberg equation `d/dt (U† P_d U) = U† K_d U` ties
-time to transport (`heisenberg`): the tension is velocity, and `ψ*` moves at exactly one site
+time to transport (`heisenberg`): the tension is velocity, and `ψ*` moves at exactly one position
 per unit of time (`velocity_psiStar`), on all three axes of the cube at once
 (`velocities_PsiStar3D`). Rows 26 and 27 are the dynamics `T_d` generates on the axes where
 rows 1–25 live.

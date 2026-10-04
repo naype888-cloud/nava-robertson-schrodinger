@@ -1,9 +1,9 @@
 """Figures for D37i, the three families of boxes (numpy, matplotlib).
 
 Writes to docs/figures/:
-  d37i_box_families.png   (a) the boxes with 4 to 12 sites per axis, by family, and two orbits;
+  d37i_box_families.png   (a) the boxes with 4 to 12 positions per axis, by family, and two orbits;
                           (b) the star of each box, a deformation of the regular 4 × 4 × 4;
-                          (c) how many different figures each family has up to N sites
+                          (c) how many different figures each family has up to N positions
   d37i_families_table.png the three families: condition, symmetries, orbit, count, Lean
 
 Proved in Lean (D37h, D37i): the partition into three families (family_partition), the
@@ -95,9 +95,9 @@ def panel_space(ax, lo=4, hi=12):
                    linewidths=1.1, depthshade=False, zorder=5)
     ax.text(12.3, 12.3, 12.6, "12 × 12 × 12", color=REGULAR, fontsize=9)
     ax.text(3.2, 3.2, 3.2, "4 × 4 × 4", color=REGULAR, fontsize=9)
-    ax.set_xlabel("sites on x", color=INK2, labelpad=4)
-    ax.set_ylabel("sites on y", color=INK2, labelpad=4)
-    ax.set_zlabel("sites on z", color=INK2, labelpad=4)
+    ax.set_xlabel("positions on x", color=INK2, labelpad=4)
+    ax.set_ylabel("positions on y", color=INK2, labelpad=4)
+    ax.set_zlabel("positions on z", color=INK2, labelpad=4)
     ticks = [4, 6, 8, 10, 12]
     ax.set_xticks(ticks)
     ax.set_yticks(ticks)
@@ -110,7 +110,7 @@ def panel_space(ax, lo=4, hi=12):
     ax.view_init(elev=20, azim=-52)
     ax.set_box_aspect((1, 1, 1), zoom=0.92)
     ax.legend(loc="upper left", fontsize=9.5, bbox_to_anchor=(0.0, 0.97), markerscale=1.2)
-    ax.set_title("(a) the boxes with 4 to 12 sites per axis, by family", loc="left", pad=2)
+    ax.set_title("(a) the boxes with 4 to 12 positions per axis, by family", loc="left", pad=2)
     for k, (txt, col) in enumerate([
             ("orbit of 4 × 10 × 10: 3 boxes, one figure (triangle)", TWO),
             ("orbit of 4 × 7 × 10: 6 boxes, one figure (hexagon)", DISTINCT),
@@ -147,7 +147,7 @@ def draw_star(ax, box, scale):
         lab = 0.98 * scale * max(st, sp) * np.array([np.cos(base), np.sin(base)])
         off = {0: (-0.16, -0.05), 1: (0.16, -0.05), 2: (0.0, 0.1)}[i]
         ax.text(lab[0] + off[0], lab[1] + off[1],
-                f"{AXIS_LABEL[i]}: {box[i]} sites\n{ang:.2f}°", ha="center", va="center",
+                f"{AXIS_LABEL[i]}: {box[i]} positions\n{ang:.2f}°", ha="center", va="center",
                 fontsize=8.5, color=INK2)
     tips = np.array(tips)
     order = np.argsort(np.arctan2(tips[:, 1], tips[:, 0]))
@@ -186,10 +186,10 @@ def panel_counts(ax):
     ax.set_yscale("log")
     ax.set_xlim(4, 40)
     ax.set_ylim(0.8, 2e4)
-    ax.set_xlabel("N: at most N sites on each axis (m = N − 3 choices per axis)")
+    ax.set_xlabel("N: at most N positions on each axis (m = N − 3 choices per axis)")
     ax.set_ylabel("different figures (orbits)")
     ax.legend(loc="lower right", fontsize=9)
-    ax.set_title("(c) how many different figures, up to N sites per axis", loc="left")
+    ax.set_title("(c) how many different figures, up to N positions per axis", loc="left")
 
 
 def fig_families():
@@ -212,7 +212,7 @@ def fig_families():
                  color=INK, y=0.93)
     fig.text(0.01, 0.075, "Stars: the fluctuation vectors of T (upper ray) and P (lower ray) "
              "of each axis at ψ*, true angle θ_NRS and true lengths σ_T, σ_P, drawn one axis per "
-             "direction; faint rays are their opposites. Every axis with 4 or more sites opens; "
+             "direction; faint rays are their opposites. Every axis with 4 or more positions opens; "
              "equal axes open equally.", fontsize=9, color=MUTED)
     fig.savefig(OUT / "d37i_box_families.png", bbox_inches="tight")
     plt.close(fig)
@@ -285,7 +285,7 @@ def fig_table():
                 ax.text(xc, yc, text, ha="center", va="center", fontsize=10.5, color=INK,
                         linespacing=1.25)
     yb = top - 3 * row_h - 0.55
-    ax.text(0.1, yb, "Every box with 4 or more sites per axis is in exactly one family "
+    ax.text(0.1, yb, "Every box with 4 or more positions per axis is in exactly one family "
             "(family_partition). Orbit × axis orders kept = 3! = 6 (card_orbit_mul_card_stab); "
             "symmetries = 8 reflections × axis orders kept (card_keepsAngles_family).",
             fontsize=10, color=INK2)

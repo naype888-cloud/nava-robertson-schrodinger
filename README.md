@@ -68,7 +68,7 @@ is a declared bridge.
 
 ## Main theorems
 
-**NRS — base theorem (one row, `d` sites).** At the state of maximal tension `ψ*`,
+**NRS — base theorem (one row, `d` positions).** At the state of maximal tension `ψ*`,
 
     σ_T · σ_P = C_Nava(d) · ½ |⟨[T_d, P_d]⟩|,      ½ |⟨[T_d, P_d]⟩| = 1/(d−1),
 
@@ -104,15 +104,15 @@ is strict (`D23d`). The statement is about the band
 
 * A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
   (`expectation_commutator_eq_zero`, `D23`).
-* The maximal-tension state `ψ*` has a nonzero coordinate at every site
+* The maximal-tension state `ψ*` has a nonzero coordinate at every position
   (`fiedlerVec_apply_ne_zero`, `D5`), and `Var T_d · Var P_d > 0` there
-  (`variance_mul_variance`, `D21`), so `Var P_d > 0`: no site carries all the weight.
+  (`variance_mul_variance`, `D21`), so `Var P_d > 0`: no position carries all the weight.
 * From `d = 4` no unit state has maximal tension and minimum uncertainty at once: every
   maximal-tension state satisfies Robertson–Schrödinger strictly
   (`strict_inequality_of_maxTension`, `D21`), strictly on a whole band below the maximum
   (`strict_inequality_bandWidth`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
   most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
-* A position eigenstate (a single-site excitation) saturates Robertson–Schrödinger trivially,
+* A position eigenstate (a single-position excitation) saturates Robertson–Schrödinger trivially,
   `0 = 0`, so it cannot witness the defect; for `d ≥ 4`, `ψ*` does, and every defect witness
   fluctuates in both `T_d` and `P_d` and is an eigenstate of neither (`D47`).
 
@@ -141,9 +141,9 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 
 * pairs on different axes commute — only `T` and `P` of the same axis collide;
 * at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
-  only with `2` or `3` sites and is strict from `4` on, on all three axes at once;
+  only with `2` or `3` positions and is strict from `4` on, on all three axes at once;
 * each axis carries its own angle, at least `θ_NRS(4) ≈ 7.43°` and below `≈ 28.30°` (`D37b`);
-* **finite isotropy**: if every axis has at least `D` sites, the angles of any two axes differ
+* **finite isotropy**: if every axis has at least `D` positions, the angles of any two axes differ
   by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
   finite cubes only (`D37b`);
 * the spectrum is axis by axis: eigenvalues add, and `Ψ*` is the top of
@@ -154,14 +154,14 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   exactly `θ_NRS(4) ≈ 7.43°` (`D37d`);
 * **the volumetric quantum** `𝒱(dx, dy, dz) = δ(dx) · δ(dy) · δ(dz)`, with `δ(d) = C_Nava(d) − 1`
   the dimensional quantum of an axis (`θ_NRS(d) = arccos (1/(1 + δ(d)))`): it vanishes only if
-  some axis has `2` or `3` sites; from `4 × 4 × 4` it is strictly positive, at least
+  some axis has `2` or `3` positions; from `4 × 4 × 4` it is strictly positive, at least
   `δ(4)³ = (√((99 − 42√5)/5) − 1)³ ≈ 6.09 × 10⁻⁷`, strictly below `δ_∞³ ≈ 2.50 × 10⁻³`, and
   strictly increasing in each axis; `𝒱(4,4,4)² = (δ(4)²)³` relates it to the area quantum of
   `D11` (`D37e`);
 * **light cone**: `T_d` is, up to shift and scale, the Dirichlet discretization of `−d²/dx²` on
   `[−1, 1]` (the particle in a box), so it only connects neighbours; counting time in steps of
   transport, `(T_d^k) i j = 0` whenever `|i − j| > k`, and the edge is reached exactly,
-  `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one site per step. On the cube the cone of steps is the
+  `(T_d^k) i (i+k) = ρ_d^{−k} ≠ 0` — maximal speed one position per step. On the cube the cone of steps is the
   octahedron `k·β₃ = {|Δx| + |Δy| + |Δz| ≤ k}` (`β₃`: the cross-polytope in Coxeter's notation),
   on two axes the rhombus `|Δx| + |Δy| ≤ k` (`D37f`, `D43`).
   In continuous time each axis spreads on its own, so the front is a cube (a square on two
@@ -171,11 +171,11 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   faster than any exponential in the distance (`D37g`);
 * **dispersion and group velocity**: `T_d` has dispersion `ε(θ) = 2 cos θ / ρ_d` with group
   velocity `2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Position obeys the Heisenberg
-  equation `d/dt (U† P_d U) = U† K_d U`, so the tension is velocity: measured in sites, no state
-  moves faster than one site per unit of time and `ψ*` moves at exactly that speed, the slope of
+  equation `d/dt (U† P_d U) = U† K_d U`, so the tension is velocity: measured in positions, no state
+  moves faster than one position per unit of time and `ψ*` moves at exactly that speed, the slope of
   the cone. On the cube each axis has that limit and `Ψ*` reaches it on all three at once:
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
-  lattice speed limit is a cube, not a sphere (`D38`).
+  speed limit of transport is a cube, not a sphere (`D38`).
 
 **det|NRS³ — Robertson 1934 on the cube (`D49`–`D49k`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
@@ -186,11 +186,11 @@ dropped.
 * **Canonical axes** (the fluctuation vectors of different axes orthogonal, the three axes
   meeting at one vertex): `Σ` splits as well, `det Σ = Π (g_i + ω_i²)` with `g_i` the defect of
   axis `i`, and `det Σ / |det Ω| = Π (1 + g_i/ω_i²)` (`D49k`). In the band `Ϙ(d)` every defect is
-  positive, for every state (`D49e`), so det|NRS³ is strict on every box with `4` or more sites
+  positive, for every state (`D49e`), so det|NRS³ is strict on every box with `4` or more positions
   per axis. Product states are canonical (`D49c`); so is any state with one axis split off
   (`D49j`).
 * **At the state of the cube** `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exactly
-  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` sites
+  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` positions
   (`D49c`); at `4 × 4 × 4` it is `C_Nava(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
   axes, there is no room for entanglement: every state is `Ψ*` in its octant (`D49f`).
 * **Why `2` and `3`.** The commutators of transport and position close, `[T_d, [T_d, P_d]]` in
@@ -218,12 +218,12 @@ senses along the axis). The arrows live in the state space of the cube; each pai
 to the axis it belongs to. Values are exact where stated; magnified drawings say so.
 
 **The star at the first rupture `4 × 4 × 4`.** Each axis opens `θ_NRS(4) ≈ 7.43°`; the three
-pairs are mutually perpendicular (`D37b`, `D37d`). Right: `θ_NRS(d)` against the number of sites,
+pairs are mutually perpendicular (`D37b`, `D37d`). Right: `θ_NRS(d)` against the number of positions,
 from `0°` at `d = 2, 3` to the floor `θ_NRS(4)` and towards the unattained ceiling `≈ 28.30°`.
 
 ![NRS³ star at 4×4×4](docs/figures/nrs3_star_4x4x4.png)
 
-**The star in the cube and its growth.** The `4 × 4 × 4` lattice with the star; zoom at true
+**The star in the cube and its growth.** The `4 × 4 × 4` cube with the star; zoom at true
 scale; the same star with the angle drawn `×4`; and the star at `4³`, `8³`, `40³` and at the
 ceiling (`D37b`).
 
@@ -267,7 +267,7 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 ![Octahedral envelope of the star](docs/figures/nrs3_octahedron_hd.png)
 
 **The octahedral symmetry (`D37h`).** The `48` signed permutations of the axes of `d × d × d`
-(the group `O_h`) act faithfully on the sites and send `(T, P)` of axis `i` to `(T, ±P)` of axis
+(the group `O_h`) act faithfully on the positions and send `(T, P)` of axis `i` to `(T, ±P)` of axis
 `σ i`, so the NRS angle follows the axis at every state; at `Ψ*` all three angles are `θ_NRS(d)`
 for all `48`. With unequal axes each keeps its own angle and only the reflections and the
 exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `100 × 100 × 4`,
@@ -276,7 +276,7 @@ exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `
 
 ![Octahedral symmetry of the cube](docs/figures/d37h_octahedral_symmetry.png)
 
-**The three families of boxes (`D37i`).** With `4` or more sites on every axis, each box is a
+**The three families of boxes (`D37i`).** With `4` or more positions on every axis, each box is a
 deformation of the regular `4 × 4 × 4`: every axis opens, each at its own angle. The boxes split
 into exactly three families (`family_partition`), by how many axes have the same length. The
 orbit of a box, the boxes obtained by reordering its axes, is one figure turned; orbit ×
@@ -292,12 +292,12 @@ Symmetries: `card_keepsAngles_family`; orbits: `card_orbit_regular`, `_twoEqual`
 at `N = 10`, `7 + 126 + 210 = 343` boxes are `7 + 42 + 35 = 84` different figures
 (`count_ten`). The formulas in `m` are elementary combinatorics, checked in Lean at `N = 10`.
 
-**The quantum is never erased (`quantum_never_erased`).** For every box with `4` or more sites
+**The quantum is never erased (`quantum_never_erased`).** For every box with `4` or more positions
 per axis, of any family and turned or reflected in any of the `48` ways, every axis opens between
 `θ_NRS(4) ≈ 7.43° > 0` and the unattained `arccos (1/C_∞) ≈ 28.30°`, and the volumetric quantum
 stays between the floor and the ceiling, `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes, turns and
 deforms, but it is not erased; finite or infinite, it never reaches `0`. The only way to erase it
-is to leave the rule, an axis with `2` or `3` sites (`quantum_erased_iff`).
+is to leave the rule, an axis with `2` or `3` positions (`quantum_erased_iff`).
 
 ![The three families of boxes](docs/figures/d37i_families_table.png)
 
@@ -316,7 +316,7 @@ tension is velocity); the allowed velocities on the cube, `|vᵢ| ≤ 1` per axi
 corner `(1, 1, 1)`; and the two-dimensional prediction: a square velocity region, `√2` along the
 diagonal, against a circle.
 
-![Group velocity and lattice anisotropy](docs/figures/d38_group_velocity.png)
+![Group velocity and anisotropy of the cube](docs/figures/d38_group_velocity.png)
 
 **Mandelstam–Tamm and Cramér–Rao (`D41`).** Robertson for `(T_d, P_d)` is the Mandelstam–Tamm
 bound on the speed of `⟨P_d⟩` and the quantum Cramér–Rao bound for estimating with `P_d`. At the
@@ -325,7 +325,7 @@ maximal-tension state both are attained to the fraction `1/C_Nava(d)²`: exactly
 
 ![Mandelstam–Tamm and Cramér–Rao](docs/figures/d41_mandelstam_tamm_cramer_rao.png)
 
-**The velocity threshold (`D43`).** On an axis of `4` sites, the smallest Robertson–Schrödinger
+**The velocity threshold (`D43`).** On an axis of `4` positions, the smallest Robertson–Schrödinger
 angle a state can have at velocity `v`: zero up to `v*(4) = 3(√5 − 1)/4 ≈ 0.927`, then forced,
 rising to `θ_NRS(4) ≈ 7.43°` at the cone. The end points are Lean theorems; the curve between
 them is numerical. A beam tilted by `θ` per guide (`v = sin θ`) keeps `7.43°` at every tilt: the
@@ -377,9 +377,8 @@ out: `1 ∈ Ϙ(d)` for every `d ≥ 4`. Every unit state transported at the cone
 Robertson–Schrödinger surplus, whatever `d ≥ 4` is, and so does every state within
 `((d − 1)/2) · bandWidth d` of the cone. The condition is sharp: at `d = 2, 3`, `ψ*` moves at the
 cone and saturates. With the declared bridge (cone speed = speed of light in vacuum), nothing
-transported at `c` in vacuum reaches the minimum uncertainty. A speed `c/n` below the cone stays
-in the band only while `ϙ(d) > 1 − 1/n`: for air (`n = 1.000293`) up to `d ≈ 135` (odd) and
-`d ≈ 150` (even), numerically. Script: `docs/simulation/figures_cone_in_band.py`.
+transported at `c` in vacuum reaches the minimum uncertainty. Script:
+`docs/simulation/figures_cone_in_band.py`.
 
 ![The cone lies in every band](docs/figures/d46_cone_in_band.png)
 
@@ -400,13 +399,13 @@ budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 
 **The Physlib port.** NRS and NRS³ restated on physlib's open tight binding chain (`H`, `X` and
 the current `J = i(HX − XH)`): 6 pull requests merged, 3 in review, 12 ready, then the seal
-(`D8`, `D9`). PR 20 gives a new proof that the band `Ϙ` is open from four sites on, by time
+(`D8`, `D9`). PR 20 gives a new proof that the band `Ϙ` is open from four positions on, by time
 reversal and compactness (see [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PORT.md)). Script:
 `docs/simulation/figures_physlib_port.py`.
 
 ![The Physlib port](docs/figures/physlib_port_ladder.png)
 
-![The band is open from four sites on](docs/figures/physlib_band_time_reversal.png)
+![The band is open from four positions on](docs/figures/physlib_band_time_reversal.png)
 
 ## Declared physical bridge
 
@@ -456,8 +455,8 @@ the Robertson–Schrödinger floor in a physical system that realizes `T_N:P_N`.
 neighbours with uniform strength:
 
 * a chain of `N` qubits (or spins) with uniform nearest-neighbour exchange, in its
-  single-excitation sector: the excitation hops by `A_N` (so `T_N = A_N/ρ_N`), and its site is
-  `P_N` (sites relabelled to `[−1, 1]`). This is the setting of quantum state transfer along
+  single-excitation sector: the excitation hops by `A_N` (so `T_N = A_N/ρ_N`), and its position is
+  `P_N` (positions relabelled to `[−1, 1]`). This is the setting of quantum state transfer along
   spin chains: the state moves cell by cell, it is not teleported;
 * a single `N`-level system (for `N = 4`, a ququart) whose drive couples only consecutive levels
   `0 ↔ 1 ↔ … ↔ N−1`, with `P_N` the level index;
@@ -470,7 +469,7 @@ the theorems here do not cover that geometry.
 `(−i)^j` (`D5`, `D21`), `ψ*_j ∝ (−i)^j sin((j+1)π/(N+1))`.
 
 **Measurement.** The spreads `σ_T`, `σ_P` of transport and position in `ψ*` (`P_N` is diagonal in
-the site basis; `T_N` is diagonal in the sine-mode basis), and the commutator term
+the position basis; `T_N` is diagonal in the sine-mode basis), and the commutator term
 `½ |⟨[T_N, P_N]⟩| = 1/(N−1)`.
 
 **Prediction.** The Robertson–Schrödinger ratio `R = σ_T σ_P / |⟨x, y⟩|`, with `x`, `y` the
@@ -478,7 +477,7 @@ fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_Nava(N)`; at
 covariance vanishes and `|⟨x, y⟩| = ½ |⟨[T_N, P_N]⟩|`. Under imperfections only this ratio keeps
 the controls at `1` (error budget in `docs/EXPERIMENT.md`):
 
-| sites `N` | `C_Nava(N)` | excess over the floor | NRS angle |
+| positions `N` | `C_Nava(N)` | excess over the floor | NRS angle |
 |---|---|---|---|
 | 2 | 1 | 0 (saturates — control) | 0° |
 | 3 | 1 | 0 (saturates — control) | 0° |
@@ -504,7 +503,7 @@ growing with `N` along the table. Since the excess at `N = 4` is below 1 %, long
 larger signal and test the growth at the same time. At `N = 4` a second prediction is available:
 states that saturate Robertson–Schrödinger carry tension at most `1/φ ≈ 0.618`, against a
 maximal tension of `2/3` (`D23f`, `D23g`). In three dimensions, the same holds on each axis of an
-`N × N × N` lattice, and the variances of the three axes add (`D37d`).
+`N × N × N` cube, and the variances of the three axes add (`D37d`).
 
 ## License
 
@@ -597,8 +596,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   mass of the excitation are not part of the package.
 - `D16d_DefectPropagation`: a local change of transport travels inside the cone of
   `D37f`. If `M'` differs from `T_d` only on the rows of a set `S`, then after `k` steps
-  every site at distance `≥ k` from `S` sees exactly what it saw before
-  (`change_unseen`, for any state). The bound is sharp: an on-site change `ε` at
+  every position at distance `≥ k` from `S` sees exactly what it saw before
+  (`change_unseen`, for any state). The bound is sharp: a local change `ε` at
   `s = i + k` is unseen at `i` after `k` steps and differs by `ε ρ_d^{−k} ≠ 0` after
   `k + 1` (`onSite_front`). That such a change creates a cycle (the bridge to `D16c`) is
   not part of the package.
@@ -609,7 +608,7 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   links give the step `2q` of `D16c` (`two_links_step`). The transport with a link
   differs from `T_d` only on rows `a`, `b`, so by `D16d` the cycle is unseen outside the
   cone (`link_unseen`).
-- `D16f_HandleGraph`: the path on `n + 1` sites with the `k` non-local links `{0, j + 2}`
+- `D16f_HandleGraph`: the path on `n + 1` positions with the `k` non-local links `{0, j + 2}`
   has cycle rank exactly `k` (`cycleRank_handleGraph`). With `k = 2g` its defect is the
   defect `Ω(Σ_g) = 2g δ∞` of `D16` (`handleGraph_defect`) and, under `HGaussBonnet`, it
   fixes the total curvature of `Σ_g` (`handleGraph_curvature`); one handle is two links
@@ -629,8 +628,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   transport whose new cycles cross the cut (`simpleEntropy_eq_log_card_graphs`).
 - `D16i_CutHorizon`: the cut is a horizon. Transport with a set of links differs from `T_d`
   only on the rows of their ends, so it is unseen outside their cone (`links_unseen`). A
-  site with `i + k + w ≤ c + 1` cannot tell apart any two configurations of links within
-  `w` sites of the cut for `k` steps (`horizon_hides`); the window is not empty from
+  position with `i + k + w ≤ c + 1` cannot tell apart any two configurations of links within
+  `w` positions of the cut for `k` steps (`horizon_hides`); the window is not empty from
   `w = 2` (`nearLinks_nonempty`). What is hidden is the `C(M_w, m)` configurations of
   `D16g`, each with defect `m δ∞` (`hidden_configurations`). The horizon is the
   finite-time cone of `D37f`, not a black hole.
@@ -749,8 +748,8 @@ unit and no constant to it.
 
 ## NRS³ — modules
 
-- `D4_WhyNotDiagonal`: the site of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
-  changes one coordinate by one site (lengths `1 < √2 < √3`: the diagonal is never minimal).
+- `D4_WhyNotDiagonal`: the position of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
+  changes one coordinate by one position (lengths `1 < √2 < √3`: the diagonal is never minimal).
 - `D37_PathGraph3D`: one pair `(T, P)` per axis (`liftAlong`, `prodAlong`), commuting across
   axes (`commutator_axes_xy/xz/yz`); NRS on each axis (`saturation_cube`, `strict_cube`).
 - `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_angleNRS`), zero only at
@@ -770,10 +769,10 @@ unit and no constant to it.
 - `D37f_LightCone`: generic cone for powers of a local matrix (`pow_apply_eq_zero_of_lt`);
   on the path `lightCone`, `lightCone_state` (no signal outruns the cone) and
   `lightCone_edge` / `lightCone_edge_ne_zero` (the edge is reached); on the cube
-  `lightCone_cube` for `T_x + T_y + T_z` with the lattice distance.
+  `lightCone_cube` for `T_x + T_y + T_z` with the step distance.
 - `D37g_LiebRobinson`: entries of `exp(−i t T_d)` as a series (`entry_U`), `|(T_dⁿ)ᵢⱼ| ≤ 1`
   (`norm_entry_pow_le`), and the bound `lieb_robinson`.
-- `D37h_OctahedralSymmetry`: the cube `d × d × d` on sites `Fin 3 → Fin d`; the `48` signed
+- `D37h_OctahedralSymmetry`: the cube `d × d × d` on positions `Fin 3 → Fin d`; the `48` signed
   permutations of the axes (`card_signedPerm`), acting faithfully for `d ≥ 2`
   (`cubeSym_injective`), move `T`, `P` of axis `i` to `T`, `±P` of axis `σ i`
   (`reindex_liftAxis`), so the angle follows the axis at every state (`angleAxis_cubeSym`); at
@@ -785,9 +784,9 @@ unit and no constant to it.
   different axes (`family_partition`); stabilizers `6`, `2`, `1` (`card_axisStab_*`), symmetries
   `48`, `16`, `8` (`card_keepsAngles_family`), orbit × stabilizer = `6`
   (`card_orbit_mul_card_stab`), orbits `1`, `3`, `6` (`card_orbit_*`); at `N = 10`, `84` figures
-  (`count_ten`); `quantum_never_erased`: every box with `4` or more sites per axis keeps
+  (`count_ten`); `quantum_never_erased`: every box with `4` or more positions per axis keeps
   `θ_NRS(4) ≤ θ < arccos (1/C_∞)` on each axis and `0 < δ(4)³ ≤ 𝒱 < δ_∞³` under all `48`
-  symmetries; `quantum_erased_iff`: `𝒱 = 0` only with an axis of `2` or `3` sites.
+  symmetries; `quantum_erased_iff`: `𝒱 = 0` only with an axis of `2` or `3` positions.
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;
@@ -825,7 +824,7 @@ the three tensions — x, y, z, none can be dropped.
   Robertson–Schrödinger surplus of each axis; a positive surplus on `x`, `y` and `z` makes
   det|NRS³ strict (`robertson_det_prod3_strict`). At `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exact,
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
-  (`det_covMatrix_PsiStar3D`), strictly above the bound on every box with `4` or more sites on
+  (`det_covMatrix_PsiStar3D`), strictly above the bound on every box with `4` or more positions on
   each axis (`robertson_det_PsiStar3D_strict`); at `4 × 4 × 4` the ratio is
   `C_Nava(4)⁶ ≈ 1.0520`.
 - `D49d_RobertsonDeterminantBand` (certificates target): product states whose speed on each axis
@@ -845,7 +844,7 @@ the three tensions — x, y, z, none can be dropped.
   its direction (`cols_of_maxTension`), and with `|v| = 1` on `x`, `y`, `z` the state is a phase
   times `ψ* ⊗ ψ* ⊗ ψ*` (`eq_smul_octant`). For every state at maximal tension,
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
-  (`det_covMatrix_maxTension`), strict on every box with `4` or more sites per axis
+  (`det_covMatrix_maxTension`), strict on every box with `4` or more positions per axis
   (`robertson_det_maxTension_strict`).
 - `D49g_RobertsonDeterminantEquality`: the equality case of Robertson 1934. If
   `‖det B‖ = det A`, every eigenvalue of `T B Tᴴ` is `±1` and `(A + B) A⁻¹ (A − B) = 0`
@@ -866,7 +865,7 @@ the three tensions — x, y, z, none can be dropped.
 - `D49i_TransportPositionLieClosure`: the commutators of transport and position close only at
   `d = 2, 3`. The bracket with position always closes, `[P_d, [T_d, P_d]] = −h² T_d` with
   `h = 2/(d − 1)` (`commutator_P_C`); the bracket with transport, `[T_d, [T_d, P_d]]`, is diagonal,
-  `−2h/ρ_d²` at the first site (`D_zero_zero`) and `0` on the first interior site (`D_one_one`),
+  `−2h/ρ_d²` at the first position (`D_zero_zero`) and `0` on the first interior position (`D_one_one`),
   so it lies in `span {T_d, P_d, [T_d, P_d]}` iff `d = 2` or `d = 3` (`closure_iff`). At `d = 2, 3`
   the three close like a spin, a Lie algebra of dimension three, as `x`, `p`, `iħ` close in the
   continuum; from `d = 4` on they do not close. Numerically the algebra generated by `T_d` and

@@ -11,7 +11,7 @@ Writes to docs/figures/:
     only the reflections and the exchanges of axes of equal length preserve the triple:
     48, 16, 8 (keepsAngles_iff, card_keepsAngles_equal / _two_equal / _distinct in D37h).
 
-Panels (a) and (b) are computed from the matrices of D3 on the 64 sites; the check
+Panels (a) and (b) are computed from the matrices of D3 on the 64 positions; the check
 angle(σ i, g Ψ) = angle(i, Ψ) is printed. Panel (c) evaluates the closed form numerically.
 
 Run:  python3 docs/simulation/figures_octahedral_symmetry.py
@@ -36,7 +36,7 @@ def psi_star(d):
 
 
 def axis_ops(d):
-    """(T, P) of each axis of the cube d × d × d, sites (a0, a1, a2) ↦ a0 d² + a1 d + a2."""
+    """(T, P) of each axis of the cube d × d × d, positions (a0, a1, a2) ↦ a0 d² + a1 d + a2."""
     t, p = ops(d)
     one = np.eye(d)
     out = []
@@ -161,7 +161,7 @@ def fig_octahedral():
 
     fig.suptitle("D37h — the octahedral symmetry O_h of the cube d × d × d", x=0.01,
                  ha="left", fontsize=14, color=INK)
-    fig.text(0.01, -0.02, "(a), (b): the 64-site cube 4 × 4 × 4 with T and P of D3 on each axis; "
+    fig.text(0.01, -0.02, "(a), (b): the 64-position cube 4 × 4 × 4 with T and P of D3 on each axis; "
              "a signed permutation sends (T, P) of axis i to (T, ±P) of axis σ i. "
              "(c): closed form of C_Nava (D8); the defect is there on every axis with d ≥ 4, "
              "its symmetry depends on which axes have equal length (48, 16, 8: D37h).",

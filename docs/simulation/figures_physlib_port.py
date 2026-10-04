@@ -2,7 +2,7 @@
 
 Writes to docs/figures/:
   physlib_port_ladder.png          the pull requests of the port, their status and dependencies
-  physlib_band_time_reversal.png   why the velocity band is open from four sites on (PR 20)
+  physlib_band_time_reversal.png   why the velocity band is open from four positions on (PR 20)
 
 The port states NRS on physlib's open tight binding chain: Hamiltonian H (hopping t), position X
 (spacing a), current J = i(HX − XH). The ladder records the status on 2026-09-30. In the second
@@ -156,11 +156,11 @@ def fig_ladder():
 
 
 # ---------------------------------------------------------------------------------------------
-# 2. The band is open from four sites on
+# 2. The band is open from four positions on
 # ---------------------------------------------------------------------------------------------
 
 def chain(n, a=1.0, t=1.0):
-    """H (E0 = 0), X and J = i(HX − XH) of the open chain with n sites."""
+    """H (E0 = 0), X and J = i(HX − XH) of the open chain with n positions."""
     hop = np.diag(np.ones(n - 1), 1)
     h = -t * (hop + hop.T)
     x = np.diag(a * np.arange(n))
@@ -199,7 +199,7 @@ def fig_band():
     ax.plot(nn, 2 * np.cos(np.pi / (nn + 1)), color=ORANGE, lw=1, alpha=0.5)
     ax.plot(nn, -2 * np.cos(np.pi / (nn + 1)), color=BLUE, lw=1, alpha=0.5)
     ax.axhline(0, color=GRID, lw=1)
-    ax.set_xlabel("sites  N")
+    ax.set_xlabel("positions  N")
     ax.set_ylabel("current  (units of a t)")
     ax.set_title("(a) Currents 2at cos(kπ/(N+1)):\nthe extremes ±maxCurrent are simple",
                  loc="left", fontsize=11)
@@ -222,7 +222,7 @@ def fig_band():
     bx.set_ylim(-1.9, 1.9)
     bx.set_yticks([])
     bx.set_xticks(j)
-    bx.set_xlabel("site  j   (N = 6)")
+    bx.set_xlabel("position  j   (N = 6)")
     bx.set_title("(b) Time reversal conjugates the\nphases iʲ → (−i)ʲ and reverses J",
                  loc="left", fontsize=11)
     bx.grid(False)
@@ -237,7 +237,7 @@ def fig_band():
     cx.plot(ns, d1, "o-", ms=6, lw=1.3, color=ORANGE, mec=SURFACE, mew=1, label="at ψ₁")
     cx.plot(ns, dn, "x", ms=7, mew=1.6, color=BLUE, label="at ψ_N = Θψ₁")
     cx.plot([2, 3], d1[:2], "o", ms=9, color=INK2, mec=SURFACE, mew=1.5, zorder=5)
-    cx.set_xlabel("sites  N")
+    cx.set_xlabel("positions  N")
     cx.set_ylabel("defect / ⟨⁅H, X⁆⟩²  =  C_Nava² − 1")
     cx.set_title("(c) Same defect at both extremes:\nzero only at N = 2, 3 (PR 11)",
                  loc="left", fontsize=11)
@@ -256,13 +256,13 @@ def fig_band():
     dx.axhline(1, color=INK2, lw=1.3)
     dx.set_ylim(0.915, 1.012)
     dx.set_xlim(1, 31)
-    dx.set_xlabel("sites  N")
+    dx.set_xlabel("positions  N")
     dx.set_ylabel("speed / maxCurrent")
     dx.set_title("(d) v* is attained, so v* < maxCurrent:\nϘ = (v*, maxCurrent] ≠ ∅ for N ≥ 4",
                  loc="left", fontsize=11)
     dx.legend(loc="lower right", fontsize=8.5)
 
-    fig.suptitle("PR 20: the velocity band is open from four sites on — time reversal, simple "
+    fig.suptitle("PR 20: the velocity band is open from four positions on — time reversal, simple "
                  "extremes and compactness, without an explicit width", x=0.01, ha="left",
                  fontsize=13, color=INK)
     fig.text(0.01, -0.01, "Lean (PR 18–20): |⟨J⟩| ≤ maxCurrent in every state; a unit vector at "

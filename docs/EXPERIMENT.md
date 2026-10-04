@@ -12,7 +12,7 @@ coupling constant `κ`. In the paraxial regime the field amplitudes `ψ_j(z)` ob
 
     i dψ/dz = κ A_N ψ,
 
-with `A_N` the adjacency matrix of the path on `N` sites. The propagation length `z` plays the role
+with `A_N` the adjacency matrix of the path on `N` positions. The propagation length `z` plays the role
 of time (`t = κ z`), and `T_N = A_N / ρ_N`, `ρ_N = 2 cos(π/(N+1))`. Position is the guide index,
 relabelled to `P_N = diag(−1, …, 1)`.
 
@@ -126,19 +126,19 @@ Consequences for the design:
 
 ## 6. Units: from the algebra to the laboratory
 
-The theorems carry no unit: sites, steps and `R` are pure numbers. Units enter in one place.
+The theorems carry no unit: positions, steps and `R` are pure numbers. Units enter in one place.
 
 **The cone fixes the speed.** `T_N` only connects neighbours, so after `k` steps an amplitude
-has moved at most `k` sites, and the edge is reached (`D37f`: `lightCone`, `lightCone_edge`).
-The slope of the cone is exactly one site per step. In continuous time, `U(t) = exp(−i t T_N)`,
+has moved at most `k` positions, and the edge is reached (`D37f`: `lightCone`, `lightCone_edge`).
+The slope of the cone is exactly one position per step. In continuous time, `U(t) = exp(−i t T_N)`,
 the edge is no longer sharp, but outside the cone the amplitude falls as `|t|^r / r! · e^{|t|}`
-with `r` the distance (`D37g`, `lieb_robinson`): the front still advances one site per unit of
+with `r` the distance (`D37g`, `lieb_robinson`): the front still advances one position per unit of
 `t`, and what lies beyond it is a tail that vanishes faster than any exponential.
 
 **The laboratory gives that slope a number.** The slope of the cone is identified with the
 measured limiting speed of the platform:
 
-| Platform | site | step | slope of the cone |
+| Platform | position | step | slope of the cone |
 |---|---|---|---|
 | motion in space | cell of length `L` | tick of duration `τ` | `L / τ = c` |
 | waveguide array | one guide | propagation length `z` | set by the coupling `κ` (per mm) |

@@ -6,7 +6,7 @@ Writes docs/figures/nrs_band.png.
 reached; the excess C_Nava(d) − 1 over saturation grows to C∞ − 1 ≈ 0.13572.
 (b) the angle θ_NRS(d) = arccos(1/C_Nava(d)): 0 at d = 2, 3, a jump to θ_NRS(4) ≈ 7.435°, then
 strictly increasing towards arccos(1/C∞) ≈ 28.298°, never reached.
-(c) the same angles as rays: every axis of every box with 4 or more sites opens inside the
+(c) the same angles as rays: every axis of every box with 4 or more positions opens inside the
 wedge [7.435°, 28.298°).
 
 Proved in Lean (base repository): θ_NRS(d) = arccos(1/C_Nava(d)) (D37b, angleNRS_eq); for
@@ -70,7 +70,7 @@ def fig_band():
     ax.set_xscale("log")
     ax.set_xlim(1.8, 1.2e4)
     ax.set_ylim(0.99, 1.155)
-    ax.set_xlabel("sites on the axis  d")
+    ax.set_xlabel("positions on the axis  d")
     ax.set_ylabel("C_Nava(d)")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.62), fontsize=8.5)
     ax.set_title("(a) C_Nava: from 1 to C∞, never reached", loc="left", fontsize=11)
@@ -91,7 +91,7 @@ def fig_band():
     bx.set_xscale("log")
     bx.set_xlim(1.8, 1.2e4)
     bx.set_ylim(-1.5, 31)
-    bx.set_xlabel("sites on the axis  d")
+    bx.set_xlabel("positions on the axis  d")
     bx.set_ylabel("θ_NRS(d)  [degrees]")
     bx.set_title("(b) the angle: a jump at 4, then the band", loc="left", fontsize=11)
 

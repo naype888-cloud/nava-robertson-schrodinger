@@ -2,7 +2,7 @@
 
 Writes docs/figures/nrs_quantum_octahedron.png.
 
-Each axis with d sites carries the dimensional quantum δ(d) = C_Nava(d) − 1 (D25) and opens at
+Each axis with d positions carries the dimensional quantum δ(d) = C_Nava(d) − 1 (D25) and opens at
 θ_NRS(d) = arccos(1/(1 + δ(d))) (D37b). The octahedron of a box dx × dy × dz has its vertices at
 ±δ(dx), ±δ(dy), ±δ(dz) on the three axes: its volume is (4/3)·δ(dx)δ(dy)δ(dz) = (4/3)·𝒱, the
 volumetric quantum of D37e times 4/3.
@@ -13,7 +13,7 @@ the unattained one of d → ∞ (δ_∞ = C∞ − 1 on every axis, dashed).
 
 Proved in Lean (base repository): δ(d) = 0 iff d = 2, 3 (D25, dimQuantum_eq_zero_iff);
 θ_NRS(d) = arccos(1/C_Nava(d)) (D37b, angleNRS_eq); δ(4)³ ≤ 𝒱 < δ_∞³, strictly increasing in
-each axis (D37e, volQuantum_certificate); every box with 4 or more sites keeps its quantum, in
+each axis (D37e, volQuantum_certificate); every box with 4 or more positions keeps its quantum, in
 one of three families (D37i, quantum_never_erased, family_partition, card_orbit_*). Values are
 evaluated from the closed form of C_Nava² (D19, D20); the factor 4/3 is the volume of the
 octahedron |x|/a + |y|/b + |z|/c ≤ 1.
@@ -127,8 +127,8 @@ def fig_octahedron():
         for x, t in zip(xs_c, r):
             cx.text(x, y, t, fontsize=9.5 if i else 9, color=col,
                     fontweight="bold" if i == 0 else "normal", transform=cx.transAxes)
-    cx.text(0.0, 0.05, "With 4 to 6 sites per axis: 3 + 6 + 1 = 10 figures from 27 boxes. "
-            "Every box with 4 or more sites\nis in exactly one family, and its quantum lies in "
+    cx.text(0.0, 0.05, "With 4 to 6 positions per axis: 3 + 6 + 1 = 10 figures from 27 boxes. "
+            "Every box with 4 or more positions\nis in exactly one family, and its quantum lies in "
             "δ(4)³ ≤ V < δ_∞³ (never erased).", fontsize=8.5, color=INK2, transform=cx.transAxes)
     cx.set_title("(c) how many deformations, and how they group (D37i)", loc="left", fontsize=11)
 

@@ -140,7 +140,7 @@ def fig_threshold():
     ax.set_ylim(-0.3, 8.6)
     ax.set_xlabel("velocity  v  (fraction of the cone, D38)")
     ax.set_ylabel("smallest Robertson–Schrödinger angle  (degrees)")
-    ax.set_title("The velocity threshold of minimum uncertainty on 4 sites (D43)", loc="left")
+    ax.set_title("The velocity threshold of minimum uncertainty on 4 positions (D43)", loc="left")
     fig.text(0.01, 0.01, "Curves: numerical minimum over states (SLSQP) and the tilted-beam "
              "family. Points: exact values proved in Lean.", color=MUTED, fontsize=8.5)
     fig.tight_layout(rect=(0, 0.03, 1, 1))
@@ -167,7 +167,7 @@ def fig_by_dimension():
                 arrowprops=dict(arrowstyle="-", color=MUTED, lw=1))
     ax.text(20, 0.955, "d ≥ 5: numerical; the band [v*, 1] narrows\nbut the defect at the cone "
             "grows (D37b)", color=INK2, fontsize=10.5)
-    ax.set_xlabel("sites per axis  d")
+    ax.set_xlabel("positions per axis  d")
     ax.set_ylabel("threshold  v*(d)")
     ax.set_ylim(0.915, 1.012)
     ax.set_title("Fastest minimum-uncertainty velocity by dimension", loc="left")
@@ -197,7 +197,7 @@ def fig_light_cone():
     ax.set_xlim(-20, 20)
     ax.grid(False)
     ax.set_title("(a) Steps: exactly zero outside |i − j| ≤ k  (D37f)", loc="left", fontsize=12)
-    ax.set_xlabel("site  i − j")
+    ax.set_xlabel("position  i − j")
     ax.set_ylabel("steps  k")
 
     # (b) continuous time and the Lieb–Robinson bound
@@ -260,7 +260,7 @@ def fig_light_cone():
     fig.suptitle("The light cone of transport: steps, continuous time and two axes",
                  x=0.01, ha="left", color=INK, fontsize=14)
     fig.text(0.01, 0.005, "Colour: amplitude, log scale, in (a) and (c); intensity, linear, in (d) "
-             "(what a camera records); normalized to the maximum. Paths of 41 sites, square lattice 31 × 31.",
+             "(what a camera records); normalized to the maximum. Paths of 41 positions, square array 31 × 31.",
              color=MUTED, fontsize=8.5)
     fig.tight_layout(rect=(0, 0.02, 1, 0.97))
     fig.savefig(OUT / "nrs3_light_cone.png")

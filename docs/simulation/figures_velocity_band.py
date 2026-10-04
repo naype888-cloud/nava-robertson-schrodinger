@@ -107,7 +107,7 @@ def fig_velocity_band():
     ax2.annotate(f"d = 4: θ_NRS(4) ≈ {theta[2]:.2f}°  (exact, D37b)", xy=(4, theta[2]),
                  xytext=(8, 4.5), color=INK2, fontsize=10.5,
                  arrowprops=dict(arrowstyle="-", color=MUTED, lw=1))
-    ax2.set_xlabel("sites per axis  d")
+    ax2.set_xlabel("positions per axis  d")
     ax2.set_ylabel("θ_NRS(d)  [degrees]")
     ax2.set_ylim(-1.5, 31)
     ax2.set_title("(b) Defect at the cone v = 1: grows with d", loc="left", fontsize=12)
@@ -141,7 +141,7 @@ def fig_tail():
     ax.set_xlim(4.5, 1100)
     ax.set_xticks([5, 10, 20, 50, 100, 200, 300])
     ax.set_xticklabels(["5", "10", "20", "50", "100", "200", "300"])
-    ax.set_xlabel("sites per axis  d  (log scale)")
+    ax.set_xlabel("positions per axis  d  (log scale)")
     ax.set_ylabel("d² · ϙ(d)")
     ax.legend(loc="upper left")
     ax.set_title("Tail of the band: ϙ(d) ≈ (2 ln d + b)/d², positive for every d (numerical)",
