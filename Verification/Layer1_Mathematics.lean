@@ -165,3 +165,4 @@ open Lean
 #print axioms RobertsonDeterminantProduct.det_covMatrix_PsiStar3D
 #print axioms RobertsonDeterminantProduct.robertson_det_PsiStar3D_strict
 #print axioms Matrix.PosDef.add_mul_inv_mul_sub_eq_zero
+#print axioms TransportPosition.LieClosure.closure_iff

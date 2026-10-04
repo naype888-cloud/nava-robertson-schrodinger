@@ -68,6 +68,7 @@ public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 public import NavaRobertsonIndependent.Mathematics.D49b_RobertsonDeterminant3D
 public import NavaRobertsonIndependent.Mathematics.D49c_RobertsonDeterminantProduct
 public import NavaRobertsonIndependent.Mathematics.D49g_RobertsonDeterminantEquality
+public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClosure
 
 /-!
 # NRS, NRS³ and det|NRS³
@@ -105,5 +106,7 @@ theorem.
   cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`; on product states the defects
   multiply, and at `Ψ*` the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4`.
 - `D49g` : the equality case of Robertson 1934, `(A + B) A⁻¹ (A − B) = 0`.
+- `D49i` : the commutators of `T_d` and `P_d` close (`[T, [T, P]] ∈ span {T, P, [T, P]}`) iff
+  `d ∈ {2, 3}`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
