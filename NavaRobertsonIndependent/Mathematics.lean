@@ -68,7 +68,7 @@ public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 public import NavaRobertsonIndependent.Mathematics.D49b_RobertsonDeterminant3D
 
 /-!
-# NRS and NRS³
+# NRS, NRS³ and det|NRS³
 
 `T_d` (normalized adjacency of the path graph) and `P_d` (equispaced diagonal) on `ℂ^d`, and
 their lifts to the product of three paths (`D37`). Stated over Mathlib; physlib is imported by
@@ -99,7 +99,7 @@ theorem.
   the defect, while `ψ*` does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
-- `D49`, `D49b` : Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the cube,
-  `det Σ ≥ (⟨i[T_x, P_x]⟩ ⟨i[T_y, P_y]⟩ ⟨i[T_z, P_z]⟩ / 8)²`.
+- `D49`, `D49b` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
+  cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/

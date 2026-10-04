@@ -6,19 +6,25 @@ Authors: Eduardo Nava-Hernandez
 module
 
 public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
+public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 
 /-!
-# D49b — Robertson 1934 on the three axes of the cube
+# D49b — det|NRS³: Robertson 1934 on the three axes of the cube
 
 On the cube `Site3D dx dy dz` of `D37` the six observables are the pairs `(T_x, P_x)`,
 `(T_y, P_y)`, `(T_z, P_z)`, one per axis. Operators on different axes commute (`D37`), so
 `Ω_jk = Im ⟨c_j, c_k⟩` of `D49` is block diagonal, one `2 × 2` block per axis, and
-`|det Ω| = ω_x² ω_y² ω_z²`. With `⟨i[T, P]⟩ = −2 ω` this is, for every state `Ψ` and every box,
+`|det Ω| = ω_x² ω_y² ω_z²`. With `⟨i[T, P]⟩ = −2 ω` this is, for every state `Φ` and every box,
 
   `det Σ ≥ (⟨i[T_x, P_x]⟩ ⟨i[T_y, P_y]⟩ ⟨i[T_z, P_z]⟩ / 8)²`,
 
 the volume of the six-dimensional dispersion bounded by the product of the three tensions.
-Each factor is the conjugate pair of its axis; no axis can be dropped.
+Each factor is the conjugate pair of its axis; no axis can be dropped. In the velocities of
+`D38`, `v_i = ((d_i − 1)/2) ⟨i[T_i, P_i]⟩`, the bound reads
+
+  `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`,
+
+and at the cone `|v_x| = |v_y| = |v_z| = 1` it is `1/((dx − 1)(dy − 1)(dz − 1))²`.
 
 ## Main results
 
@@ -26,11 +32,13 @@ Each factor is the conjugate pair of its axis; no axis can be dropped.
 - `RobertsonDeterminant3D.imMatrix_pairs` : `Ω` is block diagonal, one block per axis.
 - `RobertsonDeterminant3D.abs_det_imMatrix_pairs` : `|det Ω| = (ω_x ω_y ω_z)²`.
 - `RobertsonDeterminant3D.robertson_det_cube` : `(t_x t_y t_z / 8)² ≤ det Σ`.
+- `RobertsonDeterminant3D.robertson_det_cube_velocity` : the same in the velocities `v_i`.
+- `RobertsonDeterminant3D.robertson_det_cube_cone` : the floor at the cone speed.
 -/
 
 @[expose] public noncomputable section
 
-open Matrix TransportPosition SpectralExtremal PathGraph3DNRS RobertsonDeterminant
+open Matrix TransportPosition SpectralExtremal PathGraph3DNRS RobertsonDeterminant GroupVelocity
 
 namespace RobertsonDeterminant3D
 
@@ -74,15 +82,15 @@ theorem commutator_pairs {a b : Fin 2} {i j : Fin 3} (h : i ≠ j) :
   · exact commutator_eq_zero_of_mul_comm (liftAlong_xz_comm dx dy dz _ _).symm
   · exact commutator_eq_zero_of_mul_comm (liftAlong_yz_comm dx dy dz _ _).symm
 
-variable {dx dy dz} (Ψ : H3D dx dy dz)
+variable {dx dy dz} (Φ : H3D dx dy dz)
 
 /-- `ω_i = Im ⟨c_{T_i}, c_{P_i}⟩`, the off-diagonal entry of the block of axis `i`. -/
 def omega (i : Fin 3) : ℝ :=
-  (inner ℂ (centeredG (pairs dx dy dz (0, i)) Ψ) (centeredG (pairs dx dy dz (1, i)) Ψ)).im
+  (inner ℂ (centeredG (pairs dx dy dz (0, i)) Φ) (centeredG (pairs dx dy dz (1, i)) Φ)).im
 
 /-- `Ω` is block diagonal, with the block `!![0, ω_i; −ω_i, 0]` on axis `i`. -/
 theorem imMatrix_pairs :
-    imMatrix (pairs dx dy dz) Ψ = blockDiagonal fun i => !![0, omega Ψ i; -omega Ψ i, 0] := by
+    imMatrix (pairs dx dy dz) Φ = blockDiagonal fun i => !![0, omega Φ i; -omega Φ i, 0] := by
   ext ⟨a, i⟩ ⟨b, j⟩
   simp only [imMatrix, of_apply, blockDiagonal_apply]
   split_ifs with h
@@ -92,31 +100,31 @@ theorem imMatrix_pairs :
     · rfl
     · simpa [omega] using inner_im_swap _ _
     · simp [← Complex.ofReal_pow]
-  · have hs := tensionG_eq (Ψ := Ψ) (pairs_isSymmetric dx dy dz (a, i))
+  · have hs := tensionG_eq (Φ := Φ) (pairs_isSymmetric dx dy dz (a, i))
       (pairs_isSymmetric dx dy dz (b, j))
     simp only [tensionG, observableTension, commutator_pairs dx dy dz h, smul_zero,
       LinearMap.zero_apply, inner_zero_right, Complex.zero_re] at hs
     linarith
 
 theorem abs_det_imMatrix_pairs :
-    |(imMatrix (pairs dx dy dz) Ψ).det| = (omega Ψ 0 * omega Ψ 1 * omega Ψ 2) ^ 2 := by
+    |(imMatrix (pairs dx dy dz) Φ).det| = (omega Φ 0 * omega Φ 1 * omega Φ 2) ^ 2 := by
   rw [imMatrix_pairs, det_blockDiagonal, Fin.prod_univ_three]
   simp only [det_fin_two_of]
-  rw [← abs_of_nonneg (sq_nonneg (omega Ψ 0 * omega Ψ 1 * omega Ψ 2))]
+  rw [← abs_of_nonneg (sq_nonneg (omega Φ 0 * omega Φ 1 * omega Φ 2))]
   congr 1
   ring
 
-/-- **Robertson 1934 on the cube.** For every state `Ψ` on every box `dx × dy × dz`, the
+/-- **Robertson 1934 on the cube.** For every state `Φ` on every box `dx × dy × dz`, the
 determinant of the `6 × 6` covariance matrix of `(T_x, T_y, T_z, P_x, P_y, P_z)` is at least
 the square of the product of the three tensions over `8`. -/
 theorem robertson_det_cube :
-    ((tensionG (TX dx dy dz) (PX dx dy dz) Ψ * tensionG (TY dx dy dz) (PY dx dy dz) Ψ *
-        tensionG (TZ dx dy dz) (PZ dx dy dz) Ψ) / 8) ^ 2 ≤
-      (covMatrix (pairs dx dy dz) Ψ).det := by
-  have ht (i : Fin 3) : tensionG (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i)) Ψ =
-      -2 * omega Ψ i :=
+    ((tensionG (TX dx dy dz) (PX dx dy dz) Φ * tensionG (TY dx dy dz) (PY dx dy dz) Φ *
+        tensionG (TZ dx dy dz) (PZ dx dy dz) Φ) / 8) ^ 2 ≤
+      (covMatrix (pairs dx dy dz) Φ).det := by
+  have ht (i : Fin 3) : tensionG (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i)) Φ =
+      -2 * omega Φ i :=
     tensionG_eq (pairs_isSymmetric dx dy dz _) (pairs_isSymmetric dx dy dz _)
-  have h := robertson_det (pairs dx dy dz) Ψ
+  have h := robertson_det (pairs dx dy dz) Φ
   rw [abs_det_imMatrix_pairs] at h
   rw [show TX dx dy dz = pairs dx dy dz (0, 0) from rfl, show PX dx dy dz = pairs dx dy dz (1, 0)
     from rfl, show TY dx dy dz = pairs dx dy dz (0, 1) from rfl,
@@ -124,5 +132,33 @@ theorem robertson_det_cube :
     from rfl, show PZ dx dy dz = pairs dx dy dz (1, 2) from rfl, ht, ht, ht]
   convert h using 1
   ring
+
+/-- **det|NRS³** in the velocities of `D38`: on a box with at least two sites per axis,
+`det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`. -/
+theorem robertson_det_cube_velocity (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    (velocityX Φ * velocityY Φ * velocityZ Φ / (((dx : ℝ) - 1) * ((dy : ℝ) - 1) * ((dz : ℝ) - 1)))
+        ^ 2 ≤ (covMatrix (pairs dx dy dz) Φ).det := by
+  have hx' : (dx : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ dx := by exact_mod_cast hx
+    linarith
+  have hy' : (dy : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ dy := by exact_mod_cast hy
+    linarith
+  have hz' : (dz : ℝ) - 1 ≠ 0 := by
+    have : (2 : ℝ) ≤ dz := by exact_mod_cast hz
+    linarith
+  convert robertson_det_cube Φ using 2
+  simp only [velocityX, velocityY, velocityZ]
+  field_simp
+  ring
+
+/-- At the cone speed on every axis the floor of `det Σ` is `1/((dx − 1)(dy − 1)(dz − 1))²`. -/
+theorem robertson_det_cube_cone (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
+    (hvx : |velocityX Φ| = 1) (hvy : |velocityY Φ| = 1) (hvz : |velocityZ Φ| = 1) :
+    1 / (((dx : ℝ) - 1) * ((dy : ℝ) - 1) * ((dz : ℝ) - 1)) ^ 2 ≤
+      (covMatrix (pairs dx dy dz) Φ).det := by
+  have h := robertson_det_cube_velocity Φ hx hy hz
+  rw [div_pow, ← sq_abs (velocityX Φ * _ * _), abs_mul, abs_mul, hvx, hvy, hvz] at h
+  simpa using h
 
 end RobertsonDeterminant3D

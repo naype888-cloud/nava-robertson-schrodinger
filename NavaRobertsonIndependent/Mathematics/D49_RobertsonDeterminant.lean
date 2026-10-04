@@ -13,7 +13,7 @@ public import Mathlib.Analysis.Matrix.PosDef
 # D49 — Robertson 1934: several observables
 
 Robertson's relation for a finite family of observables (Phys. Rev. 46, 794 (1934)). For a
-state `Ψ` and operators `L_j` on `ℂ^ι`, the centered vectors `c_j = L_j Ψ − ⟨L_j⟩ Ψ` have Gram
+state `Φ` and operators `L_j` on `ℂ^ι`, the centered vectors `c_j = L_j Φ − ⟨L_j⟩ Φ` have Gram
 matrix `Σ + iΩ`, with `Σ_jk = Re ⟨c_j, c_k⟩` the covariance matrix and `Ω_jk = Im ⟨c_j, c_k⟩`.
 A Gram matrix is positive semidefinite, and so is its transpose `Σ − iΩ`; a determinant bound
 for positive matrices then gives `|det Ω| ≤ det Σ`. For two observables this is `D2`'s
@@ -187,22 +187,22 @@ open scoped ComplexOrder
 
 variable {ι κ : Type*} [Fintype ι]
 
-/-- The covariance matrix `Σ_jk = Re ⟨c_j, c_k⟩` of a family of operators at `Ψ`. -/
-def covMatrix (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) :
+/-- The covariance matrix `Σ_jk = Re ⟨c_j, c_k⟩` of a family of operators at `Φ`. -/
+def covMatrix (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Φ : EuclideanSpace ℂ ι) :
     Matrix κ κ ℝ :=
-  of fun j k => covarianceG (L j) (L k) Ψ
+  of fun j k => covarianceG (L j) (L k) Φ
 
-/-- The matrix `Ω_jk = Im ⟨c_j, c_k⟩` of a family of operators at `Ψ`. -/
-def imMatrix (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι) :
+/-- The matrix `Ω_jk = Im ⟨c_j, c_k⟩` of a family of operators at `Φ`. -/
+def imMatrix (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Φ : EuclideanSpace ℂ ι) :
     Matrix κ κ ℝ :=
-  of fun j k => (inner ℂ (centeredG (L j) Ψ) (centeredG (L k) Ψ)).im
+  of fun j k => (inner ℂ (centeredG (L j) Φ) (centeredG (L k) Φ)).im
 
-variable (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Ψ : EuclideanSpace ℂ ι)
+variable (L : κ → EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι) (Φ : EuclideanSpace ℂ ι)
 
 /-- `Σ + iΩ` is the Gram matrix of the centered vectors. -/
 theorem gram_centeredG :
-    gram ℂ (fun j => centeredG (L j) Ψ) =
-      (covMatrix L Ψ).map ((↑) : ℝ → ℂ) + Complex.I • (imMatrix L Ψ).map ((↑) : ℝ → ℂ) := by
+    gram ℂ (fun j => centeredG (L j) Φ) =
+      (covMatrix L Φ).map ((↑) : ℝ → ℂ) + Complex.I • (imMatrix L Φ).map ((↑) : ℝ → ℂ) := by
   ext j k
   simp only [gram, of_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, covMatrix,
     imMatrix, covarianceG, smul_eq_mul]
@@ -211,44 +211,44 @@ theorem gram_centeredG :
 
 /-- `Σ − iΩ` is the transpose of the Gram matrix. -/
 theorem transpose_gram_centeredG :
-    (gram ℂ (fun j => centeredG (L j) Ψ))ᵀ =
-      (covMatrix L Ψ).map ((↑) : ℝ → ℂ) - Complex.I • (imMatrix L Ψ).map ((↑) : ℝ → ℂ) := by
+    (gram ℂ (fun j => centeredG (L j) Φ))ᵀ =
+      (covMatrix L Φ).map ((↑) : ℝ → ℂ) - Complex.I • (imMatrix L Φ).map ((↑) : ℝ → ℂ) := by
   ext j k
   simp only [transpose_apply, gram, of_apply, Matrix.sub_apply, Matrix.smul_apply,
     Matrix.map_apply, covMatrix, imMatrix, covarianceG, smul_eq_mul]
   apply Complex.ext <;> simp
-  · rw [← inner_conj_symm (centeredG (L k) Ψ), Complex.conj_re]
-  · rw [← inner_conj_symm (centeredG (L k) Ψ), Complex.conj_im]
+  · rw [← inner_conj_symm (centeredG (L k) Φ), Complex.conj_re]
+  · rw [← inner_conj_symm (centeredG (L k) Φ), Complex.conj_im]
 
 /-- **Robertson 1934**: for every state and every finite family of operators,
 `|det Ω| ≤ det Σ`. -/
 theorem robertson_det [Fintype κ] [DecidableEq κ] :
-    |(imMatrix L Ψ).det| ≤ (covMatrix L Ψ).det := by
-  have hG := posSemidef_gram ℂ fun j => centeredG (L j) Ψ
+    |(imMatrix L Φ).det| ≤ (covMatrix L Φ).det := by
+  have hG := posSemidef_gram ℂ fun j => centeredG (L j) Φ
   exact abs_det_le_det_of_posSemidef
     (by rw [← transpose_gram_centeredG]; exact hG.transpose)
     (by rw [← gram_centeredG]; exact hG)
 
-variable {L Ψ}
+variable {L Φ}
 
 /-- For symmetric `L`, `M` the tension `⟨i[L, M]⟩` is `−2 Im ⟨c_L, c_M⟩`. -/
 theorem tensionG_eq {L M : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι} (hL : L.IsSymmetric)
     (hM : M.IsSymmetric) :
-    tensionG L M Ψ = -2 * (inner ℂ (centeredG L Ψ) (centeredG M Ψ)).im := by
-  have hrL : (inner ℂ (L Ψ) Ψ).im = 0 := by
+    tensionG L M Φ = -2 * (inner ℂ (centeredG L Φ) (centeredG M Φ)).im := by
+  have hrL : (inner ℂ (L Φ) Φ).im = 0 := by
     refine Complex.conj_eq_iff_im.mp ?_
     rw [inner_conj_symm]
-    exact (hL Ψ Ψ).symm
-  have hrM : (inner ℂ Ψ (M Ψ)).im = 0 := by
+    exact (hL Φ Φ).symm
+  have hrM : (inner ℂ Φ (M Φ)).im = 0 := by
     refine Complex.conj_eq_iff_im.mp ?_
     rw [inner_conj_symm]
-    exact hM Ψ Ψ
-  have hsw : (inner ℂ (M Ψ) (L Ψ)).im = -(inner ℂ (L Ψ) (M Ψ)).im := by
-    rw [← inner_conj_symm (L Ψ) (M Ψ), Complex.conj_im, neg_neg]
+    exact hM Φ Φ
+  have hsw : (inner ℂ (M Φ) (L Φ)).im = -(inner ℂ (L Φ) (M Φ)).im := by
+    rw [← inner_conj_symm (L Φ) (M Φ), Complex.conj_im, neg_neg]
   simp only [tensionG, observableTension, opCommutator, LinearMap.smul_apply, LinearMap.sub_apply,
     LinearMap.comp_apply, centeredG, inner_smul_right, inner_sub_left, inner_sub_right,
     inner_smul_left, Complex.conj_ofReal]
-  rw [← hL Ψ (M Ψ), ← hM Ψ (L Ψ)]
+  rw [← hL Φ (M Φ), ← hM Φ (L Φ)]
   simp [Complex.mul_re, Complex.mul_im, hrL, hrM, hsw, ← Complex.ofReal_pow]
   ring
 

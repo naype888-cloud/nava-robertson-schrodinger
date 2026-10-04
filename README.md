@@ -1,4 +1,4 @@
-# NRS and NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
+# NRS, NRS³ & det|NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
 **[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)**
 
@@ -11,7 +11,9 @@ On `H_d = ℂ^d`, let `P_d` be the diagonal operator with equispaced eigenvalues
 (`ρ_d = 2 cos(π/(d+1))`); the path graph is the only graph compatible with ordered locality and
 completeness (`D3`). **NRS** is the Robertson–Schrödinger inequality for the pair `(T_d, P_d)`,
 computed exactly. **NRS³** is its extension to the Cartesian product of three path graphs, the
-cube `dx × dy × dz`, with one such pair per factor. All statements are theorems in Lean 4 over
+cube `dx × dy × dz`, with one such pair per factor. **det|NRS³** is Robertson's 1934 relation
+for several observables on that cube: the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` at
+once, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`D49`, `D49b`). All statements are theorems in Lean 4 over
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
@@ -48,6 +50,7 @@ not part of NRS³.
 | 1927 | Heisenberg's relation; fifth Solvay conference: electrons and photons | |
 | 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
 | **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | ****[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one)** |
+| **1934** | **Robertson: the indeterminacy relation for several observables, `det Σ ≥ |det Ω|`** | **[base repository (det\|NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
 | 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
 
 **Tools from after the window.** Niven (1956: rational values of the trigonometric functions),
@@ -701,12 +704,6 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   maximal-tension states (`angleState_eq_angleNRS_of_maxTension`); the uniform ceiling
   `θ_NRS(4) ≤ θ_NRS(d) < arccos (1/C_∞)` (`angleNRS_spectrum_bounds`); the strict defect at the
   cone (`defect_pos_of_velocity_eq_one`) and the forced-defect band (`spectrum_band`).
-- `D49_RobertsonDeterminant`: Robertson 1934 for several observables. The centered vectors have
-  Gram matrix `Σ + iΩ` (`gram_centeredG`), so `|det Ω| ≤ det Σ` for every state and every finite
-  family (`robertson_det`); for symmetric operators `⟨i[L, M]⟩ = −2 Ω_LM` (`tensionG_eq`).
-- `D49b_RobertsonDeterminant3D`: on the cube the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)`
-  give a block-diagonal `Ω`, one block per axis (`imMatrix_pairs`), and for every state on every
-  box `det Σ ≥ (⟨i[T_x, P_x]⟩ ⟨i[T_y, P_y]⟩ ⟨i[T_z, P_z]⟩ / 8)²` (`robertson_det_cube`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
@@ -765,6 +762,26 @@ unit and no constant to it.
   pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
   `volQuantum_pairs_certificate`).
 
+
+## det|NRS³ — modules
+
+Robertson 1934 (Phys. Rev. 46, 794): for a finite family of observables, the centered vectors
+have Gram matrix `Σ + iΩ`, with `Σ` the covariance matrix and `Ω` the matrix of tensions, and
+`|det Ω| ≤ det Σ`. On the cube the family is the three conjugate pairs, one per axis; pairs of
+different axes commute, so `Ω` splits into one block per axis and the bound is the product of
+the three tensions — x, y, z, none can be dropped.
+
+- `D49_RobertsonDeterminant`: the determinant bound for positive matrices
+  (`Matrix.abs_det_le_det_of_posSemidef`); `Σ + iΩ` is a Gram matrix (`gram_centeredG`), so
+  `|det Ω| ≤ det Σ` for every state and every finite family (`robertson_det`); for symmetric
+  operators `⟨i[L, M]⟩ = −2 Ω_LM` (`tensionG_eq`).
+- `D49b_RobertsonDeterminant3D`: `Ω` of `(T_x, T_y, T_z, P_x, P_y, P_z)` is block diagonal
+  (`imMatrix_pairs`), `|det Ω| = (ω_x ω_y ω_z)²` (`abs_det_imMatrix_pairs`); for every state `Φ`
+  on every box, `det Σ ≥ (⟨i[T_x, P_x]⟩ ⟨i[T_y, P_y]⟩ ⟨i[T_z, P_z]⟩ / 8)²`
+  (`robertson_det_cube`), in the velocities of `D38`
+  `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`robertson_det_cube_velocity`), and at
+  the cone `|v_x| = |v_y| = |v_z| = 1` the floor `1/((dx − 1)(dy − 1)(dz − 1))²`
+  (`robertson_det_cube_cone`).
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and
