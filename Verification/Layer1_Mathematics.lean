@@ -159,3 +159,5 @@ open Lean
 #print axioms BoxFamilies.count_ten
 #print axioms BoxFamilies.quantum_never_erased
 #print axioms BoxFamilies.quantum_erased_iff
+#print axioms RobertsonDeterminant.robertson_det
+#print axioms RobertsonDeterminant3D.robertson_det_cube

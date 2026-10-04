@@ -701,6 +701,12 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   maximal-tension states (`angleState_eq_angleNRS_of_maxTension`); the uniform ceiling
   `θ_NRS(4) ≤ θ_NRS(d) < arccos (1/C_∞)` (`angleNRS_spectrum_bounds`); the strict defect at the
   cone (`defect_pos_of_velocity_eq_one`) and the forced-defect band (`spectrum_band`).
+- `D49_RobertsonDeterminant`: Robertson 1934 for several observables. The centered vectors have
+  Gram matrix `Σ + iΩ` (`gram_centeredG`), so `|det Ω| ≤ det Σ` for every state and every finite
+  family (`robertson_det`); for symmetric operators `⟨i[L, M]⟩ = −2 Ω_LM` (`tensionG_eq`).
+- `D49b_RobertsonDeterminant3D`: on the cube the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)`
+  give a block-diagonal `Ω`, one block per axis (`imMatrix_pairs`), and for every state on every
+  box `det Σ ≥ (⟨i[T_x, P_x]⟩ ⟨i[T_y, P_y]⟩ ⟨i[T_z, P_z]⟩ / 8)²` (`robertson_det_cube`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 `δ_geom(4)²`, a pure number. This package attaches no physical scale, no SI
