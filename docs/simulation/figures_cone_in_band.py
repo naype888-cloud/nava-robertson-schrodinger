@@ -4,7 +4,7 @@ Writes docs/figures/d46_cone_in_band.png.
 
 Left: the band Ϙ(d) = (v*(d), 1] for each d. It narrows as d grows, but the cone |v| = 1 stays
 inside for every d ≥ 4 (Lean, D46): every unit state at the cone speed carries a
-Robertson–Schrödinger surplus. At d = 2, 3, ψ* saturates at the cone and the band is empty.
+Robertson–Schrödinger surplus. At d = 2, 3, the maximal current state saturates at the cone and the band is empty.
 Right: the width ϙ(d) = 1 − v*(d) on a log scale. The cone needs only ϙ(d) > 0.
 
 Exact (Lean): ϙ(2) = ϙ(3) = 0, ϙ(4) = (7 − 3√5)/4, ϙ(d) > 0 for d ≥ 4. The values of v*(d)
@@ -42,7 +42,7 @@ def fig_cone_in_band():
     ax.plot([4], [VSTAR4], "o", ms=8, color=ORANGE, mec=SURFACE, mew=1.5,
             label="v*(4) = 3(√5 − 1)/4, exact (D43)")
     ax.plot([2, 3], [1, 1], "o", ms=8, color=INK2, mec=SURFACE, mew=1.5, zorder=5,
-            label="d = 2, 3: ψ* saturates at the cone, no band")
+            label="d = 2, 3: max current saturates at the cone, no band")
     ax.axhline(1, color=INK2, lw=1.4)
     ax.text(30.5, 1.003, "cone |v| = 1: inside Ϙ(d) for every d ≥ 4 (Lean, D46)",
             color=INK2, fontsize=9.5, ha="right", va="bottom")

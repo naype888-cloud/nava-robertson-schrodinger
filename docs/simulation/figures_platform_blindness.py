@@ -42,7 +42,7 @@ def state_stats(z):
     return tension, defect
 
 
-def psi_star(d):
+def max_current_state(d):
     j = np.arange(d)
     return ((-1j) ** j) * np.sin((j + 1) * np.pi / (d + 1))
 
@@ -63,7 +63,7 @@ def main():
     real_curve = np.array([state_stats(np.cos(a) * e1 + np.sin(a) * e2) for a in th])
     assert np.max(np.abs(real_curve[:, 0])) < 1e-12  # real states carry no tension
 
-    ts, ds = state_stats(psi_star(D))
+    ts, ds = state_stats(max_current_state(D))
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.8))
 

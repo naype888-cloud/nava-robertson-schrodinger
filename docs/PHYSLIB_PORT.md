@@ -68,8 +68,8 @@ PR 24 brings Robertson's 1934 relation for several observables to the algebraic 
 `PhyslibAlpha`, in the file of Robertson–Schrödinger. In this repository the same bound is
 `D49`, and its instances on the cube are `D49b`–`D49d`: the three conjugate pairs give
 `det Σ ≥ (t_x t_y t_z / 8)²` for every state, the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²` at
-`Ψ*`, and the bound is strict for product states in the band `Ϙ`. PR 25 ports `D49b` and the
-`Ψ*` part of `D49c` to the open cube (branch `feat-physlibalpha-tight-binding-cube-determinant`,
+the maximal current state of the cube, and the bound is strict for product states in the band `Ϙ`. PR 25 ports `D49b` and the
+the maximal current state of the cube part of `D49c` to the open cube (branch `feat-physlibalpha-tight-binding-cube-determinant`,
 two commits of 138 and 181 lines on #1725 and PR 24). The band part (`D49d`) waits for PRs 19
 and 20.
 

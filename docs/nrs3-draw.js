@@ -32,7 +32,7 @@ window.NRS3Draw = (() => {
     return [...faces.values()];
   }
 
-  // the band inside the star: in the plane of each axis, the half-angles θ/2 allowed at Ψ*
+  // the band inside the star: in the plane of each axis, the half-angles θ/2 allowed at the maximal current state of the cube
   function arcs(g, P, E3, R, ink) {
     for (let a = 0; a < 3; a++) {
       const e = E3[a], f = E3[(a + 1) % 3];
@@ -49,7 +49,7 @@ window.NRS3Draw = (() => {
     }
   }
 
-  // the gauge: one ruler per axis, plus every θ_NRS(d) at Ψ*
+  // the gauge: one ruler per axis, plus every θ_NRS(d) at the maximal current state of the cube
   function gauge(canvas, rows, spectrum, css, t) {
     const r = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
     const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
@@ -72,7 +72,7 @@ window.NRS3Draw = (() => {
     for (let a = 0; a <= MAX; a += 10) { const x = X(a * Math.PI / 180);
       g.beginPath(); g.moveTo(x, H0 - B); g.lineTo(x, H0 - B + 4); g.stroke(); g.fillText(`${a}°`, x - 8, H0 - 6); }
     // row 0: every box
-    g.fillStyle = css("--ink2"); g.fillText("all boxes, at Ψ*", 6, Y(0) + 4);
+    g.fillStyle = css("--ink2"); g.fillText("all boxes, at max current", 6, Y(0) + 4);
     g.strokeStyle = css("--grid"); g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(MAX * Math.PI / 180), Y(0)); g.stroke();
     for (const { d, th } of spectrum) {
       const x = X(th), hgt = d <= 3 ? 0 : 7 + 5 * Math.exp(-(d - 4) / 12);
@@ -90,7 +90,7 @@ window.NRS3Draw = (() => {
       const y = Y(i + 1);
       g.font = "12.5px system-ui, sans-serif"; g.fillStyle = row.d <= 3 ? css("--red") : css("--ink");
       g.fillText(`${row.name}: ${row.d} sites`, 6, y - 2);
-      const star = row.d <= 3 ? "✕ below 4 sites: no quantum (0°)" : "Ψ*: in the band";
+      const star = row.d <= 3 ? "✕ below 4 sites: no quantum (0°)" : "max current: in the band";
       const inb = row.tht >= TH4 - 1e-9 && row.tht < THINF;
       const now = t > 0 ? (inb ? " · Ψ(t): inside" : " · Ψ(t): outside") : "";
       g.font = "11px system-ui, sans-serif"; g.fillStyle = row.d <= 3 ? css("--red") : css("--muted");

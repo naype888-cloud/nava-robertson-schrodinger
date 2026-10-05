@@ -33,10 +33,10 @@ normalized state $\psi$,
 \]
 where $\tilde A\psi=(A-\langle A\rangle)\psi$ and $\tilde B\psi=(B-\langle B\rangle)\psi$ are the
 fluctuation vectors. The theorem carries no list of pairs: it holds for every pair
-(\lean{D2\_Robertson}). NRS evaluates it on the elemental pair $T_d{:}P_d$ at the state of
-maximal tension $\psi^*$, and measures the ratio
+(\lean{D2\_Robertson}). NRS evaluates it on the elemental pair $T_d{:}P_d$ at the maximal
+current state, and measures the ratio
 \[
-  R \;=\; \frac{\sigma_A\,\sigma_B}{|\langle \tilde A\psi^*,\tilde B\psi^*\rangle|}\;\ge 1 .
+  R \;=\; \frac{\sigma_A\,\sigma_B}{|\langle \tilde A\,\mathtt{maxCurrentState},\tilde B\,\mathtt{maxCurrentState}\rangle|}\;\ge 1 .
 \]
 $R=1$ means the inequality is saturated; $R>1$ is what the inequality cannot close.
 
@@ -57,8 +57,8 @@ On $H_d=\mathbb C^d$:
   \item $T_d=A_d/\rho_d$ is the adjacency of the path on $d$ sites, $\rho_d=2\cos(\pi/(d+1))$:
         the step between consecutive values. It is the only graph compatible with ordered
         locality and completeness (\lean{D3\_PathGraph}).
-  \item $\psi^*_j\propto(-i)^j\sin\big((j+1)\pi/(d+1)\big)$ is the maximal-tension state
-        (\lean{D5\_MaximalTension}, \lean{D21}); at $\psi^*$,
+  \item $\mathtt{maxCurrentState}_j\propto(-i)^j\sin\big((j+1)\pi/(d+1)\big)$ is the maximal current state
+        (\lean{D5\_MaximalTension}, \lean{D21}); at it,
         $\tfrac12|\langle[T_d,P_d]\rangle| = 1/(d-1)$.
 \end{itemize}
 
@@ -88,8 +88,8 @@ Let $d\ge2$ and $a,c\neq0$. For the pair $A=aT_d+b$, $B=cP_d+e$ at $\psi^*$:
         \hfill(\lean{dimQuantum\_pair}).
 \end{enumerate}
 On the cube $d_x\times d_y\times d_z$ with one pair per axis, $A_i=a_iT_{d_i}+b_i$,
-$B_i=c_iP_{d_i}+e_i$ (all $a_i,c_i\neq0$, each axis in its own units) and the state
-$\Psi^*=\psi^*\otimes\psi^*\otimes\psi^*$:
+$B_i=c_iP_{d_i}+e_i$ (all $a_i,c_i\neq0$, each axis in its own units) and the maximal current
+state of the cube, the product of the maximal current states of the axes:
 \begin{enumerate}\setcounter{enumi}{6}
   \item axis $i$ has ratio $C_{\mathrm{Nava}}(d_i)$ \hfill(\lean{ratio\_pair\_axis\_x/y/z});
   \item $(R_x-1)(R_y-1)(R_z-1)=\mathcal V(d_x,d_y,d_z)=\delta(d_x)\,\delta(d_y)\,\delta(d_z)$
@@ -105,7 +105,7 @@ $a$ times that of $L$ (\lean{centeredG\_affineOp}). In
 $R=\|\tilde A\psi\|\,\|\tilde B\psi\|/|\langle\tilde A\psi,\tilde B\psi\rangle|$ the factor
 $|a|\,|c|$ appears once in the numerator and once in the denominator and cancels
 (\lean{ratioG\_affineOp}); the same holds for the angle (\lean{angleG\_affineOp}). These two lemmas
-hold at \emph{every} unit state, not only at $\psi^*$, so any statement about $T_d{:}P_d$
+hold at \emph{every} unit state, not only at the maximal current state, so any statement about $T_d{:}P_d$
 that depends only on $R$ or on the angle, such as strictness on the band of states near
 maximal tension (\lean{D23d}), holds for every pair as well.
 
@@ -145,7 +145,7 @@ ceiling & $\sqrt{\pi^2/3-2}\approx1.135724$ & 13.57\,\% & $28.30^\circ$
 
 \textbf{How to read each column.}
 \begin{itemize}
-  \item $R=C_{\mathrm{Nava}}(d)$: the measured ratio $\sigma_A\sigma_B/|\langle\tilde A\psi^*,\tilde B\psi^*\rangle|$.
+  \item $R=C_{\mathrm{Nava}}(d)$: the measured ratio $\sigma_A\sigma_B/|\langle\tilde A\,\mathtt{maxCurrentState},\tilde B\,\mathtt{maxCurrentState}\rangle|$.
         It is the same for every row of the catalogue in Section~5.
   \item Excess $\delta(d)$: how far above the Robertson--Schrödinger floor the pair stays.
         Zero only at $d=2,3$; from $d=4$ on it is an algebraic quantum that no choice of
@@ -237,9 +237,9 @@ $\varepsilon(\theta)=2\cos\theta/\rho_d$, the dispersion relation, which is also
 of each mode (\lean{Td\_mulVec\_sineMode}, \lean{D38}). Time and transport are tied by the
 Heisenberg equation $\tfrac{d}{dt}(U^\dagger P_dU)=U^\dagger K_dU$ with $K_d=i[T_d,P_d]$
 (\lean{heisenberg}): the tension is velocity, no state moves faster than one site per unit of
-time, and $\psi^*$ moves at exactly that speed (\lean{abs\_velocity\_le},
-\lean{velocity\_psiStar}); on the cube $\Psi^*$ does so on all three axes at once
-(\lean{velocities\_PsiStar3D}). So rows 26 and 27 are the dynamics that $T_d$ generates on
+time, and the maximal current state moves at exactly that speed (\lean{abs\_velocity\_le},
+\lean{velocity\_maxCurrentState}); on the cube the maximal current state does so on all three axes at once
+(\lean{velocities\_maxCurrentCubeState}). So rows 26 and 27 are the dynamics that $T_d$ generates on
 the axes where rows 1--25 live.
 
 Rows 1--3 are the three axes of the cube of \lean{D37}. Any three rows among 1--25 whose pairs
@@ -257,7 +257,7 @@ lake env lean Verification/Layer1_Mathematics.lean  # boundary + axioms
 Every theorem cited here depends only on \lean{propext}, \lean{Classical.choice} and
 \lean{Quot.sound}; the package has no \lean{sorry}. The numbers of the table are
 $C_{\mathrm{Nava}}(d)$ from \lean{D9}/\lean{D21}, recomputed from the matrices $T_d$, $P_d$ and
-the vector $\psi^*$; the exact value at $d=4$ is
+the maximal current state; the exact value at $d=4$ is
 $C_{\mathrm{Nava}}(4)=\sqrt{(99-42\sqrt5)/5}$ (\lean{D37b}, \lean{D37e}).
 
 \end{document}

@@ -5,7 +5,7 @@ Writes to docs/figures/:
 
 (a) A random unit state on the 4 × 4 × 4 cube: after each of the 48 signed permutations (σ, s),
     the three axis angles are the same three numbers, permuted (angleAxis_cubeSym).
-(b) The same at Ψ* = ψ* ⊗ ψ* ⊗ ψ*: all three angles are θ_NRS(4) for every element
+(b) The same at the maximal current state of the cube: all three angles are θ_NRS(4) for every element
     (octahedral_symmetry).
 (c) Cubes with unequal axes: each axis keeps its own angle θ_NRS(d) (closed form of D8, D37b);
     only the reflections and the exchanges of axes of equal length preserve the triple:
@@ -29,7 +29,7 @@ AXIS_COLOR = [BLUE, ORANGE, GREEN]
 AXIS_NAME = ["x", "y", "z"]
 
 
-def psi_star(d):
+def max_current_state(d):
     j = np.arange(d)
     v = (-1j) ** j * np.sin((j + 1) * np.pi / (d + 1))
     return v / np.linalg.norm(v)
@@ -122,7 +122,7 @@ def fig_octahedral():
     rng = np.random.default_rng(7)
     z = rng.normal(size=d ** 3) + 1j * rng.normal(size=d ** 3)
     z /= np.linalg.norm(z)
-    star = np.kron(np.kron(psi_star(d), psi_star(d)), psi_star(d))
+    star = np.kron(np.kron(max_current_state(d), max_current_state(d)), max_current_state(d))
 
     fig, axs = plt.subplots(1, 3, figsize=(18, 5.6), dpi=150,
                             gridspec_kw={"width_ratios": [1.15, 1.15, 1]})
@@ -130,7 +130,7 @@ def fig_octahedral():
                          "(a) any state: the angle follows the axis")
     axs[0].legend(loc="center right", bbox_to_anchor=(1.0, 0.42), fontsize=9, markerscale=1.6)
     err_b = panel_angles(axs[1], d, star, elements,
-                         "(b) at Ψ*: all three angles are θ_NRS(4)")
+                         "(b) at max current: all three angles are θ_NRS(4)")
     axs[1].set_ylim(theta_nrs(4) - 1, theta_nrs(4) + 1)
     axs[1].text(24, theta_nrs(4) + 0.35, f"θ_NRS(4) = {theta_nrs(4):.2f}° on every axis, for all 48",
                 ha="center", color=INK2, fontsize=10)
@@ -154,7 +154,7 @@ def fig_octahedral():
     ax.set_xticklabels([" × ".join(map(str, c)) + f"\n{symmetry_count(c)} symmetries"
                         for c in cubes])
     ax.set_ylim(0, 36)
-    ax.set_ylabel("NRS angle at Ψ* (°)")
+    ax.set_ylabel("NRS angle at max current (°)")
     ax.set_title("(c) unequal axes: each keeps its own angle", loc="left")
     ax.legend(loc="upper left", fontsize=9, ncol=3)
     ax.grid(axis="x")
@@ -174,5 +174,5 @@ def fig_octahedral():
 
 if __name__ == "__main__":
     err_a, err_b = fig_octahedral()
-    print(f"max |angle(σ i, gΨ) − angle(i, Ψ)|: random state {err_a:.2e}°, Ψ* {err_b:.2e}°")
+    print(f"max |angle(σ i, gΨ) − angle(i, Ψ)|: random state {err_a:.2e}°, the maximal current state of the cube {err_b:.2e}°")
     print("wrote", OUT / "d37h_octahedral_symmetry.png")

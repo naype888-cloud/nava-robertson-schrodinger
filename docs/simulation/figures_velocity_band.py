@@ -62,7 +62,7 @@ def vstar_imag(d):
 
 
 def cone_angle(d):
-    """θ_NRS(d) in degrees, at the maximal-tension state ψ*."""
+    """θ_NRS(d) in degrees, at the maximal current state."""
     t_op, p_op = ops(d)
     _, vecs = np.linalg.eigh(1j * (t_op @ p_op - p_op @ t_op))
     _, vt, vp, c = stats(t_op, p_op, vecs[:, -1])

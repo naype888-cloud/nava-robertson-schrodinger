@@ -71,7 +71,7 @@ is a declared bridge.
 
 ## Main theorems
 
-**NRS — base theorem (one row, `d` positions).** At the state of maximal tension `ψ*`,
+**NRS — base theorem (one row, `d` positions).** At the maximal current state,
 
     σ_T · σ_P = C_Nava(d) · ½ |⟨[T_d, P_d]⟩|,      ½ |⟨[T_d, P_d]⟩| = 1/(d−1),
 
@@ -107,7 +107,7 @@ is strict (`D23d`). The statement is about the band
 
 * A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
   (`expectation_commutator_eq_zero`, `D23`).
-* The maximal-tension state `ψ*` has a nonzero coordinate at every position
+* The maximal current state has a nonzero coordinate at every position
   (`fiedlerVec_apply_ne_zero`, `D5`), and `Var T_d · Var P_d > 0` there
   (`variance_mul_variance`, `D21`), so `Var P_d > 0`: no position carries all the weight.
 * From `d = 4` no unit state has maximal tension and minimum uncertainty at once: every
@@ -118,7 +118,7 @@ is strict (`D23d`). The statement is about the band
 * On a position eigenstate (a single-position excitation) Robertson–Schrödinger is empty,
   `0 = 0`: it says nothing, so the state cannot witness the defect. The pair does not vanish
   there: fixing the position sends the whole indeterminacy to transport, `Var T_d > 0`
-  (`variance_T_pos_of_P_eigenvector`), and only the tension is zero. For `d ≥ 4`, `ψ*` is a
+  (`variance_T_pos_of_P_eigenvector`), and only the tension is zero. For `d ≥ 4`, the maximal current state is a
   witness, and every defect witness fluctuates in both `T_d` and `P_d` and is an eigenstate of
   neither (`D47`).
 
@@ -126,7 +126,7 @@ is strict (`D23d`). The statement is about the band
 `⟨K_d⟩ = ⟨i[T_d, P_d]⟩` is the rate of `⟨P_d⟩` under transport, in time or in an imprinted
 displacement. Robertson for `(T_d, P_d)` is therefore the Mandelstam–Tamm bound
 `⟨K_d⟩² ≤ 4 Var T_d · Var P_d` and the quantum Cramér–Rao bound for estimating with `P_d`
-(Fisher information at most `4 Var T_d`). At `ψ*` both are attained to the fraction
+(Fisher information at most `4 Var T_d`). At the maximal current state both are attained to the fraction
 `1/C_Nava(d)² = cos² θ_NRS(d)`, exactly only at `d = 2, 3`; on the cube, per axis and for the
 total pair of `d × d × d`. From `d = 4`, no state at the speed limit has minimum uncertainty.
 
@@ -146,13 +146,13 @@ defect is forced.
 factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
 
 * pairs on different axes commute — only `T` and `P` of the same axis collide;
-* at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
+* at the maximal current state of the cube each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
   only with `2` or `3` positions and is strict from `4` on, on all three axes at once;
 * each axis carries its own angle, at least `θ_NRS(4) ≈ 7.43°` and below `≈ 28.30°` (`D37b`);
 * **finite isotropy**: if every axis has at least `D` positions, the angles of any two axes differ
   by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
   finite cubes only (`D37b`);
-* the spectrum is axis by axis: eigenvalues add, and `Ψ*` is the top of
+* the spectrum is axis by axis: eigenvalues add, and the maximal current state of the cube is the top of
   `K_x + K_y + K_z` with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds (`D37c`);
 * **Pythagoras for uncertainty**: the fluctuation vectors of different axes are orthogonal, so
   `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` and the same for `P`; on the cube
@@ -178,8 +178,8 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
 * **dispersion and group velocity**: `T_d` has dispersion `ε(θ) = 2 cos θ / ρ_d` with group
   velocity `2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Position obeys the Heisenberg
   equation `d/dt (U† P_d U) = U† K_d U`, so the tension is velocity: measured in positions, no state
-  moves faster than one position per unit of time and `ψ*` moves at exactly that speed, the slope of
-  the cone. On the cube each axis has that limit and `Ψ*` reaches it on all three at once:
+  moves faster than one position per unit of time and the maximal current state moves at exactly that speed, the slope of
+  the cone. On the cube each axis has that limit and the maximal current state of the cube reaches it on all three at once:
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
@@ -202,10 +202,10 @@ dropped.
   axes (`D49l`, `D49n`), a transport relation (`D49q`), and the ends of each axis, where
   `[T_d, [T_d, P_d]]` lives (`D49r`, `D49s`): there the transport relation is a recurrence that
   leaves `Φ = 0` or a state split off `z`, which is strict (`D49j`).
-* **At the state of the cube** `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exactly
+* **At the maximal current state of the cube** the ratio is exactly
   `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` positions
   (`D49c`); at `4 × 4 × 4` it is `C_Nava(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
-  axes, there is no room for entanglement: every state is `Ψ*` in its octant (`D49f`).
+  axes, there is no room for entanglement: every state is the maximal current state of the cube in its octant (`D49f`).
 * **Why `2` and `3`.** The commutators of transport and position close, `[T_d, [T_d, P_d]]` in
   the span of `T_d`, `P_d`, `[T_d, P_d]`, exactly when `d = 2` or `d = 3` (`D49i`): there they close
   like a spin, as `x`, `p`, `iħ` close in the continuum; from `d = 4` on they do not, which is
@@ -227,7 +227,7 @@ prints the axioms of the main theorems.
 
 ## Figures
 
-Illustrations of NRS³ at the maximal-tension state `ψ* ⊗ ψ* ⊗ ψ*` of the cube. For each axis,
+Illustrations of NRS³ at the maximal current state of the cube. For each axis,
 the solid line is the fluctuation vector of `T` and the dashed line that of `P` (drawn in both
 senses along the axis). The arrows live in the state space of the cube; each pair is shown next
 to the axis it belongs to. Values are exact where stated; magnified drawings say so.
@@ -283,7 +283,7 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 
 **The octahedral symmetry (`D37h`).** The `48` signed permutations of the axes of `d × d × d`
 (the group `O_h`) act faithfully on the positions and send `(T, P)` of axis `i` to `(T, ±P)` of axis
-`σ i`, so the NRS angle follows the axis at every state; at `Ψ*` all three angles are `θ_NRS(d)`
+`σ i`, so the NRS angle follows the axis at every state; at the maximal current state of the cube all three angles are `θ_NRS(d)`
 for all `48`. With unequal axes each keeps its own angle and only the reflections and the
 exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `100 × 100 × 4`,
 `67 × 25 × 1600` (`keepsAngles_iff`, `card_keepsAngles_two_equal`,
@@ -327,7 +327,7 @@ records, the front is a square with bright corners, because each axis spreads on
 ![Light cone and Lieb–Robinson bound](docs/figures/nrs3_light_cone.png)
 
 **Group velocity (`D38`).** Dispersion and group velocity of `T_d`; the Heisenberg equation (the
-tension is velocity); the allowed velocities on the cube, `|vᵢ| ≤ 1` per axis with `Ψ*` at the
+tension is velocity); the allowed velocities on the cube, `|vᵢ| ≤ 1` per axis with the maximal current state of the cube at the
 corner `(1, 1, 1)`; and the two-dimensional prediction: a square velocity region, `√2` along the
 diagonal, against a circle.
 
@@ -390,7 +390,7 @@ at depth `12` with `z = 8`, for every `d ≥ 28`. Script: `docs/simulation/figur
 **The cone lies in every band (`D46`).** The band narrows with `d` but never lets the cone speed
 out: `1 ∈ Ϙ(d)` for every `d ≥ 4`. Every unit state transported at the cone speed carries a
 Robertson–Schrödinger surplus, whatever `d ≥ 4` is, and so does every state within
-`((d − 1)/2) · bandWidth d` of the cone. The condition is sharp: at `d = 2, 3`, `ψ*` moves at the
+`((d − 1)/2) · bandWidth d` of the cone. The condition is sharp: at `d = 2, 3`, the maximal current state moves at the
 cone and saturates. With the declared bridge (cone speed = speed of light in vacuum), nothing
 transported at `c` in vacuum reaches the minimum uncertainty. Script:
 `docs/simulation/figures_cone_in_band.py`.
@@ -400,13 +400,13 @@ transported at `c` in vacuum reaches the minimum uncertainty. Script:
 **Platform blindness (`D47`).** Waveguide-array quantum walks (Perets 2008, Peruzzo 2010,
 Tang 2018) start from a single-guide excitation, an eigenstate of `P_d`. There both sides of
 Robertson–Schrödinger are `0`: the inequality is empty, not saturated. `Var P_d = 0` sends the
-indeterminacy to transport, `Var T_d > 0`, and the state cannot witness the defect. For `d ≥ 4`, `ψ*` is a witness, with tension `2/(d − 1)`. The figure plots tension
+indeterminacy to transport, `Var T_d > 0`, and the state cannot witness the defect. For `d ≥ 4`, the maximal current state is a witness, with tension `2/(d − 1)`. The figure plots tension
 against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tension and Gram defect
 `1/(18 ρ₄²)`. Script: `docs/simulation/figures_platform_blindness.py`.
 
 ![Platform blindness](docs/figures/d47_platform_blindness.png)
 
-**The experiment.** Preparation of `ψ*` in an array of `N` waveguides, the protocol and error
+**The experiment.** Preparation of the maximal current state in an array of `N` waveguides, the protocol and error
 budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
 
@@ -484,15 +484,15 @@ neighbours with uniform strength:
 Two qubits with independent flips form a square `00–01–11–10–00`, a cycle rather than a line;
 the theorems here do not cover that geometry.
 
-**State.** The maximal-tension state `ψ*`: the fundamental sine mode of the path with phases
-`(−i)^j` (`D5`, `D21`), `ψ*_j ∝ (−i)^j sin((j+1)π/(N+1))`.
+**State.** The maximal current state: the fundamental sine mode of the path with phases
+`(−i)^j` (`D5`, `D21`), `maxCurrentState_j ∝ (−i)^j sin((j+1)π/(N+1))`.
 
-**Measurement.** The spreads `σ_T`, `σ_P` of transport and position in `ψ*` (`P_N` is diagonal in
+**Measurement.** The spreads `σ_T`, `σ_P` of transport and position in the maximal current state (`P_N` is diagonal in
 the position basis; `T_N` is diagonal in the sine-mode basis), and the commutator term
 `½ |⟨[T_N, P_N]⟩| = 1/(N−1)`.
 
 **Prediction.** The Robertson–Schrödinger ratio `R = σ_T σ_P / |⟨x, y⟩|`, with `x`, `y` the
-fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_Nava(N)`; at `ψ*` the
+fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_Nava(N)`; at the maximal current state the
 covariance vanishes and `|⟨x, y⟩| = ½ |⟨[T_N, P_N]⟩|`. Under imperfections only this ratio keeps
 the controls at `1` (error budget in `docs/EXPERIMENT.md`):
 
@@ -665,16 +665,16 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   position–transport dynamics realizing `(T_d, P_d)`; for `d ≥ 4`, its
   Robertson–Schrödinger defect is strictly positive.
 - `D19_FiedlerPositionVariance`, `D20_GramStepCoherenceConstant`: closed-form variances
-  of `T_d` and `P_d` at the extremal state `ψ*` (the explicit Fiedler mode with
-  phase `(−i)^j`) and the Gram step `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`,
+  of `T_d` and `P_d` at the maximal current state (the explicit Fiedler mode with
+  phase `(−i)^j`) and the Gram step `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`,
   with Gram defect `(C_Nava(d)² − 1)/(d−1)²`, equal to zero exactly for
   `d ∈ {2, 3}`.
 - `D21_ElementalNRSInequality`: the inequality for the concrete operators
-  `(T_d, P_d)`. At `ψ*`: `cov = 0`, `Var T · Var P = (c/2)² (1 + δ_geom)²` with
+  `(T_d, P_d)`. At the maximal current state: `cov = 0`, `Var T · Var P = (c/2)² (1 + δ_geom)²` with
   `c = −2/(d−1)`, and the Robertson–Schrödinger gap equals
   `(c/2)² δ_geom (2 + δ_geom)`. The top eigenvalue `2/(d−1)` of
   `K_d = i[T_d, P_d]` is simple, so every unit state with `⟨K_d⟩ = 2/(d−1)` is a
-  phase of `ψ*` and the strict inequality holds at every such state.
+  phase of the maximal current state and the strict inequality holds at every such state.
 - `D22_TransportPositionInstanceTdPd`: the interface `PositionTransport d` of
   `D17` instantiated with the concrete operators `(T_d, P_d)`; its saturation
   field is a theorem, and the intrinsic defect equals the Gram defect of `D20`.
@@ -700,7 +700,7 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   `1/φ = (√5 − 1)/2`, i.e. `3(√5 − 1)/4` of the maximum `2/3`. Its upper bound — no
   minimum-uncertainty state of `H₄` goes higher — is `D23g` in the separate target
   `NavaRobertsonCertificados`.
-- `PhyslibBridge`: `T_d`, `P_d` as physlib `Observable`s and `ψ*` as a vector state; variance,
+- `PhyslibBridge`: `T_d`, `P_d` as physlib `Observable`s and the maximal current state as a vector state; variance,
   covariance and commutator term coincide with `D21`'s, so the NRS inequality is physlib's
   `robertson_schrodinger` instantiated (`robertson_schrodinger_eq_D21`), strict for `d ≥ 4`
   (`physlib_robertson_schrodinger_strict`).
@@ -735,8 +735,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D41_MandelstamTammCramerRao`: Robertson for `(T_d, P_d)` read as Mandelstam–Tamm
   (`mandelstamTamm`: `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`, `⟨K_d⟩` the rate of `⟨P_d⟩`, `D38`) and as
   quantum Cramér–Rao (`cramerRao`: error-propagation Fisher information of `P_d` at most
-  `4 Var T_d`). At `ψ*` both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_psiStar`),
-  exactly at `d = 2, 3` (`mtRatio_psiStar_eq_one_iff`); on the cube, per axis
+  `4 Var T_d`). At the maximal current state both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_maxCurrentState`),
+  exactly at `d = 2, 3` (`mtRatio_maxCurrentState_eq_one_iff`); on the cube, per axis
   (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
 - `D42_DirectionOctants`: the direction of motion is the sign of `⟨K_d⟩`. The reflection
   `j ↦ d − 1 − j` commutes with `T_d` and reverses `P_d`, so it reverses the tension
@@ -752,8 +752,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D47_PlatformBlindness`: a unit eigenvector of `P_d` has zero Gram defect
   (`gramDefectAt_eq_zero_of_P_eigenvector`): the inequality is empty there, while
   `Var T_d > 0` for `d ≥ 2` (`variance_T_pos_of_P_eigenvector`); it is not a defect witness
-  (`not_isDefectWitness_of_P_eigenvector`); for `d ≥ 4`, `ψ*` is one
-  (`isDefectWitness_psiStar`), and every witness has both variances positive
+  (`not_isDefectWitness_of_P_eigenvector`); for `d ≥ 4`, the maximal current state is one
+  (`isDefectWitness_maxCurrentState`), and every witness has both variances positive
   (`variance_pos_of_isDefectWitness`).
 - `D48_SpectrumBounds`: the per-state angle `angleState` in `[0, π/2]` (`angleState_mem_Icc`),
   zero exactly at saturation (`angleState_eq_zero_iff`), equal to `θ_NRS(d)` on the
@@ -777,8 +777,8 @@ unit and no constant to it.
   `arccos (1/C_∞)`; one angle per axis of the cube (`angles_cube`, `angle_floor_cube`);
   finite isotropy (`angleNRS_isotropy`, `finite_isotropy_cube`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
-  maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_psiStar`, `tensionTotal_le`).
-- `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at `Ψ*`
+  maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_maxCurrentState`, `tensionTotal_le`).
+- `D37d_CubePythagoras`: fluctuation vectors of different axes are orthogonal at the maximal current state of the cube
   (`orthogonal_axes_xy/xz/yz`); variances add (`pythagoras_T`, `pythagoras_P`); the total pair of
   the cube `d × d × d` meets at `θ_NRS(d)` (`angle_total_cube`, `angle_total_four`).
 - `D37e_VolumetricQuantum`: `volQuantum dx dy dz = δ(dx) δ(dy) δ(dz)`; zero only at a
@@ -796,7 +796,7 @@ unit and no constant to it.
   permutations of the axes (`card_signedPerm`), acting faithfully for `d ≥ 2`
   (`cubeSym_injective`), move `T`, `P` of axis `i` to `T`, `±P` of axis `σ i`
   (`reindex_liftAxis`), so the angle follows the axis at every state (`angleAxis_cubeSym`); at
-  `Ψ*` all three angles are `θ_NRS(d)` and stay so under all of `O_h`
+  the maximal current state of the cube all three angles are `θ_NRS(d)` and stay so under all of `O_h`
   (`octahedral_symmetry`, `octahedral_angle_bounds`); with unequal axes a signed permutation
   keeps every angle iff it exchanges only axes of equal length (`keepsAngles_iff`): `48`, `16`,
   `8` for `d × d × d`, `100 × 100 × 4`, `67 × 25 × 1600` (`card_keepsAngles_*`).
@@ -809,10 +809,10 @@ unit and no constant to it.
   symmetries; `quantum_erased_iff`: `𝒱 = 0` only with an axis of `2` or `3` positions.
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
-  speed limit `abs_velocity_le`, `velocity_psiStar`, phase modes `velocity_phaseMode`;
-  cube `velocities_le`, `velocities_PsiStar3D`, `speed_sq_PsiStar3D`.
+  speed limit `abs_velocity_le`, `velocity_maxCurrentState`, phase modes `velocity_phaseMode`;
+  cube `velocities_le`, `velocities_maxCurrentCubeState`, `speed_sq_maxCurrentCubeState`.
 - `D39_ConjugatePairs`: affine invariance of the angle and of the ratio (`angleG_affineOp`,
-  `ratioG_affineOp`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at `ψ*`
+  `ratioG_affineOp`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at the maximal current state
   (`ratio_pair`), saturates exactly at `d = 2, 3` (`saturated_pair_iff`), opens strictly with `d`
   (`angle_pair_lt_of_lt`) below `arccos (1/C_∞)` (`angle_pair_lt_limit`); on the cube, three
   pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
@@ -842,10 +842,10 @@ the three tensions — x, y, z, none can be dropped.
   diagonal too (`covMatrix_prod3`) and the defects multiply:
   `det Σ = (s_x + t_x²/4)(s_y + t_y²/4)(s_z + t_z²/4)` (`det_covMatrix_prod3`), with `s` the
   Robertson–Schrödinger surplus of each axis; a positive surplus on `x`, `y` and `z` makes
-  det|NRS³ strict (`robertson_det_prod3_strict`). At `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exact,
+  det|NRS³ strict (`robertson_det_prod3_strict`). At the maximal current state of the cube the ratio is exact,
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
-  (`det_covMatrix_PsiStar3D`), strictly above the bound on every box with `4` or more positions on
-  each axis (`robertson_det_PsiStar3D_strict`); at `4 × 4 × 4` the ratio is
+  (`det_covMatrix_maxCurrentCubeState`), strictly above the bound on every box with `4` or more positions on
+  each axis (`robertson_det_maxCurrentCubeState_strict`); at `4 × 4 × 4` the ratio is
   `C_Nava(4)⁶ ≈ 1.0520`.
 - `D49d_RobertsonDeterminantBand` (certificates target): product states whose speed on each axis
   lies in `Ϙ(d)` satisfy `det Σ > (t_x t_y t_z / 8)²` (`robertson_det_band`); since the cone lies
@@ -860,9 +860,9 @@ the three tensions — x, y, z, none can be dropped.
   (`axis_defects_pos`).
 - `D49f_MaxTensionCube` (certificates target): maximal tension leaves no room for entanglement.
   The tension of an axis is the sum of the tensions of the columns of `Φ`
-  (`tensionG_eq_sum_col`); at `|v| = 1` every column is at the top, hence a multiple of `ψ*` in
+  (`tensionG_eq_sum_col`); at `|v| = 1` every column is at the top, hence a multiple of the maximal current state in
   its direction (`cols_of_maxTension`), and with `|v| = 1` on `x`, `y`, `z` the state is a phase
-  times `ψ* ⊗ ψ* ⊗ ψ*` (`eq_smul_octant`). For every state at maximal tension,
+  times the product of the maximal current states (`eq_smul_octant`). For every state at maximal tension,
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
   (`det_covMatrix_maxTension`), strict on every box with `4` or more positions per axis
   (`robertson_det_maxTension_strict`).

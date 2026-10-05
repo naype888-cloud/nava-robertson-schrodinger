@@ -6,7 +6,7 @@ the mean and standard deviation over 2000 realizations of
 * the Robertson ratio          R_rob = σ_T σ_P / (½ |⟨[T, P]⟩|),
 * the Robertson–Schrödinger ratio R_RS = σ_T σ_P / |⟨x, y⟩|,  x = (T − ⟨T⟩)ψ, y = (P − ⟨P⟩)ψ,
 
-the second being `ratioG` of D39. Both equal C_Nava(N) at the ideal ψ*. Noise that creates a
+the second being `ratioG` of D39. Both equal C_Nava(N) at the ideal maximal current state. Noise that creates a
 spurious covariance raises R_rob but not R_RS.
 
 Run:  python3 docs/simulation/error_budget.py
@@ -32,7 +32,7 @@ SCENARIOS = {
 
 
 def path_operators(n):
-    """T_N = A_N / ρ_N, P_N = diag(−1, …, 1) and ψ*."""
+    """T_N = A_N / ρ_N, P_N = diag(−1, …, 1) and the maximal current state."""
     adj = np.diag(np.ones(n - 1), 1) + np.diag(np.ones(n - 1), -1)
     rho = 2 * np.cos(np.pi / (n + 1))
     j = np.arange(n)

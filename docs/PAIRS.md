@@ -3,13 +3,13 @@
 Robertson (1929) and Schrödinger (1930) state their inequality for any two observables `A`, `B`
 and a normalized state; the theorem carries no list of pairs (`D2`). In finite dimension no
 commutator is a nonzero multiple of the identity (`D12`), so every pair on `d` levels enters
-through `⟨[A, B]⟩` at a state. NRS evaluates it on `T_d : P_d` at the maximal-tension state `ψ*`.
+through `⟨[A, B]⟩` at a state. NRS evaluates it on `T_d : P_d` at the maximal current state.
 
 A pair realized on `T_d : P_d` is `A = a T_d + b`, `B = c P_d + e` with `a, c ≠ 0`: `P_d` orders
 the `d` values of the pair, `T_d` is the step between consecutive values, and `a, b, c, e` are
 its units and origins. `D39` proves that none of them reaches NRS or NRS³:
 
-* ratio `R = σ_A σ_B / |⟨Ã ψ*, B̃ ψ*⟩| = C_Nava(d)` for every pair (`ratio_pair`);
+* ratio `R = σ_A σ_B / |⟨Ã maxCurrentState, B̃ maxCurrentState⟩| = C_Nava(d)` for every pair (`ratio_pair`);
 * `R = 1` exactly at `d = 2, 3` (`saturated_pair_iff`); from `d = 4` on the angle is positive
   (`angle_pair_pos`), grows strictly with `d` (`angle_pair_lt_of_lt`) and stays below
   `arccos (1 / C_∞)`, which no `d` attains (`angle_pair_lt_limit`);
@@ -58,9 +58,9 @@ operator. Counted in steps of transport it gives the light cone (`D37f`); in con
 `U(t) = exp(−i t T_d)` obeys the Lieb–Robinson bound (`D37g`). Energy is `T_d`: its sine modes
 have energy `ε(θ) = 2 cos θ / ρ_d`, the dispersion relation, which is also the frequency of each
 mode (`Td_mulVec_sineMode`, `D38`). The Heisenberg equation `d/dt (U† P_d U) = U† K_d U` ties
-time to transport (`heisenberg`): the tension is velocity, and `ψ*` moves at exactly one position
-per unit of time (`velocity_psiStar`), on all three axes of the cube at once
-(`velocities_PsiStar3D`). Rows 26 and 27 are the dynamics `T_d` generates on the axes where
+time to transport (`heisenberg`): the tension is velocity, and the maximal current state moves at exactly one position
+per unit of time (`velocity_maxCurrentState`), on all three axes of the cube at once
+(`velocities_maxCurrentCubeState`). Rows 26 and 27 are the dynamics `T_d` generates on the axes where
 rows 1–25 live.
 
 Rows 1–3 are the three axes of the cube of `D37`; any three rows among 1–25 whose pairs commute

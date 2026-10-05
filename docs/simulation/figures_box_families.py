@@ -11,7 +11,7 @@ symmetries 48, 16, 8 (card_keepsAngles_family), the orbits 1, 3, 6 (card_orbit_*
 stabilizer = 6, and the count at N = 10: 7 + 42 + 35 = 84 figures (count_ten). The general
 counts m, m(m − 1), C(m, 3) with m = N − 3 are elementary combinatorics, checked in Lean at
 N = 10. The angles θ_NRS(d) and the lengths σ_T, σ_P of the stars are evaluated numerically
-from the matrices of D3 at ψ*; each star is drawn schematically, one axis per direction.
+from the matrices of D3 at the maximal current state; each star is drawn schematically, one axis per direction.
 
 Run:  python3 docs/simulation/figures_box_families.py
 """
@@ -36,16 +36,16 @@ def family(b):
     return "regular" if k == 1 else ("two" if k == 2 else "distinct")
 
 
-def psi_star(d):
+def max_current_state(d):
     j = np.arange(d)
     v = (-1j) ** j * np.sin((j + 1) * np.pi / (d + 1))
     return v / np.linalg.norm(v)
 
 
 def axis_stats(d):
-    """σ_T, σ_P and the NRS angle (degrees) of the pair (T_d, P_d) at ψ*."""
+    """σ_T, σ_P and the NRS angle (degrees) of the pair (T_d, P_d) at the maximal current state."""
     t, p = ops(d)
-    z = psi_star(d)
+    z = max_current_state(d)
     m = lambda a: np.vdot(z, a @ z).real
     x, y = t @ z - m(t) * z, p @ z - m(p) * z
     st, sp = np.linalg.norm(x), np.linalg.norm(y)
@@ -211,7 +211,7 @@ def fig_families():
     fig.suptitle("D37i — the three families of boxes", x=0.01, ha="left", fontsize=15,
                  color=INK, y=0.93)
     fig.text(0.01, 0.075, "Stars: the fluctuation vectors of T (upper ray) and P (lower ray) "
-             "of each axis at ψ*, true angle θ_NRS and true lengths σ_T, σ_P, drawn one axis per "
+             "of each axis at the maximal current state, true angle θ_NRS and true lengths σ_T, σ_P, drawn one axis per "
              "direction; faint rays are their opposites. Every axis with 4 or more positions opens; "
              "equal axes open equally.", fontsize=9, color=MUTED)
     fig.savefig(OUT / "d37i_box_families.png", bbox_inches="tight")
@@ -231,7 +231,7 @@ def fig_table():
         ("distinct", "dx, dy, dz\nall different", "4 × 7 × 10\n67 × 25 × 1600",
          "three different\nangles", "8", r"$D_{2h}$", "1 of 6", "6", "C(m, 3)", "35"),
     ]
-    heads = ["family", "condition", "examples", "NRS angles at Ψ*", "symmetries", "group",
+    heads = ["family", "condition", "examples", "NRS angles at max current", "symmetries", "group",
              "axis orders\nkept", "orbit\n(same figure)", "figures up to N\n(m = N − 3)*",
              "N = 10"]
     widths = [1.9, 1.45, 1.7, 1.95, 1.1, 0.8, 1.05, 1.1, 1.45, 0.75]

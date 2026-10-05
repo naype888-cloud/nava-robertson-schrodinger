@@ -23,9 +23,9 @@ not enter the prediction, which depends only on the coupling pattern.
 
 ## 2. State
 
-The maximal-tension state `ψ*` (`D5`, `D21`):
+The maximal current state (`D5`, `D21`):
 
-    ψ*_j ∝ (−i)^j sin((j+1)π/(N+1)),   j = 0, …, N−1.
+    maxCurrentState_j ∝ (−i)^j sin((j+1)π/(N+1)),   j = 0, …, N−1.
 
 It is prepared at the input with a spatial light modulator (amplitudes and phases per guide).
 Its phase advances by `−90°` per guide: it is the beam launched at the angle of maximal transverse
@@ -43,7 +43,7 @@ and the Robertson–Schrödinger ratio
     R = σ_T σ_P / |⟨x, y⟩|,   x = (T − ⟨T⟩)ψ,   y = (P − ⟨P⟩)ψ,
 
 where `|⟨x, y⟩|² = cov(T, P)² + (½ ⟨i[T, P]⟩)²`: the floor includes the covariance. This is
-`ratioG` of `D39`. At the ideal `ψ*` the covariance vanishes and `R` equals the Robertson ratio
+`ratioG` of `D39`. At the ideal maximal current state the covariance vanishes and `R` equals the Robertson ratio
 `σ_T σ_P / (½ |⟨[T, P]⟩|)`; with imperfections it does not, and only the Robertson–Schrödinger
 ratio keeps the controls at `1` (section 5).
 
@@ -186,9 +186,9 @@ corners**, at `|Δx|, |Δy| ≈` the front of one axis (`D38`). This tests local
 limit; it holds for any lattice with nearest-neighbour coupling, so it is a check of the
 platform, not of NRS.
 
-**M2 — The tilted beam (`N = 4`, holography).** The input is the envelope of `ψ*` with a phase
+**M2 — The tilted beam (`N = 4`, holography).** The input is the envelope of the maximal current state with a phase
 step `θ` per guide, `ψ_j ∝ e^{−ijθ} sin((j+1)π/5)`: a beam launched at an angle, with velocity
-`v = sin θ`. At `θ = 90°` it is `ψ*` and `R = C_Nava(4) = 1.00848`, `θ_NRS(4) ≈ 7.43°`, and the
+`v = sin θ`. At `θ = 90°` it is the maximal current state and `R = C_Nava(4) = 1.00848`, `θ_NRS(4) ≈ 7.43°`, and the
 Mandelstam–Tamm/Cramér–Rao ratio is `5/(99 − 42√5) ≈ 0.9833` (Lean, `D41`, `D43`). Numerically the
 angle stays at `7.43°` for **every** tilt `θ ≠ 0`: the defect is set by the envelope, not by the
 speed. A curve `R(θ)` flat at `1.00848` is a prediction that needs no fitting.

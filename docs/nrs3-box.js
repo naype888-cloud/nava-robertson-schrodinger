@@ -2,7 +2,7 @@
   const $ = (id) => document.getElementById(id);
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const FAM = { regular: "--blue", two: "--violet", distinct: "--green" };  // red is reserved for d < 4
-  // ---------- the pair (T_d, P_d) and the state ψ* on one axis ----------
+  // ---------- the pair (T_d, P_d) and the maximal current state on one axis ----------
   const cache = {};
   function axis(d) {
     if (cache[d]) return cache[d];
@@ -296,7 +296,7 @@
     if (!tips || !animate) { tips = target; tipsTo = null; return; }
     tipsFrom = tips.map((p) => p.slice()); tipsTo = target; morph0 = performance.now();
   }
-  // a new box always starts at Ψ* (t = 0): the quantum θ_NRS(d) is read there, not at Ψ(t)
+  // a new box always starts at the maximal current state of the cube (t = 0): the quantum θ_NRS(d) is read there, not at Ψ(t)
   function stopTransport() {
     playing = false; $("play").setAttribute("aria-pressed", "false"); $("play").textContent = "▶ Transport";
   }
