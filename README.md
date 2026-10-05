@@ -16,7 +16,8 @@ for several observables on that cube: the six observables `(T_x, T_y, T_z, P_x, 
 once, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`D49`, `D49b`); on canonical axes
 (the fluctuations of `x`, `y`, `z` orthogonal from one vertex) the ratio is
 `det Σ / |det Ω| = Π (1 + g_i/ω_i²)`, a product of three factors above `1` in the velocity
-band (`D49k`). All statements are theorems in Lean 4 over
+band (`D49k`); and in the velocity band det|NRS³ is strict for every state, entangled or not,
+canonical axes or not (`D49t`). All statements are theorems in Lean 4 over
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
@@ -180,7 +181,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49p`).** The covariance matrix `Σ` and the
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49t`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -192,6 +193,13 @@ dropped.
   positive, for every state (`D49e`), so det|NRS³ is strict on every box with `4` or more positions
   per axis. Product states are canonical (`D49c`); so is any state with one axis split off
   (`D49j`).
+* **Every state in the band** (`D49t`): if the speeds on `x`, `y`, `z` lie in `Ϙ(dx)`, `Ϙ(dy)`,
+  `Ϙ(dz)`, then `|det Ω| < det Σ`, with no product structure and no canonical axes assumed; the
+  states that mix the three directions are included. The proof runs through the relations of an
+  equality state (`D49h`, `D49p`), the span of their brackets (`D49o`), the brackets on one or two
+  axes (`D49l`, `D49n`), a transport relation (`D49q`), and the ends of each axis, where
+  `[T_d, [T_d, P_d]]` lives (`D49r`, `D49s`): there the transport relation is a recurrence that
+  leaves `Φ = 0` or a state split off `z`, which is strict (`D49j`).
 * **At the state of the cube** `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the ratio is exactly
   `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` positions
   (`D49c`); at `4 × 4 × 4` it is `C_Nava(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
@@ -209,7 +217,7 @@ dropped.
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes, the span of the brackets, how many relations. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes, the span of the brackets, how many relations, a transport relation, the edge operator, the edge slices, and strictness for every state. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -432,9 +440,9 @@ identification, which is a premise and not a Lean theorem:
   time (`D4`: the diagonal is never the minimal step).
 * **The three directions are canonical axes.** `x`, `y`, `z` are orthogonal from one vertex:
   the fluctuations of position and transport along one direction are orthogonal to those along
-  the others. On canonical axes det|NRS³ is strict in the whole velocity band (`D49k`); states
-  whose fluctuations mix the three directions do not generate three-dimensional space and are
-  outside the bridge.
+  the others. On canonical axes det|NRS³ is strict in the whole velocity band with the explicit
+  ratio `Π (1 + g_i/ω_i²)` (`D49k`); strictness itself needs no canonical axes: it holds for every
+  state in the band (`D49t`).
 
 Under this bridge, a particle localized at one position carries no transport tension; at maximal
 tension it cannot be localized — it is spread over all the positions, with positive probability
@@ -868,10 +876,8 @@ the three tensions — x, y, z, none can be dropped.
   `[L_a, L_b] = Σ_i σ_i [T_i, P_i]` (`commutator_sum`); if every `σ_i` vanished, one axis would
   carry a relation alone (`exists_single_axis`), a vanishing defect excluded by `D49e`. In the
   continuum the commutators are one constant and such a relation is free; here
-  `i[T, P] = K_d` is an operator. On canonical axes the question does not arise (`D49k`). For
-  vectors of `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` that mix the three directions, outside the canonical bridge,
-  excluding this relation strictly inside the band is a separate mathematical question; a
-  numerical search on `4 × 4 × 4` found ratios no lower than `1.0036`, at almost-product states.
+  `i[T, P] = K_d` is an operator. On canonical axes the question does not arise (`D49k`); for
+  every state in the band the relation is excluded by `D49l`–`D49t`.
 - `D49i_TransportPositionLieClosure`: the commutators of transport and position close only at
   `d = 2, 3`. The bracket with position always closes, `[P_d, [T_d, P_d]] = −h² T_d` with
   `h = 2/(d − 1)` (`commutator_P_C`); the bracket with transport, `[T_d, [T_d, P_d]]`, is diagonal,
@@ -905,17 +911,13 @@ the three tensions — x, y, z, none can be dropped.
   vanish on every axis but `i` and `c` carries position on axis `i` without transport, then
   `[T_i, P_i] Φ = 0`, the bracket with `L_c` gives `[P_i, [T_i, P_i]] Φ = −h² T_i Φ = 0`
   (`D49i`), and `Φ = 0` (`eq_zero_of_free_axis`). Pure algebra of `T_d`, `P_d`: no spectral input
-  and no velocity hypothesis. What remains of the open case is two or three axes whose
-  brackets stay glued together.
+  and no velocity hypothesis.
 - `D49n_TwoAxes` (certificates target): brackets on two axes. If
   `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0` and a relation of `Φ` carries position
   on axis `i` and nothing else on `i`, `j`, its bracket isolates `[P_i, [T_i, P_i]] Φ = −h² T_i Φ`,
   so `T_i Φ = 0`, then `[T_i, P_i] Φ = 0` and `Φ = 0` (`eq_zero_of_two_axes`); likewise
   `[T_i, P_i] Φ = 0` with a relation carrying position but no transport on axis `i`
-  (`eq_zero_of_comm_eq_zero`). What remains of the open case are the configurations where every
-  relation carries transport on the axes of the brackets; there the second bracket brings in the
-  diagonal `[T_k, [T_k, P_k]]`, which leaves the span of `T_k`, `P_k`, `[T_k, P_k]` from `d = 4` on
-  (`D49i`).
+  (`eq_zero_of_comm_eq_zero`).
 - `D49o_BracketSpan` (certificates target): the span of the brackets. A relation of `Φ` is a
   coefficient vector `a` with `L_a Φ = λ Φ` (`rel`); two relations give
   `[L_a, L_b] = Σ_k σ_k(a, b) [T_k, P_k]`, and the triple `σ(a, b)` (`sigma`) is the recipe of how
@@ -931,10 +933,26 @@ the three tensions — x, y, z, none can be dropped.
   (`three_le_finrank_rel`, from `D49h`), and four leave no state (`eq_zero_of_finrank_four`):
   forgetting `z` is then onto, giving relations with `x`, `y` coefficients `T_x`, `P_x`, `T_y`,
   `P_y` alone, with recipes `(1, 0, s)` and `(0, 1, s')`; either `e_y ∈ W` (`D49o`) or
-  `(s', −s, 0) ∈ W` and the relation with `P_x` alone closes it (`D49n`). What remains: exactly
-  three relations, each axis carrying both `T` and `P`, and `W` a plane with no single-axis
-  recipe.
-- `D49m_MirrorState`: the trivial case of the open step, on record. The mirror `J`, position
+  `(s', −s, 0) ∈ W` and the relation with `P_x` alone closes it (`D49n`).
+- `D49q_TransportRelation` (certificates target): a transport relation from two tensions. If
+  `w_i [T_i, P_i] Φ + w_j [T_j, P_j] Φ = 0` and `c` is a relation without transport on `i`, `j`,
+  the bracket with `L_c` and `[P_k, [T_k, P_k]] = −h_k² T_k` give
+  `(w_i c(P_i) h_i² T_i + w_j c(P_j) h_j² T_j) Φ = 0` (`transport_relation`).
+- `D49r_EdgeOperator` (certificates target): `[T_d, [T_d, P_d]] = (2h/ρ_d²) diag(−1, 0, …, 0, +1)`.
+  It is diagonal (`D_offdiag`), zero at every interior position (`D_interior`), and `±2h/ρ_d²` at
+  the two ends (`D_zero_zero` of `D49i`, `D_last`).
+- `D49s_EdgeSlices` (certificates target): the edge of the cube. A transport relation
+  `(α T_x + β T_y) Φ = 0`, `α ≠ 0`, is a recurrence along `x`, so a vanishing edge slice `x = 0`
+  leaves `Φ = 0` (`eq_zero_of_edge`). With `w_x [T_x, P_x] Φ + w_y [T_y, P_y] Φ = 0`, the bracket
+  gives `(α w_x [T_x, [T_x, P_x]] + β w_y [T_y, [T_y, P_y]]) Φ = 0` (`edge_relation`); both live on
+  the ends, so on the edge slice at most one position `y*` stays free (`coef_unique`), and
+  `Φ = 0` or `Φ(x, y, z) = g(z) f(x, y)` (`eq_zero_or_split`).
+- `D49t_RobertsonDeterminantBandStrict` (certificates target): **det|NRS³ is strict in the band,
+  for every state** (`robertson_det_band_strict`). At equality there are three relations
+  (`D49p`); a nonzero recipe without `z` part is closed by `D49o`, `D49n` or the edge (`D49q`,
+  `D49s`, with `D49j` for the split state); otherwise a relation without `z` part forces every
+  recipe onto `z` (`D49o`) or `W = 0` (`D49h`). No step uses canonical axes or a product form.
+- `D49m_MirrorState`: the trivial case of the equality step, on record. The mirror `J`, position
   `j ↦ d − 1 − j` with sign `(−1)^j`, anticommutes with transport and position
   (`J_mul_Td`, `J_mul_Pd`) and is unitary (`J_mul_conjTranspose`). As a state of two axes,
   `Φ(j, k) = J_{jk}/√d` puts `y` at the mirror of `x`: `(T_x + T_y) Φ = 0`,

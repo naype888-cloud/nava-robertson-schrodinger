@@ -21,8 +21,8 @@ undetermined (its reduced state is `J Jᴴ / d = 1/d`). Its tension is `tr [T_d,
 
 So the mirror state gives equality in Robertson 1934, but as `0 = 0`: the six fluctuation
 vectors are dependent and every tension vanishes. It moves at speed `0`, as far from the band
-`Ϙ(d)` near the cone as a state can be. It is the trivial case of the open step of `D49h`, kept
-here so that it is on record; what matters lies on the other side, in the band.
+`Ϙ(d)` near the cone as a state can be. It is the trivial case of the equality step of `D49h`, kept
+here so that it is on record; what matters lies on the other side, in the band (`D49t`).
 
 ## Main results
 

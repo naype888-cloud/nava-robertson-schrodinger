@@ -28,16 +28,11 @@ and any relation with position on axis `i` gives `[T_i, P_i] Φ = 0` as well, so
 - `TwoAxes.eq_zero_of_comm_eq_zero` : `[T_i, P_i] Φ = 0` and a relation with position on axis `i`
   and no transport there leave `Φ = 0`.
 
-## What remains
+## Where this is used
 
-Write `W ⊆ ℂ³` for the span of the bracket coefficients `σ(a, b)`, `a, b ∈ N`; every `w ∈ W`
-gives `Σ w_k [T_k, P_k] Φ = 0`. `W = 0` is excluded by `D49h`. `W ∋ e_i` is closed by
-`eq_zero_of_comm_eq_zero`, since `σ_i ≠ 0` makes the projection of `N` on axis `i` all of `ℂ²`
-and so provides the relation (the linear step is `D49o`). A two-axis `w` is
-closed here when `N` has a relation with position on axis `i` alone on the axes `i`, `j`. The other configurations need the second bracket
-`[L_c, Σ w_k [T_k, P_k]] = Σ w_k (c_{T_k} [T_k, [T_k, P_k]] − c_{P_k} h_k² T_k)`, where the
-diagonal `[T_k, [T_k, P_k]]` leaves the span of `T_k`, `P_k`, `[T_k, P_k]` from `d = 4` on
-(`D49i`).
+`D49t` closes the equality case in the band: a recipe of one axis alone is `D49o`, a recipe on
+two axes with a relation carrying position alone is here, and the remaining configurations go
+through the transport relation (`D49q`) and the edge of the cube (`D49s`).
 -/
 
 @[expose] public noncomputable section

@@ -26,7 +26,7 @@ excluded in the band (`D49e`). Hence equality forces
   `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with `σ ≠ 0`.
 
 In the continuum the commutators are one constant and such a relation is free; here
-`i[T, P] = K` is an operator. Whether this relation can hold in the band is not decided here.
+`i[T, P] = K` is an operator. That it cannot hold in the band is `D49t`.
 
 ## Main results
 

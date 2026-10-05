@@ -111,6 +111,6 @@ theorem.
 - `D49i` : the commutators of `T_d` and `P_d` close (`[T, [T, P]] ∈ span {T, P, [T, P]}`) iff
   `d ∈ {2, 3}`.
 - `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|NRS³ as
-  `0 = 0`, with every tension zero; the trivial case of the open step, far from the band.
+  `0 = 0`, with every tension zero; the trivial case of the equality step, far from the band.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
 -/
