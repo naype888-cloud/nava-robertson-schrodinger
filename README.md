@@ -419,7 +419,10 @@ identification, which is a premise and not a Lean theorem:
   relative phases between neighbouring positions: `T_d` and `P_d` are real symmetric, so a state
   with real amplitudes has `⟨i[T_d, P_d]⟩ = 0` (`D23b`, `tension_eq_zero_of_real`), while the phase modes of `D38` are eigenvectors
   of the velocity, at the group velocity. A global phase leaves the surplus unchanged (`D23b`).
-* **The cube of `D37` is three-dimensional space.** Its three factors are the directions
+* **The cube of `D37` is three-dimensional space.** The three directions are those of every
+  course of quantum mechanics: Schrödinger in three dimensions acts on `H_x ⊗ H_y ⊗ H_z`, one
+  factor and one conjugate pair per axis. The cube `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` has the same structure,
+  with `d` positions per axis instead of the continuum. Its three factors are the directions
   `x, y, z`; a point has three coordinates, and motion changes one coordinate by one step at a
   time (`D4`: the diagonal is never the minimal step).
 * **The three directions are canonical axes.** `x`, `y`, `z` are orthogonal from one vertex:
