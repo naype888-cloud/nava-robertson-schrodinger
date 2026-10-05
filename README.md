@@ -180,7 +180,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49n`).** The covariance matrix `Σ` and the
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49o`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -209,7 +209,7 @@ dropped.
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes, the span of the brackets. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -916,6 +916,14 @@ the three tensions — x, y, z, none can be dropped.
   relation carries transport on the axes of the brackets; there the second bracket brings in the
   diagonal `[T_k, [T_k, P_k]]`, which leaves the span of `T_k`, `P_k`, `[T_k, P_k]` from `d = 4` on
   (`D49i`).
+- `D49o_BracketSpan` (certificates target): the span of the brackets. A relation of `Φ` is a
+  coefficient vector `a` with `L_a Φ = λ Φ` (`rel`); two relations give
+  `[L_a, L_b] = Σ_k σ_k(a, b) [T_k, P_k]`, and the triple `σ(a, b)` (`sigma`) is the recipe of how
+  much tension of each axis enters that bracket. `W` is the span of all recipes; every `w ∈ W`
+  gives `Σ_k w_k [T_k, P_k] Φ = 0` (`annihilates`). The linear step is explicit: if
+  `σ_i(a, b) ≠ 0`, the relation `a(T_i) b − b(T_i) a` has no transport and position `σ_i(a, b)`
+  on axis `i` (`exists_rel_P`); so the recipe of one axis alone, `e_i ∈ W`, leaves `Φ = 0`
+  (`eq_zero_of_single_mem`). Open: `W ≠ 0` with no single-axis recipe.
 - `D49m_MirrorState`: the trivial case of the open step, on record. The mirror `J`, position
   `j ↦ d − 1 − j` with sign `(−1)^j`, anticommutes with transport and position
   (`J_mul_Td`, `J_mul_Pd`) and is unitary (`J_mul_conjTranspose`). As a state of two axes,

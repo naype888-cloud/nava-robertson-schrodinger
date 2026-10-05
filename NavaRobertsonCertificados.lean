@@ -18,6 +18,7 @@ public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 public import NavaRobertsonCertificados.D49k_RobertsonDeterminantCanonicalAxes
 public import NavaRobertsonCertificados.D49l_FreeAxis
 public import NavaRobertsonCertificados.D49n_TwoAxes
+public import NavaRobertsonCertificados.D49o_BracketSpan
 
 /-!
 # Certificates
@@ -64,4 +65,7 @@ alone and a relation carries position there without transport, then `[T_i, P_i] 
 `D49n`: brackets on two axes: `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0` and a
 relation with position on axis `i` alone on `i`, `j` leave `Φ = 0`; so does `[T_i, P_i] Φ = 0`
 with a relation carrying position but no transport on axis `i`.
+
+`D49o`: the span `W` of the bracket recipes `σ(a, b)` of pairs of relations: every `w ∈ W`
+gives `Σ_k w_k [T_k, P_k] Φ = 0`, and `e_i ∈ W` leaves `Φ = 0`.
 -/
