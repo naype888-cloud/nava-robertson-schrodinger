@@ -20,6 +20,7 @@ public import NavaRobertsonCertificados.D49l_FreeAxis
 public import NavaRobertsonCertificados.D49n_TwoAxes
 public import NavaRobertsonCertificados.D49o_BracketSpan
 public import NavaRobertsonCertificados.D49p_RelationsDimension
+public import NavaRobertsonCertificados.D49q_TransportRelation
 
 /-!
 # Certificates
@@ -72,4 +73,7 @@ gives `Σ_k w_k [T_k, P_k] Φ = 0`, and `e_i ∈ W` leaves `Φ = 0`.
 
 `D49p`: how many relations: in the band none lives on one axis, so there are at most four;
 at equality at least three; four leave `Φ = 0`.
+
+`D49q`: a transport relation from two tensions: `w_i [T_i, P_i] Φ + w_j [T_j, P_j] Φ = 0` and a
+relation without transport on `i`, `j` give `(w_i c(P_i) h_i² T_i + w_j c(P_j) h_j² T_j) Φ = 0`.
 -/
