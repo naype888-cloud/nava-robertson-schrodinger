@@ -17,16 +17,19 @@ The sine modes of `D6` have energy `ε(θ) = 2 cos θ / ρ_d`, with group veloci
 `v(θ) = −ε'(θ) = 2 sin θ / ρ_d`, largest at the band centre `θ = π/2`. Under
 `U(t) = exp(−i t T_d)` position obeys `d/dt (U† P_d U) = U† K_d U`: the tension is velocity.
 In positions, the velocity of a state is `((d−1)/2) ⟨K_d⟩`; it never exceeds one position per
-unit of time, and `ψ*` moves at exactly that speed, the slope of the cone of `D37f`. On the cube
-`Ψ*` reaches the bound on the three axes at once: velocity `(1, 1, 1)`, length `√3`.
+unit of time, and the maximal current state moves at exactly that speed, the slope of the cone of
+`D37f`. On the cube
+the maximal current state of the cube reaches the bound on the three axes at once: velocity
+`(1, 1, 1)`, length `√3`.
 
 ## Main results
 
 - `GroupVelocity.hasDerivAt_dispersion` : `ε' = −v`.
 - `GroupVelocity.heisenberg` : `d/dt (U† P_d U) = U† K_d U`.
-- `GroupVelocity.abs_velocity_le`, `GroupVelocity.velocity_psiStar` : `|v| ≤ 1`, attained by
-  `ψ*`.
-- `GroupVelocity.velocities_PsiStar3D` : `Ψ*` moves at `(1, 1, 1)`.
+- `GroupVelocity.abs_velocity_le`, `GroupVelocity.velocity_maxCurrentState` : `|v| ≤ 1`, attained by
+  the maximal current state.
+- `GroupVelocity.velocities_maxCurrentCubeState` : the maximal current state of the cube moves at
+  `(1, 1, 1)`.
 -/
 
 @[expose] public noncomputable section
@@ -136,7 +139,7 @@ theorem heisenberg (t : ℝ) :
     mul_smul_comm, neg_smul, neg_mul, mul_neg, Matrix.mul_sub, Matrix.sub_mul, smul_sub]
   abel
 
-/-! ## 3. Velocity: one position per unit of time, reached at `ψ*` -/
+/-! ## 3. Velocity: one position per unit of time, reached at the maximal current state -/
 
 /-- Velocity of a state, in positions per unit of time: `((d−1)/2)·⟨K_d⟩`. -/
 def velocity (d : ℕ) (ψ : Hd d) : ℝ := ((d : ℝ) - 1) / 2 * tension d ψ
@@ -159,17 +162,18 @@ theorem abs_velocity_le (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) : |veloc
         mul_le_mul_of_nonneg_left (abs_tension_le hd ψ hψ) (by positivity)
     _ = 1 := by field_simp
 
-/-- **`ψ*` moves at the speed limit**, the slope of the light cone of `D37f`. -/
-theorem velocity_psiStar (hd : 2 ≤ d) : velocity d (psiStar d) = 1 := by
+/-- **The maximal current state moves at the speed limit**, the slope of the light cone of `D37f`.
+-/
+theorem velocity_maxCurrentState (hd : 2 ≤ d) : velocity d (maxCurrentState d) = 1 := by
   have h1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
-  rw [velocity, tension_psiStar hd]
+  rw [velocity, tension_maxCurrentState hd]
   field_simp
 
 /-- **Velocity of the phase modes.** The velocity operator `((d−1)/2)·K_d` acts on the phase
 mode `k` of `D6` as the group velocity at `π/2 − θ_k`: the carrier `(−i)^j` shifts the
-angle by `π/2`. For `k = 0` (`ψ*`) this is `v(π/2 − π/(d+1)) = 1`. -/
+angle by `π/2`. For `k = 0` (the maximal current state) this is `v(π/2 − π/(d+1)) = 1`. -/
 theorem velocity_phaseMode (hd : 2 ≤ d) (k : Fin d) :
     ((((d : ℝ) - 1) / 2 : ℝ) : ℂ) • (Kmat d).mulVec (phaseMode d k) =
       fun i => (groupVelocity d (Real.pi / 2 - modeAngle d k) : ℂ) * phaseMode d k i := by
@@ -231,24 +235,26 @@ theorem mul_tension_eq {a : ℕ} (ha : 2 ≤ a) : ((a : ℝ) - 1) / 2 * (2 / ((a
     linarith
   field_simp
 
-/-- **`Ψ*` reaches the limit on the three axes at once**: its velocity is `(1, 1, 1)`. -/
-theorem velocities_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    velocityX (PsiStar3D dx dy dz) = 1 ∧ velocityY (PsiStar3D dx dy dz) = 1 ∧
-      velocityZ (PsiStar3D dx dy dz) = 1 := by
+/-- **The maximal current state of the cube reaches the limit on the three axes at once**: its
+velocity is `(1, 1, 1)`. -/
+theorem velocities_maxCurrentCubeState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    velocityX (maxCurrentCubeState dx dy dz) = 1 ∧ velocityY (maxCurrentCubeState dx dy dz) = 1 ∧
+      velocityZ (maxCurrentCubeState dx dy dz) = 1 := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [velocityX, PsiStar3D_eq_eX, TX, PX,
+  · rw [velocityX, maxCurrentCubeState_eq_eX, TX, PX,
       (stats_axis (norm_rest hy hz) hx (eX dx dy dz)).2.2.2, mul_tension_eq hx]
-  · rw [velocityY, PsiStar3D_eq_eY, TY, PY,
+  · rw [velocityY, maxCurrentCubeState_eq_eY, TY, PY,
       (stats_axis (norm_rest hx hz) hy (eY dx dy dz)).2.2.2, mul_tension_eq hy]
-  · rw [velocityZ, PsiStar3D_eq_eZ, TZ, PZ,
+  · rw [velocityZ, maxCurrentCubeState_eq_eZ, TZ, PZ,
       (stats_axis (norm_rest hx hy) hz (eZ dx dy dz)).2.2.2, mul_tension_eq hz]
 
-/-- **Anisotropy.** Along the diagonal, `Ψ*` moves with squared Euclidean speed `3`, while each
+/-- **Anisotropy.** Along the diagonal, the maximal current state of the cube moves with squared
+Euclidean speed `3`, while each
 axis alone is bounded by `1`: the speed limit of transport is a cube, not a sphere. -/
-theorem speed_sq_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    velocityX (PsiStar3D dx dy dz) ^ 2 + velocityY (PsiStar3D dx dy dz) ^ 2 +
-      velocityZ (PsiStar3D dx dy dz) ^ 2 = 3 := by
-  obtain ⟨h1, h2, h3⟩ := velocities_PsiStar3D hx hy hz
+theorem speed_sq_maxCurrentCubeState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    velocityX (maxCurrentCubeState dx dy dz) ^ 2 + velocityY (maxCurrentCubeState dx dy dz) ^ 2 +
+      velocityZ (maxCurrentCubeState dx dy dz) ^ 2 = 3 := by
+  obtain ⟨h1, h2, h3⟩ := velocities_maxCurrentCubeState hx hy hz
   rw [h1, h2, h3]
   norm_num
 

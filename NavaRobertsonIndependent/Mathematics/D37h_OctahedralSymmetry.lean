@@ -20,7 +20,8 @@ Relabelling the positions by `(σ, s)` sends `T` of axis `i` to `T` of axis `σ 
 symmetric under reflection) and `P` of axis `i` to `± P` of axis `σ i` (reflection reverses the
 position). A sign does not change the angle between the fluctuation vectors, so the NRS angle of
 axis `σ i` in the relabelled state is the NRS angle of axis `i` in the original one, for every
-state. At `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` all three axes have the angle `θ_NRS(d)` of `D37b`: the angles, and
+state. At the maximal current state of the cube all three axes have the angle `θ_NRS(d)` of `D37b`:
+the angles, and
 with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of `O_h`.
 
 ## Main results
@@ -32,9 +33,11 @@ with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of
   to axis `σ i`, reflected when `s (σ i)` is set.
 - `OctahedralSymmetry.angleAxis_cubeSym` : the angle of axis `σ i` after `(σ, s)` is the angle
   of axis `i` before, at every unit state.
-- `OctahedralSymmetry.angleAxis_psiCube` : at `Ψ*` every axis has the angle `θ_NRS(d)`.
+- `OctahedralSymmetry.angleAxis_psiCube` : at the maximal current state of the cube every axis has
+  the angle `θ_NRS(d)`.
 - `OctahedralSymmetry.octahedral_symmetry` : for all `48` elements and all three axes, the angle
-  at the image of `Ψ*` is `θ_NRS(d)`; from `d = 4` on it is positive and below
+  at the image of the maximal current state of the cube is `θ_NRS(d)`; from `d = 4` on it is
+  positive and below
   `arccos (1 / C_∞)`.
 - `OctahedralSymmetry.keepsAngles_iff` : with unequal axes, all with `4` or more positions, a signed
   permutation keeps the angle of every axis iff it only exchanges axes of the same length.
@@ -304,9 +307,9 @@ section Star
 
 variable {d : ℕ}
 
-/-- `Ψ* = ψ* ⊗ ψ* ⊗ ψ*`: the maximal-tension state `ψ*` on each axis. -/
+/-- The maximal current state of the cube: the maximal current state on each axis. -/
 def psiCube (d : ℕ) : EuclideanSpace ℂ (CubeSite d) :=
-  WithLp.toLp 2 fun p => ∏ j, psiStar d (p j)
+  WithLp.toLp 2 fun p => ∏ j, maxCurrentState d (p j)
 
 /-- The product of unit states over any finite set of axes has norm one. -/
 theorem norm_prodState {κ : Type*} [Fintype κ] [DecidableEq κ] {ψ : EuclideanSpace ℂ (Fin d)}
@@ -321,21 +324,23 @@ theorem norm_prodState {κ : Type*} [Fintype κ] [DecidableEq κ] {ψ : Euclidea
     rw [← Fintype.prod_sum (fun (_ : κ) (a : Fin d) => ‖ψ a‖ ^ 2), h1, Finset.prod_const_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h2
 
-/-- `Ψ*` is `ψ*` on axis `i` times the product state on the other two axes. -/
+/-- The maximal current state of the cube is the maximal current state on axis `i` times the product
+state on the other two axes. -/
 theorem psiCube_eq_prodAlong (i : Fin 3) :
-    psiCube d = prodAlong (axisSplit d i) (psiStar d)
-      (WithLp.toLp 2 fun q : {j // j ≠ i} → Fin d => ∏ j, psiStar d (q j)) := by
+    psiCube d = prodAlong (axisSplit d i) (maxCurrentState d)
+      (WithLp.toLp 2 fun q : {j // j ≠ i} → Fin d => ∏ j, maxCurrentState d (q j)) := by
   ext p
   simp only [psiCube, prodAlong_apply, Equiv.piSplitAt_apply]
-  exact Fintype.prod_eq_mul_prod_subtype_ne (fun j => psiStar d (p j)) i
+  exact Fintype.prod_eq_mul_prod_subtype_ne (fun j => maxCurrentState d (p j)) i
 
-/-- **At `Ψ*` every axis has the angle `θ_NRS(d)`.** -/
+/-- **At the maximal current state of the cube every axis has the angle `θ_NRS(d)`.** -/
 theorem angleAxis_psiCube (hd : 2 ≤ d) (i : Fin 3) : angleAxis i (psiCube d) = angleNRS d := by
   rw [angleAxis, TAxis, PAxis, psiCube_eq_prodAlong i, liftAxis, liftAxis]
-  exact angleG_lift _ (norm_prodState (norm_psiStar hd)) _ _ _
+  exact angleG_lift _ (norm_prodState (norm_maxCurrentState hd)) _ _ _
 
 /-- **Octahedral symmetry.** For each of the `48` signed permutations `(σ, s)` of the axes and each
-axis `j`, the NRS angle of axis `j` at the image of `Ψ*` is `θ_NRS(d)`: the three angles of the
+axis `j`, the NRS angle of axis `j` at the image of the maximal current state of the cube is
+`θ_NRS(d)`: the three angles of the
 cube `d × d × d` are the same number and are carried into one another by all of `O_h`. From
 `d = 4` on this common angle is positive and below `arccos (1 / C_∞)`. -/
 theorem octahedral_symmetry (hd : 2 ≤ d) (σ : Equiv.Perm (Fin 3)) (s : Fin 3 → Bool)

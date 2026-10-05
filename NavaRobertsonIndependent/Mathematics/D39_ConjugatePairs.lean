@@ -20,7 +20,7 @@ its floor `|a c| / (d − 1)`. The catalogue of named pairs is in `docs/PAIRS.md
 
 - `ConjugatePairs.angleG_affineOp`, `ConjugatePairs.ratioG_affineOp` : units do not change the
   angle or the ratio, at every unit state.
-- `ConjugatePairs.ratio_pair` : at `ψ*`, `R = C_Nava(d)` for every pair.
+- `ConjugatePairs.ratio_pair` : at the maximal current state, `R = C_Nava(d)` for every pair.
 - `ConjugatePairs.saturated_pair_iff` : every pair saturates iff `d = 2, 3`.
 - `ConjugatePairs.angle_pair_lt_of_lt`, `ConjugatePairs.angle_pair_lt_limit` : the angle grows
   strictly with `d`, whatever the units, below `arccos (1 / C_∞)`.
@@ -105,48 +105,51 @@ section Recta
 variable {a b c e : ℝ} {d : ℕ}
 
 theorem ratioG_TdPd (hd : 2 ≤ d) :
-    ratioG (TdOp d) (PdOp d) (psiStar d) = CoherenceConstant d := by
+    ratioG (TdOp d) (PdOp d) (maxCurrentState d) = CoherenceConstant d := by
   have h := cos_angleNRS hd
   rw [ratioG, ← one_div_div]
   exact (congrArg (1 / ·) h).trans (one_div_one_div _)
 
 /-- **The ratio of every pair is `C_Nava(d)`** at the maximal-tension state. -/
 theorem ratio_pair (ha : a ≠ 0) (hc : c ≠ 0) (hd : 2 ≤ d) :
-    ratioG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) = CoherenceConstant d := by
-  rw [ratioG_affineOp ha hc b e _ _ (norm_psiStar hd), ratioG_TdPd hd]
+    ratioG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) = CoherenceConstant d
+        := by
+  rw [ratioG_affineOp ha hc b e _ _ (norm_maxCurrentState hd), ratioG_TdPd hd]
 
 theorem angle_pair (ha : a ≠ 0) (hc : c ≠ 0) (hd : 2 ≤ d) :
-    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) = angleNRS d :=
-  angleG_affineOp ha hc b e _ _ (norm_psiStar hd)
+    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) = angleNRS d :=
+  angleG_affineOp ha hc b e _ _ (norm_maxCurrentState hd)
 
 /-- **Every pair saturates exactly at `d = 2, 3`.** -/
 theorem saturated_pair_iff (ha : a ≠ 0) (hc : c ≠ 0) (hd : 2 ≤ d) :
-    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) = 0 ↔ d = 2 ∨ d = 3 := by
+    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) = 0 ↔ d = 2 ∨ d = 3
+        := by
   rw [angle_pair ha hc hd]
   exact angleNRS_eq_zero_iff hd
 
 theorem angle_pair_pos (ha : a ≠ 0) (hc : c ≠ 0) (hd : 4 ≤ d) :
-    0 < angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) := by
+    0 < angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) := by
   rw [angle_pair ha hc (by omega)]
   exact angleNRS_pos hd
 
 /-- **The opening grows with `d`**, even if the two rows carry different units. -/
 theorem angle_pair_lt_of_lt {a' b' c' e' : ℝ} {d' : ℕ} (ha : a ≠ 0) (hc : c ≠ 0)
     (ha' : a' ≠ 0) (hc' : c' ≠ 0) (hd : 4 ≤ d) (h : d < d') :
-    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) <
-      angleG (affineOp a' b' (TdOp d')) (affineOp c' e' (PdOp d')) (psiStar d') := by
+    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) <
+      angleG (affineOp a' b' (TdOp d')) (affineOp c' e' (PdOp d')) (maxCurrentState d') := by
   rw [angle_pair ha hc (by omega), angle_pair ha' hc' (by omega)]
   exact angleNRS_strictMonoOn (show 4 ≤ d from hd) (show 4 ≤ d' by omega) h
 
 theorem angle_pair_lt_limit (ha : a ≠ 0) (hc : c ≠ 0) (hd : 4 ≤ d) :
-    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) <
+    angleG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) <
       arccos (1 / CoherenceConstantInf) := by
   rw [angle_pair ha hc (by omega)]
   exact angleNRS_lt_limit hd
 
 /-- The excess of every pair over the floor is the dimensional quantum `δ(d)` of `D25`. -/
 theorem dimQuantum_pair (ha : a ≠ 0) (hc : c ≠ 0) (hd : 2 ≤ d) :
-    ratioG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (psiStar d) - 1 = dimQuantum d := by
+    ratioG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) - 1 = dimQuantum d :=
+        by
   rw [ratio_pair ha hc hd, dimQuantum, geometricGap]
 
 end Recta
@@ -171,32 +174,38 @@ theorem ratioG_lift (eq : ιγ ≃ ια × ιβ) {φ : EuclideanSpace ℂ ιβ} 
 
 variable {dx dy dz : ℕ} {ax bx cx ex ay b_y cy ey az bz cz ez : ℝ}
 
-theorem norm_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    ‖PsiStar3D dx dy dz‖ = 1 := by
-  rw [PsiStar3D_eq_eX]
-  exact norm_prodAlong_eq_one _ (norm_psiStar hx) (norm_rest hy hz)
+theorem norm_maxCurrentCubeState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    ‖maxCurrentCubeState dx dy dz‖ = 1 := by
+  rw [maxCurrentCubeState_eq_eX]
+  exact norm_prodAlong_eq_one _ (norm_maxCurrentState hx) (norm_rest hy hz)
 
 theorem ratio_pair_axis_x (hax : ax ≠ 0) (hcx : cx ≠ 0) (hx : 2 ≤ dx) (hy : 2 ≤ dy)
     (hz : 2 ≤ dz) :
-    ratioG (affineOp ax bx (TX dx dy dz)) (affineOp cx ex (PX dx dy dz)) (PsiStar3D dx dy dz) =
+    ratioG (affineOp ax bx (TX dx dy dz)) (affineOp cx ex (PX dx dy dz)) (maxCurrentCubeState dx dy
+        dz) =
       CoherenceConstant dx := by
-  rw [ratioG_affineOp hax hcx _ _ _ _ (norm_PsiStar3D hx hy hz), PsiStar3D_eq_eX, TX, PX,
+  rw [ratioG_affineOp hax hcx _ _ _ _ (norm_maxCurrentCubeState hx hy hz),
+      maxCurrentCubeState_eq_eX, TX, PX,
     ratioG_lift _ (norm_rest hy hz)]
   exact ratioG_TdPd hx
 
 theorem ratio_pair_axis_y (hay : ay ≠ 0) (hcy : cy ≠ 0) (hx : 2 ≤ dx) (hy : 2 ≤ dy)
     (hz : 2 ≤ dz) :
-    ratioG (affineOp ay b_y (TY dx dy dz)) (affineOp cy ey (PY dx dy dz)) (PsiStar3D dx dy dz) =
+    ratioG (affineOp ay b_y (TY dx dy dz)) (affineOp cy ey (PY dx dy dz)) (maxCurrentCubeState dx dy
+        dz) =
       CoherenceConstant dy := by
-  rw [ratioG_affineOp hay hcy _ _ _ _ (norm_PsiStar3D hx hy hz), PsiStar3D_eq_eY, TY, PY,
+  rw [ratioG_affineOp hay hcy _ _ _ _ (norm_maxCurrentCubeState hx hy hz),
+      maxCurrentCubeState_eq_eY, TY, PY,
     ratioG_lift _ (norm_rest hx hz)]
   exact ratioG_TdPd hy
 
 theorem ratio_pair_axis_z (haz : az ≠ 0) (hcz : cz ≠ 0) (hx : 2 ≤ dx) (hy : 2 ≤ dy)
     (hz : 2 ≤ dz) :
-    ratioG (affineOp az bz (TZ dx dy dz)) (affineOp cz ez (PZ dx dy dz)) (PsiStar3D dx dy dz) =
+    ratioG (affineOp az bz (TZ dx dy dz)) (affineOp cz ez (PZ dx dy dz)) (maxCurrentCubeState dx dy
+        dz) =
       CoherenceConstant dz := by
-  rw [ratioG_affineOp haz hcz _ _ _ _ (norm_PsiStar3D hx hy hz), PsiStar3D_eq_eZ, TZ, PZ,
+  rw [ratioG_affineOp haz hcz _ _ _ _ (norm_maxCurrentCubeState hx hy hz),
+      maxCurrentCubeState_eq_eZ, TZ, PZ,
     ratioG_lift _ (norm_rest hx hy)]
   exact ratioG_TdPd hz
 
@@ -204,11 +213,11 @@ theorem ratio_pair_axis_z (haz : az ≠ 0) (hcz : cz ≠ 0) (hx : 2 ≤ dx) (hy 
 theorem volQuantum_pairs (hax : ax ≠ 0) (hcx : cx ≠ 0) (hay : ay ≠ 0) (hcy : cy ≠ 0)
     (haz : az ≠ 0) (hcz : cz ≠ 0) (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (ratioG (affineOp ax bx (TX dx dy dz)) (affineOp cx ex (PX dx dy dz))
-          (PsiStar3D dx dy dz) - 1) *
+          (maxCurrentCubeState dx dy dz) - 1) *
         (ratioG (affineOp ay b_y (TY dx dy dz)) (affineOp cy ey (PY dx dy dz))
-          (PsiStar3D dx dy dz) - 1) *
+          (maxCurrentCubeState dx dy dz) - 1) *
         (ratioG (affineOp az bz (TZ dx dy dz)) (affineOp cz ez (PZ dx dy dz))
-          (PsiStar3D dx dy dz) - 1) =
+          (maxCurrentCubeState dx dy dz) - 1) =
       volQuantum dx dy dz := by
   rw [ratio_pair_axis_x hax hcx hx hy hz, ratio_pair_axis_y hay hcy hx hy hz,
     ratio_pair_axis_z haz hcz hx hy hz, volQuantum, dimQuantum, dimQuantum, dimQuantum,
@@ -221,11 +230,11 @@ theorem volQuantum_pairs_certificate (hax : ax ≠ 0) (hcx : cx ≠ 0) (hay : ay
     (haz : az ≠ 0) (hcz : cz ≠ 0) (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     let 𝒱 :=
       (ratioG (affineOp ax bx (TX dx dy dz)) (affineOp cx ex (PX dx dy dz))
-          (PsiStar3D dx dy dz) - 1) *
+          (maxCurrentCubeState dx dy dz) - 1) *
         (ratioG (affineOp ay b_y (TY dx dy dz)) (affineOp cy ey (PY dx dy dz))
-          (PsiStar3D dx dy dz) - 1) *
+          (maxCurrentCubeState dx dy dz) - 1) *
         (ratioG (affineOp az bz (TZ dx dy dz)) (affineOp cz ez (PZ dx dy dz))
-          (PsiStar3D dx dy dz) - 1)
+          (maxCurrentCubeState dx dy dz) - 1)
     (𝒱 = 0 ↔ (dx = 2 ∨ dx = 3) ∨ (dy = 2 ∨ dy = 3) ∨ (dz = 2 ∨ dz = 3)) ∧
       (4 ≤ dx → 4 ≤ dy → 4 ≤ dz → 0 < 𝒱 ∧ 𝒱 < deltaInf ^ 3) := by
   intro 𝒱
