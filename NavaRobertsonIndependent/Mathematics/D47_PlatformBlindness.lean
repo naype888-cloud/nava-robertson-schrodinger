@@ -15,12 +15,20 @@ Peruzzo 2010, Tang 2018) prepare a single-guide excitation, an eigenstate of the
 operator `P_d`. A defect witness of the Nava–Robertson–Schrödinger inequality is a unit
 state whose Robertson–Schrödinger gap — the Gram defect of `D23` — is strictly positive.
 
+On a position eigenstate Robertson–Schrödinger is empty: `Var P_d = 0`, so both sides are `0`
+and the inequality says nothing about the pair. The pair does not vanish there. Fixing the
+position sends the whole indeterminacy to transport, `Var T_d > 0` for `d ≥ 2`, and only the
+tension `⟨i[T_d, P_d]⟩` is zero. This is not saturation; it is the case the inequality cannot
+read.
+
 ## Main results
 
 - `PlatformBlindness.IsDefectWitness` : the defect witness, a unit state with strictly
   positive Gram defect.
 - `PlatformBlindness.gramDefectAt_eq_zero_of_P_eigenvector` : a unit eigenvector of `P_d`
-  with real eigenvalue has zero Gram defect; it saturates trivially (`0 = 0`).
+  with real eigenvalue has zero Gram defect; the inequality is empty there (`0 = 0`).
+- `PlatformBlindness.variance_T_pos_of_P_eigenvector` : for `d ≥ 2` it fluctuates in `T_d`,
+  `Var T_d > 0`: fixing the position sends the indeterminacy to transport.
 - `PlatformBlindness.not_isDefectWitness_of_P_eigenvector` : such a state is not a defect
   witness; single-guide excitations cannot witness the defect.
 - `PlatformBlindness.isDefectWitness_psiStar` : for `d ≥ 4` the maximal-tension state `ψ*`
@@ -40,10 +48,10 @@ of `D23`, is strictly positive. -/
 def IsDefectWitness {d : ℕ} (ψ : Hd d) : Prop :=
   ‖ψ‖ = 1 ∧ 0 < gramDefectAt (TdOp d) (PdOp d) ψ
 
-/-! ## 1. Position eigenstates saturate trivially -/
+/-! ## 1. Position eigenstates: the inequality is empty -/
 
 /-- A unit eigenvector of `B` with real eigenvalue has zero centred fluctuation in `B`, hence
-zero variance and zero Gram defect: Robertson–Schrödinger saturates, `0 = 0`. -/
+zero variance and zero Gram defect: Robertson–Schrödinger reads `0 = 0` and says nothing. -/
 theorem gramDefectAt_eq_zero_of_eigenvector {d : ℕ} (A B : Hd d →ₗ[ℂ] Hd d) {ψ : Hd d}
     (hψ : ‖ψ‖ = 1) (a : ℝ) (h : B ψ = (a : ℂ) • ψ) : gramDefectAt A B ψ = 0 := by
   have hc := centered_eigenvector hψ a h
@@ -53,14 +61,15 @@ theorem gramDefectAt_eq_zero_of_eigenvector {d : ℕ} (A B : Hd d →ₗ[ℂ] Hd
     simp
   exact (gramDefectAt_eq_zero_iff A B ψ).mpr (Or.inl hv)
 
-/-- A unit eigenvector of `P_d` with real eigenvalue has zero Gram defect: it saturates
-Robertson–Schrödinger, `0 = 0`. -/
+/-- A unit eigenvector of `P_d` with real eigenvalue has zero Gram defect: Robertson–Schrödinger
+is empty there, `0 = 0`. -/
 theorem gramDefectAt_eq_zero_of_P_eigenvector {d : ℕ} {ψ : Hd d} (hψ : ‖ψ‖ = 1) (a : ℝ)
     (h : PdOp d ψ = (a : ℂ) • ψ) : gramDefectAt (TdOp d) (PdOp d) ψ = 0 :=
   gramDefectAt_eq_zero_of_eigenvector (TdOp d) (PdOp d) hψ a h
 
 /-- On a position eigenstate both the covariance and the imaginary part of the fluctuation
-inner product vanish: both sides of Robertson–Schrödinger are `0`. -/
+inner product vanish: both sides of Robertson–Schrödinger are `0`. The inequality is empty, not
+saturated by the pair (`variance_T_pos_of_P_eigenvector`). -/
 theorem saturates_of_P_eigenvector {d : ℕ} {ψ : Hd d} (hψ : ‖ψ‖ = 1) (a : ℝ)
     (h : PdOp d ψ = (a : ℂ) • ψ) :
     covariance (TdOp d) (PdOp d) ψ = 0 ∧ imPart (TdOp d) (PdOp d) ψ = 0 := by
@@ -72,6 +81,68 @@ theorem saturates_of_P_eigenvector {d : ℕ} {ψ : Hd d} (hψ : ‖ψ‖ = 1) (a
   · unfold imPart
     rw [hc]
     simp
+
+/-- `P_d` acts coordinatewise: `(P_d ψ)_i = x_i ψ_i`. -/
+theorem PdOp_apply_coord {d : ℕ} (ψ : Hd d) (i : Fin d) :
+    PdOp d ψ i = (posCoord d i : ℂ) * ψ i := by
+  simp [PdOp, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct, Pd]
+
+/-- `T_d` in coordinates: `(T_d ψ)_i = Σ_j (T_d)_{ij} ψ_j`. -/
+theorem TdOp_apply_coord {d : ℕ} (ψ : Hd d) (i : Fin d) :
+    TdOp d ψ i = ∑ j, Td d i j * ψ j := by
+  simp [TdOp, Matrix.toLpLin_apply, Matrix.mulVec, dotProduct]
+
+/-- For `d ≥ 2` distinct positions have distinct coordinates. -/
+theorem posCoord_injective {d : ℕ} (hd : 2 ≤ d) : Function.Injective (posCoord d) := by
+  intro i j h
+  have h1 : (0 : ℝ) < (d : ℝ) - 1 := by
+    have : (2 : ℝ) ≤ d := by exact_mod_cast hd
+    linarith
+  unfold posCoord at h
+  rw [div_left_inj' h1.ne'] at h
+  exact Fin.ext (by exact_mod_cast (by linarith : ((i.val : ℝ)) = j.val))
+
+/-- **The indeterminacy goes to transport.** For `d ≥ 2`, a unit eigenvector of `P_d` is
+not an eigenvector of `T_d`: transport carries its one occupied position to a neighbour, so
+`Var T_d > 0`. -/
+theorem variance_T_pos_of_P_eigenvector {d : ℕ} (hd : 2 ≤ d) {ψ : Hd d} (hψ : ‖ψ‖ = 1)
+    (a : ℝ) (h : PdOp d ψ = (a : ℂ) • ψ) : 0 < variance (TdOp d) ψ := by
+  have hP : ∀ i, (posCoord d i : ℂ) * ψ i = a * ψ i := fun i => by
+    simpa [PdOp_apply_coord] using congrArg (fun v : Hd d => v i) h
+  have hne : ψ ≠ 0 := fun h0 => by simp [h0] at hψ
+  obtain ⟨j, hj⟩ : ∃ j, ψ j ≠ 0 := by
+    by_contra hc
+    push Not at hc
+    exact hne (by ext i; simp [hc i])
+  have hzero : ∀ i, i ≠ j → ψ i = 0 := by
+    intro i hij
+    have hi := hP i
+    have hjj := hP j
+    have haj : (posCoord d j : ℂ) = a := mul_right_cancel₀ hj hjj
+    by_contra hψi
+    have hai : (posCoord d i : ℂ) = a := mul_right_cancel₀ hψi hi
+    exact hij (posCoord_injective hd (by exact_mod_cast hai.trans haj.symm))
+  obtain ⟨k, hkj, hadj⟩ : ∃ k : Fin d, k ≠ j ∧ MinStep k j := by
+    by_cases hlt : j.val + 1 < d
+    · exact ⟨⟨j.val + 1, hlt⟩, fun h => by simp [Fin.ext_iff] at h, Or.inr rfl⟩
+    · have hj0 : 0 < j.val := by omega
+      exact ⟨⟨j.val - 1, by omega⟩, fun h => by simp [Fin.ext_iff] at h; omega,
+        Or.inl (by simp; omega)⟩
+  have hTk : TdOp d ψ k = ψ j / (rho d : ℂ) := by
+    rw [TdOp_apply_coord, Finset.sum_eq_single j]
+    · simp [Td, Ad, hadj, div_eq_inv_mul]
+    · intro l _ hl
+      simp [hzero l hl]
+    · simp
+  have hρ : (rho d : ℂ) ≠ 0 := by exact_mod_cast (rho_pos d hd).ne'
+  unfold variance
+  apply pow_pos
+  rw [norm_pos_iff]
+  intro hc
+  have hk := congrArg (fun v : Hd d => v k) hc
+  simp only [centered, PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul, hzero k hkj, mul_zero,
+    sub_zero, hTk] at hk
+  exact div_ne_zero hj hρ (by simpa using hk)
 
 /-- A position eigenstate (a single-guide excitation) cannot witness the defect. -/
 theorem not_isDefectWitness_of_P_eigenvector {d : ℕ} {ψ : Hd d} (hψ : ‖ψ‖ = 1) (a : ℝ)

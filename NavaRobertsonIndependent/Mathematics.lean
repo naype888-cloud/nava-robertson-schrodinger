@@ -98,8 +98,9 @@ theorem.
 - `D41` : Mandelstam–Tamm and Cramér–Rao on `T_d : P_d` and on the cube.
 - `D42` : direction is a sign; the eight octants of the cube share the bounds.
 - `D45` : Stark packets, minimum-uncertainty states in motion.
-- `D47` : platform blindness; position eigenstates saturate trivially and cannot witness
-  the defect, while `ψ*` does for `d ≥ 4`.
+- `D47` : platform blindness; on position eigenstates the inequality is empty (`0 = 0`),
+  the indeterminacy goes to transport (`Var T_d > 0`), and they cannot witness the defect,
+  while `ψ*` does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
 - `D49`–`D49c` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the

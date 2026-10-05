@@ -112,9 +112,12 @@ is strict (`D23d`). The statement is about the band
   (`strict_inequality_of_maxTension`, `D21`), strictly on a whole band below the maximum
   (`strict_inequality_bandWidth`, `D23d`); at `d = 4` the minimum-uncertainty states reach at
   most `1/φ` of the maximal tension (`D23f`, `D23g`). At `d = 2, 3` one state does both.
-* A position eigenstate (a single-position excitation) saturates Robertson–Schrödinger trivially,
-  `0 = 0`, so it cannot witness the defect; for `d ≥ 4`, `ψ*` does, and every defect witness
-  fluctuates in both `T_d` and `P_d` and is an eigenstate of neither (`D47`).
+* On a position eigenstate (a single-position excitation) Robertson–Schrödinger is empty,
+  `0 = 0`: it says nothing, so the state cannot witness the defect. The pair does not vanish
+  there: fixing the position sends the whole indeterminacy to transport, `Var T_d > 0`
+  (`variance_T_pos_of_P_eigenvector`), and only the tension is zero. For `d ≥ 4`, `ψ*` is a
+  witness, and every defect witness fluctuates in both `T_d` and `P_d` and is an eigenstate of
+  neither (`D47`).
 
 **Mandelstam–Tamm and Cramér–Rao (`D40`, `D41`).** By the Heisenberg equation (`D38`),
 `⟨K_d⟩ = ⟨i[T_d, P_d]⟩` is the rate of `⟨P_d⟩` under transport, in time or in an imprinted
@@ -384,8 +387,8 @@ transported at `c` in vacuum reaches the minimum uncertainty. Script:
 
 **Platform blindness (`D47`).** Waveguide-array quantum walks (Perets 2008, Peruzzo 2010,
 Tang 2018) start from a single-guide excitation, an eigenstate of `P_d`. There both sides of
-Robertson–Schrödinger are `0`, so the Gram defect is `0` and the state cannot witness the
-defect. For `d ≥ 4`, `ψ*` is a witness, with tension `2/(d − 1)`. The figure plots tension
+Robertson–Schrödinger are `0`: the inequality is empty, not saturated. `Var P_d = 0` sends the
+indeterminacy to transport, `Var T_d > 0`, and the state cannot witness the defect. For `d ≥ 4`, `ψ*` is a witness, with tension `2/(d − 1)`. The figure plots tension
 against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tension and Gram defect
 `1/(18 ρ₄²)`. Script: `docs/simulation/figures_platform_blindness.py`.
 
@@ -735,7 +738,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   which `⟨K_d⟩ = 2λ Var P_d` (`tension_of_eigen`); normalized, it saturates Robertson–Schrödinger
   and moves at `4 Σ (j − c₀)² φⱼ² / (ρ_d z Σ φⱼ²)` (`exists_saturated_velocity`).
 - `D47_PlatformBlindness`: a unit eigenvector of `P_d` has zero Gram defect
-  (`gramDefectAt_eq_zero_of_P_eigenvector`), so it is not a defect witness
+  (`gramDefectAt_eq_zero_of_P_eigenvector`): the inequality is empty there, while
+  `Var T_d > 0` for `d ≥ 2` (`variance_T_pos_of_P_eigenvector`); it is not a defect witness
   (`not_isDefectWitness_of_P_eigenvector`); for `d ≥ 4`, `ψ*` is one
   (`isDefectWitness_psiStar`), and every witness has both variances positive
   (`variance_pos_of_isDefectWitness`).
