@@ -180,7 +180,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49l`).** The covariance matrix `Σ` and the
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49m`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -207,7 +207,7 @@ dropped.
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
 | Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
@@ -906,6 +906,13 @@ the three tensions — x, y, z, none can be dropped.
   (`D49i`), and `Φ = 0` (`eq_zero_of_free_axis`). Pure algebra of `T_d`, `P_d`: no spectral input
   and no velocity hypothesis. What remains of the open case is two or three axes whose
   brackets stay glued together.
+- `D49m_MirrorState`: the trivial case of the open step, on record. The mirror `J`, position
+  `j ↦ d − 1 − j` with sign `(−1)^j`, anticommutes with transport and position
+  (`J_mul_Td`, `J_mul_Pd`) and is unitary (`J_mul_conjTranspose`). As a state of two axes,
+  `Φ(j, k) = J_{jk}/√d` puts `y` at the mirror of `x`: `(T_x + T_y) Φ = 0`,
+  `(P_x + P_y) Φ = 0`, each axis alone completely undetermined, and the tension of each axis is
+  `tr [T_d, P_d] / d = 0` (`trace_mirror_commutator`). Robertson 1934 holds with equality, but as
+  `0 = 0`, at speed `0`: nothing moves, as far from the band near the cone as a state can be.
 
 ## Scope of the formal claims
 
