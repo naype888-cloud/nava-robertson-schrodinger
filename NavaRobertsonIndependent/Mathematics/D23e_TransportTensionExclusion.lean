@@ -11,7 +11,8 @@ public import NavaRobertsonIndependent.Mathematics.D23d_BandWidth
 # D23e — Maximal transport and maximal tension exclude each other
 
 On `H_d`, `⟨T_d⟩ ≤ 1` (`mean_T_le_one`), attained by the fundamental sine mode without phases
-(`mean_T_sineVec`), and `⟨K_d⟩ ≤ 2/(d−1)` (`D23b`), attained by `ψ*` (`D21`). At each top the
+(`mean_T_sineVec`), and `⟨K_d⟩ ≤ 2/(d−1)` (`D23b`), attained by the maximal current state (`D21`).
+At each top the
 other quantity is `0`, so no state reaches both.
 
 ## Main results

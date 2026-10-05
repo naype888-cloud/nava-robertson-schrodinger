@@ -18,14 +18,15 @@ public import Mathlib.RingTheory.SimpleRing.Principal
 
 For symmetric `T`, `P` on a finite-dimensional space, `i[T, P]` is symmetric; its eigenvector
 of largest `|eigenvalue|` maximizes the tension `⟪ψ, i[T, P] ψ⟫` over unit states. For the
-path, the same state is written explicitly: the Fiedler mode `ψ*_j ∝ (−i)^j sin((j+1)π/(d+1))`,
+path, the same state is written explicitly: the Fiedler mode
+`maxCurrentState_j ∝ (−i)^j sin((j+1)π/(d+1))`,
 with no vanishing coordinate. Finally `[T_d, P_d] ≠ 0` for `d ≥ 2`, seen on one entry.
 
 ## Main results
 
 - `SpectralExtremal.extremalState_attains_specRadius` : the extremal state attains the
   spectral radius, and no unit state exceeds it (`expectation_le_specRadius`).
-- `TransportPosition.fiedlerVec_apply_ne_zero` : `ψ*` has no zero coordinate.
+- `TransportPosition.fiedlerVec_apply_ne_zero` : the maximal current state has no zero coordinate.
 - `TransportPosition.KdOp_ne_zero` : `i[T_d, P_d] ≠ 0` for `d ≥ 2`.
 -/
 
@@ -333,7 +334,7 @@ theorem fiedlerVecRaw_ne_zero
   have hj := congrArg (fun v : Hd d => v j) h
   exact fiedlerVecRaw_apply_ne_zero d hd j hj
 
-/-- The normalized Fiedler vector `ψ*`. -/
+/-- The normalized Fiedler vector, the maximal current state. -/
 noncomputable def fiedlerVec (d : ℕ) : Hd d :=
   ((‖fiedlerVecRaw d‖ : ℂ)⁻¹) • fiedlerVecRaw d
 

@@ -11,7 +11,8 @@ public import NavaRobertsonIndependent.Mathematics.D8_Szego
 /-!
 # D19 — The position variance of the maximal-tension state
 
-`RNavaSq d = ⟨ψ*, P_d² ψ*⟩ = Σⱼ |ψ*ⱼ|² x_j²`, the squared RMS radius of `ψ*` on the position
+`RNavaSq d = ⟨maxCurrentState, P_d² maxCurrentState⟩ = Σⱼ |maxCurrentStateⱼ|² x_j²`, the squared RMS
+radius of the maximal current state on the position
 grid `[-1, 1]`, in exact closed form. The trigonometric sums are evaluated with the root of
 unity `z = exp(2iθ)`, `θ = π/(d+1)`. As `d → ∞`, `RNavaSq d → 1/3 − 2/π²`, and the limit of
 `RNava` is `C_∞ / π` (a theorem: `Rinf` is defined without `C_∞`).
@@ -22,7 +23,7 @@ unity `z = exp(2iθ)`, `θ = π/(d+1)`. As `d → ∞`, `RNavaSq d → 1/3 − 2
 - `FiedlerPositionVariance.RNavaSq_tendsto` : `RNavaSq d → 1/3 − 2/π²`.
 - `FiedlerPositionVariance.Rinf_eq_CoherenceConstantInf_div_pi` : `Rinf = C_∞ / π`.
 - `FiedlerPositionVariance.RNavaSq_eq_positionVariance` : `RNavaSq d` is the position variance
-  of `ψ*` on `Fin d`.
+  of the maximal current state on `Fin d`.
 -/
 
 @[expose] public noncomputable section
@@ -248,7 +249,7 @@ theorem C2_eq (d : ℕ) (hd : 1 ≤ d) :
   field_simp
   linear_combination ((Real.cos (phi d) - 1)*((d:ℝ)-1) + 2) * hpyth
 
-/-! ## 4. Sums weighted by `sin²(kθ)`: the density `|ψ*ⱼ|²` reindexed -/
+/-! ## 4. Sums weighted by `sin²(kθ)`: the density `|maxCurrentStateⱼ|²` reindexed -/
 
 theorem sum_range_real (n:ℕ) : ∑ k ∈ Finset.range n, (k:ℝ) = (n:ℝ)*((n:ℝ)-1)/2 := by
   induction n with
@@ -403,7 +404,8 @@ theorem RNavaSq_clean_eq (d : ℕ) (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-- `RNavaSq d = ⟨ψ*, P_d² ψ*⟩` in closed form (`RNavaSq_eq_positionVariance`). -/
+/-- `RNavaSq d = ⟨maxCurrentState, P_d² maxCurrentState⟩` in closed form
+(`RNavaSq_eq_positionVariance`). -/
 noncomputable def RNavaSq (d : ℕ) : ℝ := numRaw d / denRaw d
 
 theorem RNavaSq_eq (d : ℕ) (hd : 2 ≤ d) :
@@ -544,7 +546,7 @@ theorem Rinf_eq_CoherenceConstantInf_div_pi : Rinf = CoherenceConstantInf / Real
 /-! ## 8. `RNavaSq` is the position variance on `Fin d`
 
 The sums above run over `Finset.range (d+1)`; here they are reindexed (`j.val + 1 = k`, the
-term `k = 0` vanishes) to `Σⱼ |ψ*ⱼ|² x_j²` over `Fin d`. -/
+term `k = 0` vanishes) to `Σⱼ |maxCurrentStateⱼ|² x_j²` over `Fin d`. -/
 
 theorem fiedlerAngle_eq_theta (d : ℕ) : fiedlerAngle d = theta d := by
   unfold fiedlerAngle theta Nreal; rfl
@@ -610,7 +612,8 @@ theorem fiedlerVec_norm_sq (d : ℕ) (hd : 1 ≤ d) (j : Fin d) :
   rw [Real.norm_of_nonneg hnorm_pos.le]
   field_simp
 
-/-- `RNavaSq d = Σⱼ |ψ*ⱼ|² x_j²` over `Fin d`, with `ψ* = fiedlerVec d`. -/
+/-- `RNavaSq d = Σⱼ |maxCurrentStateⱼ|² x_j²` over `Fin d`, with `maxCurrentState = fiedlerVec d`.
+-/
 theorem RNavaSq_eq_positionVariance (d : ℕ) (hd : 2 ≤ d) :
     RNavaSq d = ∑ j : Fin d, ‖fiedlerVec d j‖^2 * (posCoord d j)^2 := by
   have hd1 : 1 ≤ d := by omega

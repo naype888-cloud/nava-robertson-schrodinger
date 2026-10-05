@@ -8,7 +8,7 @@ module
 public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
 
 /-!
-# D23c — The spectral gap of `K_d`: tension controls the distance to `ψ*`
+# D23c — The spectral gap of `K_d`: tension controls the distance to the maximal current state
 
 The top eigenvalue `2/(d−1)` of `K_d` is simple (`D21`); here is the explicit gap to the rest
 of the spectrum, `λ_k = (2/(d−1)) cos θ_k / cos θ_0` with `θ_k = (k+1)π/(d+1)`.
@@ -17,7 +17,8 @@ of the spectrum, `λ_k = (2/(d−1)) cos θ_k / cos θ_0` with `θ_k = (k+1)π/(
 
 - `BandWidth.eigenvalueK_le_second` : every other eigenvalue is at most `secondEigenvalue d`.
 - `BandWidth.gapK_pos` : `gapK d = 2/(d−1) − secondEigenvalue d > 0`.
-- `BandWidth.dist_le_deficit` : `gapK d · ‖ψ − ⟪ψ*, ψ⟫ ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`.
+- `BandWidth.dist_le_deficit` :
+  `gapK d · ‖ψ − ⟪maxCurrentState, ψ⟫ maxCurrentState‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`.
 -/
 
 @[expose] public noncomputable section
@@ -109,11 +110,11 @@ theorem gapK_pos {d : ℕ} (hd : 2 ≤ d) : 0 < gapK d := by
     (div_lt_one hc).mpr hlt
   nlinarith
 
-/-! ## 3. States orthogonal to `ψ*` -/
+/-! ## 3. States orthogonal to the maximal current state -/
 
-/-- If `φ ⊥ ψ*`, its tension is at most `secondEigenvalue d · ‖φ‖²`. -/
+/-- If `φ ⊥ maxCurrentState`, its tension is at most `secondEigenvalue d · ‖φ‖²`. -/
 theorem tension_orthogonal_le {d : ℕ} (hd : 2 ≤ d) (φ : Hd d)
-    (hφ : inner ℂ (psiStar d) φ = 0) :
+    (hφ : inner ℂ (maxCurrentState d) φ = 0) :
     tension d φ ≤ secondEigenvalue d * ‖φ‖ ^ 2 := by
   have hK := KdOp_isSymmetric d
   unfold tension
@@ -121,7 +122,8 @@ theorem tension_orthogonal_le {d : ℕ} (hd : 2 ≤ d) (φ : Hd d)
   refine Finset.sum_le_sum fun i _ => ?_
   obtain ⟨k, hk⟩ := KdOp_eigenvalue_exhausts_spectrum hd (hK.hasEigenvalue_eigenvalues rfl i)
   by_cases hk0 : k.val = 0
-  · -- top eigenvalue: the eigenvector is a multiple of `ψ*`, so the coordinate is `0`
+  · -- top eigenvalue: the eigenvector is a multiple of the maximal current state, so the
+    -- coordinate is `0`
     have hk' : k = ⟨0, by omega⟩ := Fin.ext hk0
     have hv : KdOp d (hK.eigenvectorBasis rfl i) =
         ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • hK.eigenvectorBasis rfl i := by
@@ -136,58 +138,59 @@ theorem tension_orthogonal_le {d : ℕ} (hd : 2 ≤ d) (φ : Hd d)
       simpa using this
     exact mul_le_mul_of_nonneg_right hle (sq_nonneg _)
 
-/-! ## 4. Tension controls the distance to `ψ*` -/
+/-! ## 4. Tension controls the distance to the maximal current state -/
 
-theorem inner_psiStar_self {d : ℕ} (hd : 2 ≤ d) : inner ℂ (psiStar d) (psiStar d) = 1 := by
-  rw [inner_self_eq_norm_sq_to_K, norm_psiStar hd]
+theorem inner_maxCurrentState_self {d : ℕ} (hd : 2 ≤ d) : inner ℂ (maxCurrentState d)
+    (maxCurrentState d) = 1 := by
+  rw [inner_self_eq_norm_sq_to_K, norm_maxCurrentState hd]
   simp
 
-/-- The component of `ψ` orthogonal to `ψ*`. -/
+/-- The component of `ψ` orthogonal to the maximal current state. -/
 def orthComponent (d : ℕ) (ψ : Hd d) : Hd d :=
-  ψ - inner ℂ (psiStar d) ψ • psiStar d
+  ψ - inner ℂ (maxCurrentState d) ψ • maxCurrentState d
 
 theorem orthComponent_perp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
-    inner ℂ (psiStar d) (orthComponent d ψ) = 0 := by
-  rw [orthComponent, inner_sub_right, inner_smul_right, inner_psiStar_self hd, mul_one,
+    inner ℂ (maxCurrentState d) (orthComponent d ψ) = 0 := by
+  rw [orthComponent, inner_sub_right, inner_smul_right, inner_maxCurrentState_self hd, mul_one,
     sub_self]
 
-/-- `‖ψ‖² = |⟪ψ*, ψ⟫|² + ‖φ‖²`. -/
+/-- `‖ψ‖² = |⟪maxCurrentState, ψ⟫|² + ‖φ‖²`. -/
 theorem norm_sq_decomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
-    ‖ψ‖ ^ 2 = ‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2 := by
-  set a := inner ℂ (psiStar d) ψ
+    ‖ψ‖ ^ 2 = ‖inner ℂ (maxCurrentState d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2 := by
+  set a := inner ℂ (maxCurrentState d) ψ
   set φ := orthComponent d ψ
-  have hψ : ψ = a • psiStar d + φ := by simp [φ, orthComponent, a]
-  have h0 : inner ℂ (a • psiStar d) φ = 0 := by
+  have hψ : ψ = a • maxCurrentState d + φ := by simp [φ, orthComponent, a]
+  have h0 : inner ℂ (a • maxCurrentState d) φ = 0 := by
     rw [inner_smul_left, orthComponent_perp hd, mul_zero]
   conv_lhs => rw [hψ]
-  rw [@norm_add_sq ℂ, h0, norm_smul, norm_psiStar hd]
+  rw [@norm_add_sq ℂ, h0, norm_smul, norm_maxCurrentState hd]
   simp
 
-/-- `⟨K⟩_ψ = (2/(d−1)) |⟪ψ*, ψ⟫|² + ⟨K⟩_φ`. -/
+/-- `⟨K⟩_ψ = (2/(d−1)) |⟪maxCurrentState, ψ⟫|² + ⟨K⟩_φ`. -/
 theorem tension_decomp {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) :
-    tension d ψ = 2 / ((d : ℝ) - 1) * ‖inner ℂ (psiStar d) ψ‖ ^ 2 +
+    tension d ψ = 2 / ((d : ℝ) - 1) * ‖inner ℂ (maxCurrentState d) ψ‖ ^ 2 +
       tension d (orthComponent d ψ) := by
-  set a := inner ℂ (psiStar d) ψ
+  set a := inner ℂ (maxCurrentState d) ψ
   set φ := orthComponent d ψ
-  have hψ : ψ = a • psiStar d + φ := by simp [φ, orthComponent, a]
-  have hperp : inner ℂ (psiStar d) φ = 0 := orthComponent_perp hd ψ
-  have hperp' : inner ℂ φ (psiStar d) = 0 := by
+  have hψ : ψ = a • maxCurrentState d + φ := by simp [φ, orthComponent, a]
+  have hperp : inner ℂ (maxCurrentState d) φ = 0 := orthComponent_perp hd ψ
+  have hperp' : inner ℂ φ (maxCurrentState d) = 0 := by
     rw [← inner_conj_symm, hperp, map_zero]
-  have hKφ : inner ℂ (psiStar d) (KdOp d φ) = 0 := by
+  have hKφ : inner ℂ (maxCurrentState d) (KdOp d φ) = 0 := by
     rw [← KdOp_isSymmetric d, KdOp_fiedlerVec d hd, inner_smul_left, hperp, mul_zero]
   have hK := KdOp_fiedlerVec d hd
   unfold tension
   conv_lhs => rw [hψ]
   simp only [map_add, map_smul, inner_add_left, inner_add_right, inner_smul_left,
-    inner_smul_right, hK, hKφ, hperp', inner_psiStar_self hd, mul_zero, add_zero, mul_one]
+    inner_smul_right, hK, hKφ, hperp', inner_maxCurrentState_self hd, mul_zero, add_zero, mul_one]
   rw [Complex.add_re]
   congr 1
   rw [mul_comm a, mul_assoc, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul,
     Complex.ofReal_re]
   rw [zero_add]
 
-/-- **Tension controls the distance to `ψ*`.** For every unit state,
-`gapK d · ‖ψ − ⟪ψ*, ψ⟫ ψ*‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`. -/
+/-- **Tension controls the distance to the maximal current state.** For every unit state,
+`gapK d · ‖ψ − ⟪maxCurrentState, ψ⟫ maxCurrentState‖² ≤ 2/(d−1) − ⟨K_d⟩_ψ`. -/
 theorem dist_le_deficit {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
     gapK d * ‖orthComponent d ψ‖ ^ 2 ≤ 2 / ((d : ℝ) - 1) - tension d ψ := by
   have hn := norm_sq_decomp hd ψ
@@ -196,7 +199,7 @@ theorem dist_le_deficit {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1
   rw [hψ, one_pow] at hn
   unfold gapK
   have e : 2 / ((d : ℝ) - 1) = 2 / ((d : ℝ) - 1) *
-      (‖inner ℂ (psiStar d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2) := by
+      (‖inner ℂ (maxCurrentState d) ψ‖ ^ 2 + ‖orthComponent d ψ‖ ^ 2) := by
     rw [← hn, mul_one]
   nlinarith
 

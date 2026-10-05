@@ -10,17 +10,20 @@ public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# D20 — The Gram defect of `(T_d ψ*, P_d ψ*)` and `C_Nava(d)²`
+# D20 — The Gram defect of `(T_d maxCurrentState, P_d maxCurrentState)` and `C_Nava(d)²`
 
-Joins the closed form `CoherenceConstantSq d` to the concrete `T_d`, `P_d` and `ψ* = fiedlerVec d`.
-For `d ≥ 2`, `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²` (`gramStep_product`); the cross product
-`⟪T_d ψ*, P_d ψ*⟫` has real part `0` and imaginary part `−1/(d−1)`, so the Gram defect is
+Joins the closed form `CoherenceConstantSq d` to the concrete `T_d`, `P_d` and
+`maxCurrentState = fiedlerVec d`.
+For `d ≥ 2`, `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`
+(`gramStep_product`); the cross product
+`⟪T_d maxCurrentState, P_d maxCurrentState⟫` has real part `0` and imaginary part `−1/(d−1)`, so the
+Gram defect is
 `(C_Nava(d)² − 1)/(d−1)²` (`gramStep_gram`). Both means vanish, so this is the centred defect: it
 is zero exactly at `d = 2, 3` and positive from `d = 4`.
 
 ## Main results
 
-- `GramStep.gramStep_product` : `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`.
+- `GramStep.gramStep_product` : `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`.
 - `GramStep.gramStep_gram` : the Gram defect is `(C_Nava(d)² − 1)/(d−1)²`.
 - `GramStep.gramStep_gram_eq_zero_iff`, `GramStep.gramStep_gram_pos`.
 -/
@@ -234,7 +237,7 @@ theorem norm_sq_Pd_psi {d : ℕ} (hd : 2 ≤ d) :
   rw [PdOp_apply, WithLp.ofLp_toLp, Pd_mulVec, norm_mul, Complex.norm_real, Real.norm_eq_abs,
     mul_pow, sq_abs, mul_comm]
 
-/-- `(d−1)² ‖T_d ψ*‖² ‖P_d ψ*‖² = C_Nava(d)²`. -/
+/-- `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`. -/
 theorem gramStep_product {d : ℕ} (hd : 2 ≤ d) :
     ((d : ℝ) - 1) ^ 2 *
         (‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2) =
@@ -252,7 +255,7 @@ theorem gramStep_product {d : ℕ} (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-! ## 4. The cross product `⟪T_d ψ*, P_d ψ*⟫` -/
+/-! ## 4. The cross product `⟪T_d maxCurrentState, P_d maxCurrentState⟫` -/
 
 theorem cross_term {d : ℕ} (hd : 2 ≤ d) (i : Fin d) :
     inner ℂ ((TdOp d (fiedlerVecRaw d)).ofLp i) ((PdOp d (fiedlerVecRaw d)).ofLp i) =
@@ -329,9 +332,9 @@ theorem gramStep_cross_im {d : ℕ} (hd : 2 ≤ d) :
   field_simp at h3 ⊢
   linarith
 
-/-! ## 6. The Gram defect of `(T_d ψ*, P_d ψ*)` -/
+/-! ## 6. The Gram defect of `(T_d maxCurrentState, P_d maxCurrentState)` -/
 
-/-- The Gram defect of `(T_d ψ*, P_d ψ*)`. -/
+/-- The Gram defect of `(T_d maxCurrentState, P_d maxCurrentState)`. -/
 def defectGram (d : ℕ) : ℝ :=
   ‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2 -
     ‖inner ℂ (TdOp d (fiedlerVec d)) (PdOp d (fiedlerVec d))‖ ^ 2
@@ -408,7 +411,7 @@ theorem sum_pos_sin_sq {d : ℕ} (hd : 2 ≤ d) :
   rw [← Finset.sum_div, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, hkf, hsf]
   ring
 
-/-- `⟪ψ*, P_d ψ*⟫ = 0`. -/
+/-- `⟪maxCurrentState, P_d maxCurrentState⟫ = 0`. -/
 theorem gramStep_mean_P {d : ℕ} (hd : 2 ≤ d) :
     inner ℂ (fiedlerVec d) (PdOp d (fiedlerVec d)) = 0 := by
   have hn := norm_raw_sq (d := d) (by omega)
@@ -440,7 +443,7 @@ theorem gramStep_mean_P {d : ℕ} (hd : 2 ≤ d) :
   rw [← Complex.ofReal_sum, ← Finset.sum_div, sum_pos_sin_sq hd]
   simp
 
-/-- `⟪ψ*, T_d ψ*⟫ = 0`. -/
+/-- `⟪maxCurrentState, T_d maxCurrentState⟫ = 0`. -/
 theorem gramStep_mean_T {d : ℕ} (hd : 2 ≤ d) :
     inner ℂ (fiedlerVec d) (TdOp d (fiedlerVec d)) = 0 := by
   have hterm : ∀ i : Fin d,

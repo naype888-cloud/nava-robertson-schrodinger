@@ -20,7 +20,8 @@ the Fiedler vector of `D5`, the extremal eigenvector of `K_d`.
   `2 cos(kπ/(d+1))` of `A_d`.
 - `TransportPosition.KdOp_eigenvalue_exhausts_spectrum` : the phase modes give every eigenvalue
   of `K_d`.
-- `TransportPosition.KdOp_fiedlerVec` : `ψ*` is the top eigenvector of `K_d`, and
+- `TransportPosition.KdOp_fiedlerVec` : the maximal current state is the top eigenvector of `K_d`,
+  and
   `specRadius_KdOp_eq_step` its eigenvalue `2/(d−1)`.
 -/
 

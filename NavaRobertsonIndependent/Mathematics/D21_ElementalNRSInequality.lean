@@ -12,7 +12,7 @@ public import NavaRobertsonIndependent.Mathematics.D8_Szego
 /-!
 # D21 — The Nava–Robertson–Schrödinger inequality
 
-On `T_d`, `P_d` of the path at the maximal-tension state `ψ*`, with `K_d = i[T_d, P_d]` and
+On `T_d`, `P_d` of the path at the maximal current state, with `K_d = i[T_d, P_d]` and
 `c = −2/(d−1)`:
 
 * the means and `cov(T_d, P_d)` vanish;
@@ -28,7 +28,7 @@ Mean, variance and covariance are those of centred vectors: `⟨A⟩ = Re ⟪ψ,
 ## Main results
 
 - `NRSInequality.variance_mul_variance` : `Var T_d · Var P_d = (c/2)² (1 + δ(d))²`.
-- `NRSInequality.saturation_iff` : saturation at `ψ*` iff `d = 2, 3`.
+- `NRSInequality.saturation_iff` : saturation at the maximal current state iff `d = 2, 3`.
 - `NRSInequality.strict_inequality` : strict for `d ≥ 4`.
 - `NRSInequality.strict_inequality_of_maxTension` : strict at every maximal-tension state.
 -/
@@ -49,8 +49,8 @@ open Gnomon TransportPosition FiedlerPositionVariance GramStep
 
 namespace NRSInequality
 
-/-- The maximal-tension state `ψ*`, the explicit Fiedler vector. -/
-abbrev psiStar (d : ℕ) : Hd d := fiedlerVec d
+/-- The maximal current state, the explicit Fiedler vector. -/
+abbrev maxCurrentState (d : ℕ) : Hd d := fiedlerVec d
 
 /-- The mean `Re ⟪ψ, A ψ⟫`. -/
 def mean {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) (ψ : Hd d) : ℝ :=
@@ -68,7 +68,7 @@ def variance {d : ℕ} (A : Hd d →ₗ[ℂ] Hd d) (ψ : Hd d) : ℝ :=
 def covariance {d : ℕ} (A B : Hd d →ₗ[ℂ] Hd d) (ψ : Hd d) : ℝ :=
   (inner ℂ (centered A ψ) (centered B ψ)).re
 
-/-- The constant `c` with `⟪ψ*, [T_d, P_d] ψ*⟫ = i c`. -/
+/-- The constant `c` with `⟪maxCurrentState, [T_d, P_d] maxCurrentState⟫ = i c`. -/
 def commutatorConstant (d : ℕ) : ℝ := -(2 / ((d : ℝ) - 1))
 
 theorem commutatorConstant_half_sq {d : ℕ} (hd : 2 ≤ d) : (commutatorConstant d / 2) ^ 2 = 1 / ((d :
@@ -87,39 +87,39 @@ theorem commutatorConstant_half_sq_pos {d : ℕ} (hd : 2 ≤ d) : 0 < (commutato
   have h1 : (0 : ℝ) < (d : ℝ) - 1 := by linarith
   exact one_div_pos.mpr (pow_pos h1 2)
 
-/-! ## 1. Means, variances and covariance at `ψ*` -/
+/-! ## 1. Means, variances and covariance at the maximal current state -/
 
-theorem mean_T {d : ℕ} (hd : 2 ≤ d) : mean (TdOp d) (psiStar d) = 0 := by
+theorem mean_T {d : ℕ} (hd : 2 ≤ d) : mean (TdOp d) (maxCurrentState d) = 0 := by
   have h := gramStep_mean_T hd
   simp [mean, h]
 
-theorem mean_P {d : ℕ} (hd : 2 ≤ d) : mean (PdOp d) (psiStar d) = 0 := by
+theorem mean_P {d : ℕ} (hd : 2 ≤ d) : mean (PdOp d) (maxCurrentState d) = 0 := by
   have h := gramStep_mean_P hd
   simp [mean, h]
 
-theorem norm_psiStar {d : ℕ} (hd : 2 ≤ d) : ‖psiStar d‖ = 1 :=
+theorem norm_maxCurrentState {d : ℕ} (hd : 2 ≤ d) : ‖maxCurrentState d‖ = 1 :=
   norm_fiedlerVec d (by omega)
 
 theorem centered_T {d : ℕ} (hd : 2 ≤ d) :
-    centered (TdOp d) (psiStar d) = TdOp d (psiStar d) := by
+    centered (TdOp d) (maxCurrentState d) = TdOp d (maxCurrentState d) := by
   simp [centered, mean_T hd]
 
 theorem centered_P {d : ℕ} (hd : 2 ≤ d) :
-    centered (PdOp d) (psiStar d) = PdOp d (psiStar d) := by
+    centered (PdOp d) (maxCurrentState d) = PdOp d (maxCurrentState d) := by
   simp [centered, mean_P hd]
 
 theorem variance_T {d : ℕ} (hd : 2 ≤ d) :
-    variance (TdOp d) (psiStar d) = ‖TdOp d (psiStar d)‖ ^ 2 := by
+    variance (TdOp d) (maxCurrentState d) = ‖TdOp d (maxCurrentState d)‖ ^ 2 := by
   unfold variance
   rw [centered_T hd]
 
 theorem variance_P {d : ℕ} (hd : 2 ≤ d) :
-    variance (PdOp d) (psiStar d) = ‖PdOp d (psiStar d)‖ ^ 2 := by
+    variance (PdOp d) (maxCurrentState d) = ‖PdOp d (maxCurrentState d)‖ ^ 2 := by
   unfold variance
   rw [centered_P hd]
 
 theorem covariance_eq_zero {d : ℕ} (hd : 2 ≤ d) :
-    covariance (TdOp d) (PdOp d) (psiStar d) = 0 := by
+    covariance (TdOp d) (PdOp d) (maxCurrentState d) = 0 := by
   unfold covariance
   rw [centered_T hd, centered_P hd]
   exact gramStep_cross_re hd
@@ -135,7 +135,7 @@ theorem CoherenceConstantSq_eq_sq {d : ℕ} (hd : 2 ≤ d) : CoherenceConstantSq
 
 /-- `Var T_d · Var P_d = (c/2)² (1 + δ(d))²`. -/
 theorem variance_mul_variance {d : ℕ} (hd : 2 ≤ d) :
-    variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) =
+    variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) =
       (commutatorConstant d / 2) ^ 2 * (1 + geometricGap d) ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
@@ -147,16 +147,16 @@ theorem variance_mul_variance {d : ℕ} (hd : 2 ≤ d) :
 
 /-- The Robertson–Schrödinger gap in terms of `δ(d)`. -/
 theorem gap_eq_geometricGap {d : ℕ} (hd : 2 ≤ d) :
-    variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) -
-      (covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2) =
+    variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) -
+      (covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2) =
       (commutatorConstant d / 2) ^ 2 * (geometricGap d * (2 + geometricGap d)) := by
   rw [variance_mul_variance hd, covariance_eq_zero hd]
   ring
 
 /-- The gap is the Gram defect `(C_Nava(d)² − 1)/(d−1)²`. -/
 theorem gap_eq_defectGram {d : ℕ} (hd : 2 ≤ d) :
-    variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) -
-      (covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2) =
+    variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) -
+      (covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2) =
       defectGram d := by
   rw [gramStep_gram hd, gap_eq_geometricGap hd, commutatorConstant_half_sq hd,
       CoherenceConstantSq_eq_sq hd]
@@ -181,10 +181,11 @@ theorem geometricGap_nonneg {d : ℕ} (hd : 2 ≤ d) : 0 ≤ geometricGap d := b
     · exact (one_lt_CoherenceConstantSq d h4).le
   linarith
 
-/-- Robertson–Schrödinger saturates at `ψ*` iff `d = 2, 3`. -/
+/-- Robertson–Schrödinger saturates at the maximal current state iff `d = 2, 3`. -/
 theorem saturation_iff {d : ℕ} (hd : 2 ≤ d) :
-    covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2 =
-        variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) ↔ d = 2 ∨ d = 3 := by
+    covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2 =
+        variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) ↔ d = 2 ∨ d =
+            3 := by
   have hb := gap_eq_geometricGap hd
   have hp := commutatorConstant_half_sq_pos hd
   have hδ : 0 ≤ geometricGap d := geometricGap_nonneg hd
@@ -203,11 +204,11 @@ theorem saturation_iff {d : ℕ} (hd : 2 ≤ d) :
     rw [h] at hb
     linarith
 
-/-- **Nava–Robertson–Schrödinger inequality.** For `d ≥ 4`, at `ψ*`,
+/-- **Nava–Robertson–Schrödinger inequality.** For `d ≥ 4`, at the maximal current state,
 `cov² + (c/2)² < Var T_d · Var P_d`, with gap `(c/2)² δ(d) (2 + δ(d)) > 0`. -/
 theorem strict_inequality {d : ℕ} (hd : 4 ≤ d) :
-    covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2 <
-      variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) := by
+    covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2 <
+      variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) := by
   have hd2 : 2 ≤ d := by omega
   have hδ := geometricGap_pos_of_four_le d hd
   have hp := commutatorConstant_half_sq_pos hd2
@@ -218,10 +219,11 @@ theorem strict_inequality {d : ℕ} (hd : 4 ≤ d) :
 
 /-! ## 4. Uniqueness of the maximal-tension state -/
 
-/-- The top eigenvalue of `K_d` is simple: its eigenspace is spanned by `ψ*`. -/
+/-- The top eigenvalue of `K_d` is simple: its eigenspace is spanned by the maximal current state.
+-/
 theorem top_eigenvector_smul {d : ℕ} (hd : 2 ≤ d) (v : Hd d)
     (hv : KdOp d v = ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) • v) :
-    ∃ c : ℂ, v = c • psiStar d := by
+    ∃ c : ℂ, v = c • maxCurrentState d := by
   classical
   have hd1 : 1 ≤ d := by omega
   let k0 : Fin d := ⟨0, by omega⟩
@@ -249,10 +251,10 @@ theorem top_eigenvector_smul {d : ℕ} (hd : 2 ≤ d) (v : Hd d)
     _ • ((‖fiedlerVecRaw d‖ : ℂ)⁻¹ • fiedlerVecRaw d)
   rw [smul_smul, mul_assoc, mul_inv_cancel₀ hn, mul_one]
 
-/-- A unit state with `⟨K_d⟩ = 2/(d−1)` is a phase times `ψ*`. -/
+/-- A unit state with `⟨K_d⟩ = 2/(d−1)` is a phase times the maximal current state. -/
 theorem maxTension_state_eq_phase {d : ℕ} (hd : 2 ≤ d) (v : Hd d) (hv : ‖v‖ = 1)
     (h : (inner ℂ v (KdOp d v)).re = 2 / ((d : ℝ) - 1)) :
-    ∃ c : ℂ, ‖c‖ = 1 ∧ v = c • psiStar d := by
+    ∃ c : ℂ, ‖c‖ = 1 ∧ v = c • maxCurrentState d := by
   have hd1 : 1 ≤ d := by omega
   have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have : Nontrivial (Hd d) := inferInstance

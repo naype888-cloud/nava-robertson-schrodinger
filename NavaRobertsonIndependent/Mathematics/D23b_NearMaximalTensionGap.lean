@@ -77,18 +77,20 @@ theorem tension_eq_zero_of_real {d : ℕ} {ψ : Hd d} (hψ : ∀ i, (ψ i).im = 
   rw [tension, re_inner_KdOp, PiLp.inner_apply, Complex.im_sum]
   simp [Complex.mul_im, TdOp, PdOp, im_mulVec_eq_zero hT hψ, im_mulVec_eq_zero hP hψ]
 
-theorem tension_psiStar {d : ℕ} (hd : 2 ≤ d) : tension d (psiStar d) = 2 / ((d : ℝ) - 1) := by
+theorem tension_maxCurrentState {d : ℕ} (hd : 2 ≤ d) : tension d (maxCurrentState d) = 2 / ((d : ℝ)
+    - 1) := by
   unfold tension
   rw [KdOp_fiedlerVec d hd, inner_smul_right, inner_self_eq_norm_sq_to_K,
-    norm_psiStar hd]
+    norm_maxCurrentState hd]
   simpa using Complex.ofReal_re (2 / ((d : ℝ) - 1))
 
-theorem surplus_psiStar {d : ℕ} (hd : 2 ≤ d) : surplus d (psiStar d) = defectGram d := by
+theorem surplus_maxCurrentState {d : ℕ} (hd : 2 ≤ d) : surplus d (maxCurrentState d) = defectGram d
+    := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
     linarith
-  rw [← gap_eq_defectGram hd, surplus_eq, tension_psiStar hd, commutatorConstant_half_sq hd]
+  rw [← gap_eq_defectGram hd, surplus_eq, tension_maxCurrentState hd, commutatorConstant_half_sq hd]
   field_simp
   ring
 
@@ -144,7 +146,7 @@ theorem surplus_near_max {d : ℕ} (hd : 2 ≤ d) {η : ℝ} (hη : 0 < η) :
     refine lt_of_le_of_ne (tension_le hd ψ₀ hψ₀) fun heq => ?_
     obtain ⟨c, hc, rfl⟩ := maxTension_state_eq_phase hd ψ₀ hψ₀ heq
     have h := hψ₀S.2
-    simp only [Set.mem_ofPred_eq, surplus_phase _ c hc, surplus_psiStar hd, sub_self,
+    simp only [Set.mem_ofPred_eq, surplus_phase _ c hc, surplus_maxCurrentState hd, sub_self,
       abs_zero] at h
     linarith
   refine ⟨2 / ((d : ℝ) - 1) - tension d ψ₀, by linarith, fun ψ hψ hK => hfuera ψ hψ ?_⟩

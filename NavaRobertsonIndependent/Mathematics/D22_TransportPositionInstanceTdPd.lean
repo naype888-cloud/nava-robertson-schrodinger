@@ -12,7 +12,8 @@ public import NavaRobertsonIndependent.Mathematics.D17_IntrinsicTransportDefect
 # D22 — `PositionTransport` instantiated with `(T_d, P_d)`
 
 The interface `PositionTransport d` of `D17` built from the concrete operators:
-`σ_A = ‖T_d ψ*‖`, `σ_B = ‖P_d ψ*‖`, covariance `0`, commutator `c/2`, `c = −2/(d−1)`. The field
+`σ_A = ‖T_d maxCurrentState‖`, `σ_B = ‖P_d maxCurrentState‖`, covariance `0`, commutator `c/2`,
+`c = −2/(d−1)`. The field
 `saturated_iff_path` is proved (`D21`, `D7`), and the intrinsic defect of `D17` is the Gram
 defect `(C_Nava(d)² − 1)/(d−1)²` of `D20`.
 
@@ -29,10 +30,10 @@ open Gnomon TransportPosition FiedlerPositionVariance GramStep Robertson1929
 
 namespace NRSInequality
 
-/-- The Robertson–Schrödinger evaluation of `(T_d, P_d)` at `ψ*`. -/
+/-- The Robertson–Schrödinger evaluation of `(T_d, P_d)` at the maximal current state. -/
 def evaluationTdPd {d : ℕ} (hd : 2 ≤ d) : SchrodingerEvaluation where
-  sigmaA := ‖TdOp d (psiStar d)‖
-  sigmaB := ‖PdOp d (psiStar d)‖
+  sigmaA := ‖TdOp d (maxCurrentState d)‖
+  sigmaB := ‖PdOp d (maxCurrentState d)‖
   covariance := 0
   commutator := commutatorConstant d / 2
   sigmaA_nonneg := norm_nonneg _
@@ -72,7 +73,7 @@ def positionTransportTdPd {d : ℕ} (hd : 2 ≤ d) : PositionTransport d where
     rw [saturated_TdPd_iff hd]
     exact (Gnomon.saturation_iff d hd).symm
 
-/-- For `d ≥ 4` the defect of `(T_d, P_d)` at `ψ*` is positive. -/
+/-- For `d ≥ 4` the defect of `(T_d, P_d)` at the maximal current state is positive. -/
 theorem defect_pos_TdPd {d : ℕ} (hd : 4 ≤ d) :
     0 < (positionTransportTdPd (by omega : 2 ≤ d)).defect :=
   (positionTransportTdPd (by omega : 2 ≤ d)).defect_pos hd

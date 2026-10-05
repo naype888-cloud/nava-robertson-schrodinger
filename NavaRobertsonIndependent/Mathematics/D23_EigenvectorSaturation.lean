@@ -270,7 +270,7 @@ theorem not_comm_and_variance_mul_eq_zero (d : ℕ) (hd : 2 ≤ d) :
       rw [hC, smul_zero]
     have h1 := KdOp_fiedlerVec d hd
     rw [hK, LinearMap.zero_apply] at h1
-    have hn := norm_psiStar hd
+    have hn := norm_maxCurrentState hd
     have h2 : ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) = 0 ∨ fiedlerVec d = 0 :=
       smul_eq_zero.mp h1.symm
     rcases h2 with h2 | h2
@@ -280,7 +280,7 @@ theorem not_comm_and_variance_mul_eq_zero (d : ℕ) (hd : 2 ≤ d) :
       have : (2 / ((d : ℝ) - 1) : ℝ) = 0 := by exact_mod_cast h2
       have hpos : (0 : ℝ) < 2 / ((d : ℝ) - 1) := div_pos (by norm_num) hd1
       linarith
-    · have : ‖psiStar d‖ = 0 := by
+    · have : ‖maxCurrentState d‖ = 0 := by
         change ‖fiedlerVec d‖ = 0
         rw [h2, norm_zero]
       linarith

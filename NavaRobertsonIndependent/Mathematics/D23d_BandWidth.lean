@@ -235,26 +235,26 @@ theorem surplus_lipschitz {d : ℕ} (hd : 2 ≤ d) {ψ ψ' : Hd d} (hψ : ‖ψ�
     _ ≤ 4 * (4 * ‖ψ - ψ'‖ + 4 * ‖ψ - ψ'‖) := by gcongr
     _ = 32 * ‖ψ - ψ'‖ := by ring
 
-/-! ## 4. Distance to the phase orbit of `ψ*` -/
+/-! ## 4. Distance to the phase orbit of the maximal current state -/
 
-/-- Every unit state is within `√2 ‖φ‖` of a phase of `ψ*`. -/
+/-- Every unit state is within `√2 ‖φ‖` of a phase of the maximal current state. -/
 theorem exists_phase_near {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
-    ∃ c : ℂ, ‖c‖ = 1 ∧ ‖ψ - c • psiStar d‖ ^ 2 ≤ 2 * ‖orthComponent d ψ‖ ^ 2 := by
-  set a := inner ℂ (psiStar d) ψ
+    ∃ c : ℂ, ‖c‖ = 1 ∧ ‖ψ - c • maxCurrentState d‖ ^ 2 ≤ 2 * ‖orthComponent d ψ‖ ^ 2 := by
+  set a := inner ℂ (maxCurrentState d) ψ
   set φ := orthComponent d ψ
   have hn : 1 = ‖a‖ ^ 2 + ‖φ‖ ^ 2 := by
     have := norm_sq_decomp hd ψ
     rwa [hψ, one_pow] at this
   have ha1 : ‖a‖ ≤ 1 := by nlinarith [norm_nonneg a, sq_nonneg ‖φ‖]
-  -- `ψ − c ψ* = φ + (a − c) ψ*`, with `φ ⊥ ψ*`
-  have hdist : ∀ c : ℂ, ‖ψ - c • psiStar d‖ ^ 2 = ‖φ‖ ^ 2 + ‖a - c‖ ^ 2 := by
+  -- `ψ − c maxCurrentState = φ + (a − c) maxCurrentState`, with `φ ⊥ maxCurrentState`
+  have hdist : ∀ c : ℂ, ‖ψ - c • maxCurrentState d‖ ^ 2 = ‖φ‖ ^ 2 + ‖a - c‖ ^ 2 := by
     intro c
-    have e : ψ - c • psiStar d = φ + (a - c) • psiStar d := by
+    have e : ψ - c • maxCurrentState d = φ + (a - c) • maxCurrentState d := by
       simp only [φ, orthComponent, sub_smul]
       abel
-    have h0 : inner ℂ φ ((a - c) • psiStar d) = 0 := by
+    have h0 : inner ℂ φ ((a - c) • maxCurrentState d) = 0 := by
       rw [inner_smul_right, ← inner_conj_symm, orthComponent_perp hd, map_zero, mul_zero]
-    rw [e, @norm_add_sq ℂ, h0, norm_smul, norm_psiStar hd]
+    rw [e, @norm_add_sq ℂ, h0, norm_smul, norm_maxCurrentState hd]
     simp
   by_cases ha0 : a = 0
   · refine ⟨1, norm_one, ?_⟩
@@ -284,12 +284,12 @@ theorem surplus_band {d : ℕ} (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1) :
     gapK d * (surplus d ψ - defectGram d) ^ 2 ≤
       2048 * (2 / ((d : ℝ) - 1) - tension d ψ) := by
   obtain ⟨c, hc, hdist⟩ := exists_phase_near hd ψ hψ
-  have hcψ : ‖c • psiStar d‖ = 1 := by rw [norm_smul, hc, norm_psiStar hd, one_mul]
+  have hcψ : ‖c • maxCurrentState d‖ = 1 := by rw [norm_smul, hc, norm_maxCurrentState hd, one_mul]
   have hL := surplus_lipschitz hd hψ hcψ
-  rw [surplus_phase _ c hc, surplus_psiStar hd] at hL
+  rw [surplus_phase _ c hc, surplus_maxCurrentState hd] at hL
   have hD := dist_le_deficit hd ψ hψ
   have hg := gapK_pos hd
-  have h1 : (surplus d ψ - defectGram d) ^ 2 ≤ 1024 * ‖ψ - c • psiStar d‖ ^ 2 := by
+  have h1 : (surplus d ψ - defectGram d) ^ 2 ≤ 1024 * ‖ψ - c • maxCurrentState d‖ ^ 2 := by
     have := sq_le_sq' (neg_le_of_abs_le hL) (le_of_abs_le hL)
     nlinarith
   nlinarith
