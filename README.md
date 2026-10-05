@@ -180,7 +180,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49m`).** The covariance matrix `Σ` and the
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49n`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -203,12 +203,13 @@ dropped.
 * **Equality needs a relation among the three tensions** (`D49g`, `D49h`): if
   `det Σ = |det Ω|` with the speeds in the band, then
   `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` for some `σ ≠ 0`. If those
-  brackets reach one axis alone, no state survives (`D49l`).
+  brackets reach one axis alone, no state survives (`D49l`); nor on two axes when a relation
+  carries position alone on one of them (`D49n`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -906,6 +907,15 @@ the three tensions — x, y, z, none can be dropped.
   (`D49i`), and `Φ = 0` (`eq_zero_of_free_axis`). Pure algebra of `T_d`, `P_d`: no spectral input
   and no velocity hypothesis. What remains of the open case is two or three axes whose
   brackets stay glued together.
+- `D49n_TwoAxes` (certificates target): brackets on two axes. If
+  `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0` and a relation of `Φ` carries position
+  on axis `i` and nothing else on `i`, `j`, its bracket isolates `[P_i, [T_i, P_i]] Φ = −h² T_i Φ`,
+  so `T_i Φ = 0`, then `[T_i, P_i] Φ = 0` and `Φ = 0` (`eq_zero_of_two_axes`); likewise
+  `[T_i, P_i] Φ = 0` with a relation carrying position but no transport on axis `i`
+  (`eq_zero_of_comm_eq_zero`). What remains of the open case are the configurations where every
+  relation carries transport on the axes of the brackets; there the second bracket brings in the
+  diagonal `[T_k, [T_k, P_k]]`, which leaves the span of `T_k`, `P_k`, `[T_k, P_k]` from `d = 4` on
+  (`D49i`).
 - `D49m_MirrorState`: the trivial case of the open step, on record. The mirror `J`, position
   `j ↦ d − 1 − j` with sign `(−1)^j`, anticommutes with transport and position
   (`J_mul_Td`, `J_mul_Pd`) and is unitary (`J_mul_conjTranspose`). As a state of two axes,

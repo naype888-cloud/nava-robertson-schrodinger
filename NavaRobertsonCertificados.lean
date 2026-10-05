@@ -17,6 +17,7 @@ public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
 public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 public import NavaRobertsonCertificados.D49k_RobertsonDeterminantCanonicalAxes
 public import NavaRobertsonCertificados.D49l_FreeAxis
+public import NavaRobertsonCertificados.D49n_TwoAxes
 
 /-!
 # Certificates
@@ -59,4 +60,8 @@ however entangled `x` and `y` are, `|det Ω| < det Σ`.
 `D49l`: a free axis leaves no state: if the brackets of the relations of `Φ` reach one axis
 alone and a relation carries position there without transport, then `[T_i, P_i] Φ = 0`,
 `T_i Φ = 0` and `Φ = 0`; transport and `[T_d, P_d]` have no common vector.
+
+`D49n`: brackets on two axes: `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0` and a
+relation with position on axis `i` alone on `i`, `j` leave `Φ = 0`; so does `[T_i, P_i] Φ = 0`
+with a relation carrying position but no transport on axis `i`.
 -/
