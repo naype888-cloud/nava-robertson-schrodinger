@@ -190,13 +190,12 @@ theorem gramDefectC_eq_zero_of_rel {x y : H3D dx dy dz} {α β : ℂ} (h : α �
 
 variable {Φ}
 
-/-- **Equality in det|NRS³ needs a relation among the three tensions.** If the speeds on `x`, `y`,
-`z` lie in the band and `det Σ = |det Ω|`, then `Σ_i σ_i [T_i, P_i] Φ = 0` for some `σ ≠ 0`. -/
-theorem exists_sigma_of_det_eq (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (hΦ : ‖Φ‖ = 1)
+/-- **The kernel of the Gram matrix has dimension at least three** when det|NRS³ is an equality
+with the three speeds in the band. -/
+theorem three_le_finrank_ker (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
     (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy) (hbz : |velocityZ Φ| ∈ Ϙ dz)
     (heq : (covMatrix (pairs dx dy dz) Φ).det = |(imMatrix (pairs dx dy dz) Φ).det|) :
-    ∃ σ : Fin 3 → ℂ, σ ≠ 0 ∧
-      ∑ i, σ i • opCommutator (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i)) Φ = 0 := by
+    3 ≤ Module.finrank ℂ (LinearMap.ker (gram ℂ (fluct Φ)).mulVecLin) := by
   set S := covMatrix (pairs dx dy dz) Φ
   set W := imMatrix (pairs dx dy dz) Φ
   set A : Matrix (Fin 2 × Fin 3) (Fin 2 × Fin 3) ℂ := S.map ((↑) : ℝ → ℂ)
@@ -257,11 +256,21 @@ theorem exists_sigma_of_det_eq (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (
     · rw [Matrix.mulVecLin_apply, hGt]
       exact hz
   have hNM : Module.finrank ℂ M = Module.finrank ℂ N := finrank_ker_transpose _
-  have hdim : 3 ≤ Module.finrank ℂ N := by
-    have h := Submodule.finrank_sup_add_finrank_inf_eq N M
-    rw [hsup, finrank_top, Module.finrank_fintype_fun_eq_card] at h
-    simp only [Fintype.card_prod, Fintype.card_fin] at h
-    omega
+  show 3 ≤ Module.finrank ℂ N
+  have h := Submodule.finrank_sup_add_finrank_inf_eq N M
+  rw [hsup, finrank_top, Module.finrank_fintype_fun_eq_card] at h
+  simp only [Fintype.card_prod, Fintype.card_fin] at h
+  omega
+
+/-- **Equality in det|NRS³ needs a relation among the three tensions.** If the speeds on `x`, `y`,
+`z` lie in the band and `det Σ = |det Ω|`, then `Σ_i σ_i [T_i, P_i] Φ = 0` for some `σ ≠ 0`. -/
+theorem exists_sigma_of_det_eq (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (hΦ : ‖Φ‖ = 1)
+    (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy) (hbz : |velocityZ Φ| ∈ Ϙ dz)
+    (heq : (covMatrix (pairs dx dy dz) Φ).det = |(imMatrix (pairs dx dy dz) Φ).det|) :
+    ∃ σ : Fin 3 → ℂ, σ ≠ 0 ∧
+      ∑ i, σ i • opCommutator (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i)) Φ = 0 := by
+  set N := LinearMap.ker (gram ℂ (fluct Φ)).mulVecLin
+  have hdim : 3 ≤ Module.finrank ℂ N := three_le_finrank_ker hx hy hz hbx hby hbz heq
   -- if every `σ` vanished, one axis would carry a relation alone
   by_contra hcon
   push Not at hcon

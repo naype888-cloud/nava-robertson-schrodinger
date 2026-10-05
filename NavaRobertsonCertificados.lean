@@ -19,6 +19,7 @@ public import NavaRobertsonCertificados.D49k_RobertsonDeterminantCanonicalAxes
 public import NavaRobertsonCertificados.D49l_FreeAxis
 public import NavaRobertsonCertificados.D49n_TwoAxes
 public import NavaRobertsonCertificados.D49o_BracketSpan
+public import NavaRobertsonCertificados.D49p_RelationsDimension
 
 /-!
 # Certificates
@@ -68,4 +69,7 @@ with a relation carrying position but no transport on axis `i`.
 
 `D49o`: the span `W` of the bracket recipes `σ(a, b)` of pairs of relations: every `w ∈ W`
 gives `Σ_k w_k [T_k, P_k] Φ = 0`, and `e_i ∈ W` leaves `Φ = 0`.
+
+`D49p`: how many relations: in the band none lives on one axis, so there are at most four;
+at equality at least three; four leave `Φ = 0`.
 -/

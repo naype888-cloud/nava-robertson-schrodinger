@@ -21,6 +21,8 @@ and any relation with position on axis `i` gives `[T_i, P_i] Φ = 0` as well, so
 - `TwoAxes.T_eq_zero_of_PC` : `[P, [T, P]] Φ = 0` gives `T Φ = 0`.
 - `TwoAxes.eq_zero_of_T_eq_zero` : `T Φ = 0` and an eigenvector of `κ P + α T + R`, `κ ≠ 0`,
   `R` commuting with `T`, give `Φ = 0`.
+- `TwoAxes.eq_zero_of_two_comm` : `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0` and a
+  relation with position on axis `i` and nothing else on `i`, `j` leave `Φ = 0`.
 - `TwoAxes.eq_zero_of_two_axes` : on the cube, brackets on the axes `i`, `j` with `σ_i ≠ 0` and a
   relation with position on axis `i` and nothing else on `i`, `j` leave `Φ = 0`.
 - `TwoAxes.eq_zero_of_comm_eq_zero` : `[T_i, P_i] Φ = 0` and a relation with position on axis `i`
@@ -107,30 +109,22 @@ theorem rest_comm_other {i j : Fin 3} (hij : i ≠ j) {c : Fin 2 × Fin 3 → �
         pairs_comm (i := 0) (j := 1) (by decide), pairs_comm (i := 0) (j := 2) (by decide),
         pairs_comm (i := 1) (j := 2) (by decide)]
 
-/-- **Brackets on two axes leave no state.** Let `a, b, c` be relations of `Φ`. If the brackets
-of `a, b` vanish outside the axes `i`, `j` and `σ_i(a, b) ≠ 0`, and `c` carries position on axis
-`i` and nothing else on the axes `i`, `j`, then `Φ = 0`. -/
-theorem eq_zero_of_two_axes (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {i j : Fin 3} (hij : i ≠ j)
-    {a b c : Fin 2 × Fin 3 → ℂ} (ha : ∑ p, a p • fluct Φ p = 0) (hb : ∑ p, b p • fluct Φ p = 0)
-    (hc : ∑ p, c p • fluct Φ p = 0)
-    (hσ : ∀ k, k ≠ i → k ≠ j → a (0, k) * b (1, k) - a (1, k) * b (0, k) = 0)
-    (hσi : a (0, i) * b (1, i) - a (1, i) * b (0, i) ≠ 0)
+/-- **Two tensions annihilating `Φ` together.** If `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with
+`σ_i ≠ 0`, and a relation `c` of `Φ` carries position on axis `i` and nothing else on the axes
+`i`, `j`, then `Φ = 0`. -/
+theorem eq_zero_of_two_comm (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {i j : Fin 3} (hij : i ≠ j)
+    {σi σj : ℂ} (hσi : σi ≠ 0)
+    (hK : σi • opCommutator (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i)) Φ +
+      σj • opCommutator (pairs dx dy dz (0, j)) (pairs dx dy dz (1, j)) Φ = 0)
+    {c : Fin 2 × Fin 3 → ℂ} (hc : ∑ p, c p • fluct Φ p = 0)
     (hc0i : c (0, i) = 0) (hc0j : c (0, j) = 0) (hc1j : c (1, j) = 0) (hc1i : c (1, i) ≠ 0) :
     Φ = 0 := by
-  set σi := a (0, i) * b (1, i) - a (1, i) * b (0, i)
-  set σj := a (0, j) * b (1, j) - a (1, j) * b (0, j)
   set Ci := opCommutator (pairs dx dy dz (0, i)) (pairs dx dy dz (1, i))
   set Cj := opCommutator (pairs dx dy dz (0, j)) (pairs dx dy dz (1, j))
   set Pi := pairs dx dy dz (1, i)
   obtain ⟨μ, hL⟩ : ∃ μ : ℂ, c (1, i) • Pi Φ + rest dx dy dz c i Φ = μ • Φ :=
     ⟨_, by rw [rest, LinearMap.sub_apply, LinearMap.smul_apply, add_sub_cancel, comb_eigen Φ hc]⟩
   set R := rest dx dy dz c i
-  have hK : σi • Ci Φ + σj • Cj Φ = 0 := by
-    have h := commutator_sum Φ a b
-    rw [comb_eigen Φ hb, comb_eigen Φ ha, map_smul, map_smul, comb_eigen Φ ha, comb_eigen Φ hb,
-      smul_smul, smul_smul, mul_comm, sub_self,
-      Fintype.sum_eq_add i j hij (fun k hk => by rw [hσ k hk.1 hk.2, zero_smul])] at h
-    exact h.symm
   have hRC (k : Fin 3) (hk : ∀ s (ψ : H3D dx dy dz),
       R (pairs dx dy dz (s, k) ψ) = pairs dx dy dz (s, k) (R ψ)) (ψ : H3D dx dy dz) :
       R (opCommutator (pairs dx dy dz (0, k)) (pairs dx dy dz (1, k)) ψ) =
@@ -158,6 +152,24 @@ theorem eq_zero_of_two_axes (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {i j
     exact eq_zero_of_T_eq_zero hy (eY dx dy dz) hc1i (rest_comm hc0i 0) hT hL'
   · have hT := T_eq_zero_of_PC hz (eZ dx dy dz) hPC
     exact eq_zero_of_T_eq_zero hz (eZ dx dy dz) hc1i (rest_comm hc0i 0) hT hL'
+
+/-- **Brackets on two axes leave no state.** Let `a, b, c` be relations of `Φ`. If the brackets
+of `a, b` vanish outside the axes `i`, `j` and `σ_i(a, b) ≠ 0`, and `c` carries position on axis
+`i` and nothing else on the axes `i`, `j`, then `Φ = 0`. -/
+theorem eq_zero_of_two_axes (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {i j : Fin 3} (hij : i ≠ j)
+    {a b c : Fin 2 × Fin 3 → ℂ} (ha : ∑ p, a p • fluct Φ p = 0) (hb : ∑ p, b p • fluct Φ p = 0)
+    (hc : ∑ p, c p • fluct Φ p = 0)
+    (hσ : ∀ k, k ≠ i → k ≠ j → a (0, k) * b (1, k) - a (1, k) * b (0, k) = 0)
+    (hσi : a (0, i) * b (1, i) - a (1, i) * b (0, i) ≠ 0)
+    (hc0i : c (0, i) = 0) (hc0j : c (0, j) = 0) (hc1j : c (1, j) = 0) (hc1i : c (1, i) ≠ 0) :
+    Φ = 0 := by
+  refine eq_zero_of_two_comm hx hy hz hij (σj := a (0, j) * b (1, j) - a (1, j) * b (0, j)) hσi ?_
+    hc hc0i hc0j hc1j hc1i
+  have h := commutator_sum Φ a b
+  rw [comb_eigen Φ hb, comb_eigen Φ ha, map_smul, map_smul, comb_eigen Φ ha, comb_eigen Φ hb,
+    smul_smul, smul_smul, mul_comm, sub_self,
+    Fintype.sum_eq_add i j hij (fun k hk => by rw [hσ k hk.1 hk.2, zero_smul])] at h
+  exact h.symm
 
 /-- **One tension annihilates `Φ`.** If `[T_i, P_i] Φ = 0` and a relation `c` of `Φ` carries
 position on axis `i` without transport there (whatever it does on the other axes), `Φ = 0`. -/
