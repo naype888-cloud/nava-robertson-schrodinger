@@ -22,6 +22,7 @@ public import NavaRobertsonCertificados.D49o_BracketSpan
 public import NavaRobertsonCertificados.D49p_RelationsDimension
 public import NavaRobertsonCertificados.D49q_TransportRelation
 public import NavaRobertsonCertificados.D49r_EdgeOperator
+public import NavaRobertsonCertificados.D49s_EdgeSlices
 
 /-!
 # Certificates
@@ -79,4 +80,7 @@ at equality at least three; four leave `Φ = 0`.
 relation without transport on `i`, `j` give `(w_i c(P_i) h_i² T_i + w_j c(P_j) h_j² T_j) Φ = 0`.
 
 `D49r`: `[T_d, [T_d, P_d]] = (2h/ρ_d²) diag(−1, 0, …, 0, +1)`: it lives on the two ends.
+
+`D49s`: the edge of the cube: a transport relation `(α T_x + β T_y) Φ = 0` is a recurrence along
+`x`; with two tensions it leaves `Φ = 0` or `Φ` split off `z`.
 -/
