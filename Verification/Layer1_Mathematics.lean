@@ -91,7 +91,7 @@ open Lean
 #print axioms NRSAngle.angleNRS_strictMonoOn
 #print axioms NRSAngle.angles_cube
 #print axioms CubeSpectrum.eigenvector_sum
-#print axioms CubeSpectrum.tensionTotal_psiStar
+#print axioms CubeSpectrum.tensionTotal_maxCurrentState
 #print axioms CubeSpectrum.tensionTotal_le
 #print axioms NRSAngle.angleNRS_four
 #print axioms NRSAngle.angle_floor
@@ -117,10 +117,10 @@ open Lean
 #print axioms GroupVelocity.hasDerivAt_dispersion
 #print axioms GroupVelocity.heisenberg
 #print axioms GroupVelocity.abs_velocity_le
-#print axioms GroupVelocity.velocity_psiStar
+#print axioms GroupVelocity.velocity_maxCurrentState
 #print axioms GroupVelocity.velocity_phaseMode
-#print axioms GroupVelocity.velocities_PsiStar3D
-#print axioms GroupVelocity.speed_sq_PsiStar3D
+#print axioms GroupVelocity.velocities_maxCurrentCubeState
+#print axioms GroupVelocity.speed_sq_maxCurrentCubeState
 #print axioms ConjugatePairs.angleG_affineOp
 #print axioms ConjugatePairs.ratioG_affineOp
 #print axioms ConjugatePairs.ratio_pair
@@ -133,9 +133,9 @@ open Lean
 #print axioms GroupVelocity.velocity_lt_one_of_surplus_eq_zero
 #print axioms GroupVelocity.mandelstamTamm
 #print axioms GroupVelocity.cramerRao
-#print axioms GroupVelocity.mtRatio_psiStar
-#print axioms GroupVelocity.mtRatio_psiStar_eq_one_iff
-#print axioms GroupVelocity.mtRatio_psiStar_lt_one
+#print axioms GroupVelocity.mtRatio_maxCurrentState
+#print axioms GroupVelocity.mtRatio_maxCurrentState_eq_one_iff
+#print axioms GroupVelocity.mtRatio_maxCurrentState_lt_one
 #print axioms GroupVelocity.mtRatioG_axis_x
 #print axioms GroupVelocity.mtRatioG_total_cube
 #print axioms Direction.tension_reflect
@@ -162,7 +162,7 @@ open Lean
 #print axioms RobertsonDeterminant.robertson_det
 #print axioms RobertsonDeterminant3D.robertson_det_cube
 #print axioms RobertsonDeterminant3D.robertson_det_cube_velocity
-#print axioms RobertsonDeterminantProduct.det_covMatrix_PsiStar3D
-#print axioms RobertsonDeterminantProduct.robertson_det_PsiStar3D_strict
+#print axioms RobertsonDeterminantProduct.det_covMatrix_maxCurrentCubeState
+#print axioms RobertsonDeterminantProduct.robertson_det_maxCurrentCubeState_strict
 #print axioms Matrix.PosDef.add_mul_inv_mul_sub_eq_zero
 #print axioms TransportPosition.LieClosure.closure_iff

@@ -10,13 +10,14 @@ public import NavaRobertsonCertificados.D43_NRSOctahedron
 /-!
 # D44 — The velocity band `Ϙ(d)` of forced defect
 
-On `H_d` the cone speed `|v| = 1` is reached by `ψ*` (`D38`). The minimum-uncertainty states
+On `H_d` the cone speed `|v| = 1` is reached by the maximal current state (`D38`). The
+minimum-uncertainty states
 reach speeds up to the threshold `v*(d)`, the largest of their speeds: some minimum-uncertainty
 state moves exactly at `v*(d)` (compactness of the unit sphere). The band
 `Ϙ(d) = (v*(d), 1]` is the range of speeds at which every state has a Robertson–Schrödinger
 surplus; its width is `ϙ(d) = 1 − v*(d)` (koppa).
 
-* At `d = 2, 3`, `ψ*` saturates at the cone: `ϙ = 0` and the band is empty.
+* At `d = 2, 3`, the maximal current state saturates at the cone: `ϙ = 0` and the band is empty.
 * For `d ≥ 4` the band is never empty: `ϙ(d) ≥ ((d − 1)/2) · bandWidth d > 0` (`D23d`).
 * At `d = 4` the width is exact: `ϙ(4) = (7 − 3√5)/4 ≈ 0.0729` (`D23f`, `D23g`, `D43`).
 
@@ -114,15 +115,15 @@ theorem surplus_pos_of_mem_band (hd : 2 ≤ d) (ψ : Hd d) (hψ : ‖ψ‖ = 1)
 
 /-! ## 4. No band at `d = 2, 3` -/
 
-theorem surplus_psiStar_eq_zero_iff (hd : 2 ≤ d) :
-    surplus d (psiStar d) = 0 ↔ d = 2 ∨ d = 3 := by
-  rw [surplus_psiStar hd, gramStep_gram_eq_zero_iff hd]
+theorem surplus_maxCurrentState_eq_zero_iff (hd : 2 ≤ d) :
+    surplus d (maxCurrentState d) = 0 ↔ d = 2 ∨ d = 3 := by
+  rw [surplus_maxCurrentState hd, gramStep_gram_eq_zero_iff hd]
 
 theorem threshold_eq_one (hd : d = 2 ∨ d = 3) : threshold d = 1 := by
   have h2 : 2 ≤ d := by omega
   refine le_antisymm (threshold_le_one h2) (le_csSup (satSpeeds_bddAbove h2) ?_)
-  exact ⟨psiStar d, norm_psiStar h2, (surplus_psiStar_eq_zero_iff h2).2 hd,
-    by rw [velocity_psiStar h2, abs_one]⟩
+  exact ⟨maxCurrentState d, norm_maxCurrentState h2, (surplus_maxCurrentState_eq_zero_iff h2).2 hd,
+    by rw [velocity_maxCurrentState h2, abs_one]⟩
 
 theorem koppa_eq_zero (hd : d = 2 ∨ d = 3) : ϙ d = 0 := by
   rw [koppa, threshold_eq_one hd, sub_self]

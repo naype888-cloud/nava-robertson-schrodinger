@@ -11,20 +11,23 @@ public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 /-!
 # D49f — Maximal tension on an axis leaves no room for entanglement
 
-On `H_d` the tension `⟨K_d⟩` reaches its top `±2/(d−1)` only at `ψ*` and its reflection
+On `H_d` the tension `⟨K_d⟩` reaches its top `±2/(d−1)` only at the maximal current state and its
+reflection
 (`D21`, `D42`). Here the state `Φ` lives on a product `ℂ^d ⊗ ℂ^β` and may be entangled. The
 tension of the axis is the sum of the tensions of the columns of `Φ`, each bounded by
 `2/(d−1)` times its weight; at the top every column is at the top, so every column is a multiple
-of `ψ*` (or of its reflection). On the cube, with maximal tension on `x`, `y` and `z`, `Φ` is a
-phase times `ψ* ⊗ ψ* ⊗ ψ*` (each factor in its direction): no entanglement is possible.
+of the maximal current state (or of its reflection). On the cube, with maximal tension on `x`, `y`
+and `z`, `Φ` is a
+phase times the product of the maximal current states (each factor in its direction): no
+entanglement is possible.
 
 ## Main results
 
 - `MaxTensionCube.tensionG_eq_sum_col` : the tension of an axis is the sum over the columns.
 - `MaxTensionCube.col_eq_smul_psiDir` : at maximal tension every column is a multiple of
-  `ψ*` in its direction.
+  the maximal current state in its direction.
 - `MaxTensionCube.eq_smul_octant` : maximal tension on `x`, `y`, `z` makes `Φ` a phase times the
-  octant state `ψ* ⊗ ψ* ⊗ ψ*`.
+  octant state the product of the maximal current states.
 - `MaxTensionCube.det_covMatrix_maxTension` : then
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`, for every state.
 - `MaxTensionCube.robertson_det_maxTension_strict` : strict on every box with `4` or more positions
@@ -107,7 +110,8 @@ theorem abs_tension_le_sq (hd : 2 ≤ d) (u : Hd d) :
     inv_pow] at h
   rwa [inv_mul_le_iff₀ (by positivity), mul_comm] at h
 
-/-- A column at the top of the tension in direction `b` is a multiple of `ψ*` in direction
+/-- A column at the top of the tension in direction `b` is a multiple of the maximal current state
+in direction
 `b`. -/
 theorem col_eq_smul_psiDir (hd : 2 ≤ d) (b : Bool) (u : Hd d)
     (h : tension d u = sgn b * (2 / ((d : ℝ) - 1)) * ‖u‖ ^ 2) : ∃ c : ℂ, u = c • psiDir d b := by
@@ -130,7 +134,7 @@ theorem col_eq_smul_psiDir (hd : 2 ≤ d) (b : Bool) (u : Hd d)
       rw [tension_reflect, ht]; simp [sgn]
     obtain ⟨c, -, hc⟩ := maxTension_state_eq_phase hd (reflect d ũ)
       (by rw [LinearIsometryEquiv.norm_map, h1]) hr
-    have hrr : ũ = c • reflect d (psiStar d) := by
+    have hrr : ũ = c • reflect d (maxCurrentState d) := by
       have := congrArg (reflect d).symm hc
       rw [LinearIsometryEquiv.symm_apply_apply, map_smul] at this
       rw [this]
@@ -140,7 +144,8 @@ theorem col_eq_smul_psiDir (hd : 2 ≤ d) (b : Bool) (u : Hd d)
     exact ⟨(‖u‖ : ℂ) * c, hu'.trans (by rw [hrr, smul_smul]; rfl)⟩
 
 /-- **One axis at maximal tension.** If the tension of the axis is `±2/(d−1)`, every column of
-`Φ` is a multiple of `ψ*` in that direction, whether or not `Φ` is entangled with the rest. -/
+`Φ` is a multiple of the maximal current state in that direction, whether or not `Φ` is entangled
+with the rest. -/
 theorem cols_of_maxTension (hd : 2 ≤ d) (e : ι ≃ Fin d × β) {Φ : EuclideanSpace ℂ ι}
     (hΦ : ‖Φ‖ = 1) (b : Bool)
     (ht : tensionG (Matrix.toEuclideanLin (liftAlong e (Td d)))
@@ -175,14 +180,14 @@ theorem surplus_reflect (ψ : Hd d) : surplus d (reflect d ψ) = surplus d ψ :=
   rw [surplus_eq, surplus_eq, h1, h2, h3, tension_reflect]
   ring
 
-/-- One block at `ψ*` in either direction: `C_Nava(d)² · t²/4`. -/
+/-- One block at the maximal current state in either direction: `C_Nava(d)² · t²/4`. -/
 theorem block_psiDir (hd : 2 ≤ d) (b : Bool) :
     surplus d (psiDir d b) + tension d (psiDir d b) ^ 2 / 4 =
       CoherenceConstant d ^ 2 * (tension d (psiDir d b) ^ 2 / 4) := by
   cases b
-  · exact block_psiStar hd
+  · exact block_maxCurrentState hd
   · simp only [psiDir, Bool.cond_true, surplus_reflect, tension_reflect, neg_sq]
-    exact block_psiStar hd
+    exact block_maxCurrentState hd
 
 /-- `|v| = 1` on an axis: the tension is `±2/(d−1)`. -/
 theorem exists_sgn_of_abs_velocity {t : ℝ} (hd : 2 ≤ d) (h : |((d : ℝ) - 1) / 2 * t| = 1) :
@@ -197,7 +202,7 @@ theorem exists_sgn_of_abs_velocity {t : ℝ} (hd : 2 ≤ d) (h : |((d : ℝ) - 1
 variable {dx dy dz : ℕ}
 
 /-- **No entanglement at maximal tension.** Maximal tension on `x`, `y` and `z` makes `Φ` a phase
-times the octant state `ψ* ⊗ ψ* ⊗ ψ*` (each factor in its direction). -/
+times the product of the maximal current states (each factor in its direction). -/
 theorem eq_smul_octant (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {Φ : H3D dx dy dz}
     (hΦ : ‖Φ‖ = 1) (bx b_y bz : Bool)
     (htx : tensionG (TX dx dy dz) (PX dx dy dz) Φ = sgn bx * (2 / ((dx : ℝ) - 1)))

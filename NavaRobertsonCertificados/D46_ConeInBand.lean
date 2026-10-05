@@ -16,7 +16,8 @@ transported at the cone speed carries a Robertson–Schrödinger surplus, whatev
 and none reaches the minimum uncertainty. The same holds on an explicit neighbourhood of the
 cone, `|v| > 1 − ((d − 1)/2) · bandWidth d`.
 
-The condition `d ≥ 4` is sharp: at `d = 2, 3`, `ψ*` moves at the cone and saturates.
+The condition `d ≥ 4` is sharp: at `d = 2, 3`, the maximal current state moves at the cone and
+saturates.
 
 The identification of the cone speed with the speed of light in vacuum is the physical bridge
 of the README; it is a premise, not used here.
@@ -58,12 +59,13 @@ theorem cone_forced_iff (hd : 2 ≤ d) :
     (∀ ψ : Hd d, ‖ψ‖ = 1 → |velocity d ψ| = 1 → 0 < surplus d ψ) ↔ 4 ≤ d := by
   refine ⟨fun h => ?_, fun h4 => surplus_pos_of_cone h4⟩
   by_contra! h4
-  have h0 := (surplus_psiStar_eq_zero_iff hd).2 (by omega)
-  have := h (psiStar d) (norm_psiStar hd) (by rw [velocity_psiStar hd, abs_one])
+  have h0 := (surplus_maxCurrentState_eq_zero_iff hd).2 (by omega)
+  have := h (maxCurrentState d) (norm_maxCurrentState hd) (by rw [velocity_maxCurrentState hd,
+      abs_one])
   exact this.ne' h0
 
 /-- **Certificate.** For every `d ≥ 4` the cone lies in the band and every unit state at the
-cone speed carries a surplus; for `d = 2, 3`, `ψ*` saturates at the cone. -/
+cone speed carries a surplus; for `d = 2, 3`, the maximal current state saturates at the cone. -/
 theorem coneInBand_certificate :
     (∀ d : ℕ, 4 ≤ d → (1 : ℝ) ∈ Ϙ d ∧
       ∀ ψ : Hd d, ‖ψ‖ = 1 → |velocity d ψ| = 1 → 0 < surplus d ψ) ∧

@@ -27,7 +27,7 @@ Mandelstam–Tamm and Cramér–Rao ratio is `5 / (99 − 42√5) ≈ 0.9833`.
 - `NRSOctahedron.abs_velocity_le_of_saturated` : minimum uncertainty moves at most at `v*(4)`.
 - `NRSOctahedron.vStar_isGreatest`, `NRSOctahedron.neg_vStar_isLeast` : `±v*(4)` are attained.
 - `NRSOctahedron.surplus_pos_of_vStar_lt` : beyond `v*(4)` the defect is forced.
-- `NRSOctahedron.vStar_bounds`, `NRSOctahedron.mtRatio_psiStar_four_bounds` : the numbers.
+- `NRSOctahedron.vStar_bounds`, `NRSOctahedron.mtRatio_maxCurrentState_four_bounds` : the numbers.
 - `NRSOctahedron.lightCone_rhombus` : on two axes the cone is the rhombus `|Δx| + |Δy| ≤ k`.
 - `NRSOctahedron.navaRobertsonSchrodinger_octahedron` : everything at once.
 -/
@@ -109,19 +109,19 @@ theorem vStar_bounds : 0.927 < vStar ∧ vStar < 0.9272 := by
 theorem vStar_lt_one : vStar < 1 := by linarith [vStar_bounds.2]
 
 /-- At the speed limit, the Mandelstam–Tamm and Cramér–Rao ratio is `5 / (99 − 42√5)`. -/
-theorem mtRatio_psiStar_four : mtRatio 4 (psiStar 4) = 5 / (99 - 42 * √5) := by
+theorem mtRatio_maxCurrentState_four : mtRatio 4 (maxCurrentState 4) = 5 / (99 - 42 * √5) := by
   have h5 : √5 < 99 / 42 := by rw [Real.sqrt_lt' (by norm_num)]; norm_num
-  rw [mtRatio_psiStar (by norm_num), CoherenceConstant,
+  rw [mtRatio_maxCurrentState (by norm_num), CoherenceConstant,
     Real.sq_sqrt (by rw [CoherenceConstantSq_four_eq]; linarith), CoherenceConstantSq_four_eq,
     one_div_div]
 
 /-- `0.9831 < 5 / (99 − 42√5) < 0.9834`: both bounds are missed by `1.7 %`. -/
-theorem mtRatio_psiStar_four_bounds :
-    0.9831 < mtRatio 4 (psiStar 4) ∧ mtRatio 4 (psiStar 4) < 0.9834 := by
+theorem mtRatio_maxCurrentState_four_bounds :
+    0.9831 < mtRatio 4 (maxCurrentState 4) ∧ mtRatio 4 (maxCurrentState 4) < 0.9834 := by
   have h1 : (2.23606 : ℝ) < √5 := by rw [Real.lt_sqrt (by norm_num)]; norm_num
   have h2 : √5 < 2.23607 := by rw [Real.sqrt_lt' (by norm_num)]; norm_num
   have hpos : 0 < 99 - 42 * √5 := by linarith
-  rw [mtRatio_psiStar_four]
+  rw [mtRatio_maxCurrentState_four]
   constructor
   · rw [lt_div_iff₀ hpos]; linarith
   · rw [div_lt_iff₀ hpos]; linarith
@@ -160,11 +160,12 @@ theorem navaRobertsonSchrodinger_octahedron :
     angleNRS 4 = arccos (1 / √((99 - 42 * √5) / 5)) ∧
     (∀ d : ℕ, 4 ≤ d → 0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS d ∧
       angleNRS d < arccos (1 / CoherenceConstantInf)) ∧
-    mtRatio 4 (psiStar 4) = 5 / (99 - 42 * √5) ∧ mtRatio 4 (psiStar 4) < 1 ∧
+    mtRatio 4 (maxCurrentState 4) = 5 / (99 - 42 * √5) ∧ mtRatio 4 (maxCurrentState 4) < 1 ∧
     IsGreatest satVelocities vStar ∧ IsLeast satVelocities (-vStar) ∧ vStar < 1 ∧
     (∀ ψ : Hd 4, ‖ψ‖ = 1 → vStar < |velocity 4 ψ| → 0 < surplus 4 ψ) :=
   ⟨fun k p q h => lightCone_cube k p q h, octant_four, angleNRS_four, fun _ hd => angle_floor hd,
-    mtRatio_psiStar_four, mtRatio_psiStar_lt_one le_rfl, vStar_isGreatest, neg_vStar_isLeast,
+    mtRatio_maxCurrentState_four, mtRatio_maxCurrentState_lt_one le_rfl, vStar_isGreatest,
+        neg_vStar_isLeast,
     vStar_lt_one, surplus_pos_of_vStar_lt⟩
 
 end NRSOctahedron
