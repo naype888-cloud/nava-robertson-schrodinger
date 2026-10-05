@@ -180,7 +180,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49k`).** The covariance matrix `Σ` and the
+**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49l`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -202,12 +202,13 @@ dropped.
   the rupture of Niven (`D7`) and of the first interior edge (`D13`) seen in the algebra.
 * **Equality needs a relation among the three tensions** (`D49g`, `D49h`): if
   `det Σ = |det Ω|` with the speeds in the band, then
-  `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` for some `σ ≠ 0`.
+  `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` for some `σ ≠ 0`. If those
+  brackets reach one axis alone, no state survives (`D49l`).
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
 | **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49k`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -896,6 +897,16 @@ the three tensions — x, y, z, none can be dropped.
   of axis `i` (`det_covMatrix_canonical`), `det Σ = Π (1 + g_i/ω_i²) · |det Ω|`
   (`det_ratio_canonical`), and in the band, three positive defects, `|det Ω| < det Σ`
   (`robertson_det_canonical_strict`). No product structure of the state is assumed.
+- `D49l_FreeAxis` (certificates target): a free axis leaves no state, the first step of the
+  open case. Transport and its commutator with position have no common vector: `T_d v = 0` and
+  `[T_d, P_d] v = 0` give `v = 0` (`eq_zero_of_Td_C`), also on `ℂ^d ⊗ ℂ^β` column by column
+  (`eq_zero_of_lift`). On the cube, let `a, b, c` be relations of `Φ`; if the brackets of `a, b`
+  vanish on every axis but `i` and `c` carries position on axis `i` without transport, then
+  `[T_i, P_i] Φ = 0`, the bracket with `L_c` gives `[P_i, [T_i, P_i]] Φ = −h² T_i Φ = 0`
+  (`D49i`), and `Φ = 0` (`eq_zero_of_free_axis`). Pure algebra of `T_d`, `P_d`: no spectral input
+  and no velocity hypothesis. What remains of the open case is two or three axes whose
+  brackets stay glued together.
+
 ## Scope of the formal claims
 
 The finite-path, non-saturation, monotonicity, asymptotic, cosecant and

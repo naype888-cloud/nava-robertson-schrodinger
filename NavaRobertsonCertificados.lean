@@ -16,6 +16,7 @@ public import NavaRobertsonCertificados.D49f_MaxTensionCube
 public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
 public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 public import NavaRobertsonCertificados.D49k_RobertsonDeterminantCanonicalAxes
+public import NavaRobertsonCertificados.D49l_FreeAxis
 
 /-!
 # Certificates
@@ -54,4 +55,8 @@ however entangled `x` and `y` are, `|det Ω| < det Σ`.
 
 `D49k`: det|NRS³ on canonical axes: orthogonal fluctuations of `x`, `y`, `z` give
 `det Σ = Π (1 + g_i/ω_i²) · |det Ω|`, strict in the band.
+
+`D49l`: a free axis leaves no state: if the brackets of the relations of `Φ` reach one axis
+alone and a relation carries position there without transport, then `[T_i, P_i] Φ = 0`,
+`T_i Φ = 0` and `Φ = 0`; transport and `[T_d, P_d]` have no common vector.
 -/
