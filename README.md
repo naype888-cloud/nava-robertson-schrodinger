@@ -34,6 +34,7 @@ table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature` 
 | [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | the horizon entropy fixes the cosmological constant, `Λ = 3π/(ℓ_P² S)`, solving both Friedmann equations (Physlib) — [▶ interactive](https://naype888-cloud.github.io/nrs3-de-sitter/) |
 | [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime (proposal, outside NRS³) |
 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | exclusion, shells `2n²`, three spin matrices in `2 × 2`; with time, `4 × 4` (Dirac) |
+| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | the Gram matrix of a conjugate pair is a Minkowski four-vector; Robertson–Schrödinger is the light cone, the NRS³ quantum keeps it strictly inside — [▶ interactive](https://naype888-cloud.github.io/nrs3-uncertainty-cone/) |
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
 | [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | each non-local link closes a cycle with one quantum `δ∞`; `2g` links fix the curvature of `Σ_g`; the entropy of a cut counts its quanta and its horizon hides them (`D16`–`D16i`) — [▶ interactive](https://naype888-cloud.github.io/nrs3-defect-curvature/) |
 | [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | LQG area quanta and puncture entropy; the NRS angle stays below its ceiling `arccos(1/C∞)`, a limit never attained (proposal, outside NRS³) — [▶ interactive](https://naype888-cloud.github.io/nrs3-rovelli-lqg/) |
@@ -53,7 +54,8 @@ not part of NRS³.
 | 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
 | 1927 | Heisenberg's relation; fifth Solvay conference: electrons and photons | |
 | 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | ****[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one)** |
+| 1929 | van der Waerden: spinors, `SL(2, ℂ)` on Hermitian matrices; the uncertainty cone | [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) |
+| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
 | **1934** | **Robertson: the indeterminacy relation for several observables, `det Σ ≥ |det Ω|`** | **[base repository (det\|NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
 | 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
 
