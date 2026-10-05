@@ -28,13 +28,16 @@ state it equals `1 / C_Nava(d)² = cos² θ_NRS(d)`: both bounds are attained ex
 
 - `GroupVelocity.mandelstamTamm` : `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`.
 - `GroupVelocity.cramerRao` : `fisherP d ψ ≤ qfi d ψ`.
-- `GroupVelocity.mtRatio_psiStar` : at `ψ*`, the ratio is `1 / C_Nava(d)²`.
-- `GroupVelocity.mtRatio_psiStar_eq_one_iff`, `GroupVelocity.mtRatio_psiStar_lt_one` : both
-  bounds are attained at `ψ*` iff `d = 2, 3`.
+- `GroupVelocity.mtRatio_maxCurrentState` : at the maximal current state, the ratio is
+  `1 / C_Nava(d)²`.
+- `GroupVelocity.mtRatio_maxCurrentState_eq_one_iff`, `GroupVelocity.mtRatio_maxCurrentState_lt_one`
+  : both
+  bounds are attained at the maximal current state iff `d = 2, 3`.
 - `GroupVelocity.mtRatioG_axis_x` (and `_y`, `_z`) : on the cube each axis has ratio
-  `1 / C_Nava(d_axis)²` at `Ψ*`.
+  `1 / C_Nava(d_axis)²` at the maximal current state of the cube.
 - `GroupVelocity.mtRatioG_total_cube` : on `d × d × d` the total pair `(ΣT, ΣP)` has ratio
-  `1 / C_Nava(d)²` at `Ψ*`: the three axes add speed and spread without closing the gap.
+  `1 / C_Nava(d)²` at the maximal current state of the cube: the three axes add speed and spread
+  without closing the gap.
 -/
 
 @[expose] public noncomputable section
@@ -79,26 +82,29 @@ theorem fisherP_div_qfi (ψ : Hd d) : fisherP d ψ / qfi d ψ = mtRatio d ψ := 
   ring
 
 /-- At the maximal-tension state the ratio is `1 / C_Nava(d)²`. -/
-theorem mtRatio_psiStar (hd : 2 ≤ d) : mtRatio d (psiStar d) = 1 / CoherenceConstant d ^ 2 := by
+theorem mtRatio_maxCurrentState (hd : 2 ≤ d) : mtRatio d (maxCurrentState d) = 1 / CoherenceConstant
+    d ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
   have hC : CoherenceConstant d ≠ 0 := by linarith [one_le_CoherenceConstant hd]
-  rw [mtRatio, tension_psiStar hd, variance_mul_variance hd, commutatorConstant_half_sq hd,
+  rw [mtRatio, tension_maxCurrentState hd, variance_mul_variance hd, commutatorConstant_half_sq hd,
     ← CoherenceConstant_eq_one_add_geometricGap]
   field_simp
   ring
 
-/-- Both bounds are attained at `ψ*` exactly at `d = 2, 3`. -/
-theorem mtRatio_psiStar_eq_one_iff (hd : 2 ≤ d) : mtRatio d (psiStar d) = 1 ↔ d = 2 ∨ d = 3 := by
+/-- Both bounds are attained at the maximal current state exactly at `d = 2, 3`. -/
+theorem mtRatio_maxCurrentState_eq_one_iff (hd : 2 ≤ d) : mtRatio d (maxCurrentState d) = 1 ↔ d = 2
+    ∨ d = 3 := by
   have hC := one_le_CoherenceConstant hd
-  rw [mtRatio_psiStar hd, ← CoherenceConstant_eq_one_iff d hd, div_eq_one_iff_eq (by positivity),
+  rw [mtRatio_maxCurrentState hd, ← CoherenceConstant_eq_one_iff d hd, div_eq_one_iff_eq (by
+      positivity),
     eq_comm, pow_eq_one_iff_of_nonneg (by linarith) two_ne_zero]
 
-/-- From `d = 4` both bounds are missed at `ψ*` by the algebraic quantum. -/
-theorem mtRatio_psiStar_lt_one (hd : 4 ≤ d) : mtRatio d (psiStar d) < 1 := by
+/-- From `d = 4` both bounds are missed at the maximal current state by the algebraic quantum. -/
+theorem mtRatio_maxCurrentState_lt_one (hd : 4 ≤ d) : mtRatio d (maxCurrentState d) < 1 := by
   have hC := one_lt_CoherenceConstant_of_four_le d hd
-  rw [mtRatio_psiStar (by omega), div_lt_one (by positivity)]
+  rw [mtRatio_maxCurrentState (by omega), div_lt_one (by positivity)]
   nlinarith
 
 /-! ## The cube -/
@@ -108,11 +114,12 @@ def mtRatioG {ι : Type*} [Fintype ι] (L M : EuclideanSpace ℂ ι →ₗ[ℂ] 
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   tensionG L M Ψ ^ 2 / (4 * (varianceG L Ψ * varianceG M Ψ))
 
-/-- `mtRatio_psiStar` with the tension written out. -/
-theorem mtRatio_psiStar' {d : ℕ} (hd : 2 ≤ d) :
-    (2 / ((d : ℝ) - 1)) ^ 2 / (4 * (variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d)))
+/-- `mtRatio_maxCurrentState` with the tension written out. -/
+theorem mtRatio_maxCurrentState' {d : ℕ} (hd : 2 ≤ d) :
+    (2 / ((d : ℝ) - 1)) ^ 2 / (4 * (variance (TdOp d) (maxCurrentState d) * variance (PdOp d)
+        (maxCurrentState d)))
       = 1 / CoherenceConstant d ^ 2 := by
-  rw [← mtRatio_psiStar hd, mtRatio, tension_psiStar hd]
+  rw [← mtRatio_maxCurrentState hd, mtRatio, tension_maxCurrentState hd]
 
 section Cube
 
@@ -120,19 +127,22 @@ variable {dx dy dz : ℕ} (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
 include hx hy hz
 
 theorem mtRatioG_axis_x :
-    mtRatioG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) = 1 / CoherenceConstant dx ^ 2 := by
+    mtRatioG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) = 1 / CoherenceConstant dx ^
+        2 := by
   obtain ⟨hT, hP, -, ht⟩ := stats_axis_x hx hy hz
-  rw [mtRatioG, hT, hP, ht, mtRatio_psiStar' hx]
+  rw [mtRatioG, hT, hP, ht, mtRatio_maxCurrentState' hx]
 
 theorem mtRatioG_axis_y :
-    mtRatioG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) = 1 / CoherenceConstant dy ^ 2 := by
+    mtRatioG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) = 1 / CoherenceConstant dy ^
+        2 := by
   obtain ⟨hT, hP, -, ht⟩ := stats_axis_y hx hy hz
-  rw [mtRatioG, hT, hP, ht, mtRatio_psiStar' hy]
+  rw [mtRatioG, hT, hP, ht, mtRatio_maxCurrentState' hy]
 
 theorem mtRatioG_axis_z :
-    mtRatioG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) = 1 / CoherenceConstant dz ^ 2 := by
+    mtRatioG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) = 1 / CoherenceConstant dz ^
+        2 := by
   obtain ⟨hT, hP, -, ht⟩ := stats_axis_z hx hy hz
-  rw [mtRatioG, hT, hP, ht, mtRatio_psiStar' hz]
+  rw [mtRatioG, hT, hP, ht, mtRatio_maxCurrentState' hz]
 
 omit hx hy hz in
 theorem opCommutator_add_left {ι : Type*} [Fintype ι]
@@ -173,25 +183,30 @@ theorem observableTension_total :
 
 theorem tensionG_total :
     tensionG (TX dx dy dz + TY dx dy dz + TZ dx dy dz) (PX dx dy dz + PY dx dy dz + PZ dx dy dz)
-        (PsiStar3D dx dy dz) = 2 / ((dx : ℝ) - 1) + 2 / ((dy : ℝ) - 1) + 2 / ((dz : ℝ) - 1) := by
-  have hn : inner ℂ (PsiStar3D dx dy dz) (PsiStar3D dx dy dz) = 1 :=
+        (maxCurrentCubeState dx dy dz) = 2 / ((dx : ℝ) - 1) + 2 / ((dy : ℝ) - 1) + 2 / ((dz : ℝ) -
+            1) := by
+  have hn : inner ℂ (maxCurrentCubeState dx dy dz) (maxCurrentCubeState dx dy dz) = 1 :=
     inner_self_of_norm_one (by
-      rw [PsiStar3D_eq_eX]; exact norm_prodAlong_eq_one _ (norm_psiStar hx) (norm_rest hy hz))
-  rw [tensionG, observableTension_total, tensionTotal_psiStar hx hy hz, inner_smul_right, hn,
+      rw [maxCurrentCubeState_eq_eX]; exact norm_prodAlong_eq_one _ (norm_maxCurrentState hx)
+          (norm_rest hy hz))
+  rw [tensionG, observableTension_total, tensionTotal_maxCurrentState hx hy hz, inner_smul_right,
+      hn,
     mul_one, Complex.ofReal_re]
 
 end Cube
 
 /-- **Mandelstam–Tamm and Cramér–Rao on the cube.** On `d × d × d`, the total pair `(ΣT, ΣP)`
-at `Ψ*` attains exactly the fraction `1 / C_Nava(d)²` of both bounds, as one axis. -/
+at the maximal current state of the cube attains exactly the fraction `1 / C_Nava(d)²` of both
+bounds, as one axis. -/
 theorem mtRatioG_total_cube (hd : 2 ≤ d) :
-    mtRatioG (TX d d d + TY d d d + TZ d d d) (PX d d d + PY d d d + PZ d d d) (PsiStar3D d d d) =
+    mtRatioG (TX d d d + TY d d d + TZ d d d) (PX d d d + PY d d d + PZ d d d) (maxCurrentCubeState
+        d d d) =
       1 / CoherenceConstant d ^ 2 := by
   obtain ⟨hT, hP, -, -⟩ := stats_axis_x hd hd hd
   obtain ⟨hT', hP', -, -⟩ := stats_axis_y hd hd hd
   obtain ⟨hT'', hP'', -, -⟩ := stats_axis_z hd hd hd
   rw [mtRatioG, tensionG_total hd hd hd, pythagoras_T hd hd hd, pythagoras_P hd hd hd, hT, hP,
-    hT', hP', hT'', hP'', ← mtRatio_psiStar' hd]
+    hT', hP', hT'', hP'', ← mtRatio_maxCurrentState' hd]
   field_simp
 
 end GroupVelocity

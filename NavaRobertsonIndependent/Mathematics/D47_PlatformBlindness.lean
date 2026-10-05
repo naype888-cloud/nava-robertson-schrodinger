@@ -31,7 +31,7 @@ read.
   `Var T_d > 0`: fixing the position sends the indeterminacy to transport.
 - `PlatformBlindness.not_isDefectWitness_of_P_eigenvector` : such a state is not a defect
   witness; single-guide excitations cannot witness the defect.
-- `PlatformBlindness.isDefectWitness_psiStar` : for `d ≥ 4` the maximal-tension state `ψ*`
+- `PlatformBlindness.isDefectWitness_maxCurrentState` : for `d ≥ 4` the maximal current state
   is a defect witness, with nonzero tension `⟨K_d⟩ = 2/(d−1)`.
 - `PlatformBlindness.variance_pos_of_isDefectWitness` : every defect witness fluctuates in
   both `T_d` and `P_d`.
@@ -149,66 +149,70 @@ theorem not_isDefectWitness_of_P_eigenvector {d : ℕ} {ψ : Hd d} (hψ : ‖ψ�
     (h : PdOp d ψ = (a : ℂ) • ψ) : ¬ IsDefectWitness ψ :=
   fun hw => (ne_of_gt hw.2) (gramDefectAt_eq_zero_of_P_eigenvector hψ a h)
 
-/-! ## 2. The defect witnesses `ψ*` for `d ≥ 4` -/
+/-! ## 2. The defect witnesses the maximal current state for `d ≥ 4` -/
 
-/-- `⟪ψ*, K_d ψ*⟫ = 2/(d−1)`, real. -/
-theorem inner_KdOp_psiStar {d : ℕ} (hd : 2 ≤ d) :
-    inner ℂ (psiStar d) (KdOp d (psiStar d)) = ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) := by
+/-- `⟪maxCurrentState, K_d maxCurrentState⟫ = 2/(d−1)`, real. -/
+theorem inner_KdOp_maxCurrentState {d : ℕ} (hd : 2 ≤ d) :
+    inner ℂ (maxCurrentState d) (KdOp d (maxCurrentState d)) = ((2 / ((d : ℝ) - 1) : ℝ) : ℂ) := by
   have hK := KdOp_fiedlerVec d hd
-  have hn := norm_psiStar hd
-  rw [show psiStar d = fiedlerVec d from rfl, hK, inner_smul_right,
+  have hn := norm_maxCurrentState hd
+  rw [show maxCurrentState d = fiedlerVec d from rfl, hK, inner_smul_right,
     inner_self_eq_norm_sq_to_K, hn]
   simp
 
-/-- The witness `ψ*` has nonzero tension `⟨K_d⟩ = 2/(d−1)`. -/
-theorem tension_psiStar_ne_zero {d : ℕ} (hd : 2 ≤ d) :
-    (inner ℂ (psiStar d) (KdOp d (psiStar d))).re ≠ 0 := by
-  rw [inner_KdOp_psiStar hd]
+/-- The maximal current state has nonzero tension `⟨K_d⟩ = 2/(d−1)`. -/
+theorem tension_maxCurrentState_ne_zero {d : ℕ} (hd : 2 ≤ d) :
+    (inner ℂ (maxCurrentState d) (KdOp d (maxCurrentState d))).re ≠ 0 := by
+  rw [inner_KdOp_maxCurrentState hd]
   have hd1 : (0 : ℝ) < (d : ℝ) - 1 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
   exact ne_of_gt (div_pos (by norm_num) hd1)
 
-/-- At `ψ*` the imaginary part of the fluctuation inner product is `−1/(d−1)`; its square
+/-- At the maximal current state the imaginary part of the fluctuation inner product is `−1/(d−1)`;
+its square
 is `(c/2)²` for `c = commutatorConstant d`. -/
-theorem imPart_psiStar_sq {d : ℕ} (hd : 2 ≤ d) :
-    imPart (TdOp d) (PdOp d) (psiStar d) ^ 2 = (commutatorConstant d / 2) ^ 2 := by
-  have hre : (inner ℂ (psiStar d) (KdOp d (psiStar d))).re = 2 / ((d : ℝ) - 1) := by
-    rw [inner_KdOp_psiStar hd, Complex.ofReal_re]
-  have h2 := re_inner_KdOp d (psiStar d)
+theorem imPart_maxCurrentState_sq {d : ℕ} (hd : 2 ≤ d) :
+    imPart (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 = (commutatorConstant d / 2) ^ 2 := by
+  have hre : (inner ℂ (maxCurrentState d) (KdOp d (maxCurrentState d))).re = 2 / ((d : ℝ) - 1) := by
+    rw [inner_KdOp_maxCurrentState hd, Complex.ofReal_re]
+  have h2 := re_inner_KdOp d (maxCurrentState d)
   rw [hre] at h2
   rw [imPart_eq_im_inner (TdOp_isSymmetric d) (PdOp_isSymmetric d)]
   have ht : ((d : ℝ) - 1) ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     intro h
     linarith
-  have key : -2 * (inner ℂ (TdOp d (psiStar d)) (PdOp d (psiStar d))).im * ((d : ℝ) - 1) = 2 := by
+  have key : -2 * (inner ℂ (TdOp d (maxCurrentState d)) (PdOp d (maxCurrentState d))).im * ((d : ℝ)
+      - 1) = 2 := by
     have h2' := congrArg (fun y : ℝ => y * ((d : ℝ) - 1)) h2
     rw [div_mul_cancel₀ _ ht] at h2'
     linarith
-  have hxt : (inner ℂ (TdOp d (psiStar d)) (PdOp d (psiStar d))).im * ((d : ℝ) - 1) = -1 := by
+  have hxt : (inner ℂ (TdOp d (maxCurrentState d)) (PdOp d (maxCurrentState d))).im * ((d : ℝ) - 1)
+      = -1 := by
     linarith
-  have h2sq : (inner ℂ (TdOp d (psiStar d)) (PdOp d (psiStar d))).im ^ 2 =
+  have h2sq : (inner ℂ (TdOp d (maxCurrentState d)) (PdOp d (maxCurrentState d))).im ^ 2 =
       1 / ((d : ℝ) - 1) ^ 2 := by
     rw [eq_div_iff (pow_ne_zero 2 ht)]
     nlinarith
   rw [h2sq, commutatorConstant_half_sq hd]
 
-/-- For `d ≥ 4` the maximal-tension state `ψ*` is a defect witness: by `D21` the
+/-- For `d ≥ 4` the maximal current state is a defect witness: by `D21` the
 inequality is strict there, and its gap is exactly the Gram defect of `D23`. -/
-theorem isDefectWitness_psiStar {d : ℕ} (hd : 4 ≤ d) : IsDefectWitness (psiStar d) := by
+theorem isDefectWitness_maxCurrentState {d : ℕ} (hd : 4 ≤ d) : IsDefectWitness (maxCurrentState d)
+    := by
   have hd2 : 2 ≤ d := by omega
-  refine ⟨norm_psiStar hd2, ?_⟩
-  rw [gramDefectAt_eq_gap, imPart_psiStar_sq hd2]
+  refine ⟨norm_maxCurrentState hd2, ?_⟩
+  rw [gramDefectAt_eq_gap, imPart_maxCurrentState_sq hd2]
   have hs := strict_inequality hd
   linarith
 
-/-- For `d ≥ 4` a defect witness with nonzero tension exists: `ψ*`, with
+/-- For `d ≥ 4` a defect witness with nonzero tension exists: the maximal current state, with
 `⟨K_d⟩ = 2/(d−1)`. -/
 theorem exists_isDefectWitness_of_four_le {d : ℕ} (hd : 4 ≤ d) :
-    IsDefectWitness (psiStar d) ∧
-      (inner ℂ (psiStar d) (KdOp d (psiStar d))).re ≠ 0 :=
-  ⟨isDefectWitness_psiStar hd, tension_psiStar_ne_zero (by omega)⟩
+    IsDefectWitness (maxCurrentState d) ∧
+      (inner ℂ (maxCurrentState d) (KdOp d (maxCurrentState d))).re ≠ 0 :=
+  ⟨isDefectWitness_maxCurrentState hd, tension_maxCurrentState_ne_zero (by omega)⟩
 
 /-! ## 3. Every witness fluctuates in both observables -/
 

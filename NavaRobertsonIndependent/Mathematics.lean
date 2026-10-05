@@ -101,16 +101,17 @@ theorem.
 - `D45` : Stark packets, minimum-uncertainty states in motion.
 - `D47` : platform blindness; on position eigenstates the inequality is empty (`0 = 0`),
   the indeterminacy goes to transport (`Var T_d > 0`), and they cannot witness the defect,
-  while `ψ*` does for `d ≥ 4`.
+  while the maximal current state does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
 - `D49`–`D49c` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
   cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`; on product states the defects
-  multiply, and at `Ψ*` the ratio is `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4`.
+  multiply, and at the maximal current state of the cube the ratio is
+  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4`.
 - `D49g` : the equality case of Robertson 1934, `(A + B) A⁻¹ (A − B) = 0`.
 - `D49i` : the commutators of `T_d` and `P_d` close (`[T, [T, P]] ∈ span {T, P, [T, P]}`) iff
   `d ∈ {2, 3}`.
 - `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|NRS³ as
   `0 = 0`, with every tension zero; the trivial case of the equality step, far from the band.
-- `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at `ψ*`.
+- `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/

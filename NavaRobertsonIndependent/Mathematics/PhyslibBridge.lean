@@ -12,14 +12,17 @@ public import PhyslibAlpha.AlgebraicFramework.HilbertSpace.State.VectorUncertain
 /-!
 # Bridge to physlib: `(T_d, P_d)` as an instance of `robertson_schrodinger`
 
-`T_d`, `P_d` are self-adjoint elements of the C⋆-algebra `Hd d →L[ℂ] Hd d` and `ψ*` is the
+`T_d`, `P_d` are self-adjoint elements of the C⋆-algebra `Hd d →L[ℂ] Hd d` and the maximal current
+state is the
 vector state `UnitalPositiveLinearMap.ofVec`. Each term of physlib's
 `UnitalPositiveLinearMap.robertson_schrodinger` (variance, covariance, bracket expectation)
-equals the corresponding term of `D21` at `ψ*`, so the two inequalities coincide.
+equals the corresponding term of `D21` at the maximal current state, so the two inequalities
+coincide.
 
 ## Main results
 
-- `PhyslibBridge.robertson_schrodinger_eq_D21` : physlib's inequality at `ψ*` is `D21`'s.
+- `PhyslibBridge.robertson_schrodinger_eq_D21` : physlib's inequality at the maximal current state
+  is `D21`'s.
 - `PhyslibBridge.physlib_robertson_schrodinger_strict` : for `d ≥ 4` it is strict.
 -/
 
@@ -62,46 +65,47 @@ theorem TdObs_coe_apply (d : ℕ) (v : Hd d) : (TdObs d : Hd d →L[ℂ] Hd d) v
 
 theorem PdObs_coe_apply (d : ℕ) (v : Hd d) : (PdObs d : Hd d →L[ℂ] Hd d) v = PdOp d v := rfl
 
-/-! ## 2. The vector state at `ψ*` -/
+/-! ## 2. The vector state at the maximal current state -/
 
-/-- The physlib vector state at the maximal-tension state `ψ*`. -/
+/-- The physlib vector state at the maximal current state. -/
 noncomputable def omegaStar (d : ℕ) (hd : 2 ≤ d) : 𝓢[ℂ, Hd d →L[ℂ] Hd d] :=
-  UnitalPositiveLinearMap.ofVec (norm_psiStar hd)
+  UnitalPositiveLinearMap.ofVec (norm_maxCurrentState hd)
 
 theorem omegaStar_def (d : ℕ) (hd : 2 ≤ d) :
-    omegaStar d hd = UnitalPositiveLinearMap.ofVec (norm_psiStar hd) := rfl
+    omegaStar d hd = UnitalPositiveLinearMap.ofVec (norm_maxCurrentState hd) := rfl
 
 /-! ## 3. Matching `D21`'s statistics term by term -/
 
-/-- The expectation of an observable in `ω*` is `D21`'s `mean` at `ψ*`. -/
+/-- The expectation of an observable in `ω*` is `D21`'s `mean` at the maximal current state. -/
 theorem expectation_omegaStar (d : ℕ) (hd : 2 ≤ d) (a : Observable (Hd d →L[ℂ] Hd d)) :
-    (omegaStar d hd)⟨a⟩ = mean ((a : Hd d →L[ℂ] Hd d) : Hd d →ₗ[ℂ] Hd d) (psiStar d) := by
+    (omegaStar d hd)⟨a⟩ = mean ((a : Hd d →L[ℂ] Hd d) : Hd d →ₗ[ℂ] Hd d) (maxCurrentState d) := by
   have h := apply_observable_eq_expectation (omegaStar d hd) a
   rw [NRSInequality.mean, ← Complex.ofReal_re ((omegaStar d hd)⟨a⟩), ← h]
   rfl
 
-/-- The physlib fluctuation vector at `ψ*` is `D21`'s `centered`. -/
+/-- The physlib fluctuation vector at the maximal current state is `D21`'s `centered`. -/
 theorem fluctuation_eq_centered (d : ℕ) (hd : 2 ≤ d) (a : Observable (Hd d →L[ℂ] Hd d)) :
-    (a : Hd d →L[ℂ] Hd d) (psiStar d) - (omegaStar d hd)⟨a⟩ • psiStar d =
-      centered ((a : Hd d →L[ℂ] Hd d) : Hd d →ₗ[ℂ] Hd d) (psiStar d) := by
+    (a : Hd d →L[ℂ] Hd d) (maxCurrentState d) - (omegaStar d hd)⟨a⟩ • maxCurrentState d =
+      centered ((a : Hd d →L[ℂ] Hd d) : Hd d →ₗ[ℂ] Hd d) (maxCurrentState d) := by
   rw [NRSInequality.centered, ← expectation_omegaStar d hd a, RCLike.real_smul_eq_coe_smul (K := ℂ)]
   rfl
 
-/-- physlib's variance of `T_d` at `ω*` is `D21`'s `variance (TdOp d) (psiStar d)`. -/
+/-- physlib's variance of `T_d` at `ω*` is `D21`'s `variance (TdOp d) (maxCurrentState d)`. -/
 theorem variance_TdObs (d : ℕ) (hd : 2 ≤ d) :
-    variance (omegaStar d hd) (TdObs d) = variance (TdOp d) (psiStar d) := by
+    variance (omegaStar d hd) (TdObs d) = variance (TdOp d) (maxCurrentState d) := by
   rw [omegaStar, variance_ofVec, ← omegaStar_def d hd, fluctuation_eq_centered d hd]
   rfl
 
-/-- physlib's variance of `P_d` at `ω*` is `D21`'s `variance (PdOp d) (psiStar d)`. -/
+/-- physlib's variance of `P_d` at `ω*` is `D21`'s `variance (PdOp d) (maxCurrentState d)`. -/
 theorem variance_PdObs (d : ℕ) (hd : 2 ≤ d) :
-    variance (omegaStar d hd) (PdObs d) = variance (PdOp d) (psiStar d) := by
+    variance (omegaStar d hd) (PdObs d) = variance (PdOp d) (maxCurrentState d) := by
   rw [omegaStar, variance_ofVec, ← omegaStar_def d hd, fluctuation_eq_centered d hd]
   rfl
 
 /-- physlib's covariance of `(T_d, P_d)` at `ω*` is `D21`'s `covariance`. -/
 theorem covariance_TdObs_PdObs (d : ℕ) (hd : 2 ≤ d) :
-    covariance (omegaStar d hd) (TdObs d) (PdObs d) = covariance (TdOp d) (PdOp d) (psiStar d) := by
+    covariance (omegaStar d hd) (TdObs d) (PdObs d) = covariance (TdOp d) (PdOp d) (maxCurrentState
+        d) := by
   rw [covariance_eq_re_apply_centered_mul, omegaStar, apply_centered_mul_centered_ofVec,
     ← omegaStar_def d hd, fluctuation_eq_centered d hd, fluctuation_eq_centered d hd]
   rfl
@@ -125,10 +129,11 @@ theorem bracket_TdObs_PdObs_apply (d : ℕ) (v : Hd d) :
 theorem expectation_bracket_TdObs_PdObs (d : ℕ) (hd : 2 ≤ d) :
     (omegaStar d hd)⟨⁅TdObs d, PdObs d⁆⟩ = commutatorConstant d / 2 := by
   rw [expectation_omegaStar d hd, NRSInequality.mean]
-  change (inner ℂ (psiStar d)
-    (((⁅TdObs d, PdObs d⁆ : Observable (Hd d →L[ℂ] Hd d)) : Hd d →L[ℂ] Hd d) (psiStar d))).re = _
+  change (inner ℂ (maxCurrentState d)
+    (((⁅TdObs d, PdObs d⁆ : Observable (Hd d →L[ℂ] Hd d)) : Hd d →L[ℂ] Hd d) (maxCurrentState
+        d))).re = _
   rw [bracket_TdObs_PdObs_apply, inner_smul_right]
-  have ht := NearMaxTension.tension_psiStar hd
+  have ht := NearMaxTension.tension_maxCurrentState hd
   unfold NearMaxTension.tension at ht
   rw [commutatorConstant]
   simp only [Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.div_ofNat_re,
@@ -142,14 +147,14 @@ theorem robertson_schrodinger_eq_D21 (d : ℕ) (hd : 2 ≤ d) :
     (covariance (omegaStar d hd) (TdObs d) (PdObs d) ^ 2 +
         (omegaStar d hd)⟨⁅TdObs d, PdObs d⁆⟩ ^ 2 ≤
       variance (omegaStar d hd) (TdObs d) * variance (omegaStar d hd) (PdObs d)) ↔
-    (covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2 ≤
-      variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d)) := by
+    (covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2 ≤
+      variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d)) := by
   rw [covariance_TdObs_PdObs, expectation_bracket_TdObs_PdObs, variance_TdObs, variance_PdObs]
 
 /-- `D21`'s non-strict inequality, obtained directly from physlib's `robertson_schrodinger`. -/
 theorem D21_of_physlib (d : ℕ) (hd : 2 ≤ d) :
-    covariance (TdOp d) (PdOp d) (psiStar d) ^ 2 + (commutatorConstant d / 2) ^ 2 ≤
-      variance (TdOp d) (psiStar d) * variance (PdOp d) (psiStar d) :=
+    covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2 ≤
+      variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) :=
   (robertson_schrodinger_eq_D21 d hd).mp
     (robertson_schrodinger (omegaStar d hd) (TdObs d) (PdObs d))
 

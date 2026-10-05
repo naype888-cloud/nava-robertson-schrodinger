@@ -18,7 +18,7 @@ The original Robertson–Schrödinger inequality is not contradicted by the tran
 * **Minimum `0°`, attained.** The per-state angle `θ(ψ)` lies in `[0, π/2]`, and
   `θ(ψ) = 0` exactly at saturation, i.e. when the Gram defect of `D23` vanishes (`D23`).
 * **Maximum on maximal tension.** Over the maximal-tension states (`⟨K_d⟩ = 2/(d−1)`,
-  `D21`) the angle is `θ_NRS(d)`, attained at `ψ*`; the universal floor is
+  `D21`) the angle is `θ_NRS(d)`, attained at the maximal current state; the universal floor is
   `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5))` (D37b).
 * **Uniform ceiling, never attained.** `θ_NRS(d) < arccos (1 / C_∞)` for every `d ≥ 4`
   (D37b), so no state of any `d` reaches the ceiling.
@@ -55,10 +55,11 @@ open Real NRSInequality EigenvectorSaturation TransportPosition NRSAngle NearMax
   GroupVelocity BandWidth Gnomon SpectralExtremal
 
 /-- The per-state angle `θ(ψ)` of `(T_d, P_d)`: the angle between the two fluctuation
-vectors, `arccos (‖⟪T̃ψ, P̃ψ⟫‖ / (‖T̃ψ‖ · ‖P̃ψ‖))`. At `ψ*` it is `θ_NRS(d)` (`angleNRS`). -/
+vectors, `arccos (‖⟪T̃ψ, P̃ψ⟫‖ / (‖T̃ψ‖ · ‖P̃ψ‖))`. At the maximal current state it is `θ_NRS(d)`
+(`angleNRS`). -/
 def angleState (d : ℕ) (ψ : Hd d) : ℝ := angleG (TdOp d) (PdOp d) ψ
 
-theorem angleState_psiStar (d : ℕ) : angleState d (psiStar d) = angleNRS d := rfl
+theorem angleState_maxCurrentState (d : ℕ) : angleState d (maxCurrentState d) = angleNRS d := rfl
 
 /-- `D37b`'s `angleG` on the path is `arccos` of the ratio of the `D21` fluctuation
 vectors. -/
@@ -133,7 +134,8 @@ theorem angleState_eq_zero_iff {d : ℕ} {ψ : Hd d}
 /-! ## 2. The maximum on maximal tension; the uniform ceiling -/
 
 /-- The maximum of the per-state angle over the maximal-tension states is `θ_NRS(d)`:
-every such state is a phase times `ψ*` (`D21`), and the angle is phase-invariant. -/
+every such state is a phase times the maximal current state (`D21`), and the angle is
+phase-invariant. -/
 theorem angleState_eq_angleNRS_of_maxTension {d : ℕ} (hd : 4 ≤ d) {ψ : Hd d} (hψ : ‖ψ‖ = 1)
     (h : tension d ψ = 2 / ((d : ℝ) - 1)) : angleState d ψ = angleNRS d := by
   obtain ⟨c, hc, rfl⟩ := maxTension_state_eq_phase (by omega) ψ hψ h

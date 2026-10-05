@@ -20,7 +20,7 @@ tension of that factor. Hence
   `det Σ = (s_x + t_x²/4)(s_y + t_y²/4)(s_z + t_z²/4)`,  `|det Ω| = (t_x t_y t_z / 8)²`,
 
 and a positive surplus on each of the three axes makes `det|NRS³` strict. At the state of the
-cube `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` every block is `C_Nava(d)² t²/4`, so
+cube the maximal current state of the cube every block is `C_Nava(d)² t²/4`, so
 
   `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`,
 
@@ -32,9 +32,11 @@ strictly above the bound on every box with at least `4` positions on each of `x`
 - `RobertsonDeterminantProduct.det_covMatrix_prod3` : `det Σ = Π (s_i + t_i²/4)`.
 - `RobertsonDeterminantProduct.robertson_det_prod3_strict` : positive surplus on the three
   axes gives `(t_x t_y t_z / 8)² < det Σ`.
-- `RobertsonDeterminantProduct.det_covMatrix_PsiStar3D` : at `Ψ*`, the ratio is
+- `RobertsonDeterminantProduct.det_covMatrix_maxCurrentCubeState` : at the maximal current state of
+  the cube, the ratio is
   `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`.
-- `RobertsonDeterminantProduct.robertson_det_PsiStar3D_strict` : strict for `dx, dy, dz ≥ 4`.
+- `RobertsonDeterminantProduct.robertson_det_maxCurrentCubeState_strict` : strict for
+  `dx, dy, dz ≥ 4`.
 -/
 
 @[expose] public noncomputable section
@@ -149,55 +151,57 @@ theorem robertson_det_prod3_strict (hsx : 0 < surplus dx u) (hsy : 0 < surplus d
 
 omit hu hv hw
 
-/-- One block at `ψ*`: `C_Nava(d)² · t²/4`. -/
-theorem block_psiStar {d : ℕ} (hd : 2 ≤ d) :
-    surplus d (psiStar d) + tension d (psiStar d) ^ 2 / 4 =
-      CoherenceConstant d ^ 2 * (tension d (psiStar d) ^ 2 / 4) := by
-  have h := surplus_eq d (psiStar d)
+/-- One block at the maximal current state: `C_Nava(d)² · t²/4`. -/
+theorem block_maxCurrentState {d : ℕ} (hd : 2 ≤ d) :
+    surplus d (maxCurrentState d) + tension d (maxCurrentState d) ^ 2 / 4 =
+      CoherenceConstant d ^ 2 * (tension d (maxCurrentState d) ^ 2 / 4) := by
+  have h := surplus_eq d (maxCurrentState d)
   rw [variance_mul_variance hd, covariance_eq_zero hd] at h
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
     have : (2 : ℝ) ≤ d := by exact_mod_cast hd
     linarith
-  rw [h, CoherenceConstant_eq_one_add_geometricGap, tension_psiStar hd,
+  rw [h, CoherenceConstant_eq_one_add_geometricGap, tension_maxCurrentState hd,
     commutatorConstant_half_sq hd]
   field_simp
   ring
 
 /-- **det|NRS³ at the state of the cube.** `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² ·
 (t_x t_y t_z / 8)²`. -/
-theorem det_covMatrix_PsiStar3D (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    (covMatrix (pairs dx dy dz) (PsiStar3D dx dy dz)).det =
+theorem det_covMatrix_maxCurrentCubeState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    (covMatrix (pairs dx dy dz) (maxCurrentCubeState dx dy dz)).det =
       (CoherenceConstant dx * CoherenceConstant dy * CoherenceConstant dz) ^ 2 *
-        ((tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) *
-          tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) *
-            tensionG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)) / 8) ^ 2 := by
-  have hu := norm_psiStar hx
-  have hv := norm_psiStar hy
-  have hw := norm_psiStar hz
+        ((tensionG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) *
+          tensionG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) *
+            tensionG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz)) / 8) ^ 2 := by
+  have hu := norm_maxCurrentState hx
+  have hv := norm_maxCurrentState hy
+  have hw := norm_maxCurrentState hz
   obtain ⟨tx, ty, tz⟩ := tensions_prod3 hu hv hw
-  rw [PsiStar3D_eq_prod3, det_covMatrix_prod3 hu hv hw, tx, ty, tz, block_psiStar hx,
-    block_psiStar hy, block_psiStar hz]
+  rw [maxCurrentCubeState_eq_prod3, det_covMatrix_prod3 hu hv hw, tx, ty, tz, block_maxCurrentState
+      hx,
+    block_maxCurrentState hy, block_maxCurrentState hz]
   ring
 
 /-- **Strict on every box with `4` or more positions on each of `x`, `y`, `z`.** -/
-theorem robertson_det_PsiStar3D_strict (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
-    ((tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) *
-        tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) *
-          tensionG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)) / 8) ^ 2 <
-      (covMatrix (pairs dx dy dz) (PsiStar3D dx dy dz)).det := by
-  have hs (d : ℕ) (hd : 4 ≤ d) : 0 < surplus d (psiStar d) := by
+theorem robertson_det_maxCurrentCubeState_strict (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
+    ((tensionG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) *
+        tensionG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) *
+          tensionG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz)) / 8) ^ 2 <
+      (covMatrix (pairs dx dy dz) (maxCurrentCubeState dx dy dz)).det := by
+  have hs (d : ℕ) (hd : 4 ≤ d) : 0 < surplus d (maxCurrentState d) := by
     rw [surplus_eq]
-    linarith [strict_inequality hd, tension_psiStar (d := d) (by omega),
-      commutatorConstant_half_sq (d := d) (by omega), show tension d (psiStar d) ^ 2 / 4 =
+    linarith [strict_inequality hd, tension_maxCurrentState (d := d) (by omega),
+      commutatorConstant_half_sq (d := d) (by omega), show tension d (maxCurrentState d) ^ 2 / 4 =
         (commutatorConstant d / 2) ^ 2 by
           have : (d : ℝ) - 1 ≠ 0 := by
             have : (4 : ℝ) ≤ d := by exact_mod_cast hd
             linarith
-          rw [tension_psiStar (by omega), commutatorConstant_half_sq (by omega)]
+          rw [tension_maxCurrentState (by omega), commutatorConstant_half_sq (by omega)]
           field_simp
           ring]
-  rw [PsiStar3D_eq_prod3]
-  exact robertson_det_prod3_strict (norm_psiStar (by omega)) (norm_psiStar (by omega))
-    (norm_psiStar (by omega)) (hs dx hx) (hs dy hy) (hs dz hz)
+  rw [maxCurrentCubeState_eq_prod3]
+  exact robertson_det_prod3_strict (norm_maxCurrentState (by omega)) (norm_maxCurrentState (by
+      omega))
+    (norm_maxCurrentState (by omega)) (hs dx hx) (hs dy hy) (hs dz hz)
 
 end RobertsonDeterminantProduct

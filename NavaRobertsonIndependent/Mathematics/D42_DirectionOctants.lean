@@ -14,7 +14,7 @@ The direction of motion of `⟨P_d⟩` is the sign of the tension `⟨K_d⟩` (`
 that commutes with `L` and reverses `M` reverses the tension and keeps both variances, so the
 Mandelstam–Tamm and Cramér–Rao ratio of `D41` and the NRS angle of `D37b` are the same for both
 directions. The reflection `j ↦ d − 1 − j` of the path is such a symmetry for `(T_d, P_d)`: the
-spectrum of `K_d` is symmetric, and `ψ*` reflected moves at velocity `−1`.
+spectrum of `K_d` is symmetric, and the maximal current state reflected moves at velocity `−1`.
 
 On the cube `d × d × d` the three reflections give the eight octant states: velocity `(±1, ±1, ±1)`,
 one vertex of the velocity cube for each face of the octahedral cone of `D37f`, and on every axis
@@ -163,24 +163,25 @@ theorem KdOp_reflect_eigen {v : Hd d} {c : ℝ} (h : KdOp d v = (c : ℂ) • v)
     KdOp d (reflect d v) = ((-c : ℝ) : ℂ) • reflect d v :=
   eigen_anti (reflect d) TdOp_reflect PdOp_reflect h
 
-/-! ## 3. `ψ*` in both directions -/
+/-! ## 3. The maximal current state in both directions -/
 
-/-- `ψ*` forward (`false`) or reflected (`true`). -/
-def psiDir (d : ℕ) (b : Bool) : Hd d := bif b then reflect d (psiStar d) else psiStar d
+/-- The maximal current state forward (`false`) or reflected (`true`). -/
+def psiDir (d : ℕ) (b : Bool) : Hd d := bif b then reflect d (maxCurrentState d) else
+    maxCurrentState d
 
 /-- The sign of a direction. -/
 def sgn (b : Bool) : ℝ := bif b then -1 else 1
 
 theorem norm_psiDir (hd : 2 ≤ d) (b : Bool) : ‖psiDir d b‖ = 1 := by
-  cases b <;> simp [psiDir, norm_psiStar hd]
+  cases b <;> simp [psiDir, norm_maxCurrentState hd]
 
 theorem velocity_psiDir (hd : 2 ≤ d) (b : Bool) : velocity d (psiDir d b) = sgn b := by
-  cases b <;> simp [psiDir, sgn, velocity_reflect, velocity_psiStar hd]
+  cases b <;> simp [psiDir, sgn, velocity_reflect, velocity_maxCurrentState hd]
 
 theorem mtRatio_psiDir (hd : 2 ≤ d) (b : Bool) :
     mtRatio d (psiDir d b) = 1 / CoherenceConstant d ^ 2 := by
   cases b <;>
-    simp only [psiDir, Bool.cond_true, Bool.cond_false, mtRatio_reflect, mtRatio_psiStar hd]
+    simp only [psiDir, Bool.cond_true, Bool.cond_false, mtRatio_reflect, mtRatio_maxCurrentState hd]
 
 theorem angle_psiDir (b : Bool) : angleG (TdOp d) (PdOp d) (psiDir d b) = angleNRS d := by
   cases b
@@ -191,7 +192,8 @@ theorem angle_psiDir (b : Bool) : angleG (TdOp d) (PdOp d) (psiDir d b) = angleN
 
 variable {dx dy dz : ℕ}
 
-/-- The octant state: `ψ*` on each axis, reflected on the axes marked `true`. -/
+/-- The octant state: the maximal current state on each axis, reflected on the axes marked `true`.
+-/
 def octant (dx dy dz : ℕ) (sx sy sz : Bool) : H3D dx dy dz :=
   prod3 (psiDir dx sx) (psiDir dy sy) (psiDir dz sz)
 
@@ -277,7 +279,7 @@ theorem octant_four (sx sy sz : Bool) :
   obtain ⟨vx, vy, vz⟩ := velocities_octant h4 h4 h4 sx sy sz
   refine ⟨vx ▸ habs sx, vy ▸ habs sy, vz ▸ habs sz, angleG_octant_x h4 h4 sx sy sz,
     angleG_octant_y h4 h4 sx sy sz, angleG_octant_z h4 h4 sx sy sz, ?_⟩
-  rw [mtRatioG_octant_x h4 h4 h4, ← mtRatio_psiStar h4]
-  exact mtRatio_psiStar_lt_one le_rfl
+  rw [mtRatioG_octant_x h4 h4 h4, ← mtRatio_maxCurrentState h4]
+  exact mtRatio_maxCurrentState_lt_one le_rfl
 
 end Direction
