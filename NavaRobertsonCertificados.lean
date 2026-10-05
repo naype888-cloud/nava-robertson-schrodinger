@@ -23,6 +23,7 @@ public import NavaRobertsonCertificados.D49p_RelationsDimension
 public import NavaRobertsonCertificados.D49q_TransportRelation
 public import NavaRobertsonCertificados.D49r_EdgeOperator
 public import NavaRobertsonCertificados.D49s_EdgeSlices
+public import NavaRobertsonCertificados.D49t_RobertsonDeterminantBandStrict
 
 /-!
 # Certificates
@@ -83,4 +84,8 @@ relation without transport on `i`, `j` give `(w_i c(P_i) h_i² T_i + w_j c(P_j) 
 
 `D49s`: the edge of the cube: a transport relation `(α T_x + β T_y) Φ = 0` is a recurrence along
 `x`; with two tensions it leaves `Φ = 0` or `Φ` split off `z`.
+
+`D49t`: **det|NRS³ is strict in the band, for every state**: on every box, every unit state whose
+speeds on `x`, `y`, `z` lie in the bands satisfies `|det Ω| < det Σ`, entangled or not, canonical
+axes or not.
 -/
