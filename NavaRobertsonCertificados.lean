@@ -21,6 +21,7 @@ public import NavaRobertsonCertificados.D49n_TwoAxes
 public import NavaRobertsonCertificados.D49o_BracketSpan
 public import NavaRobertsonCertificados.D49p_RelationsDimension
 public import NavaRobertsonCertificados.D49q_TransportRelation
+public import NavaRobertsonCertificados.D49r_EdgeOperator
 
 /-!
 # Certificates
@@ -76,4 +77,6 @@ at equality at least three; four leave `Φ = 0`.
 
 `D49q`: a transport relation from two tensions: `w_i [T_i, P_i] Φ + w_j [T_j, P_j] Φ = 0` and a
 relation without transport on `i`, `j` give `(w_i c(P_i) h_i² T_i + w_j c(P_j) h_j² T_j) Φ = 0`.
+
+`D49r`: `[T_d, [T_d, P_d]] = (2h/ρ_d²) diag(−1, 0, …, 0, +1)`: it lives on the two ends.
 -/
