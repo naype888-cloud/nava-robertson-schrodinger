@@ -12,7 +12,8 @@ public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 # D37b — The NRS angle
 
 Robertson–Schrödinger is Cauchy–Schwarz for the fluctuation vectors `x = (T − ⟨T⟩)ψ`,
-`y = (P − ⟨P⟩)ψ`: it saturates iff they are parallel. At `ψ*` their angle satisfies
+`y = (P − ⟨P⟩)ψ`: it saturates iff they are parallel. At the maximal current state their angle
+satisfies
 `cos θ_NRS(d) = |⟪x, y⟫| / (‖x‖ ‖y‖) = 1 / C_Nava(d)`.
 
 ## Main results
@@ -39,8 +40,8 @@ def angleG {ι : Type*} [Fintype ι] (L M : EuclideanSpace ℂ ι →ₗ[ℂ] Eu
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   arccos (‖inner ℂ (centeredG L Ψ) (centeredG M Ψ)‖ / (‖centeredG L Ψ‖ * ‖centeredG M Ψ‖))
 
-/-- The NRS angle of `(T_d, P_d)` at `ψ*`. -/
-def angleNRS (d : ℕ) : ℝ := angleG (TdOp d) (PdOp d) (psiStar d)
+/-- The NRS angle of `(T_d, P_d)` at the maximal current state. -/
+def angleNRS (d : ℕ) : ℝ := angleG (TdOp d) (PdOp d) (maxCurrentState d)
 
 theorem CoherenceConstant_ge_one {d : ℕ} (hd : 2 ≤ d) : 1 ≤ CoherenceConstant d := by
   rw [CoherenceConstant_eq_one_add_geometricGap]
@@ -48,19 +49,19 @@ theorem CoherenceConstant_ge_one {d : ℕ} (hd : 2 ≤ d) : 1 ≤ CoherenceConst
 
 /-- **The NRS angle.** `cos θ_NRS(d) = 1 / C_Nava(d)`. -/
 theorem cos_angleNRS {d : ℕ} (hd : 2 ≤ d) :
-    ‖inner ℂ (centered (TdOp d) (psiStar d)) (centered (PdOp d) (psiStar d))‖ /
-        (‖centered (TdOp d) (psiStar d)‖ * ‖centered (PdOp d) (psiStar d)‖) =
+    ‖inner ℂ (centered (TdOp d) (maxCurrentState d)) (centered (PdOp d) (maxCurrentState d))‖ /
+        (‖centered (TdOp d) (maxCurrentState d)‖ * ‖centered (PdOp d) (maxCurrentState d)‖) =
       1 / CoherenceConstant d := by
-  set a := ‖inner ℂ (centered (TdOp d) (psiStar d)) (centered (PdOp d) (psiStar d))‖
-  set b := ‖centered (TdOp d) (psiStar d)‖ * ‖centered (PdOp d) (psiStar d)‖
+  set a := ‖inner ℂ (centered (TdOp d) (maxCurrentState d)) (centered (PdOp d) (maxCurrentState d))‖
+  set b := ‖centered (TdOp d) (maxCurrentState d)‖ * ‖centered (PdOp d) (maxCurrentState d)‖
   set k := (commutatorConstant d / 2) ^ 2
   have hC := CoherenceConstant_ge_one hd
   have hk : 0 < k := commutatorConstant_half_sq_pos hd
   -- `a² = k`: the Gram defect with `cov = 0` and tension `2/(d−1)`.
   have ha : a ^ 2 = k := by
-    have h := NearMaxTension.surplus_eq d (psiStar d)
+    have h := NearMaxTension.surplus_eq d (maxCurrentState d)
     rw [NearMaxTension.surplus, gramDefectAt, covariance_eq_zero hd,
-      NearMaxTension.tension_psiStar hd] at h
+      NearMaxTension.tension_maxCurrentState hd] at h
     have hk' : k = 1 / ((d : ℝ) - 1) ^ 2 := commutatorConstant_half_sq hd
     have hd1 : (d : ℝ) - 1 ≠ 0 := by
       have : (2 : ℝ) ≤ d := by exact_mod_cast hd
@@ -183,31 +184,31 @@ theorem angleG_lift (e : ι ≃ α × β) {φ : EuclideanSpace ℂ β} (hφ : �
 variable {dx dy dz : ℕ}
 
 theorem angleG_axis_x (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) = angleNRS dx := by
-  rw [PsiStar3D_eq_eX]
+    angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) = angleNRS dx := by
+  rw [maxCurrentCubeState_eq_eX]
   exact angleG_lift _ (norm_rest hy hz) _ _ _
 
 theorem angleG_axis_y (hx : 2 ≤ dx) (hz : 2 ≤ dz) :
-    angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) = angleNRS dy := by
-  rw [PsiStar3D_eq_eY]
+    angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) = angleNRS dy := by
+  rw [maxCurrentCubeState_eq_eY]
   exact angleG_lift _ (norm_rest hx hz) _ _ _
 
 theorem angleG_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) :
-    angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) = angleNRS dz := by
-  rw [PsiStar3D_eq_eZ]
+    angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) = angleNRS dz := by
+  rw [maxCurrentCubeState_eq_eZ]
   exact angleG_lift _ (norm_rest hx hy) _ _ _
 
 /-- **On the `4 × 4 × 4` cube and beyond**, all three axes carry a strictly positive angle,
 each below the same unattained bound `arccos (1 / C_∞)`. -/
 theorem angles_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
-    (0 < angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ∧
-        angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) <
+    (0 < angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ∧
+        angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) <
           arccos (1 / CoherenceConstantInf)) ∧
-      (0 < angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ∧
-        angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) <
+      (0 < angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) ∧
+        angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) <
           arccos (1 / CoherenceConstantInf)) ∧
-      (0 < angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ∧
-        angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) <
+      (0 < angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) ∧
+        angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) <
           arccos (1 / CoherenceConstantInf)) := by
   rw [angleG_axis_x (by omega) (by omega), angleG_axis_y (by omega) (by omega),
     angleG_axis_z (by omega) (by omega)]
@@ -217,9 +218,9 @@ theorem angles_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
 /-- **The angular floor on the cube.** With `4` or more positions on every axis, each of the three
 axes opens at least `θ_NRS(4)`. -/
 theorem angle_floor_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
-    angleNRS 4 ≤ angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ∧
-      angleNRS 4 ≤ angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ∧
-      angleNRS 4 ≤ angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) := by
+    angleNRS 4 ≤ angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ∧
+      angleNRS 4 ≤ angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) ∧
+      angleNRS 4 ≤ angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) := by
   rw [angleG_axis_x (by omega) (by omega), angleG_axis_y (by omega) (by omega),
     angleG_axis_z (by omega) (by omega)]
   exact ⟨(angle_floor hx).2.1, (angle_floor hy).2.1, (angle_floor hz).2.1⟩
@@ -229,14 +230,14 @@ angles of any two axes differ by less than `arccos (1 / C_∞) − θ_NRS(D)`. W
 about `1.05°`: the three axes agree more closely the more positions each has, with no appeal
 to infinitely many positions. -/
 theorem finite_isotropy_cube {D : ℕ} (hD : 4 ≤ D) (hx : D ≤ dx) (hy : D ≤ dy) (hz : D ≤ dz) :
-    |angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -
-        angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz)| <
+    |angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) -
+        angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz)| <
         arccos (1 / CoherenceConstantInf) - angleNRS D ∧
-      |angleG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) -
-        angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)| <
+      |angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) -
+        angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz)| <
         arccos (1 / CoherenceConstantInf) - angleNRS D ∧
-      |angleG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) -
-        angleG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz)| <
+      |angleG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) -
+        angleG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz)| <
         arccos (1 / CoherenceConstantInf) - angleNRS D := by
   rw [angleG_axis_x (by omega) (by omega), angleG_axis_y (by omega) (by omega),
     angleG_axis_z (by omega) (by omega)]

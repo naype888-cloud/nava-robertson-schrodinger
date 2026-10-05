@@ -19,7 +19,8 @@ identity on the other two. Everything is proved once for a general axis (`liftAl
 ## Main results
 
 - `PathGraph3DNRS.commutator_axes_xy` (and `_xz`, `_yz`) : pairs on different axes commute.
-- `PathGraph3DNRS.stats_axis_x` (and `_y`, `_z`) : at `Ψ* = ψ* ⊗ ψ* ⊗ ψ*` the mean, variance,
+- `PathGraph3DNRS.stats_axis_x` (and `_y`, `_z`) : at the maximal current state of the cube the
+  mean, variance,
   covariance and tension of an axis are those of `D21` for that axis.
 - `PathGraph3DNRS.saturation_cube` : an axis saturates iff it has `2` or `3` positions.
 - `PathGraph3DNRS.strict_cube` : from `4 × 4 × 4`, strict on all three axes.
@@ -170,28 +171,29 @@ theorem tensionG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
 /-! ## 4. NRS on one axis of a product -/
 
 /-- On any axis with `d ≥ 2` positions, lifted into a product with a unit state `φ` on the rest,
-the four statistics of `(T, P)` at `ψ* ⊗ φ` are those of `(T_d, P_d)` at `ψ*` (`D21`). -/
+the four statistics of `(T, P)` at `maxCurrentState ⊗ φ` are those of `(T_d, P_d)` at the maximal
+current state (`D21`). -/
 theorem stats_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
-    varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) =
-        variance (TdOp d) (psiStar d) ∧
-      varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
-        variance (PdOp d) (psiStar d) ∧
+    varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (maxCurrentState d) φ) =
+        variance (TdOp d) (maxCurrentState d) ∧
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) =
+        variance (PdOp d) (maxCurrentState d) ∧
       covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
-          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
-        covariance (TdOp d) (PdOp d) (psiStar d) ∧
+          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) =
+        covariance (TdOp d) (PdOp d) (maxCurrentState d) ∧
       tensionG (Matrix.toEuclideanLin (liftAlong e (Td d)))
-          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) =
+          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) =
         2 / ((d : ℝ) - 1) :=
   ⟨varianceG_lift e hφ _ _, varianceG_lift e hφ _ _, covarianceG_lift e hφ _ _ _,
-    (tensionG_lift e hφ _ _ _).trans (NearMaxTension.tension_psiStar hd)⟩
+    (tensionG_lift e hφ _ _ _).trans (NearMaxTension.tension_maxCurrentState hd)⟩
 
 /-- NRS on one axis: saturation exactly for `2` or `3` positions on that axis. -/
 theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
-          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
+          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) ^ 2 +
         (commutatorConstant d / 2) ^ 2 =
-      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
-        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ↔
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (maxCurrentState d) φ) *
+        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) ↔
       d = 2 ∨ d = 3 := by
   obtain ⟨h1, h2, h3, -⟩ := stats_axis hφ hd e
   rw [h1, h2, h3]
@@ -200,10 +202,11 @@ theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
 /-- NRS on one axis: from `4` positions on, the inequality is strict (the algebraic quantum). -/
 theorem strict_axis {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
-          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) ^ 2 +
+          (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) ^ 2 +
         (commutatorConstant d / 2) ^ 2 <
-      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (psiStar d) φ) *
-        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (psiStar d) φ) := by
+      varianceG (Matrix.toEuclideanLin (liftAlong e (Td d))) (prodAlong e (maxCurrentState d) φ) *
+        varianceG (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ)
+            := by
   obtain ⟨h1, h2, h3, -⟩ := stats_axis hφ (by omega) e
   rw [h1, h2, h3]
   exact strict_inequality hd
@@ -244,31 +247,35 @@ def PY : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlo
 def TZ : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) (Td dz))
 def PZ : H3D dx dy dz →ₗ[ℂ] H3D dx dy dz := Matrix.toEuclideanLin (liftAlong (eZ dx dy dz) (Pd dz))
 
-/-- The maximal-tension state of the cube: `ψ*` on each axis. -/
-def PsiStar3D : H3D dx dy dz :=
-  WithLp.toLp 2 fun p => psiStar dx p.1 * psiStar dy p.2.1 * psiStar dz p.2.2
+/-- The maximal current state of the cube: the maximal current state on each axis. -/
+def maxCurrentCubeState : H3D dx dy dz :=
+  WithLp.toLp 2 fun p => maxCurrentState dx p.1 * maxCurrentState dy p.2.1 * maxCurrentState dz
+      p.2.2
 
-theorem PsiStar3D_eq_eX :
-    PsiStar3D dx dy dz =
-      prodAlong (eX dx dy dz) (psiStar dx) (prodAlong (Equiv.refl _) (psiStar dy) (psiStar dz)) :=
+theorem maxCurrentCubeState_eq_eX :
+    maxCurrentCubeState dx dy dz =
+      prodAlong (eX dx dy dz) (maxCurrentState dx) (prodAlong (Equiv.refl _) (maxCurrentState dy)
+          (maxCurrentState dz)) :=
           by
   ext p
-  simp [PsiStar3D, prodAlong_apply, eX, mul_assoc]
+  simp [maxCurrentCubeState, prodAlong_apply, eX, mul_assoc]
 
-theorem PsiStar3D_eq_eY :
-    PsiStar3D dx dy dz =
-      prodAlong (eY dx dy dz) (psiStar dy) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dz)) :=
+theorem maxCurrentCubeState_eq_eY :
+    maxCurrentCubeState dx dy dz =
+      prodAlong (eY dx dy dz) (maxCurrentState dy) (prodAlong (Equiv.refl _) (maxCurrentState dx)
+          (maxCurrentState dz)) :=
           by
   ext p
-  simp [PsiStar3D, prodAlong_apply, eY]
+  simp [maxCurrentCubeState, prodAlong_apply, eY]
   ring
 
-theorem PsiStar3D_eq_eZ :
-    PsiStar3D dx dy dz =
-      prodAlong (eZ dx dy dz) (psiStar dz) (prodAlong (Equiv.refl _) (psiStar dx) (psiStar dy)) :=
+theorem maxCurrentCubeState_eq_eZ :
+    maxCurrentCubeState dx dy dz =
+      prodAlong (eZ dx dy dz) (maxCurrentState dz) (prodAlong (Equiv.refl _) (maxCurrentState dx)
+          (maxCurrentState dy)) :=
           by
   ext p
-  simp [PsiStar3D, prodAlong_apply, eZ]
+  simp [maxCurrentCubeState, prodAlong_apply, eZ]
   ring
 
 /-! ## 6. Different axes commute -/
@@ -333,77 +340,89 @@ theorem commutator_axes_yz (A : Matrix (Fin dy) (Fin dy) ℂ)
 variable {dx dy dz}
 
 theorem norm_rest {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
-    ‖prodAlong (Equiv.refl (Fin a × Fin b)) (psiStar a) (psiStar b)‖ = 1 :=
-  norm_prodAlong_eq_one _ (norm_psiStar ha) (norm_psiStar hb)
+    ‖prodAlong (Equiv.refl (Fin a × Fin b)) (maxCurrentState a) (maxCurrentState b)‖ = 1 :=
+  norm_prodAlong_eq_one _ (norm_maxCurrentState ha) (norm_maxCurrentState hb)
 
 /-! ## 7. NRS on each axis of the cube -/
 
 theorem stats_axis_x (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianceG (TX dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dx) (psiStar dx) ∧
-      varianceG (PX dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dx) (psiStar dx) ∧
-      covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) =
-        covariance (TdOp dx) (PdOp dx) (psiStar dx) ∧
-      tensionG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dx : ℝ) - 1) := by
-  rw [PsiStar3D_eq_eX]
+    varianceG (TX dx dy dz) (maxCurrentCubeState dx dy dz) = variance (TdOp dx) (maxCurrentState dx)
+        ∧
+      varianceG (PX dx dy dz) (maxCurrentCubeState dx dy dz) = variance (PdOp dx) (maxCurrentState
+          dx) ∧
+      covarianceG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) =
+        covariance (TdOp dx) (PdOp dx) (maxCurrentState dx) ∧
+      tensionG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) = 2 / ((dx : ℝ) - 1) := by
+  rw [maxCurrentCubeState_eq_eX]
   exact stats_axis (norm_rest hy hz) hx _
 
 theorem stats_axis_y (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianceG (TY dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dy) (psiStar dy) ∧
-      varianceG (PY dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dy) (psiStar dy) ∧
-      covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) =
-        covariance (TdOp dy) (PdOp dy) (psiStar dy) ∧
-      tensionG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dy : ℝ) - 1) := by
-  rw [PsiStar3D_eq_eY]
+    varianceG (TY dx dy dz) (maxCurrentCubeState dx dy dz) = variance (TdOp dy) (maxCurrentState dy)
+        ∧
+      varianceG (PY dx dy dz) (maxCurrentCubeState dx dy dz) = variance (PdOp dy) (maxCurrentState
+          dy) ∧
+      covarianceG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) =
+        covariance (TdOp dy) (PdOp dy) (maxCurrentState dy) ∧
+      tensionG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) = 2 / ((dy : ℝ) - 1) := by
+  rw [maxCurrentCubeState_eq_eY]
   exact stats_axis (norm_rest hx hz) hy _
 
 theorem stats_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) = variance (TdOp dz) (psiStar dz) ∧
-      varianceG (PZ dx dy dz) (PsiStar3D dx dy dz) = variance (PdOp dz) (psiStar dz) ∧
-      covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) =
-        covariance (TdOp dz) (PdOp dz) (psiStar dz) ∧
-      tensionG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) = 2 / ((dz : ℝ) - 1) := by
-  rw [PsiStar3D_eq_eZ]
+    varianceG (TZ dx dy dz) (maxCurrentCubeState dx dy dz) = variance (TdOp dz) (maxCurrentState dz)
+        ∧
+      varianceG (PZ dx dy dz) (maxCurrentCubeState dx dy dz) = variance (PdOp dz) (maxCurrentState
+          dz) ∧
+      covarianceG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) =
+        covariance (TdOp dz) (PdOp dz) (maxCurrentState dz) ∧
+      tensionG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) = 2 / ((dz : ℝ) - 1) := by
+  rw [maxCurrentCubeState_eq_eZ]
   exact stats_axis (norm_rest hx hy) hz _
 
 /-- **NRS on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
 `3` positions, independently of the other two axes. -/
 theorem saturation_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    (covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    (covarianceG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 =
-        varianceG (TX dx dy dz) (PsiStar3D dx dy dz) * varianceG (PX dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TX dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PX dx dy dz)
+            (maxCurrentCubeState dx dy dz)
         ↔ dx = 2 ∨ dx = 3) ∧
-    (covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    (covarianceG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dy / 2) ^ 2 =
-        varianceG (TY dx dy dz) (PsiStar3D dx dy dz) * varianceG (PY dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TY dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PY dx dy dz)
+            (maxCurrentCubeState dx dy dz)
         ↔ dy = 2 ∨ dy = 3) ∧
-    (covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    (covarianceG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dz / 2) ^ 2 =
-        varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianceG (PZ dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TZ dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PZ dx dy dz)
+            (maxCurrentCubeState dx dy dz)
         ↔ dz = 2 ∨ dz = 3) := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [PsiStar3D_eq_eX]; exact saturation_axis (norm_rest hy hz) hx _
-  · rw [PsiStar3D_eq_eY]; exact saturation_axis (norm_rest hx hz) hy _
-  · rw [PsiStar3D_eq_eZ]; exact saturation_axis (norm_rest hx hy) hz _
+  · rw [maxCurrentCubeState_eq_eX]; exact saturation_axis (norm_rest hy hz) hx _
+  · rw [maxCurrentCubeState_eq_eY]; exact saturation_axis (norm_rest hx hz) hy _
+  · rw [maxCurrentCubeState_eq_eZ]; exact saturation_axis (norm_rest hx hy) hz _
 
 /-- **The algebraic quantum on the `4 × 4 × 4` cube and beyond.** With at least `4` positions on
 every axis, the inequality is strict on all three axes at once. -/
 theorem strict_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
-    covarianceG (TX dx dy dz) (PX dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    covarianceG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dx / 2) ^ 2 <
-        varianceG (TX dx dy dz) (PsiStar3D dx dy dz) * varianceG (PX dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TX dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PX dx dy dz)
+            (maxCurrentCubeState dx dy dz)
             ∧
-    covarianceG (TY dx dy dz) (PY dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    covarianceG (TY dx dy dz) (PY dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dy / 2) ^ 2 <
-        varianceG (TY dx dy dz) (PsiStar3D dx dy dz) * varianceG (PY dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TY dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PY dx dy dz)
+            (maxCurrentCubeState dx dy dz)
             ∧
-    covarianceG (TZ dx dy dz) (PZ dx dy dz) (PsiStar3D dx dy dz) ^ 2 +
+    covarianceG (TZ dx dy dz) (PZ dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +
           (commutatorConstant dz / 2) ^ 2 <
-        varianceG (TZ dx dy dz) (PsiStar3D dx dy dz) * varianceG (PZ dx dy dz) (PsiStar3D dx dy dz)
+        varianceG (TZ dx dy dz) (maxCurrentCubeState dx dy dz) * varianceG (PZ dx dy dz)
+            (maxCurrentCubeState dx dy dz)
             := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [PsiStar3D_eq_eX]; exact strict_axis (norm_rest (by omega) (by omega)) hx _
-  · rw [PsiStar3D_eq_eY]; exact strict_axis (norm_rest (by omega) (by omega)) hy _
-  · rw [PsiStar3D_eq_eZ]; exact strict_axis (norm_rest (by omega) (by omega)) hz _
+  · rw [maxCurrentCubeState_eq_eX]; exact strict_axis (norm_rest (by omega) (by omega)) hx _
+  · rw [maxCurrentCubeState_eq_eY]; exact strict_axis (norm_rest (by omega) (by omega)) hy _
+  · rw [maxCurrentCubeState_eq_eZ]; exact strict_axis (norm_rest (by omega) (by omega)) hz _
 
 end Cubo
 

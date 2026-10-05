@@ -19,7 +19,8 @@ on the cube splits into the three limits of `D8`; no new constant appears.
   an eigenvector of the lifted operator.
 - `CubeSpectrum.eigenvector_sum` : `u ⊗ v ⊗ w` is an eigenvector of the sum with eigenvalue
   `λ + μ + ν`.
-- `CubeSpectrum.tensionTotal_psiStar`, `CubeSpectrum.tensionTotal_le` : `Ψ*` is the top of
+- `CubeSpectrum.tensionTotal_maxCurrentState`, `CubeSpectrum.tensionTotal_le` : the maximal current
+  state of the cube is the top of
   `K_x + K_y + K_z`, with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds.
 -/
 
@@ -129,7 +130,8 @@ theorem prod3_eq_eZ (u : Hd dx) (v : Hd dy) (w : Hd dz) :
     prod3 u v w = prodAlong (eZ dx dy dz) w (prodAlong (Equiv.refl _) u v) := by
   ext p; simp [prod3, prodAlong_apply, eZ]; ring
 
-theorem PsiStar3D_eq_prod3 : PsiStar3D dx dy dz = prod3 (psiStar dx) (psiStar dy) (psiStar dz) :=
+theorem maxCurrentCubeState_eq_prod3 : maxCurrentCubeState dx dy dz = prod3 (maxCurrentState dx)
+    (maxCurrentState dy) (maxCurrentState dz) :=
   rfl
 
 /-- **Sum of spectra.** One eigenvector per axis gives an eigenvector of the sum, with the
@@ -165,22 +167,29 @@ theorem tension_lift_apply {ι β : Type*} [Fintype ι] [Fintype β] [DecidableE
     LinearMap.sub_apply, LinearMap.comp_apply, toEuclideanLin_liftAlong, prodAlong_sub,
     prodAlong_smul]
 
-theorem eigenvalue_psiStar {d : ℕ} (hd : 2 ≤ d) :
-    KdOp d (psiStar d) = (((2 / ((d : ℝ) - 1) : ℝ)) : ℂ) • psiStar d :=
+theorem eigenvalue_maxCurrentState {d : ℕ} (hd : 2 ≤ d) :
+    KdOp d (maxCurrentState d) = (((2 / ((d : ℝ) - 1) : ℝ)) : ℂ) • maxCurrentState d :=
   KdOp_fiedlerVec d hd
 
-/-- **Maximal tension of the cube.** `Ψ*` is an eigenvector of `K_x + K_y + K_z` with
+/-- **Maximal tension of the cube.** The maximal current state of the cube is an eigenvector of
+`K_x + K_y + K_z` with
 eigenvalue `2/(dx−1) + 2/(dy−1) + 2/(dz−1)`. -/
-theorem tensionTotal_psiStar (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
-    Ktotal (PsiStar3D dx dy dz) =
+theorem tensionTotal_maxCurrentState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
+    Ktotal (maxCurrentCubeState dx dy dz) =
       (((2 / ((dx : ℝ) - 1) + 2 / ((dy : ℝ) - 1) + 2 / ((dz : ℝ) - 1) : ℝ)) : ℂ) •
-        PsiStar3D dx dy dz := by
-  have ex : KX (PsiStar3D dx dy dz) = (((2 / ((dx : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eX, KX, TX, PX, tension_lift_apply, eigenvalue_psiStar hx, prodAlong_smul]
-  have ey : KY (PsiStar3D dx dy dz) = (((2 / ((dy : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eY, KY, TY, PY, tension_lift_apply, eigenvalue_psiStar hy, prodAlong_smul]
-  have ez : KZ (PsiStar3D dx dy dz) = (((2 / ((dz : ℝ) - 1) : ℝ)) : ℂ) • PsiStar3D dx dy dz := by
-    rw [PsiStar3D_eq_eZ, KZ, TZ, PZ, tension_lift_apply, eigenvalue_psiStar hz, prodAlong_smul]
+        maxCurrentCubeState dx dy dz := by
+  have ex : KX (maxCurrentCubeState dx dy dz) = (((2 / ((dx : ℝ) - 1) : ℝ)) : ℂ) •
+      maxCurrentCubeState dx dy dz := by
+    rw [maxCurrentCubeState_eq_eX, KX, TX, PX, tension_lift_apply, eigenvalue_maxCurrentState hx,
+        prodAlong_smul]
+  have ey : KY (maxCurrentCubeState dx dy dz) = (((2 / ((dy : ℝ) - 1) : ℝ)) : ℂ) •
+      maxCurrentCubeState dx dy dz := by
+    rw [maxCurrentCubeState_eq_eY, KY, TY, PY, tension_lift_apply, eigenvalue_maxCurrentState hy,
+        prodAlong_smul]
+  have ez : KZ (maxCurrentCubeState dx dy dz) = (((2 / ((dz : ℝ) - 1) : ℝ)) : ℂ) •
+      maxCurrentCubeState dx dy dz := by
+    rw [maxCurrentCubeState_eq_eZ, KZ, TZ, PZ, tension_lift_apply, eigenvalue_maxCurrentState hz,
+        prodAlong_smul]
   rw [Ktotal, LinearMap.add_apply, LinearMap.add_apply, ex, ey, ez, ← add_smul, ← add_smul]
   push_cast
   ring_nf
