@@ -24,8 +24,8 @@ reading is a separate, declared bridge (see *Declared physical bridge* below).
 ## The mosaic
 
 Topics that grew out of NRS³ live in their own short repositories, each with one figure, one
-table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature` and
-`nrs3-rovelli-lqg` build on this repository):
+table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature`,
+`nrs3-rovelli-lqg` and `nrs3-dark` build on this repository):
 
 | Repository | In one line |
 |---|---|
@@ -38,6 +38,7 @@ table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature` 
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
 | [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | each non-local link closes a cycle with one quantum `δ∞`; `2g` links fix the curvature of `Σ_g`; the entropy of a cut counts its quanta and its horizon hides them (`D16`–`D16i`) — [▶ interactive](https://naype888-cloud.github.io/nrs3-defect-curvature/) |
 | [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | LQG area quanta and puncture entropy; the NRS angle stays below its ceiling `arccos(1/C∞)`, a limit never attained (proposal, outside NRS³) — [▶ interactive](https://naype888-cloud.github.io/nrs3-rovelli-lqg/) |
+| [`nrs3-dark`](https://github.com/naype888-cloud/nrs3-dark) | what light does not resolve, `1 − Ω_b`, is the interior of the volumetric quantum; `omegaPi = (δ∞/(1+δ∞)) e^{−1/(1+δ∞)}` from `π`, inside the measured `Ω_b` of Planck, LUNA and DESI — [▶ interactive](https://naype888-cloud.github.io/nrs3-dark/) |
 
 ## Timeline 1911–1945
 
