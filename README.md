@@ -1,6 +1,7 @@
 # NRS, NRS³ & det|NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
-**[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)**
+**[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)** ·
+**[▶ Malla espectral NRS³ (español): el Lagrangiano, el cuanto volumétrico de cada celda y el cono](https://naype888-cloud.github.io/nava-robertson-schrodinger/malla-nrs3.html)**
 
 Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
 external academic review. Lake fetches the exact Mathlib and physlib revisions recorded in
