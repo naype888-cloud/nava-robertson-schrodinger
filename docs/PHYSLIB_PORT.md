@@ -68,11 +68,12 @@ time, as the open ones are merged. Comments are welcome on the Zulip channel
 | [`horizon-count`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-horizon-count) | `…/TightBindingChain/HorizonCount` | 193 | **`Λ = 3π/(ℓ² log W)`** from `W = Mᵏ` states on the bonds across a cut; both Friedmann equations; `Λ > 0`, decreasing, `→ 0`; `3π/(ℓ² M log 2) ≤ Λ` on distinct bonds | `nrs3-de-sitter` | cut bonds, de Sitter |
 | [`loop-quantum-gravity`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-loop-quantum-gravity) | `QuantumGravity/LoopQuantumGravity/AreaSpectrum`, `…/TightBindingChain/LinkPuncture` | 170 + 102 | LQG area spectrum and its lowest quantum; puncture entropy `∝` area; Bekenstein–Hawking iff `γ = log 2/(π√3)`; a bond across the cut is a puncture; at that `γ`, `Λ = 12π/A` with `A` the area of `k` lowest quanta | `nrs3-rovelli-lqg` | horizon count |
 | [`cut-cycles-curvature`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-cut-cycles-curvature) | `…/TightBindingChain/CutCycles`, `…/TightBindingChain/EntropyCurvature` | 226 + 102 | the chain is a tree; each bond across the cut closes one independent cycle; the entropy counts graphs; with the Gauss–Bonnet curvature of `Σ_g` (a definition: Mathlib has no Gauss–Bonnet), `S = (log M/2π)(4π − ∫K dA)` | `D16e`–`D16h`, `nrs3-defect-curvature` | horizon count |
+| [`cosmological-constant-chain`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-cosmological-constant-chain) | `…/TightBindingChain/CosmologicalConstantChain` | 108 | the chain in one theorem: on four sites, with `2g` quanta on the first cut, `Λ = 3π/(ℓ² log W) = 3π/(ℓ² 2g log 2) = 12π/A = 6π²/(ℓ² log 2 (4π − ∫K dA))`; horizon entropy `log W`, `Λ > 0`, both Friedmann equations | `nrs3-de-sitter`, `nrs3-rovelli-lqg`, `nrs3-defect-curvature` | loop quantum gravity, curvature |
 | [`landauer`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-landauer) | `StatisticalMechanics/Landauer`, `…/Carnot` | 224 + 144 | Landauer for a unitary on `ρ ⊗ γ`; Kelvin–Planck; Carnot `W ≤ (1 − T_c/T_h) Q_h` | `nrs3-landauer-carnot` | QuantumInfo |
 
 Next submissions, in order: the volumetric quantum (after #1735) and the uncertainty cone; then
 Poincaré (1912), Pauli (1925), Dirac (1928); then the chain cut bonds → horizon count → loop
-quantum gravity and curvature, with the cosmology files.
+quantum gravity and curvature, with the cosmology files, and last the chain in one theorem.
 
 ## Order of submission (first series, done)
 
