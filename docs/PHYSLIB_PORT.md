@@ -9,7 +9,10 @@ a result of the corpus in the vocabulary of a mainstream physical model.
 
 Every file is Mathlib, Physlib and PhyslibAlpha only, at most 300 lines, lines of at most 100
 characters, no `sorry`, only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`),
-and passes every PhyslibAlpha linter. Status on 3 October 2026.
+and passes the full Physlib CI (build, file imports, `sorry_lint`, `module_doc_lint`, the Physlib
+and PhyslibAlpha linters, `forMathlib_lint`, the auxiliary script test and the style linters).
+The Physlib files are under Physlib's Apache 2.0 license; this repository stays under the NRS
+Noncommercial License. Status on 6 October 2026: 21 merged, 5 open.
 
 ![The Physlib port](figures/physlib_port_ladder.png)
 
@@ -30,21 +33,48 @@ and passes every PhyslibAlpha linter. Status on 3 October 2026.
 | #1709 | `…/TightBindingChain/Uncertainty` | 93 (refactor) | the uncertainty relation on the chain's own Hilbert space | — | merged |
 | #1716 | `…/TightBindingChain/MaxCurrentState` | 298 | maximal current state; `⟨H⟩ = E0`, `⟨X⟩ = a(N−1)/2`, `⟨⁅H, X⁆⟩ = −at cos(π/(N+1))` | `D5`, `D21` | merged |
 | #1718 | `…/TightBindingChain/Saturation` | 216 | Robertson–Schrödinger is an equality iff `N = 2, 3`, strict for `N ≥ 4` | `D23` | merged |
-| #1723 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `CNava ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | open |
+| #1723 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `CNava ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | merged |
 | #1717 | `…/FiniteTarget/ProductState` | 236 | product states: one-coordinate statistics are the factor's | `D37` | merged |
-| #1725 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_Nava` per axis; `nava_robertson_schrodinger_cube` | `D37` | open |
+| #1725 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_Nava` per axis; `nava_robertson_schrodinger_cube` | `D37` | merged |
 | #1711 | `…/TightBindingChain/MandelstamTamm` | 139 | `|⟨J⟩| ≤ 2 ΔH ΔX` (Mandelstam–Tamm), `⟨J⟩²/Var X ≤ 4 Var H` (Cramér–Rao) | `D41` | merged |
-| 17 | `…/TightBindingChain/MandelstamTammMaxCurrent` | 126 | the ratio is `1/C_Nava²`, `= 1` iff `N = 2, 3`; per axis of the cube | `D41` | ready |
-| #1724 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | open |
-| 19 | `…/TightBindingChain/VelocityBand` | 172 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | ready |
-| 20 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | ready |
-| 21 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | ready |
-| 22 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | ready |
-| 23 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four positions on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | ready |
-| 24 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `\|det Ω\| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | ready |
-| 25 | `…/TightBindingChain/Cube` (E–F) | +319 | the six observables `(H, X)` of the cube: `Ω` block diagonal in every state, `(⟨⁅H,X⁆⟩_x ⟨⁅H,X⁆⟩_y ⟨⁅H,X⁆⟩_z)² ≤ det Σ` (`robertson_det_cube`); at the maximal current state `det Σ = (C_Nava(x) C_Nava(y) C_Nava(z))² \|det Ω\|`, strict from `4 × 4 × 4` (`robertson_det_maxCurrentCubeState_strict`) | `D49b`, `D49c` | ready |
+| #1739 | `…/TightBindingChain/MandelstamTammMaxCurrent` | 126 | the ratio is `1/C_Nava²`, `= 1` iff `N = 2, 3`; per axis of the cube | `D41` | open |
+| #1724 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | merged |
+| #1745 | `…/TightBindingChain/VelocityBand` | 172 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | open |
+| #1746 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | open |
+| #1732 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_Nava²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | merged |
+| #1734 | `…/TightBindingChain/LongChainLimit` | 108 | `C_Nava → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | merged |
+| #1735 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_Nava` strictly increasing in `N` from four positions on (`CNava_lt_CNava`); `C_Nava < √(π²/3 − 2)` | `D9` | open |
+| #1730 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `\|det Ω\| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | merged |
+| #1742 | `…/TightBindingChain/Cube` (E–F) | +319 | the six observables `(H, X)` of the cube: `Ω` block diagonal in every state, `(⟨⁅H,X⁆⟩_x ⟨⁅H,X⁆⟩_y ⟨⁅H,X⁆⟩_z)² ≤ det Σ` (`robertson_det_cube`); at the maximal current state `det Σ = (C_Nava(x) C_Nava(y) C_Nava(z))² \|det Ω\|`, strict from `4 × 4 × 4` (`robertson_det_maxCurrentCubeState_strict`) | `D49b`, `D49c` | open |
 
-## Order of submission
+## Ready on the fork, not yet pull requests
+
+Each branch below is on [naype888-cloud/physlib](https://github.com/naype888-cloud/physlib),
+rebased on Physlib master, and passes the full Physlib CI. They go up as pull requests a few at a
+time, as the open ones are merged. Comments are welcome on the Zulip channel
+**#quantum information**.
+
+| Branch | File | Lines | Main results | Corpus | Depends on |
+|---|---|---|---|---|---|
+| [`tight-binding-volumetric-quantum`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-tight-binding-volumetric-quantum) | `…/TightBindingChain/VolumetricQuantum` | 228 | NRS angle `θ_NRS = arccos(1/C_Nava)`, `= 0` iff `N = 2, 3`, increasing, below `arccos(1/C_∞)`; `δ = C_Nava − 1`; volumetric quantum `δ(Nx)δ(Ny)δ(Nz)`, `= 0` iff an axis has 2 or 3 sites, strictly increasing on each axis | `D37b`, `D37e`, `D39` | #1735 |
+| [`uncertainty-cone`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-uncertainty-cone) | `…/CStarAlgebra/UncertaintyCone`, `…/TightBindingChain/UncertaintyCone` | 209 + 139 | `det A = v₀² − \|v⃗\|²`; the Gram matrix of two fluctuations has interval the Gram defect; Robertson–Schrödinger is the future cone, null iff saturated; as a Lorentz vector `⟪v, v⟫ₘ = defect` (`minkowski_gramVector`); the three axes of the cube are timelike from `4 × 4 × 4` (`minkowski_axisVector_cube_pos`) | `nrs3-uncertainty-cone` | master |
+| [`blackbody-rayleigh-jeans`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-blackbody-rayleigh-jeans) | `QuantumMechanics/Blackbody/RayleighJeans` | 210 | quantized and classical oscillators as canonical ensembles; Planck's `spectralRadiance` is `2ν²/c²` times the quantized mean energy and lies strictly below Rayleigh–Jeans | `nrs3-poincare` (1911) | master |
+| [`blackbody-quantum-necessity`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-blackbody-quantum-necessity) | `QuantumMechanics/Blackbody/QuantumNecessity` | 270 | Poincaré 1912: Planck's mean energy at every temperature forces the density of states to be `c · ∑ₙ δ_{nε}` | `nrs3-poincare` (1912) | Rayleigh–Jeans |
+| [`pauli-matrices-maximal`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-pauli-matrices-maximal) | `Relativity/PauliMatrices/Anticommuting` | 145 | at most three anticommuting `2 × 2` involutions; the Pauli matrices attain it | `nrs3-pauli-dirac` (1925) | master |
+| [`dirac-minimal-dimension`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-dirac-minimal-dimension) | `Relativity/Fermions/Dirac/MinimalDimension` | 171 | a Clifford family has even size, no `2 × 2` one exists, the minimum is four, attained by Physlib's `gamma` | `nrs3-pauli-dirac` (1928) | Pauli |
+| [`tight-binding-cut-bonds`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-tight-binding-cut-bonds) | `…/TightBindingChain/CutBonds` | 112 | the `(c + 1)(N − 1 − c) − 1` bonds of range at least two across a cut | `D16g` | master |
+| [`cosmology-de-sitter-horizon-entropy`](https://github.com/naype888-cloud/physlib/tree/feat-cosmology-de-sitter-horizon-entropy) | `Physlib/Cosmology/FLRW/DeSitterHorizon` | 160 | `r = c/\|H\|`, `S = 3π/(ℓ²Λ)`, `Λ = 3π/(ℓ²S)` solves both Friedmann equations | `nrs3-de-sitter` | master |
+| [`cosmology-varying-vacuum`](https://github.com/naype888-cloud/physlib/tree/feat-cosmology-varying-vacuum) | `Physlib/Cosmology/FLRW/VaryingVacuum` | 176 | energy balance `∂ₜρ + 3H(ρ + p/c²) = −∂ₜρ_Λ` for a time-dependent `Λ`, from the Friedmann equations | `nrs3-de-sitter` | master |
+| [`horizon-count`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-horizon-count) | `…/TightBindingChain/HorizonCount` | 193 | **`Λ = 3π/(ℓ² log W)`** from `W = Mᵏ` states on the bonds across a cut; both Friedmann equations; `Λ > 0`, decreasing, `→ 0`; `3π/(ℓ² M log 2) ≤ Λ` on distinct bonds | `nrs3-de-sitter` | cut bonds, de Sitter |
+| [`loop-quantum-gravity`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-loop-quantum-gravity) | `QuantumGravity/LoopQuantumGravity/AreaSpectrum`, `…/TightBindingChain/LinkPuncture` | 170 + 102 | LQG area spectrum and its lowest quantum; puncture entropy `∝` area; Bekenstein–Hawking iff `γ = log 2/(π√3)`; a bond across the cut is a puncture; at that `γ`, `Λ = 12π/A` with `A` the area of `k` lowest quanta | `nrs3-rovelli-lqg` | horizon count |
+| [`cut-cycles-curvature`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-cut-cycles-curvature) | `…/TightBindingChain/CutCycles`, `…/TightBindingChain/EntropyCurvature` | 226 + 102 | the chain is a tree; each bond across the cut closes one independent cycle; the entropy counts graphs; with the Gauss–Bonnet curvature of `Σ_g` (a definition: Mathlib has no Gauss–Bonnet), `S = (log M/2π)(4π − ∫K dA)` | `D16e`–`D16h`, `nrs3-defect-curvature` | horizon count |
+| [`landauer`](https://github.com/naype888-cloud/physlib/tree/feat-physlibalpha-landauer) | `StatisticalMechanics/Landauer`, `…/Carnot` | 224 + 144 | Landauer for a unitary on `ρ ⊗ γ`; Kelvin–Planck; Carnot `W ≤ (1 − T_c/T_h) Q_h` | `nrs3-landauer-carnot` | QuantumInfo |
+
+Next submissions, in order: the volumetric quantum (after #1735) and the uncertainty cone; then
+Poincaré (1912), Pauli (1925), Dirac (1928); then the chain cut bonds → horizon count → loop
+quantum gravity and curvature, with the cosmology files.
+
+## Order of submission (first series, done)
 
 At most three pull requests are open at a time; each wave goes up when the previous one is
 merged. The dependencies are those of the `import` lines.
