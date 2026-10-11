@@ -1,7 +1,11 @@
 # Conjetura del campo de incertidumbre
 
-*Borrador, 2026-10-11. Nota de trabajo: aquí no hay ningún enunciado nuevo en Lean. Cada
-afirmación cita la declaración que la prueba o dice qué falta.*
+*Borrador, 2026-10-11. Nota de trabajo: cada afirmación cita la declaración Lean que la prueba o
+dice qué falta. Lo nuevo de (G) y del nivel del campo está en el mosaico, en local.*
+
+**Alcance (§7).** La conjetura junta cinco piezas: el campo de incertidumbre, la gravedad
+cuántica de bucles, el espacio-tiempo de Minkowski, QFT y ΛCDM. El espacio-tiempo entra por el
+lado de la métrica.
 
 ## 0. En una línea
 
@@ -154,6 +158,21 @@ vale igual a toda escala.
 > estado de corriente máxima, como ya ocurre con (E) (D49t) y con la desigualdad de (T)
 > (`mandelstam_tamm`).
 
+### Espacio, tiempo y gravedad: qué es `𝒰_ω` y en qué dirección van las flechas
+
+- **El espacio** son las posiciones `x, y, z` del cubo. `𝒰_ω` vive sobre ellas: para cada estado
+  y cada par de observables que no conmutan, dice cuánto lleva el estado por encima del mínimo
+  de Robertson. Estado, espacio y `𝒰_ω` son tres piezas distintas.
+- **El tiempo** sale de la evolución. `𝒰_ω` marca su ritmo: el cono `mandelstam_tamm` acota la
+  rapidez de cambio por la varianza de la energía, con cociente `1 / C_Nava²` (lectura (T)).
+- **La gravedad**: en lo probado, la incertidumbre es la causa y la geometría el efecto.
+  - El corchete fija la entropía del corte, y la entropía fija `Λ` (`cutCosmologicalConstant`,
+    `AreaLaw.lean` §9).
+  - El defecto fija la curvatura (`defect_fixes_curvature`, con Gauss–Bonnet declarado).
+- **Abierto: la flecha de regreso.** Que la curvatura o `Λ` modifiquen `𝒰_ω` cerraría el ciclo
+  de Einstein (la materia curva el espacio, la curvatura mueve la materia). Hoy no hay ningún
+  teorema en esa dirección.
+
 ## 5. Qué falta, en orden
 
 1. **Observables hermitianos, conmutantes y no conmutantes: ya están en el teorema.**
@@ -223,3 +242,22 @@ lemma uncertaintyField_eq (ω : 𝓢[ℂ, A]) (a b : Observable A) :
 --   cutEntropy c = F (uncertaintyField ω (bondObservable c ·) (bondObservable c ·))
 -- for an explicit `F`, with no counting premise.
 ```
+
+## 7. El alcance: cinco piezas, una sola conjetura
+
+La conjetura completa junta en un solo objeto, `𝒰_ω`, la gravedad cuántica de bucles, el
+espacio-tiempo de Minkowski, QFT y ΛCDM. El espacio-tiempo entra **por el lado de la métrica**:
+el intervalo de Minkowski es el defecto de Gram de la incertidumbre (van der Waerden 1929).
+
+| Pieza | Lo que ya está en el git | Costura que falta |
+|---|---|---|
+| **Campo de incertidumbre** | `𝒰_ω = centeredGramDefect + Cov²` (`robertson_gap_decomposition`); (E) y (T) fusionados; (G) en el cubo (`AreaLaw.lean` §6–9) | flecha de regreso gravedad → `𝒰_ω` (§4) |
+| **Minkowski (métrica)** | `nrs3-uncertainty-cone`: la incertidumbre del par es un cuadrivector; `interval_eq_gramDefectC` (intervalo = defecto de Gram), `interval_gram_boost` (cambio de unidades = boost), Robertson–Schrödinger = cono de luz, el cuanto de NRS³ deja el vector dentro del cono | escribir el `𝒰_ω` del cubo como intervalo, eje por eje, y ver `𝒰_ω` como la métrica |
+| **Gravedad cuántica de bucles** | `nrs3-rovelli-lqg`: `areaSpectrum`, `cutEntropy_eq_punctureEntropy` (`k` cuantos en el corte = `k` punciones de espín `j`, con `M = 2j + 1`), `bekensteinHawking_iff_immirzi` (`γ = log 2 / (π√3)` para espín `1/2`) | en el cubo cada paso es abierto o cerrado, `M = 2`, o sea **espín `1/2`**: falta el teorema "los `dy·dz` pasos de la cara son `dy·dz` punciones de espín `1/2`", que conecta `AreaLaw` con el valor de Immirzi |
+| **QFT** | `FieldLevel.lean` (mosaico, a15f8b5): `dΓ` respeta corchetes en todo sector; el sector de una excitación es el cubo; `𝒰` del campo = `𝒰` del cubo | estructura ⋆ (TODO de Physlib); sectores `n ≥ 2` |
+| **ΛCDM** | `nrs3-de-sitter` (`Λ = 3π/(ℓ² S)`, ambas Friedmann); Physlib FLRW (equipo de Joseph, Kevorkian); `nrs3-dark` (`1 − Ω_b`, el interior del cuanto volumétrico) | unir el `Λ` del corte del cubo con el sector oscuro `1 − Ω_b` y con la evolución FLRW |
+
+Orden de cierre sugerido: (1) punciones de espín `1/2` en el cubo, que es lo más corto porque
+ambas mitades ya están probadas; (2) `𝒰_ω` como intervalo de Minkowski en el cubo; (3) `Λ` del
+corte con FLRW y `1 − Ω_b`; (4) la flecha de regreso.
+
