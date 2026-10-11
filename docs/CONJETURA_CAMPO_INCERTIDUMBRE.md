@@ -173,6 +173,27 @@ vale igual a toda escala.
   de Einstein (la materia curva el espacio, la curvatura mueve la materia). Hoy no hay ningún
   teorema en esa dirección.
 
+### El viaje: el evento, la luz, el camino de vuelta
+
+En palabras del autor (2026-10-11): espacio-tiempo de Minkowski cuantizado con causalidad. El
+evento inicia, sucede y termina; viaja por las posiciones que portan la luz, medimos su espectro
+y por eso es real. El camino de regreso no es el camino inverso, en el sentido de que no te
+regresa nada: la entropía del viaje no depende de la dirección del recorrido. El espacio existe,
+la red puede existir según a dónde te muevas, pero siempre dentro del campo de incertidumbre, que
+separa lo que medimos y vemos de lo que se nos escapa.
+
+| Afirmación | Lean |
+|---|---|
+| el evento tiene inicio y frente: a `r` pasos no llega nada antes del paso `r`, y en el paso `r` sí | `event_window` (`nrs3-landauer-carnot/LightCone.lean`) |
+| la luz resuelve todo menos el cuanto volumétrico `𝒱 > 0`; lo resuelto es lo medido, `Ω_b` | `nrs3_dark` (`nrs3-dark`) |
+| la red de pasos abiertos la decide el movimiento (la coherencia del estado), no una medición | `openSteps`, `cutPatterns_eq` (`AreaLaw.lean` §8) |
+| siempre dentro del cono: el cuadrivector de incertidumbre queda dentro del cono de Minkowski | `nrs3-uncertainty-cone` |
+| un paso está abierto de vuelta si y solo si lo está de ida: la coherencia no tiene dirección | `openBackSteps_eq` (`AreaLaw.lean` §10) |
+| la entropía del corte es la misma en las dos direcciones | `backEntropy_eq_cutEntropy` |
+| ida y vuelta suman `2 dy dz log 2 > 0`: el regreso no deshace nada | `roundTripEntropy_eq`, `roundTripEntropy_pos` |
+
+Mosaico `nrs3-defect-curvature`, commit `cdb47be`, local. Axiomas estándar.
+
 ## 5. Qué falta, en orden
 
 1. **Observables hermitianos, conmutantes y no conmutantes: ya están en el teorema.**
