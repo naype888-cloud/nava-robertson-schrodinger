@@ -182,10 +182,28 @@ vale igual a toda escala.
    (`(dy ŷ) × (dz ẑ) = dy·dz·x̂`, con `crossProduct` de Mathlib) y `faceArea_zero` (la longitud de
    la cara es el número de pasos que ve el corchete). Axiomas estándar, sin warnings. El `log 2`
    por paso también sale del corchete (§8, ver §3(G)).
-5. **El nivel del campo cuantizado.** `LadderSystem.toGlHomLinear_lie` (Physlib) es la segunda
-   cuantización: `M ↦ Σ M_ij a†_i a_j` respeta los conmutadores, y el sector de una excitación
-   (`vacuumSpanSymEquiv`, `n = 1`) es la cadena. Falta la estructura ⋆ (que `a†` sea el adjunto de
-   `a`) y un estado de vacío, para poder hablar de `Var` al nivel del campo.
+5. **El nivel del campo cuantizado: el sector de una excitación es el cubo (local, 2026-10-11).**
+   En `nrs3-defect-curvature/NRS3DefectCurvature/FieldLevel.lean`, cada posición `p` del cubo es
+   un modo de `LadderSystem` (Physlib) y `dΓ M = Σ M_pq a†_p a_q` es `toGlHomLinear` leído en las
+   posiciones. Probado:
+   - `secondQuant_lie`: `dΓ ⁅M, N⁆ = ⁅dΓ M, dΓ N⁆` en todo `V`, es decir, en todos los sectores
+     `n`. En el cubo, `lie_secondQuant_cube`: `⁅dΓ T3, dΓ P_x⁆ = dΓ [T3, P_x]`.
+   - `secondQuant_oneExcitation`: `dΓ M (Σ ψ_p a†_p Ω) = Σ (M ψ)_p a†_p Ω`.
+   - `form_oneExcitation`, `uncertainty_oneExcitation`: con la estructura ⋆, `𝒰` del campo es
+     `𝒰` del cubo.
+   - `exists_field_pattern`: cada patrón de pasos abiertos es un estado del campo, unitario,
+     y el corchete del campo lee el del cubo. Por eso `S = dy · dz · log 2` y `Λ` son los mismos
+     al nivel del campo.
+
+   La estructura ⋆ entra como hipótesis declarada, `IsStar`: una forma sesquilineal `β` con
+   `β(a†x, y) = β(x, a y)` y `β(Ω, Ω) = 1`. Physlib tiene la adjunción de `a`, `a†` como TODO
+   abierto en `HarmonicOscillator/LadderOperators.lean`, y ese oscilador vive en Schwartz, que no
+   es `InnerProductSpace`; por eso se usa una forma y no un producto interior. Cuando Physlib
+   cierre ese TODO, `IsStar` se instancia con el L². Axiomas estándar (43 en
+   `Verification/Axioms.lean`). Commit a15f8b5.
+
+   **Queda abierto:** los sectores `n ≥ 2`. Ahí el corchete ya está (`secondQuant_lie`), pero
+   `Var` es de muchos cuerpos: falta calcular `𝒰` en `Sym^n` (`vacuumSpanSymEquiv`).
 
 ## 6. Forma en Lean (esquema, sin compilar)
 
