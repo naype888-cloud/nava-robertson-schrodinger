@@ -7,8 +7,8 @@
 <meta name="description" content="Every box d_x × d_y × d_z has its own star of uncertainty. Change the box, watch the star deform in 3D, and let transport move the maximal current state of the cube through the lattice.">
 <style>
   :root {
-    --bg: #fcfcfb; --panel: #ffffff; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8985;
-    --grid: #e4e3df; --blue: #2a78d6; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a; --violet: #7c5cd6;
+    --bg: #f4f3ef; --panel: #ffffff; --ink: #0b0b0b; --ink2: #3b3a37; --muted: #67665f;
+    --grid: #c9c7c0; --blue: #1f63b8; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a; --violet: #7c5cd6;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -82,18 +82,28 @@
   .note { color: var(--ink2); font-size: 0.88rem; margin-top: 14px; max-width: 900px; }
   code { font-size: 0.86em; }
   a { color: var(--blue); }
+  .zoombtn { position: absolute; right: 8px; bottom: 8px; z-index: 2; font: inherit; font-size: 0.8rem;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--grid); background: var(--panel);
+    color: var(--ink); cursor: pointer; opacity: 0.85; }
+  .zoombtn:hover { opacity: 1; }
+  .card.full { position: fixed; inset: 10px; z-index: 50; overflow: auto; margin: 0;
+    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--bg) 85%, transparent); }
+  .card.full canvas { height: calc(100vh - 150px); aspect-ratio: auto; }
+  .card.full .octagrid canvas { height: calc(100vh - 260px); }
+  .card.full .sub { display: none; }
 </style>
 </head>
 <body>
 <main>
   <button class="theme" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  <a class="theme" style="margin-right:8px;text-decoration:none" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
   <h1>NRS³ — every box has its star</h1>
   <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
     pair transport <code>T</code> and position <code>P</code>. At the maximal current state of
     the cube, the product of the maximal current states of the axes, their fluctuations open the angle
     <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
     4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. It runs on its own:
-    every 5 s a new random box, 4 to 200 sites per axis, with transport moving Ψ and the view turning.
+    every 5 s a new random box, 4 to 25 sites per axis, with transport moving Ψ and the view turning.
     Change the box and the star deforms. Drag either panel to turn both.</p>
 
   <div class="bar">
@@ -111,9 +121,9 @@
     <button class="act" type="button" id="reset">t = 0</button>
   </div>
   <div class="sliders">
-    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="200" value="4"><b id="vx">4</b></label>
-    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="200" value="7"><b id="vy">7</b></label>
-    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="200" value="10"><b id="vz">10</b></label>
+    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="25" value="4"><b id="vx">4</b></label>
+    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="25" value="7"><b id="vy">7</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="25" value="10"><b id="vz">10</b></label>
     <label class="sl">t<input type="range" id="tt" min="0" max="40" step="0.05" value="0"><b id="vt">0.0</b></label>
   </div>
 
@@ -130,7 +140,7 @@
     <span class="hint"><label><input type="checkbox" id="showband" checked> show the band in the star</label></span>
     <p class="sub">At the maximal current state of the cube every axis with 4 or more sites opens between θ<sub>NRS</sub>(4) and arccos(1/C<sub>∞</sub>), never on the
       ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at the maximal current state of the cube · ● θ at Ψ(t).
-      The page runs on its own: every 5 s a new random box, 4 to 200 sites per axis, with transport on. Ψ(t) starts at the quantum
+      The page runs on its own: every 5 s a new random box, 4 to 25 sites per axis, with transport on. Ψ(t) starts at the quantum
       and leaves it; the band stays. Press Tour to stop on a box, Transport to pause.</p>
     <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
 

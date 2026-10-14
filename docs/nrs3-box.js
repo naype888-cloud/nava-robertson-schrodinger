@@ -71,14 +71,14 @@
   }
 
   // ---------- state ----------
-  // the quantum needs 4 or more sites on every axis: Random and Tour stay in 4..200, log-uniform so small
-  // and large boxes both appear
-  const DMAX = 200;
-  const randomBox = () => [0, 0, 0].map(() => Math.round(4 * (DMAX / 4) ** Math.random()));
+  // the quantum needs 4 or more sites on every axis: Random and Tour stay in 4..25
+  const DMAX = 25;
+  const randomBox = () => [0, 0, 0].map(() => 4 + Math.floor(Math.random() * (DMAX - 3)));
   // by default the page runs on its own: a new random box every 5 s, transport on, rotation on
   let showBand = true, box = randomBox(), t = 0, playing = true, touring = true, tourNext = 0;
   const TOUR_MS = 5000;
   let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
+  const ZOOM = { box: 1, star: 1, octa: 1 };  // wheel, pinch or double click on the 3D panels
   let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
   const low = (d) => d < 4;
   const family = (b) => { const k = new Set(b).size; return k === 1 ? "regular" : k === 2 ? "two" : "distinct"; };
@@ -114,7 +114,7 @@
   }
 
   function drawBox() {
-    const [g, w, h] = setup($("box")), cx = w / 2, cy = h / 2 + 6, S = Math.min(w, h) * 0.36;
+    const [g, w, h] = setup($("box")), cx = w / 2, cy = h / 2 + 6, S = Math.min(w, h) * 0.36 * ZOOM.box;
     const A = box.map(axis), V = A.map((a) => evolve(a, t));
     const m = Math.max(...box), s = 2 / (m - 1 || 1);
     const prob = V.map((v) => Array.from(v.re, (r, j) => r * r + v.im[j] * v.im[j]));
@@ -129,8 +129,8 @@
       const p = proj(W(C[i]), cx, cy, S), q = proj(W(C[j]), cx, cy, S);
       g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
     });
-    // large boxes: draw an even sample of at most 24 sites per axis
-    const idx = box.map((d) => { const n = Math.min(d, 24); return Array.from({ length: n }, (_, k) => Math.floor((k + 0.5) * d / n)); });
+    // draw at most 25 sites per axis
+    const idx = box.map((d) => { const n = Math.min(d, 25); return Array.from({ length: n }, (_, k) => Math.floor((k + 0.5) * d / n)); });
     const pts = [];
     for (const i of idx[0]) for (const j of idx[1]) for (const k of idx[2]) {
       const pr = prob[0][i] * prob[1][j] * prob[2][k] / pmax;
@@ -145,7 +145,7 @@
         g.fillStyle = css("--grid"); g.fillRect(P[0] - 0.8, P[1] - 0.8, 1.6, 1.6); continue;
       }
       const hue = ((ph * 180 / Math.PI) % 360 + 360) % 360;
-      g.fillStyle = `hsla(${hue}, 70%, ${dark ? 62 : 50}%, ${0.25 + 0.6 * Math.sqrt(pr)})`;
+      g.fillStyle = `hsla(${hue}, ${dark ? 70 : 85}%, ${dark ? 62 : 42}%, ${(dark ? 0.25 : 0.4) + 0.6 * Math.sqrt(pr)})`;
       g.beginPath(); g.arc(P[0], P[1], Math.max(1.2, rmax * Math.sqrt(pr) * P[3]), 0, 2 * Math.PI); g.fill();
     }
     g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
@@ -171,7 +171,7 @@
     return out;
   }
   function drawStar(st) {
-    const [g, w, h] = setup($("star")), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.5;
+    const [g, w, h] = setup($("star")), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.5 * ZOOM.star;
     const famCol = css(FAM[family(box)]), col = box.some(low) ? css("--red") : famCol;
     drawAxes(g, cx, cy, S, 0.95);
     const P = (v) => proj(W(v), cx, cy, S);
@@ -354,7 +354,7 @@
     g.setLineDash([]);
   }
   function drawOcta() {
-    const [g, w, h] = setup($("octa")), cx = w / 2, cy = h / 2, S = Math.min(w, h) * 0.36;
+    const [g, w, h] = setup($("octa")), cx = w / 2, cy = h / 2, S = Math.min(w, h) * 0.36 * ZOOM.octa;
     const target = box.map((d) => deltaOf(d) / D_INF);
     if (!octaCur) octaCur = target.slice();
     octaCur = octaCur.map((v, i) => v + (target[i] - v) * 0.12);
@@ -483,11 +483,48 @@
     });
     c.addEventListener("pointerup", () => { drag = null; });
   }
+  // theme: dark by default (the lattice reads better on dark), the choice is remembered
+  const themeLabel = () => { $("theme").textContent = document.documentElement.dataset.theme === "dark" ? "☀ Light" : "☾ Dark"; };
+  try { document.documentElement.dataset.theme = localStorage.getItem("nrs3-theme") || "dark"; }
+  catch (e) { document.documentElement.dataset.theme = "dark"; }
+  themeLabel();
   $("theme").addEventListener("click", () => {
-    const r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
-    r.dataset.theme = (r.dataset.theme || (dark ? "dark" : "light")) === "dark" ? "light" : "dark";
+    const r = document.documentElement;
+    r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem("nrs3-theme", r.dataset.theme); } catch (e) { /* private mode */ }
+    themeLabel();
   });
-  const SPECTRUM = Array.from({ length: DMAX - 1 }, (_, k) => ({ d: k + 2, th: thetaClosed(k + 2) }));
+  // zoom: every card opens full screen (⤢, Esc closes); the 3D panels also zoom with wheel or pinch
+  document.querySelectorAll(".card").forEach((card) => {
+    const b = document.createElement("button");
+    b.className = "zoombtn"; b.type = "button"; b.textContent = "⤢ zoom"; b.setAttribute("aria-label", "Open this panel full screen");
+    b.addEventListener("click", () => {
+      const on = !card.classList.contains("full");
+      document.querySelectorAll(".card.full").forEach((c) => { c.classList.remove("full"); c.querySelector(".zoombtn").textContent = "⤢ zoom"; });
+      if (on) { card.classList.add("full"); b.textContent = "✕ close"; }
+    });
+    card.appendChild(b);
+  });
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape") document.querySelectorAll(".card.full").forEach((c) => { c.classList.remove("full"); c.querySelector(".zoombtn").textContent = "⤢ zoom"; });
+  });
+  for (const id of Object.keys(ZOOM)) {
+    const c = $(id), pts = new Map();
+    let pinch0 = 0, zoom0 = 1;
+    const clamp = (z) => Math.min(6, Math.max(0.5, z));
+    c.addEventListener("wheel", (e) => { e.preventDefault(); ZOOM[id] = clamp(ZOOM[id] * Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
+    c.addEventListener("dblclick", () => { ZOOM[id] = 1; });
+    c.addEventListener("pointerdown", (e) => { pts.set(e.pointerId, [e.clientX, e.clientY]);
+      if (pts.size === 2) { const [p, q] = [...pts.values()]; pinch0 = Math.hypot(p[0] - q[0], p[1] - q[1]); zoom0 = ZOOM[id]; } });
+    c.addEventListener("pointermove", (e) => {
+      if (!pts.has(e.pointerId)) return;
+      pts.set(e.pointerId, [e.clientX, e.clientY]);
+      if (pts.size === 2 && pinch0) { const [p, q] = [...pts.values()]; ZOOM[id] = clamp(zoom0 * Math.hypot(p[0] - q[0], p[1] - q[1]) / pinch0); }
+    });
+    const up = (e) => { pts.delete(e.pointerId); if (pts.size < 2) pinch0 = 0; };
+    c.addEventListener("pointerup", up); c.addEventListener("pointercancel", up);
+  }
+  const SPECTRUM = Array.from({ length: 199 }, (_, k) => ({ d: k + 2, th: thetaClosed(k + 2) }));
   $("showband").addEventListener("change", (e) => { showBand = e.target.checked; });
   $("tour").setAttribute("aria-pressed", "true");
   $("play").setAttribute("aria-pressed", "true"); $("play").textContent = "❚❚ Transport";
