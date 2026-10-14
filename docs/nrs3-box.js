@@ -28,6 +28,13 @@
     a.theta0 = stats(a, evolve(a, 0)).theta;
     return (cache[d] = a);
   }
+  // θ_NRS(d) = arccos(1/C) with the closed form of C² (CNava_sq_eq); equals axis(d).theta0
+  function thetaClosed(d) {
+    if (d <= 3) return 0;
+    const th = Math.PI / (d + 1);
+    const C2 = 2 * (d - 1) / ((d + 1) * Math.cos(th) ** 2) * (((d + 1) ** 2 + 2) / 6 * Math.sin(th) ** 2 - 1);
+    return Math.acos(1 / Math.sqrt(C2));
+  }
   function evolve(a, t) {
     const re = new Float64Array(a.d), im = new Float64Array(a.d);
     for (let k = 0; k < a.d; k++) {
@@ -64,13 +71,15 @@
   }
 
   // ---------- state ----------
-  let showBand = true, box = [4, 7, 10], t = 0, playing = false, touring = false, tourIdx = 0, tourNext = 0;
+  // the quantum needs 4 or more sites on every axis: Random and Tour stay in 4..200, log-uniform so small
+  // and large boxes both appear
+  const DMAX = 200;
+  const randomBox = () => [0, 0, 0].map(() => Math.round(4 * (DMAX / 4) ** Math.random()));
+  // by default the page runs on its own: a new random box every 5 s, transport on, rotation on
+  let showBand = true, box = randomBox(), t = 0, playing = true, touring = true, tourNext = 0;
+  const TOUR_MS = 5000;
   let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
   let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
-  const TOUR = [[4, 4, 4], [4, 4, 10], [4, 10, 10], [10, 10, 10], [4, 7, 10], [16, 5, 8],
-                [5, 9, 12], [6, 6, 15], [12, 6, 4], [16, 16, 16], [9, 4, 13], [4, 4, 4]];
-  // the quantum needs 4 or more sites on every axis: Random and Tour stay in 4..16
-  const randomBox = () => [0, 0, 0].map(() => 4 + Math.floor(Math.random() * 13));
   const low = (d) => d < 4;
   const family = (b) => { const k = new Set(b).size; return k === 1 ? "regular" : k === 2 ? "two" : "distinct"; };
 
@@ -120,15 +129,17 @@
       const p = proj(W(C[i]), cx, cy, S), q = proj(W(C[j]), cx, cy, S);
       g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
     });
+    // large boxes: draw an even sample of at most 24 sites per axis
+    const idx = box.map((d) => { const n = Math.min(d, 24); return Array.from({ length: n }, (_, k) => Math.floor((k + 0.5) * d / n)); });
     const pts = [];
-    for (let i = 0; i < box[0]; i++) for (let j = 0; j < box[1]; j++) for (let k = 0; k < box[2]; k++) {
+    for (const i of idx[0]) for (const j of idx[1]) for (const k of idx[2]) {
       const pr = prob[0][i] * prob[1][j] * prob[2][k] / pmax;
       const P = proj(W([i * s - hx, j * s - hy, k * s - hz]), cx, cy, S);
       pts.push([P, pr, phase[0][i] + phase[1][j] + phase[2][k]]);
     }
     pts.sort((a, b) => b[0][2] - a[0][2]);
     const dark = css("--bg").startsWith("#0") || css("--bg").startsWith("#1");
-    const rmax = Math.max(2, S * s * 0.4);
+    const rmax = Math.max(2, S * 2 / (Math.max(...idx.map((v) => v.length)) - 1 || 1) * 0.4);
     for (const [P, pr, ph] of pts) {
       if (pr < 0.004) {
         g.fillStyle = css("--grid"); g.fillRect(P[0] - 0.8, P[1] - 0.8, 1.6, 1.6); continue;
@@ -238,11 +249,12 @@
       g.setLineDash([2, 3]); g.beginPath(); g.moveTo(X(0.9), T); g.lineTo(X(0.9), B); g.stroke(); g.setLineDash([]);
       // title
       g.font = "600 12.5px system-ui, sans-serif"; g.fillStyle = bad ? css("--red") : css("--ink");
-      const title = bad ? `✕ ${"xyz"[a]}: ${d} sites · Ϙ(${d}) empty, no quantum` :
-        `${"xyz"[a]}: ${d} sites · v* = ${data.vstar.toFixed(4)}${d === 4 ? " (exact)" : " (numerical)"}`;
+      const title = bad ? `✕ ${"xyz"[a]}: ${d} sites · Ϙ(${d}) empty, no quantum` : data ?
+        `${"xyz"[a]}: ${d} sites · v* = ${data.vstar.toFixed(4)}${d === 4 ? " (exact)" : " (numerical)"}` :
+        `${"xyz"[a]}: ${d} sites · v* tabulated up to d = 16`;
       g.fillText(title, L, T - 9);
       g.font = "11px system-ui, sans-serif";
-      if (!bad) {
+      if (!bad && data) {
         // minimum uncertainty possible up to v*, the band, the envelope and the quantum
         g.strokeStyle = css("--ink2"); g.lineWidth = 3; g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(data.vstar), Y(0)); g.stroke();
         g.fillStyle = css("--ink2"); g.fillText("θ = 0 possible", X(0.2), Y(0) - 6);
@@ -255,8 +267,14 @@
         g.lineWidth = 2; g.beginPath(); g.arc(X(1), Y(q), 6, 0, 2 * Math.PI); g.stroke();
         g.fillText(`quantum ${q.toFixed(2)}°`, X(1) - 92, Y(q) - 9);
       }
+      if (!bad && !data) {
+        const q = deg(ax.theta0);
+        g.strokeStyle = css("--blue"); g.fillStyle = css("--blue"); g.lineWidth = 2;
+        g.beginPath(); g.arc(X(1), Y(q), 6, 0, 2 * Math.PI); g.stroke();
+        g.fillText(`quantum ${q.toFixed(2)}°`, X(1) - 92, Y(q) - 9);
+      }
       // the path of Ψ(t) on this axis
-      const n = Math.min(600, Math.ceil(t / 0.05)), pts = [];
+      const n = Math.min(600, Math.ceil(t / 0.05), 20 + Math.floor(4e5 / (d * d))), pts = [];
       for (let k = 0; k <= n; k++) {
         const tk = n ? t * k / n : 0, vk = evolve(ax, tk);
         pts.push([Math.abs(speedOf(ax, vk)), deg(stats(ax, vk).theta)]);
@@ -302,7 +320,7 @@
   }
   function setBox(b, animate = true) {
     if (b.join(",") !== box.join(",")) {
-      t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; stopTransport();
+      t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; if (!touring) stopTransport();
     }
     box = b.slice();
     ["dx", "dy", "dz"].forEach((id, i) => {
@@ -321,7 +339,7 @@
 
   // ---------- the octahedron of the quantum (D25, D37e) ----------
   const C_INF = Math.sqrt(Math.PI ** 2 / 3 - 2), D_INF = C_INF - 1;
-  const deltaOf = (d) => { const th = axis(d).theta0; return th > 1e-9 ? 1 / Math.cos(th) - 1 : 0; };
+  const deltaOf = (d) => { const th = thetaClosed(d); return th > 1e-9 ? 1 / Math.cos(th) - 1 : 0; };
   let octaCur = null;
   const OCTA_FACES = [];
   for (const sx of [1, -1]) for (const sy of [1, -1]) for (const sz of [1, -1]) OCTA_FACES.push([[sx, 0, 0], [0, sy, 0], [0, 0, sz]]);
@@ -362,15 +380,15 @@
   }
   function drawDelta() {
     const [g, w, h] = setup($("delta"));
-    const L = 52, R = 52, T = 14, B = 34, Wd = w - L - R, H = h - T - B, DMAX = 64;
-    const X = (d) => L + (Math.log(d) - Math.log(2)) / (Math.log(DMAX) - Math.log(2)) * Wd * 0.86;
+    const L = 52, R = 52, T = 14, B = 34, Wd = w - L - R, H = h - T - B, DLOG = 256;
+    const X = (d) => L + (Math.log(d) - Math.log(2)) / (Math.log(DLOG) - Math.log(2)) * Wd * 0.86;
     const XI = L + Wd * 0.97, Y = (v) => T + (1 - v / 0.15) * H;
     g.font = "11px system-ui, sans-serif"; g.lineWidth = 1;
     g.strokeStyle = css("--grid"); g.fillStyle = css("--muted");
     for (let v = 0; v <= 0.1501; v += 0.025) {
       g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(L + Wd, Y(v)); g.stroke(); g.fillText(v.toFixed(3), 6, Y(v) + 4);
     }
-    for (const d of [2, 4, 8, 16, 32, 64]) {
+    for (const d of [2, 4, 8, 16, 32, 64, 128, 256]) {
       g.beginPath(); g.moveTo(X(d), T); g.lineTo(X(d), T + H); g.stroke(); g.fillText(String(d), X(d) - 5, T + H + 16);
     }
     g.fillText("∞", XI - 4, T + H + 16);
@@ -399,7 +417,7 @@
     // the three axes of the box
     const seen = {};
     box.forEach((d, i) => {
-      const v = deltaOf(d), x = X(Math.min(d, DMAX)), y = Y(v), n = (seen[d] = (seen[d] || 0) + 1) - 1;
+      const v = deltaOf(d), x = X(Math.min(d, DLOG)), y = Y(v), n = (seen[d] = (seen[d] || 0) + 1) - 1;
       g.fillStyle = low(d) ? css("--red") : css(FAM[family(box)]);
       g.beginPath(); g.arc(x, y, 5.5, 0, 2 * Math.PI); g.fill();
       g.font = "600 12px system-ui, sans-serif";
@@ -418,8 +436,8 @@
     if (autoSpin && ts - lastInteract > 2500) yaw += dt * 0.25;
     if (playing) { t += dt * 1.6; if (t > 40) t = 0; $("tt").value = t; $("vt").textContent = t.toFixed(1); }
     if (touring && ts > tourNext) {
-      tourIdx = (tourIdx + 1) % TOUR.length;
-      setBox(tourIdx % 2 ? randomBox() : TOUR[tourIdx]); tourNext = ts + 2600;
+      if (tourNext) setBox(randomBox());
+      tourNext = ts + TOUR_MS;
     }
     const st = currentStats();
     if (tipsTo) {
@@ -447,10 +465,10 @@
     touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(randomBox());
   });
   $("tour").addEventListener("click", (e) => {
-    touring = !touring; if (touring) stopTransport(); e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
+    touring = !touring; e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
   });
   $("play").addEventListener("click", (e) => {
-    playing = !playing; if (playing) { touring = false; $("tour").setAttribute("aria-pressed", "false"); } e.target.setAttribute("aria-pressed", String(playing));
+    playing = !playing; e.target.setAttribute("aria-pressed", String(playing));
     e.target.textContent = playing ? "❚❚ Transport" : "▶ Transport";
   });
   $("reset").addEventListener("click", () => { t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; retarget(true); });
@@ -469,8 +487,10 @@
     const r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
     r.dataset.theme = (r.dataset.theme || (dark ? "dark" : "light")) === "dark" ? "light" : "dark";
   });
-  const SPECTRUM = Array.from({ length: 63 }, (_, k) => ({ d: k + 2, th: axis(k + 2).theta0 }));
+  const SPECTRUM = Array.from({ length: DMAX - 1 }, (_, k) => ({ d: k + 2, th: thetaClosed(k + 2) }));
   $("showband").addEventListener("change", (e) => { showBand = e.target.checked; });
+  $("tour").setAttribute("aria-pressed", "true");
+  $("play").setAttribute("aria-pressed", "true"); $("play").textContent = "❚❚ Transport";
   setBox(box, false);
   requestAnimationFrame(frame);
 })();

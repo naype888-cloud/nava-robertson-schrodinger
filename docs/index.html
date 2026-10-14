@@ -92,8 +92,9 @@
     pair transport <code>T</code> and position <code>P</code>. At the maximal current state of
     the cube, the product of the maximal current states of the axes, their fluctuations open the angle
     <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
-    4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. Change the box and the
-    star deforms; press ▶ and transport moves Ψ through the lattice. Drag either panel to turn both.</p>
+    4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. It runs on its own:
+    every 5 s a new random box, 4 to 200 sites per axis, with transport moving Ψ and the view turning.
+    Change the box and the star deforms. Drag either panel to turn both.</p>
 
   <div class="bar">
     <div class="chips" role="group" aria-label="Boxes">
@@ -110,9 +111,9 @@
     <button class="act" type="button" id="reset">t = 0</button>
   </div>
   <div class="sliders">
-    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="16" value="4"><b id="vx">4</b></label>
-    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="16" value="7"><b id="vy">7</b></label>
-    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="16" value="10"><b id="vz">10</b></label>
+    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="200" value="4"><b id="vx">4</b></label>
+    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="200" value="7"><b id="vy">7</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="200" value="10"><b id="vz">10</b></label>
     <label class="sl">t<input type="range" id="tt" min="0" max="40" step="0.05" value="0"><b id="vt">0.0</b></label>
   </div>
 
@@ -129,7 +130,8 @@
     <span class="hint"><label><input type="checkbox" id="showband" checked> show the band in the star</label></span>
     <p class="sub">At the maximal current state of the cube every axis with 4 or more sites opens between θ<sub>NRS</sub>(4) and arccos(1/C<sub>∞</sub>), never on the
       ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at the maximal current state of the cube · ● θ at Ψ(t).
-      Press Tour or Random to see it hold; press Transport to see Ψ(t) leave it.</p>
+      The page runs on its own: every 5 s a new random box, 4 to 200 sites per axis, with transport on. Ψ(t) starts at the quantum
+      and leaves it; the band stays. Press Tour to stop on a box, Transport to pause.</p>
     <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
 
   <div class="card bandcard"><h2>The octahedron of the quantum (D25, D37e)</h2>
