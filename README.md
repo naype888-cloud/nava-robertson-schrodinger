@@ -21,7 +21,7 @@ is the reference; the port notes are in [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PO
 carries the pair `(T°, P₃)` of the closed axis. This is the framework that fits the observational
 reading best, and the results below are stated on it.
 
-| Statement | Lean (`nrs3-tritoro`) |
+| Statement | Lean ([`nrs3-tritoro`](https://github.com/naype888-cloud/nrs3-tritoro)) |
 |---|---|
 | Robertson 1934 on the torus, every state | `Torus.robertson_det_torus` |
 | NRS³ on each axis: tension > 1 ⇒ defect > 0, every state, entangled or not | `Torus.gramDefect_pos` |
@@ -40,8 +40,10 @@ The measured baryon fraction `Ω_b` is a datum, like `c`; the dark share is read
 (`BaryonWindow`). All statements are theorems over Mathlib; the physical reading is a declared
 bridge, stated and not proved.
 
-*Status of the Lean:* `nrs3-tritoro` is built locally (standard axioms only) on top of `nrs3-hopf`;
-it is not published yet, so the names above are not yet linkable.
+*The Lean:* [`nrs3-tritoro`](https://github.com/naype888-cloud/nrs3-tritoro) (standard axioms only), built on
+[`nrs3-hopf`](https://github.com/naype888-cloud/nrs3-hopf). Pages on `T³`:
+[de Sitter](https://naype888-cloud.github.io/nrs3-de-sitter/t3.html) ·
+[SL(2, ℂ) and the cone](https://naype888-cloud.github.io/nrs3-uncertainty-cone/lorentz-t3.html).
 
 ## The open cube, kept separate
 
