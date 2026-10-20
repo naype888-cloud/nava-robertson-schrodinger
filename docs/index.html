@@ -105,7 +105,7 @@
     <code>cos²θ</code> is the light share, <code>1 − cos²θ</code> the dark share. With 3 positions per axis, the canonical
     <code>T³</code> of Lean, every axis resolves <b>4/5</b> and keeps <b>1/5</b> dark, <code>θ = arccos(2/√5) = 26.57°</code>, and
     Robertson 1934 reads <b><code>det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|</code></b>. The open cube with 3 positions keeps nothing
-    dark: closing the axis is what leaves the dark share. It runs on its own: every 5 s a new random torus, 3 to 25 positions
+    dark: closing the axis is what leaves the dark share. It runs on its own: the transport bar fills once, then a new random torus, 3 to 25 positions
     per axis, with transport moving Ψ and the view turning. Drag either panel to turn both.</p>
 
   <div class="bar">
@@ -142,8 +142,8 @@
     <p class="sub">At the maximal current state every closed axis opens an angle θ, never zero: the dark share is positive.
       With 3 positions it is exactly <code>arccos(2/√5) = 26.57°</code> (light 4/5, Lean); with 4 or more positions it is
       computed here, between about 45° and 50°: the browser finds <code>c</code> as the top eigenvector of
-      <code>K = i[T°, P]</code> (Jacobi diagonalization, double precision) and reads the angle from it. ○ θ at <code>c</code> · ● θ at Ψ(t). The page runs on its own: every 5 s a new
-      random torus with transport on. Press Tour to stop on a torus, Transport to pause.</p>
+      <code>K = i[T°, P]</code> (Jacobi diagonalization, double precision) and reads the angle from it. ○ θ at <code>c</code> · ● θ at Ψ(t). The page runs on its own: the transport bar fills once, then a new
+      random torus, and the bar fills again. Press Tour to stop on a torus, Transport to pause.</p>
     <canvas id="band" aria-label="The angle at the maximal current state, one ruler per axis"></canvas></div>
 
   <div class="card bandcard"><h2>The octahedron of δ</h2>
@@ -202,7 +202,7 @@
     page are computed in your browser from the same matrices; with 4 or more positions per axis they are numerical. The open box,
     with its angle <code>θ<sub>NRS</sub>(d)</code> and the band of the quantum, is on <a href="box.html">the open box page</a>.</p>
 </main>
-<script src="t3-draw.js?v=20261020b"></script>
-<script src="t3-box.js?v=20261020b"></script>
+<script src="t3-draw.js?v=20261020c"></script>
+<script src="t3-box.js?v=20261020c"></script>
 </body>
 </html>

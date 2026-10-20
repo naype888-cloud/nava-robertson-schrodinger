@@ -94,9 +94,9 @@
   // every closed axis has 3 or more positions: Random and Tour stay in 3..25
   const DMAX = 25, DSPEC = 40;   // the band and the δ curve are drawn for rings of 3 to 40 positions
   const randomBox = () => [0, 0, 0].map(() => 3 + Math.floor(Math.random() * (DMAX - 2)));
-  // by default the page runs on its own: a new random box every 5 s, transport on, rotation on
-  let showBand = true, box = [3, 3, 3], t = 0, playing = true, touring = true, tourNext = 0;
-  const TOUR_MS = 5000;
+  // by default the page runs on its own: transport fills the t bar, then a new random torus, rotation on
+  let showBand = true, box = [3, 3, 3], t = 0, playing = true, touring = true;
+  const T_MAX = 40;
   let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
   const ZOOM = { box: 1, star: 1, octa: 1 };  // wheel, pinch or double click on the 3D panels
   let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
@@ -426,10 +426,13 @@
   function frame(ts) {
     const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0; lastTs = ts;
     if (autoSpin && ts - lastInteract > 2500) yaw += dt * 0.25;
-    if (playing) { t += dt * 1.6; if (t > 40) t = 0; $("tt").value = t; $("vt").textContent = t.toFixed(1); }
-    if (touring && ts > tourNext) {
-      if (tourNext) setBox(randomBox());
-      tourNext = ts + TOUR_MS;
+    if (playing) {
+      t += dt * 1.6;
+      if (t > T_MAX) {
+        t = 0;
+        if (touring) setBox(randomBox());
+      }
+      $("tt").value = t; $("vt").textContent = t.toFixed(1);
     }
     const st = currentStats();
     if (tipsTo) {
@@ -457,7 +460,7 @@
     touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(randomBox());
   });
   $("tour").addEventListener("click", (e) => {
-    touring = !touring; e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
+    touring = !touring; e.target.setAttribute("aria-pressed", String(touring));
   });
   $("play").addEventListener("click", (e) => {
     playing = !playing; e.target.setAttribute("aria-pressed", String(playing));
