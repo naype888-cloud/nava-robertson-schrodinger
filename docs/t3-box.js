@@ -1,0 +1,527 @@
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const FAM = { regular: "--blue", two: "--violet", distinct: "--green" };  // red is reserved for d < 4
+  // ---------- the closed pair (T°_d, P_d) and the maximal current state on one axis ----------
+  // T°_d = ring adjacency / 2 (spectral radius 1), P_d = centred position. With d = 3 this is
+  // ClosedThree.Tc = (J − I)/2 and P₃ = diag(−1, 0, 1) of Lean.
+  function jacobi(M) {
+    const n = M.length, A = M.map((r) => r.slice()), V = A.map((r, i) => r.map((_, j) => (i === j ? 1 : 0)));
+    for (let sw = 0; sw < 60; sw++) {
+      let off = 0;
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += A[i][j] ** 2;
+      if (off < 1e-24) break;
+      for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) {
+        if (Math.abs(A[p][q]) < 1e-300) continue;
+        const th = (A[q][q] - A[p][p]) / (2 * A[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1));
+        const c = 1 / Math.sqrt(t * t + 1), s = t * c;
+        for (let k = 0; k < n; k++) { const x = A[k][p], y = A[k][q]; A[k][p] = c * x - s * y; A[k][q] = s * x + c * y; }
+        for (let k = 0; k < n; k++) { const x = A[p][k], y = A[q][k]; A[p][k] = c * x - s * y; A[q][k] = s * x + c * y; }
+        for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; }
+      }
+    }
+    return { vals: A.map((r, i) => r[i]), V };
+  }
+  const cache = {};
+  function axis(d) {
+    if (cache[d]) return cache[d];
+    const p = Array.from({ length: d }, (_, j) => (2 * (j + 1) - (d + 1)) / (d - 1));
+    // eigenbasis of the ring: cos and sin waves, eigenvalue cos(2πk/d)
+    const U = [], lam = [];
+    U.push(Array(d).fill(1 / Math.sqrt(d))); lam.push(1);
+    for (let k = 1; 2 * k < d; k++) {
+      const w = 2 * Math.PI * k / d, f = Math.sqrt(2 / d);
+      U.push(Array.from({ length: d }, (_, j) => f * Math.cos(w * j))); lam.push(Math.cos(w));
+      U.push(Array.from({ length: d }, (_, j) => f * Math.sin(w * j))); lam.push(Math.cos(w));
+    }
+    if (d % 2 === 0) { U.push(Array.from({ length: d }, (_, j) => (j % 2 ? -1 : 1) / Math.sqrt(d))); lam.push(-1); }
+    // the maximal current state: top eigenvector of K = i[T°, P], in its real form [[0, −B], [B, 0]]
+    const M = Array.from({ length: 2 * d }, () => new Array(2 * d).fill(0));
+    for (let j = 0; j < d; j++) for (const k of [(j + 1) % d, (j + d - 1) % d]) {
+      const b = 0.5 * (p[k] - p[j]); M[j][k + d] -= b; M[j + d][k] += b;
+    }
+    const { vals, V } = jacobi(M);
+    let top = 0; vals.forEach((v, i) => { if (v > vals[top]) top = i; });
+    const re = [], im = [];
+    for (let j = 0; j < d; j++) { re.push(V[j][top]); im.push(V[j + d][top]); }
+    const nn = Math.hypot(...re, ...im);
+    for (let j = 0; j < d; j++) { re[j] /= nn; im[j] /= nn; }
+    const cr = U.map((u) => u.reduce((a, x, j) => a + x * re[j], 0));
+    const ci = U.map((u) => u.reduce((a, x, j) => a + x * im[j], 0));
+    const a = { d, p, U, lam, cr, ci, kmax: vals[top] };
+    const s0 = stats(a, evolve(a, 0));
+    a.theta0 = s0.theta; a.dark0 = s0.dark;
+    return (cache[d] = a);
+  }
+  const thetaClosed = (d) => axis(d).theta0;
+  function evolve(a, t) {
+    const re = new Float64Array(a.d), im = new Float64Array(a.d);
+    for (let k = 0; k < a.d; k++) {
+      const c = Math.cos(a.lam[k] * t), s = -Math.sin(a.lam[k] * t);
+      const zr = c * a.cr[k] - s * a.ci[k], zi = c * a.ci[k] + s * a.cr[k];
+      for (let j = 0; j < a.d; j++) { re[j] += zr * a.U[k][j]; im[j] += zi * a.U[k][j]; }
+    }
+    return { re, im };
+  }
+  function stats(a, v) {
+    const d = a.d, Tr = new Float64Array(d), Ti = new Float64Array(d);
+    for (let j = 0; j < d; j++) {
+      Tr[j] = (v.re[(j + d - 1) % d] + v.re[(j + 1) % d]) / 2;
+      Ti[j] = (v.im[(j + d - 1) % d] + v.im[(j + 1) % d]) / 2;
+    }
+    let mT = 0, mP = 0;
+    for (let j = 0; j < d; j++) { mT += v.re[j] * Tr[j] + v.im[j] * Ti[j]; mP += a.p[j] * (v.re[j] ** 2 + v.im[j] ** 2); }
+    const xr = new Float64Array(d), xi = new Float64Array(d), yr = new Float64Array(d), yi = new Float64Array(d);
+    let sT = 0, sP = 0, ir = 0, ii = 0;
+    for (let j = 0; j < d; j++) {
+      xr[j] = Tr[j] - mT * v.re[j]; xi[j] = Ti[j] - mT * v.im[j];
+      yr[j] = (a.p[j] - mP) * v.re[j]; yi[j] = (a.p[j] - mP) * v.im[j];
+      sT += xr[j] ** 2 + xi[j] ** 2; sP += yr[j] ** 2 + yi[j] ** 2;
+      ir += xr[j] * yr[j] + xi[j] * yi[j]; ii += xr[j] * yi[j] - xi[j] * yr[j];
+    }
+    // angleG = arccos(‖⟨δT, δP⟩‖ / (σT σP)), evaluated stably as atan2(σT ‖δP⊥‖, ‖⟨δT, δP⟩‖)
+    let perp = 0;
+    if (sT > 1e-24) {
+      const cr = ir / sT, ci = ii / sT;
+      for (let j = 0; j < d; j++) perp += (yr[j] - cr * xr[j] + ci * xi[j]) ** 2 + (yi[j] - cr * xi[j] - ci * xr[j]) ** 2;
+    }
+    const light = sT * sP > 1e-24 ? (ir * ir + ii * ii) / (sT * sP) : 1;
+    sT = Math.sqrt(sT); sP = Math.sqrt(sP);
+    return { sT, sP, theta: Math.atan2(sT * Math.sqrt(perp), Math.hypot(ir, ii)), mP, light, dark: 1 - light, tension: -2 * ii };
+  }
+
+  // ---------- state ----------
+  // every closed axis has 3 or more positions: Random and Tour stay in 3..25
+  const DMAX = 25, DSPEC = 40;   // the band and the δ curve are drawn for rings of 3 to 40 positions
+  const randomBox = () => [0, 0, 0].map(() => 3 + Math.floor(Math.random() * (DMAX - 2)));
+  // by default the page runs on its own: a new random box every 5 s, transport on, rotation on
+  let showBand = true, box = [3, 3, 3], t = 0, playing = true, touring = true, tourNext = 0;
+  const TOUR_MS = 5000;
+  let yaw = -0.75, pitch = 0.42, autoSpin = true, lastInteract = 0;
+  const ZOOM = { box: 1, star: 1, octa: 1 };  // wheel, pinch or double click on the 3D panels
+  let tips = null, tipsFrom = null, tipsTo = null, morph0 = 0;
+  const low = (d) => d < 3;
+  const family = (b) => { const k = new Set(b).size; return k === 1 ? "regular" : k === 2 ? "two" : "distinct"; };
+
+  // ---------- 3D ----------
+  function rot([x, y, z]) {
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const x1 = cy * x + sy * z, z1 = -sy * x + cy * z;
+    return [x1, cp * y - sp * z1, sp * y + cp * z1];
+  }
+  function proj(v, cx, cy, S) {
+    const [x, y, z] = rot(v), f = 3.6 / (3.6 + z);
+    return [cx + x * S * f, cy - y * S * f, z, f];
+  }
+  function setup(c) {
+    const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+    const g = c.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, r.width, r.height);
+    return [g, r.width, r.height];
+  }
+  // y is "up" on screen, so map lattice (x, y, z) -> world (x, z, y): z is vertical
+  const W = ([x, y, z]) => [x, z, y];
+
+  function drawAxes(g, cx, cy, S, L, labels) {
+    const ax = [[1, 0, 0], [0, 1, 0], [0, 0, 1]], names = ["x", "y", "z"];
+    g.lineWidth = 1; g.font = "12px system-ui, sans-serif";
+    ax.forEach((e, i) => {
+      const a = proj(W(e.map((v) => -v * L)), cx, cy, S), b = proj(W(e.map((v) => v * L)), cx, cy, S);
+      g.strokeStyle = css("--grid"); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+      g.fillStyle = css("--muted"); g.fillText(labels ? labels[i] : names[i], b[0] + 4, b[1] - 4);
+    });
+  }
+
+  function drawBox() {
+    const [g, w, h] = setup($("box")), cx = w / 2, cy = h / 2 + 6, S = Math.min(w, h) * 0.36 * ZOOM.box;
+    const A = box.map(axis), V = A.map((a) => evolve(a, t));
+    const m = Math.max(...box), s = 2 / (m - 1 || 1);
+    const prob = V.map((v) => Array.from(v.re, (r, j) => r * r + v.im[j] * v.im[j]));
+    const phase = V.map((v) => Array.from(v.re, (r, j) => Math.atan2(v.im[j], r)));
+    const pmax = prob.map((p) => Math.max(...p)).reduce((a, b) => a * b, 1);
+    // edges of the box
+    const hx = (box[0] - 1) * s / 2, hy = (box[1] - 1) * s / 2, hz = (box[2] - 1) * s / 2;
+    const C = [];
+    for (const a of [-hx, hx]) for (const b of [-hy, hy]) for (const c of [-hz, hz]) C.push([a, b, c]);
+    g.strokeStyle = css("--grid"); g.lineWidth = 1;
+    [[0, 1], [0, 2], [0, 4], [1, 3], [1, 5], [2, 3], [2, 6], [3, 7], [4, 5], [4, 6], [5, 7], [6, 7]].forEach(([i, j]) => {
+      const p = proj(W(C[i]), cx, cy, S), q = proj(W(C[j]), cx, cy, S);
+      g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
+    });
+    // draw at most 25 sites per axis
+    const idx = box.map((d) => { const n = Math.min(d, 25); return Array.from({ length: n }, (_, k) => Math.floor((k + 0.5) * d / n)); });
+    const pts = [];
+    for (const i of idx[0]) for (const j of idx[1]) for (const k of idx[2]) {
+      const pr = prob[0][i] * prob[1][j] * prob[2][k] / pmax;
+      const P = proj(W([i * s - hx, j * s - hy, k * s - hz]), cx, cy, S);
+      pts.push([P, pr, phase[0][i] + phase[1][j] + phase[2][k]]);
+    }
+    pts.sort((a, b) => b[0][2] - a[0][2]);
+    const dark = css("--bg").startsWith("#0") || css("--bg").startsWith("#1");
+    const rmax = Math.max(2, Math.min(S * 0.13, S * 2 / (Math.max(...idx.map((v) => v.length)) - 1 || 1) * 0.4));
+    for (const [P, pr, ph] of pts) {
+      if (pr < 0.004) {
+        g.fillStyle = css("--grid"); g.fillRect(P[0] - 0.8, P[1] - 0.8, 1.6, 1.6); continue;
+      }
+      const hue = ((ph * 180 / Math.PI) % 360 + 360) % 360;
+      g.fillStyle = `hsla(${hue}, ${dark ? 70 : 85}%, ${dark ? 62 : 42}%, ${(dark ? 0.25 : 0.4) + 0.6 * Math.sqrt(pr)})`;
+      g.beginPath(); g.arc(P[0], P[1], Math.max(1.2, rmax * Math.sqrt(pr) * P[3]), 0, 2 * Math.PI); g.fill();
+    }
+    g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
+    g.fillText(`${box[0]} × ${box[1]} × ${box[2]} = ${box[0] * box[1] * box[2]} positions · every axis closed`, 10, h - 10);
+    const bad = box.map((d, i) => (low(d) ? `${"xyz"[i]} = ${d}` : null)).filter(Boolean);
+    if (bad.length) {
+      g.fillStyle = css("--red"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`✕ ${bad.join(", ")}: below 4 sites, no quantum`, 10, h - 28);
+    }
+  }
+
+  // ---------- the star ----------
+  const E3 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  const SCALE = 1.0;
+  function starTips(st) {
+    const out = [];
+    for (let a = 0; a < 3; a++) {
+      const e = E3[a], f = E3[(a + 1) % 3], hth = st[a].theta / 2;
+      const dir = (phi) => e.map((v, i) => Math.cos(phi) * v + Math.sin(phi) * f[i]);
+      const T = dir(hth).map((v) => v * st[a].sT * SCALE), P = dir(-hth).map((v) => v * st[a].sP * SCALE);
+      out.push(T, P, T.map((v) => -v), P.map((v) => -v));
+    }
+    return out;
+  }
+  function drawStar(st) {
+    const [g, w, h] = setup($("star")), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.5 * ZOOM.star;
+    const famCol = css(FAM[family(box)]), col = box.some(low) ? css("--red") : famCol;
+    drawAxes(g, cx, cy, S, 0.95);
+    const P = (v) => proj(W(v), cx, cy, S);
+    if (showBand) T3Draw.arcs(g, P, E3, Math.max(...tips.map((q) => Math.hypot(...q))) * 1.08, css("--ink2"));
+    // hull faces, back to front
+    const polys = T3Draw.hull(tips).map((f) => { const q = f.map(P); return [q, q.reduce((a, p) => a + p[2], 0) / q.length]; });
+    polys.sort((a, b) => b[1] - a[1]);
+    g.lineJoin = "round";
+    for (const [q] of polys) {
+      g.beginPath(); q.forEach((p, i) => (i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]))); g.closePath();
+      g.fillStyle = col + "12"; g.fill(); g.strokeStyle = col + "40"; g.lineWidth = 0.8; g.stroke();
+    }
+    // wedges and rays
+    const O = P([0, 0, 0]);
+    for (let a = 0; a < 3; a++) {
+      const col = low(box[a]) ? css("--red") : famCol;
+      for (let sgn = 0; sgn < 2; sgn++) {
+        const T = P(tips[4 * a + 2 * sgn]), Q = P(tips[4 * a + 1 + 2 * sgn]);
+        g.beginPath(); g.moveTo(O[0], O[1]); g.lineTo(T[0], T[1]); g.lineTo(Q[0], Q[1]); g.closePath();
+        g.fillStyle = col + (sgn ? "33" : "88"); g.fill();
+        g.strokeStyle = col; g.lineWidth = sgn ? 1 : 2.4;
+        g.beginPath(); g.moveTo(O[0], O[1]); g.lineTo(T[0], T[1]); g.stroke();
+        g.lineWidth = sgn ? 1 : 1.6; g.setLineDash(sgn ? [] : [5, 3]);
+        g.beginPath(); g.moveTo(O[0], O[1]); g.lineTo(Q[0], Q[1]); g.stroke(); g.setLineDash([]);
+      }
+      for (let k = 0; k < 2; k++) {
+        const q = P(tips[4 * a + k]);
+        g.fillStyle = col; g.beginPath(); g.arc(q[0], q[1], 3.2 * q[3], 0, 2 * Math.PI); g.fill();
+      }
+      const lab = P(E3[a].map((v) => v * 0.98));
+      const th0 = (axis(box[a]).theta0 * 180 / Math.PI).toFixed(2), tht = (st[a].theta * 180 / Math.PI).toFixed(2);
+      const txt = t > 0 ? `${"xyz"[a]}: ${box[a]} positions, Ψ(t) ${tht}° · at c ${th0}°` :
+        `${"xyz"[a]}: ${box[a]} positions, ${tht}°`;
+      g.font = "12px system-ui, sans-serif";
+      const tw = g.measureText(txt).width;
+      const lx = Math.max(6, Math.min(w - tw - 6, lab[0] + 6)), ly = Math.max(16, Math.min(h - 26, lab[1]));
+      g.fillStyle = css("--panel"); g.globalAlpha = 0.8; g.fillRect(lx - 3, ly - 12, tw + 6, 16); g.globalAlpha = 1;
+      g.fillStyle = low(box[a]) ? css("--red") : css("--ink2"); g.fillText(txt, lx, ly);
+    }
+    g.fillStyle = css("--muted"); g.font = "11.5px system-ui, sans-serif";
+    g.fillText("solid: δT   dashed: δP   wedge: θ", 10, h - 10);
+    if (t > 0) {
+      g.fillStyle = css("--ink2"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`t = ${t.toFixed(1)}: the star shows Ψ(t), not c (press t = 0)`, 10, h - 28);
+    }
+  }
+
+  // ---------- tension and the angle ----------
+  // the tension ⟨K⟩, K = i[T°, P]: the band is |t| > 1, where every state keeps a dark share
+  function drawSpeed() {
+    const [g, w, h] = setup($("speed")), stack = w < 640;
+    const deg = (r) => r * 180 / Math.PI, XMAX = 1.3;
+    for (let a = 0; a < 3; a++) {
+      const d = box[a], ax = axis(d);
+      const pw = stack ? w : w / 3, ph = stack ? h / 3 : h, ox = stack ? 0 : a * pw, oy = stack ? a * ph : 0;
+      const L = ox + 40, R = ox + pw - 12, T = oy + 26, B = oy + ph - 26;
+      const X = (u) => L + Math.min(XMAX, Math.max(0, u)) / XMAX * (R - L), Y = (th) => B - Math.min(90, th) / 90 * (B - T);
+      const col = css(FAM[family(box)]);
+      g.font = "12px system-ui, sans-serif";
+      g.strokeStyle = css("--grid"); g.lineWidth = 1; g.strokeRect(L, T, R - L, B - T);
+      g.fillStyle = css("--muted");
+      for (const u of [0, 0.5, 1]) {
+        g.beginPath(); g.moveTo(X(u), B); g.lineTo(X(u), B + 4); g.stroke();
+        g.fillText(String(u), X(u) - 6, B + 15);
+      }
+      for (const th of [0, 30, 60, 90]) { g.beginPath(); g.moveTo(L - 4, Y(th)); g.lineTo(L, Y(th)); g.stroke(); g.fillText(th + "°", ox + 6, Y(th) + 4); }
+      g.font = "600 12.5px system-ui, sans-serif"; g.fillStyle = css("--ink");
+      g.fillText(`${"xyz"[a]}: ${d} positions · max tension ${ax.kmax.toFixed(4)}${d === 3 ? " = √6/2" : ""}`, L, T - 9);
+      g.font = "11px system-ui, sans-serif";
+      // the band |t| > 1 up to the maximal tension, and the state c
+      g.fillStyle = css("--blue"); g.globalAlpha = 0.13; g.fillRect(X(1), T, X(ax.kmax) - X(1), B - T); g.globalAlpha = 1;
+      g.strokeStyle = css("--blue"); g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(1), T); g.lineTo(X(1), B); g.stroke(); g.setLineDash([]);
+      g.fillStyle = css("--blue"); g.fillText("band", X(1) + 3, T + 13);
+      const q = deg(ax.theta0);
+      g.strokeStyle = css("--blue"); g.lineWidth = 2; g.beginPath(); g.arc(X(ax.kmax), Y(q), 6, 0, 2 * Math.PI); g.stroke();
+      g.fillText(`c ${q.toFixed(2)}°`, X(ax.kmax) - 58, Y(q) - 9);
+      // the path of Ψ(t) on this axis
+      const n = Math.min(600, Math.ceil(t / 0.05), 20 + Math.floor(4e5 / (d * d))), pts = [];
+      for (let k = 0; k <= n; k++) {
+        const st = stats(ax, evolve(ax, n ? t * k / n : 0));
+        pts.push([Math.abs(st.tension), deg(st.theta)]);
+      }
+      g.strokeStyle = col; g.lineWidth = 1.3; g.globalAlpha = 0.75; g.beginPath();
+      pts.forEach(([u, th], k) => (k ? g.lineTo(X(u), Y(th)) : g.moveTo(X(u), Y(th)))); g.stroke(); g.globalAlpha = 1;
+      const [u1, th1] = pts[pts.length - 1];
+      g.fillStyle = col; g.beginPath(); g.arc(X(u1), Y(th1), 4.5, 0, 2 * Math.PI); g.fill();
+      g.fillStyle = css("--ink2");
+      g.fillText(`now: |t| = ${u1.toFixed(3)}, θ = ${th1.toFixed(2)}°`, L + 4, T + 28);
+    }
+  }
+
+  // ---------- readouts ----------
+  function readouts(st) {
+    const fam = family(box), names = { regular: "regular", two: "two equal axes", distinct: "three different axes" };
+    const f = $("b-fam"); f.textContent = names[fam]; f.style.color = css(FAM[fam]);
+    $("b-orb").textContent = { regular: "1 box", two: "3 boxes", distinct: "6 boxes" }[fam];
+    $("b-sym").textContent = box.map((d) => axis(d).dark0.toFixed(4)).join(", ") + (box.every((d) => d === 3) ? " (1/5 exact)" : "");
+    const lows = box.map((d, i) => (low(d) ? "xyz"[i] : null)).filter(Boolean);
+    const q = $("b-q");
+    q.textContent = lows.length ? `✕ none on ${lows.join(", ")}` : "present on every axis: dark > 0";
+    q.style.color = lows.length ? css("--red") : "";
+    $("rows").innerHTML = st.map((s, i) => {
+      const a = axis(box[i]), th0 = a.theta0 * 180 / Math.PI;
+      const C = (1 / Math.cos(a.theta0)).toFixed(4);
+      return `<tr${low(box[i]) ? ' class="bad"' : ""}><td>${"xyz"[i]}</td><td>${box[i]}</td><td>${(s.theta * 180 / Math.PI).toFixed(2)}°</td>` +
+        `<td>${th0.toFixed(2)}°</td><td>${C}</td><td>${s.sT.toFixed(4)}</td><td>${s.sP.toFixed(4)}</td><td>${s.mP.toFixed(3)}</td></tr>`;
+    }).join("");
+  }
+
+  // ---------- loop ----------
+  const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
+  function currentStats() { return box.map((d) => stats(axis(d), evolve(axis(d), t))); }
+  function retarget(animate) {
+    const target = starTips(currentStats());
+    if (!tips || !animate) { tips = target; tipsTo = null; return; }
+    tipsFrom = tips.map((p) => p.slice()); tipsTo = target; morph0 = performance.now();
+  }
+  // a new box always starts at the maximal current state c (t = 0): the angle at c is read there, not at Ψ(t)
+  function stopTransport() {
+    playing = false; $("play").setAttribute("aria-pressed", "false"); $("play").textContent = "▶ Transport";
+  }
+  function setBox(b, animate = true) {
+    if (b.join(",") !== box.join(",")) {
+      t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; if (!touring) stopTransport();
+    }
+    box = b.slice();
+    ["dx", "dy", "dz"].forEach((id, i) => {
+      $(id).value = box[i]; $("v" + "xyz"[i]).textContent = box[i];
+      $(id).closest(".sl").classList.toggle("bad", low(box[i]));
+    });
+    const bad = box.map((d, i) => (low(d) ? `d${"xyz"[i]} = ${d}` : null)).filter(Boolean);
+    $("alert").hidden = !bad.length;
+    $("alert").textContent = bad.length ? `✕ ${bad.join(", ")} < 4: on ${bad.length > 1 ? "these axes" : "this axis"} ` +
+      "a closed axis needs 3 or more positions." : "";
+    document.querySelectorAll("[data-box]").forEach((el) =>
+      el.setAttribute("aria-pressed", String(el.dataset.box === box.join(","))));
+    retarget(animate);
+  }
+
+  // ---------- the octahedron of δ = 1/cos θ − 1 at c ----------
+  const deltaOf = (d) => 1 / Math.cos(thetaClosed(d)) - 1;
+  let D_INF = 1;   // the largest δ over the rings drawn, set with SPECTRUM below
+  let octaCur = null;
+  const OCTA_FACES = [];
+  for (const sx of [1, -1]) for (const sy of [1, -1]) for (const sz of [1, -1]) OCTA_FACES.push([[sx, 0, 0], [0, sy, 0], [0, 0, sz]]);
+  function octaEdges(g, ab, cx, cy, S, color, dash, width) {
+    g.strokeStyle = color; g.lineWidth = width; g.setLineDash(dash);
+    const V = [[ab[0], 0, 0], [-ab[0], 0, 0], [0, ab[1], 0], [0, -ab[1], 0], [0, 0, ab[2]], [0, 0, -ab[2]]];
+    for (let i = 0; i < 6; i++) for (let j = i + 1; j < 6; j++) {
+      if (Math.floor(i / 2) === Math.floor(j / 2)) continue;
+      const p = proj(W(V[i]), cx, cy, S), q = proj(W(V[j]), cx, cy, S);
+      g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
+    }
+    g.setLineDash([]);
+  }
+  function drawOcta() {
+    const [g, w, h] = setup($("octa")), cx = w / 2, cy = h / 2, S = Math.min(w, h) * 0.36 * ZOOM.octa;
+    const target = box.map((d) => deltaOf(d) / D_INF);
+    if (!octaCur) octaCur = target.slice();
+    octaCur = octaCur.map((v, i) => v + (target[i] - v) * 0.12);
+    drawAxes(g, cx, cy, S, 1.25, box.map((d, i) => `${"xyz"[i]}: ${d} positions`));
+    octaEdges(g, [1, 1, 1], cx, cy, S, css("--muted"), [5, 5], 1);
+    const f4 = deltaOf(3) / D_INF;
+    octaEdges(g, [f4, f4, f4], cx, cy, S, css("--blue"), [2, 3], 1);
+    const col = box.some(low) ? css("--red") : css(FAM[family(box)]);
+    const faces = OCTA_FACES.map((f) => f.map((e) => proj(W(e.map((v, k) => v * octaCur[k])), cx, cy, S)));
+    faces.sort((a, b) => (b[0][2] + b[1][2] + b[2][2]) - (a[0][2] + a[1][2] + a[2][2]));
+    g.fillStyle = col; g.globalAlpha = 0.18;
+    for (const f of faces) { g.beginPath(); g.moveTo(f[0][0], f[0][1]); g.lineTo(f[1][0], f[1][1]); g.lineTo(f[2][0], f[2][1]); g.closePath(); g.fill(); }
+    g.globalAlpha = 1;
+    octaEdges(g, octaCur, cx, cy, S, col, [], 1.6);
+    g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
+    g.fillText(`dashed: the largest δ, ${D_INF.toFixed(5)} (numerical)`, 10, h - 28);
+    g.fillStyle = css("--blue"); g.fillText(`dotted: 3 × 3 × 3, δ(3) = √5/2 − 1 ≈ ${deltaOf(3).toFixed(5)} (exact)`, 10, h - 10);
+    const zero = box.map((d, i) => (low(d) ? "xyz"[i] : null)).filter(Boolean);
+    if (zero.length) {
+      g.fillStyle = css("--red"); g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`δ = 0 on ${zero.join(", ")}: the octahedron collapses, no quantum (D37i)`, 10, 18);
+    }
+  }
+  function drawDelta() {
+    const [g, w, h] = setup($("delta"));
+    const L = 52, R = 52, T = 14, B = 34, Wd = w - L - R, H = h - T - B, DLOG = DSPEC, VMAX = 0.6;
+    const X = (d) => L + (Math.log(d) - Math.log(3)) / (Math.log(DLOG) - Math.log(3)) * Wd * 0.95;
+    const Y = (v) => T + (1 - v / VMAX) * H;
+    g.font = "11px system-ui, sans-serif"; g.lineWidth = 1;
+    g.strokeStyle = css("--grid"); g.fillStyle = css("--muted");
+    for (let v = 0; v <= VMAX + 1e-9; v += 0.1) {
+      g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(L + Wd, Y(v)); g.stroke(); g.fillText(v.toFixed(1), 6, Y(v) + 4);
+    }
+    for (const d of [3, 4, 6, 8, 12, 16, 24, 32, 40]) {
+      g.beginPath(); g.moveTo(X(d), T); g.lineTo(X(d), T + H); g.stroke(); g.fillText(String(d), X(d) - 5, T + H + 16);
+    }
+    g.fillStyle = css("--ink2"); g.fillText("positions on the closed axis d (log)", L + Wd * 0.3, T + H + 30);
+    // angle ticks on the right: θ = arccos(1/(1 + δ))
+    g.fillStyle = css("--muted");
+    for (const deg of [20, 30, 40, 45, 50]) {
+      const v = 1 / Math.cos(deg * Math.PI / 180) - 1;
+      g.fillText(`${deg}°`, L + Wd + 6, Y(v) + 4);
+    }
+    g.fillText("θ", L + Wd + 6, T + 8);
+    // ceiling and floor
+    g.strokeStyle = css("--ink2"); g.setLineDash([6, 4]); g.beginPath(); g.moveTo(L, Y(D_INF)); g.lineTo(L + Wd, Y(D_INF)); g.stroke();
+    const d4 = deltaOf(3);
+    g.strokeStyle = css("--blue"); g.setLineDash([2, 3]); g.beginPath(); g.moveTo(L, Y(d4)); g.lineTo(L + Wd, Y(d4)); g.stroke();
+    g.setLineDash([]);
+    g.fillStyle = css("--ink2"); g.fillText(`largest δ ≈ ${D_INF.toFixed(5)} (numerical)`, L + Wd * 0.45, Y(D_INF) - 6);
+    g.fillStyle = css("--blue"); g.fillText(`δ(3) = √5/2 − 1 ≈ ${d4.toFixed(5)} · 26.57° (exact)`, L + Wd * 0.45, Y(d4) + 14);
+    // the curve δ(d)
+    g.strokeStyle = css("--violet"); g.lineWidth = 2; g.beginPath();
+    SPECTRUM.forEach(({ d }, k) => { const v = deltaOf(d); (k ? g.lineTo : g.moveTo).call(g, X(d), Y(v)); });
+    g.stroke();
+    g.fillStyle = css("--muted");
+    for (const { d } of SPECTRUM) { g.beginPath(); g.arc(X(d), Y(deltaOf(d)), 1.6, 0, 2 * Math.PI); g.fill(); }
+    // the three axes of the box
+    const seen = {};
+    box.forEach((d, i) => {
+      const v = deltaOf(d), x = X(Math.min(d, DLOG)), y = Y(v), n = (seen[d] = (seen[d] || 0) + 1) - 1;
+      g.fillStyle = low(d) ? css("--red") : css(FAM[family(box)]);
+      g.beginPath(); g.arc(x, y, 5.5, 0, 2 * Math.PI); g.fill();
+      g.font = "600 12px system-ui, sans-serif";
+      g.fillText(`${"xyz"[i]} = ${d}`, x + 8, y - 6 - 14 * n);
+    });
+    // readouts
+    const ds = box.map(deltaOf), V = ds[0] * ds[1] * ds[2];
+    $("o-d").textContent = ds.map((v) => v.toFixed(5)).join(", ");
+    $("o-v").textContent = V.toExponential(3);
+    $("o-f").textContent = (V / d4 ** 3).toFixed(2);
+    $("o-c").textContent = (V / D_INF ** 3).toFixed(4);
+  }
+  let lastTs = 0;
+  function frame(ts) {
+    const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0; lastTs = ts;
+    if (autoSpin && ts - lastInteract > 2500) yaw += dt * 0.25;
+    if (playing) { t += dt * 1.6; if (t > 40) t = 0; $("tt").value = t; $("vt").textContent = t.toFixed(1); }
+    if (touring && ts > tourNext) {
+      if (tourNext) setBox(randomBox());
+      tourNext = ts + TOUR_MS;
+    }
+    const st = currentStats();
+    if (tipsTo) {
+      const u = Math.min(1, (ts - morph0) / 900), e = ease(u);
+      tips = tipsFrom.map((p, i) => p.map((v, m) => v + (tipsTo[i][m] - v) * e));
+      if (u >= 1) tipsTo = null;
+    } else if (playing || ts - lastInteract < 50) {
+      tips = starTips(st);
+    }
+    drawBox(); drawStar(st); readouts(st); drawSpeed(); drawOcta(); drawDelta();
+    T3Draw.gauge($("band"), st.map((s, i) => ({ name: "xyz"[i], d: box[i], th0: axis(box[i]).theta0, tht: s.theta,
+      col: low(box[i]) ? css("--red") : css(FAM[family(box)]) })), SPECTRUM, css, t);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- controls ----------
+  ["dx", "dy", "dz"].forEach((id, i) => $(id).addEventListener("input", (e) => {
+    const b = box.slice(); b[i] = +e.target.value; touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(b);
+  }));
+  $("tt").addEventListener("input", (e) => { t = +e.target.value; $("vt").textContent = t.toFixed(1); tips = starTips(currentStats()); tipsTo = null; });
+  document.querySelectorAll("[data-box]").forEach((el) => el.addEventListener("click", () => {
+    touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(el.dataset.box.split(",").map(Number));
+  }));
+  $("random").addEventListener("click", () => {
+    touring = false; $("tour").setAttribute("aria-pressed", "false"); setBox(randomBox());
+  });
+  $("tour").addEventListener("click", (e) => {
+    touring = !touring; e.target.setAttribute("aria-pressed", String(touring)); tourNext = 0;
+  });
+  $("play").addEventListener("click", (e) => {
+    playing = !playing; e.target.setAttribute("aria-pressed", String(playing));
+    e.target.textContent = playing ? "❚❚ Transport" : "▶ Transport";
+  });
+  $("reset").addEventListener("click", () => { t = 0; $("tt").value = 0; $("vt").textContent = "0.0"; retarget(true); });
+  for (const c of [$("box"), $("star"), $("octa")]) {
+    let drag = null;
+    c.addEventListener("pointerdown", (e) => { drag = [e.clientX, e.clientY, yaw, pitch]; c.setPointerCapture(e.pointerId); lastInteract = performance.now(); });
+    c.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      yaw = drag[2] + (e.clientX - drag[0]) * 0.01;
+      pitch = Math.max(-1.45, Math.min(1.45, drag[3] + (e.clientY - drag[1]) * 0.01));
+      lastInteract = performance.now();
+    });
+    c.addEventListener("pointerup", () => { drag = null; });
+  }
+  // theme: dark by default (the lattice reads better on dark), the choice is remembered
+  const themeLabel = () => { $("theme").textContent = document.documentElement.dataset.theme === "dark" ? "☀ Light" : "☾ Dark"; };
+  try { document.documentElement.dataset.theme = localStorage.getItem("nrs3-theme") || "dark"; }
+  catch (e) { document.documentElement.dataset.theme = "dark"; }
+  themeLabel();
+  $("theme").addEventListener("click", () => {
+    const r = document.documentElement;
+    r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem("nrs3-theme", r.dataset.theme); } catch (e) { /* private mode */ }
+    themeLabel();
+  });
+  // zoom: every card opens full screen (⤢, Esc closes); the 3D panels also zoom with wheel or pinch
+  document.querySelectorAll(".card").forEach((card) => {
+    const b = document.createElement("button");
+    b.className = "zoombtn"; b.type = "button"; b.textContent = "⤢ zoom"; b.setAttribute("aria-label", "Open this panel full screen");
+    b.addEventListener("click", () => {
+      const on = !card.classList.contains("full");
+      document.querySelectorAll(".card.full").forEach((c) => { c.classList.remove("full"); c.querySelector(".zoombtn").textContent = "⤢ zoom"; });
+      if (on) { card.classList.add("full"); b.textContent = "✕ close"; }
+    });
+    card.appendChild(b);
+  });
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape") document.querySelectorAll(".card.full").forEach((c) => { c.classList.remove("full"); c.querySelector(".zoombtn").textContent = "⤢ zoom"; });
+  });
+  for (const id of Object.keys(ZOOM)) {
+    const c = $(id), pts = new Map();
+    let pinch0 = 0, zoom0 = 1;
+    const clamp = (z) => Math.min(6, Math.max(0.5, z));
+    c.addEventListener("wheel", (e) => { e.preventDefault(); ZOOM[id] = clamp(ZOOM[id] * Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
+    c.addEventListener("dblclick", () => { ZOOM[id] = 1; });
+    c.addEventListener("pointerdown", (e) => { pts.set(e.pointerId, [e.clientX, e.clientY]);
+      if (pts.size === 2) { const [p, q] = [...pts.values()]; pinch0 = Math.hypot(p[0] - q[0], p[1] - q[1]); zoom0 = ZOOM[id]; } });
+    c.addEventListener("pointermove", (e) => {
+      if (!pts.has(e.pointerId)) return;
+      pts.set(e.pointerId, [e.clientX, e.clientY]);
+      if (pts.size === 2 && pinch0) { const [p, q] = [...pts.values()]; ZOOM[id] = clamp(zoom0 * Math.hypot(p[0] - q[0], p[1] - q[1]) / pinch0); }
+    });
+    const up = (e) => { pts.delete(e.pointerId); if (pts.size < 2) pinch0 = 0; };
+    c.addEventListener("pointerup", up); c.addEventListener("pointercancel", up);
+  }
+  const SPECTRUM = Array.from({ length: DSPEC - 2 }, (_, k) => ({ d: k + 3, th: thetaClosed(k + 3) }));
+  D_INF = Math.max(...SPECTRUM.map(({ d }) => deltaOf(d)));
+  T3Draw.setRange(Math.min(...SPECTRUM.map((x) => x.th)), Math.max(...SPECTRUM.map((x) => x.th)));
+  $("showband").addEventListener("change", (e) => { showBand = e.target.checked; });
+  $("tour").setAttribute("aria-pressed", "true");
+  $("play").setAttribute("aria-pressed", "true"); $("play").textContent = "❚❚ Transport";
+  setBox(box, false);
+  requestAnimationFrame(frame);
+})();
