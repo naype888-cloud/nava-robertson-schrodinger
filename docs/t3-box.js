@@ -259,7 +259,7 @@
       }
       for (const th of [0, 30, 60, 90]) { g.beginPath(); g.moveTo(L - 4, Y(th)); g.lineTo(L, Y(th)); g.stroke(); g.fillText(th + "°", ox + 6, Y(th) + 4); }
       g.font = "600 12.5px system-ui, sans-serif"; g.fillStyle = css("--ink");
-      g.fillText(`${"xyz"[a]}: ${d} positions · max tension ${ax.kmax.toFixed(4)}${d === 3 ? " = √6/2" : ""}`, L, T - 9);
+      g.fillText(`${"xyz"[a]}: ${d} positions · c = ${ax.kmax.toFixed(4)}${d === 3 ? " = √6/2" : ` ∈ [1, ${(1 + 2 / (d - 1)).toFixed(4)}]`}`, L, T - 9);
       g.font = "11px system-ui, sans-serif";
       // the band |t| > 1 up to the maximal tension, and the state c
       g.fillStyle = css("--blue"); g.globalAlpha = 0.13; g.fillRect(X(1), T, X(ax.kmax) - X(1), B - T); g.globalAlpha = 1;

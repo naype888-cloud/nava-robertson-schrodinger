@@ -141,7 +141,8 @@
     <span class="hint"><label><input type="checkbox" id="showband" checked> show the range in the star</label></span>
     <p class="sub">At the maximal current state every closed axis opens an angle θ, never zero: the dark share is positive.
       With 3 positions it is exactly <code>arccos(2/√5) = 26.57°</code> (light 4/5, Lean); with 4 or more positions it is
-      computed here, between about 45° and 50°. ○ θ at <code>c</code> · ● θ at Ψ(t). The page runs on its own: every 5 s a new
+      computed here, between about 45° and 50°: the browser finds <code>c</code> as the top eigenvector of
+      <code>K = i[T°, P]</code> (Jacobi diagonalization, double precision) and reads the angle from it. ○ θ at <code>c</code> · ● θ at Ψ(t). The page runs on its own: every 5 s a new
       random torus with transport on. Press Tour to stop on a torus, Transport to pause.</p>
     <canvas id="band" aria-label="The angle at the maximal current state, one ruler per axis"></canvas></div>
 
@@ -167,7 +168,9 @@
     <p class="sub">The tension of an axis is <code>t = ⟨K⟩</code>, <code>K = i[T°, P]</code>. In the band <code>|t| &gt; 1</code> every state
       keeps a positive dark share (<code>TorusDark.darkShare_pos_of_band</code>) and det|NRS³| is strict on <code>T³</code> for every
       state with the three axes in the band (<code>TorusStrict.robertson_det_torus_lt</code>). The maximal tension is the state
-      <code>c</code>: <code>√6/2</code> with 3 positions (Lean); it approaches 1 as the ring grows. Press Transport: Ψ(t) starts at
+      <code>c</code>: <code>√6/2</code> with 3 positions (<code>ClosedThree.tension_maxState</code>); for every <code>d</code> it lies in
+      <code>[1, 1 + 2/(d − 1)]</code> and tends to 1 as the ring grows (<code>ClosedAxis.one_le_cMax</code>,
+      <code>ClosedAxis.cMax_le</code>, <code>ClosedAxis.tendsto_cMax</code>): the current concentrates on the seam. Press Transport: Ψ(t) starts at
       <code>c</code> and leaves it.</p>
     <canvas id="speed" aria-label="Tension against angle, with the band of each axis"></canvas></div>
 
