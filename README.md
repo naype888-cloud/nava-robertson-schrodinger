@@ -430,8 +430,13 @@ reversal and compactness (see [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PORT.md)). S
 The theorems above are mathematics. Their physical content rests on one declared
 identification, which is a premise and not a Lean theorem:
 
-* **`T_d:P_d` is motion in space.** `P_d` is position along one direction, with `d` resolvable
-  positions, and `T_d` is transport, which moves the position by one step.
+* **`T_d:P_d` is every movement in space.** `P_d` is position along one direction, with `d`
+  resolvable positions, and `T_d` is transport, which moves the position by one step. There is no
+  other movement: every motion decomposes into orthogonal steps, the diagonal is never the
+  minimal step (`D4`); all directions are equivalent under the 48 signed permutations of `O_h`
+  (`D37h`); the sense of motion is a sign that keeps the ratio and the angle (`D42`). So no
+  direction escapes the quantum: the defect grows with `d` towards `δ_∞ > 0` (`D25`,
+  `deltaInf_pos`) and never closes, and refining the resolution increases it.
 * **States are vectors of a complex Hilbert space.** A state is a unit vector of `ℂ^d` (of
   `ℂ^dx ⊗ ℂ^dy ⊗ ℂ^dz` on the cube); its amplitudes carry phases, and transport lives in the
   relative phases between neighbouring positions: `T_d` and `P_d` are real symmetric, so a state

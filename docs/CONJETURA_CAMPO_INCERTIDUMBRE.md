@@ -282,3 +282,24 @@ Orden de cierre sugerido: (1) punciones de espín `1/2` en el cubo, que es lo m�
 ambas mitades ya están probadas; (2) `𝒰_ω` como intervalo de Minkowski en el cubo; (3) `Λ` del
 corte con FLRW y `1 − Ω_b`; (4) la flecha de regreso.
 
+
+## 8. Forma precisa: campo espectral y campo de incertidumbre (2026-10-18)
+
+**Enunciado (del autor).** Todo campo se compone de un **campo espectral** y de su **campo de
+incertidumbre** complementario. Sin importar la `c` del sistema, todo campo es analizable y siempre
+da una relación de incertidumbre. Esa relación deja siempre un **cuanto de irresolubilidad**, la parte
+del espectro que no se puede medir. La parte medible es conexa: es el **cono de Minkowski**, lo que
+medimos de la luz.
+
+| Pieza | Qué es | Lean |
+|---|---|---|
+| campo espectral | lo que el operador puede dar, fijo por el operador | espectro exacto `{2 cos (2πm/d)}` (`periodicChainGraph.hasEigenvalue_hopping_iff`) y `{E0 − 2t cos(ka)}` (`TightBindingChain.hasEigenvalue_hamiltonian_iff`), Physlib local 4b3ddfda, 50f0d5ca; medida espectral de Tom (`CStarAlgebra/SpectralMeasure`) |
+| campo de incertidumbre | lo que el par no puede dar a la vez, fijo por el estado | `robertson`, `robertson_det` (toda C⋆-álgebra, todo estado, toda `c`) |
+| complementariedad | concentrar el espectro de `A` manda la indeterminación a `B` | `variance_T_pos_of_P_eigenvector` (D47, #1778) |
+| lo medible, conexo | el cono futuro cerrado: nada es espacial | `robertsonSchrodinger_future`, `mem_futureCone`; caja con fibra cerrada: `BoxCone.axisVector_mem_futureCone` (nrs3-hopf) |
+| la luz | el borde del cono: defecto cero | `null_maxCurrentState_iff` (`d = 2, 3`) |
+| el cuanto irresoluble | el tiempo propio hasta el borde | `properTime_eq_mul_sin`, `properTime_maxCurrentState_pos` (`d ≥ 4`); caja con fibra cerrada, los cuatro ejes en la banda: `BoxCone.properTime_box_pos_of_band` |
+| invariancia | el cono no depende del observador | `posSemidef_conj`, `det_conj` (`SL(2, ℂ)`); doble cubrimiento, Physlib #1850 |
+
+**Siguiente:** el nivel del campo cuantizado (§5, paso 5) sobre la caja de cuatro ejes con `w`
+cerrada, y los sectores `n ≥ 2`; después el campo de norma `U(1)` en la fibra.
