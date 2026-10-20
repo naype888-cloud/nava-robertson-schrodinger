@@ -1,3 +1,8 @@
+> **The open cube, kept separate.** This file is the former main README: NRS, NRS³ and det|NRS³ on
+> the *open* cube (`D0`–`D49t`) and the Physlib port of that chain. The main
+> [README](README.md) now leads with the three-torus `T³` (NRS³·T³); nothing here was changed
+> except this note and the title.
+
 # NRS, NRS³ & det|NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
 **[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)** ·
