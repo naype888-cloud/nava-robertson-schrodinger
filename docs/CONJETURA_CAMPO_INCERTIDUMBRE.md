@@ -242,8 +242,11 @@ Mosaico `nrs3-defect-curvature`, commit `cdb47be`, local. Axiomas estándar.
    cierre ese TODO, `IsStar` se instancia con el L². Axiomas estándar (43 en
    `Verification/Axioms.lean`). Commit a15f8b5.
 
-   **Queda abierto:** los sectores `n ≥ 2`. Ahí el corchete ya está (`secondQuant_lie`), pero
-   `Var` es de muchos cuerpos: falta calcular `𝒰` en `Sym^n` (`vacuumSpanSymEquiv`).
+   **Los sectores `n ≥ 2` están cerrados** en `nrs3-tritoro`: `TorusSectors` (dos excitaciones,
+   afe6245) y `TorusFock` (`n` excitaciones, 0cb307a): `secondQuant_nExcitation`, `nBody_lie`,
+   `form_nExcitation_symm` (`β = n! Ψ̄ · Φ`) y `uncertainty_nExcitation` (el `𝒰` del campo es el
+   de las matrices de `n` cuerpos en `√(n!) Ψ`); el corte con `n − 1` espectadores en
+   `TorusFockCut.form_bracket_n`. Sigue abierto el TODO de Physlib de `IsStar` sobre el L².
 
 ## 6. Forma en Lean (esquema, sin compilar)
 
@@ -275,7 +278,7 @@ el intervalo de Minkowski es el defecto de Gram de la incertidumbre (van der Wae
 | **Campo de incertidumbre** | `𝒰_ω = centeredGramDefect + Cov²` (`robertson_gap_decomposition`); (E) y (T) fusionados; (G) en el cubo (`AreaLaw.lean` §6–9) | flecha de regreso gravedad → `𝒰_ω` (§4) |
 | **Minkowski (métrica)** | `nrs3-uncertainty-cone`: la incertidumbre del par es un cuadrivector; `interval_eq_gramDefectC` (intervalo = defecto de Gram), `interval_gram_boost` (cambio de unidades = boost), Robertson–Schrödinger = cono de luz, el cuanto de NRS³ deja el vector dentro del cono | escribir el `𝒰_ω` del cubo como intervalo, eje por eje, y ver `𝒰_ω` como la métrica |
 | **Gravedad cuántica de bucles** | `nrs3-rovelli-lqg`: `areaSpectrum`, `cutEntropy_eq_punctureEntropy` (`k` cuantos en el corte = `k` punciones de espín `j`, con `M = 2j + 1`), `bekensteinHawking_iff_immirzi` (`γ = log 2 / (π√3)` para espín `1/2`) | en el cubo cada paso es abierto o cerrado, `M = 2`, o sea **espín `1/2`**: falta el teorema "los `dy·dz` pasos de la cara son `dy·dz` punciones de espín `1/2`", que conecta `AreaLaw` con el valor de Immirzi |
-| **QFT** | `FieldLevel.lean` (mosaico, a15f8b5): `dΓ` respeta corchetes en todo sector; el sector de una excitación es el cubo; `𝒰` del campo = `𝒰` del cubo | estructura ⋆ (TODO de Physlib); sectores `n ≥ 2` |
+| **QFT** | `FieldLevel.lean` (mosaico, a15f8b5): `dΓ` respeta corchetes en todo sector; el sector de una excitación es el cubo; `𝒰` del campo = `𝒰` del cubo | estructura ⋆ (TODO de Physlib); los sectores `n ≥ 2` ya están en `nrs3-tritoro` (`TorusFock`) |
 | **ΛCDM** | `nrs3-de-sitter` (`Λ = 3π/(ℓ² S)`, ambas Friedmann); Physlib FLRW (equipo de Joseph, Kevorkian); `nrs3-dark` (`1 − Ω_b`, el interior del cuanto volumétrico) | unir el `Λ` del corte del cubo con el sector oscuro `1 − Ω_b` y con la evolución FLRW |
 
 Orden de cierre sugerido: (1) punciones de espín `1/2` en el cubo, que es lo más corto porque
@@ -302,4 +305,4 @@ medimos de la luz.
 | invariancia | el cono no depende del observador | `posSemidef_conj`, `det_conj` (`SL(2, ℂ)`); doble cubrimiento, Physlib #1850 |
 
 **Siguiente:** el nivel del campo cuantizado (§5, paso 5) sobre la caja de cuatro ejes con `w`
-cerrada, y los sectores `n ≥ 2`; después el campo de norma `U(1)` en la fibra.
+cerrada (los sectores `n ≥ 2` ya están en `TorusFock`); después el campo de norma `U(1)` en la fibra.
