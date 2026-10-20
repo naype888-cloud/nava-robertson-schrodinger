@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NRS³ Box Explorer</title>
-<meta name="description" content="Every box d_x × d_y × d_z has its own star of uncertainty. Change the box, watch the star deform in 3D, and let transport move the maximal current state of the cube through the lattice.">
+<title>NRS³ on T³</title>
+<meta name="description" content="The three-torus T³: three closed axes, each with the pair T° and P₃. At the maximal current state every axis resolves 4/5 and keeps 1/5 dark, and det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|. Computed in the browser from the same matrices as in Lean.">
 <style>
   :root {
     --bg: #f4f3ef; --panel: #ffffff; --ink: #0b0b0b; --ink2: #3b3a37; --muted: #67665f;
@@ -25,9 +25,10 @@
     font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
   main { max-width: 1180px; margin: 0 auto; padding: 22px 16px 40px; }
   h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
-  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 820px; }
-  .theme { float: right; font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 999px;
-    border: 1px solid var(--grid); background: var(--panel); color: var(--ink); cursor: pointer; }
+  h2.part { font-size: 1.1rem; margin: 26px 0 4px; font-weight: 620; }
+  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 840px; }
+  .theme { float: right; font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    border: 1px solid var(--grid); background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none; }
   .bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 10px 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   button.chip, button.act {
@@ -36,168 +37,152 @@
   }
   button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-  .sliders { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 8px 16px; }
-  @media (max-width: 760px) { .sliders { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 520px) { .sliders { grid-template-columns: 1fr; } }
-  .tablewrap { overflow-x: auto; }
-  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .sliders { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 8px 16px; margin: 6px 4px; }
+  @media (max-width: 620px) { .sliders { grid-template-columns: 1fr; } }
+  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; min-width: 220px; }
   .sl input { flex: 1; min-width: 0; accent-color: var(--blue); }
-  .sl.bad b, .sl.bad { color: var(--red); } .sl.bad input { accent-color: var(--red); }
-  .alert { border: 1.5px solid var(--red); color: var(--red); border-radius: 10px; padding: 8px 12px;
-    margin: 0 0 12px; font-size: .9rem; background: color-mix(in srgb, var(--red) 8%, transparent); }
-  .alert[hidden] { display: none; }
-  tr.bad td { color: var(--red); font-weight: 600; }
-  .sl b { min-width: 2.2em; text-align: right; }
+  .sl b { min-width: 2.6em; text-align: right; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
-  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 10px;
-    position: relative; }
+  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 10px; position: relative; }
   .card h2 { font-size: 0.95rem; margin: 2px 4px 4px; font-weight: 600; color: var(--ink2); }
   .card .hint { position: absolute; right: 12px; top: 10px; font-size: 0.75rem; color: var(--muted); }
+  .card .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 6px; max-width: 780px; }
+  .mt { margin-top: 14px; }
   canvas { width: 100%; aspect-ratio: 1 / 1; display: block; touch-action: none; cursor: grab; }
   canvas:active { cursor: grabbing; }
-  .bandcard { margin-top: 14px; }
-  .bandcard .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 6px; max-width: 760px; }
-  #band { aspect-ratio: 16 / 5; cursor: default; }
-  @media (max-width: 640px) { #band { aspect-ratio: 4 / 3; } }
-  #speed { aspect-ratio: 16 / 5.2; cursor: default; }
-  .octagrid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 12px; align-items: start; }
-  @media (max-width: 820px) { .octagrid { grid-template-columns: 1fr; } }
-  #delta { aspect-ratio: 5 / 4; cursor: default; }
-  .octabadges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 4px 2px; }
-  @media (max-width: 640px) { .octabadges { grid-template-columns: 1fr 1fr; } }
-  .octabadges div { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 9px; font-variant-numeric: tabular-nums; }
-  .octabadges .k { color: var(--muted); font-size: 0.75rem; display: block; }
-  @media (max-width: 700px) { #speed { aspect-ratio: 3 / 4; } }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .badge { border: 1px solid var(--grid); background: var(--panel); border-radius: 10px;
-    padding: 6px 10px; font-size: 0.88rem; }
-  .badge .k { color: var(--muted); font-size: 0.75rem; display: block; }
-  .fam { font-weight: 650; }
-  table { border-collapse: collapse; width: 100%; margin-top: 12px; font-variant-numeric: tabular-nums;
-    font-size: 0.9rem; }
+  #shares { aspect-ratio: 16 / 5; cursor: default; }
+  #ladder { aspect-ratio: 16 / 6; cursor: default; }
+  @media (max-width: 520px) { .card .hint { display: none; } }
+  #spectrum { aspect-ratio: 16 / 5; cursor: default; }
+  @media (max-width: 640px) { #shares { aspect-ratio: 1 / 1; } #ladder, #spectrum { aspect-ratio: 4 / 3; } }
+  .badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 4px 2px; }
+  @media (max-width: 760px) { .badges { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .badges { grid-template-columns: 1fr; } }
+  .badges div { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 9px; font-variant-numeric: tabular-nums; }
+  .badges .k { color: var(--muted); font-size: 0.75rem; display: block; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin-top: 12px; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
   th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; }
   th:first-child, td:first-child { text-align: left; }
   th { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
-  .note { color: var(--ink2); font-size: 0.88rem; margin-top: 14px; max-width: 900px; }
+  tr.exact td { color: var(--orange); font-weight: 600; }
+  .note { color: var(--ink2); font-size: 0.88rem; margin-top: 14px; max-width: 920px; }
+  .note li { margin: 3px 0; }
   code { font-size: 0.86em; }
   a { color: var(--blue); }
-  .zoombtn { position: absolute; right: 8px; bottom: 8px; z-index: 2; font: inherit; font-size: 0.8rem;
-    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--grid); background: var(--panel);
-    color: var(--ink); cursor: pointer; opacity: 0.85; }
-  .zoombtn:hover { opacity: 1; }
-  .card.full { position: fixed; inset: 10px; z-index: 50; overflow: auto; margin: 0;
-    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--bg) 85%, transparent); }
-  .card.full canvas { height: calc(100vh - 150px); aspect-ratio: auto; }
-  .card.full .octagrid canvas { height: calc(100vh - 260px); }
-  .card.full .sub { display: none; }
 </style>
 </head>
 <body>
 <main>
   <button class="theme" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
-  <a class="theme" style="margin-right:8px;text-decoration:none" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
-  <h1>NRS³ — every box has its star</h1>
-  <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
-    pair transport <code>T</code> and position <code>P</code>. At the maximal current state of
-    the cube, the product of the maximal current states of the axes, their fluctuations open the angle
-    <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
-    4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. It runs on its own:
-    every 5 s a new random box, 4 to 25 sites per axis, with transport moving Ψ and the view turning.
-    Change the box and the star deforms. Drag either panel to turn both.</p>
+  <a class="theme" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
+  <a class="theme" href="box.html">The open box ▸</a>
+  <h1>NRS³ on T³ — three closed axes</h1>
+  <p class="lead">The three-torus <code>T³ = x × y × z</code>: every axis is closed, three positions with the seam
+    <code>{0, 2}</code>, finite and without boundary. Each axis carries the closed transport
+    <code>T° = (J − I)/2</code> and the position <code>P₃ = diag(−1, 0, 1)</code>. At the maximal current state
+    <code>c</code> every axis resolves <b>4/5</b> and keeps <b>1/5</b> dark, and Robertson 1934 on the six
+    observables reads <b><code>det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|</code></b>. The open cube with three
+    positions keeps nothing dark; closing the axis is what leaves the dark share. Every number below is computed in
+    your browser from the same matrices as in Lean.</p>
 
   <div class="bar">
-    <div class="chips" role="group" aria-label="Boxes">
-      <button class="chip" type="button" data-box="4,4,4">4×4×4</button>
-      <button class="chip" type="button" data-box="10,10,10">10×10×10</button>
-      <button class="chip" type="button" data-box="4,10,10">4×10×10</button>
-      <button class="chip" type="button" data-box="4,7,10">4×7×10</button>
-      <button class="chip" type="button" data-box="3,8,14">3×8×14</button>
-      <button class="chip" type="button" data-box="2,2,2">2×2×2</button>
-      <button class="chip" type="button" id="random">🎲 Random</button>
+    <div class="chips" role="group" aria-label="State on every axis">
+      <button class="chip" type="button" data-state="c">c: maximal current</button>
+      <button class="chip" type="button" data-state="sat">tension 1: minimum uncertainty</button>
+      <button class="chip" type="button" data-state="rnd">🎲 random in the band</button>
     </div>
-    <button class="act" type="button" id="tour" aria-pressed="false">✦ Tour</button>
     <button class="act" type="button" id="play" aria-pressed="false">▶ Transport</button>
     <button class="act" type="button" id="reset">t = 0</button>
+    <label class="sl">t<input type="range" id="tt" min="0" max="12.566" step="0.01" value="0"><b id="vt">0.00</b></label>
   </div>
-  <div class="sliders">
-    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="25" value="4"><b id="vx">4</b></label>
-    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="25" value="7"><b id="vy">7</b></label>
-    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="25" value="10"><b id="vz">10</b></label>
-    <label class="sl">t<input type="range" id="tt" min="0" max="40" step="0.05" value="0"><b id="vt">0.0</b></label>
-  </div>
-
-  <div class="alert" id="alert" role="alert" hidden></div>
 
   <div class="grid">
-    <div class="card"><h2>The box: Ψ on every site</h2><span class="hint">size |Ψ|² · colour phase</span>
-      <canvas id="box" aria-label="The lattice of the box with the state on every site, in 3D"></canvas></div>
-    <div class="card"><h2>The star of the box</h2><span class="hint">δT and δP of each axis</span>
-      <canvas id="star" aria-label="The star of fluctuation vectors of the three axes, in 3D"></canvas></div>
+    <div class="card"><h2>The torus: Ψ on every position</h2><span class="hint">size |Ψ|² · colour phase</span>
+      <canvas id="torus" aria-label="The three-torus with three positions per axis and its seams, with the state on every position"></canvas></div>
+    <div class="card"><h2>The star of the torus</h2><span class="hint">δT° and δP₃ of each axis</span>
+      <canvas id="star" aria-label="The star of fluctuation vectors of the three closed axes"></canvas></div>
   </div>
 
-  <div class="card bandcard"><h2>The band of the quantum</h2>
-    <span class="hint"><label><input type="checkbox" id="showband" checked> show the band in the star</label></span>
-    <p class="sub">At the maximal current state of the cube every axis with 4 or more sites opens between θ<sub>NRS</sub>(4) and arccos(1/C<sub>∞</sub>), never on the
-      ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at the maximal current state of the cube · ● θ at Ψ(t).
-      The page runs on its own: every 5 s a new random box, 4 to 25 sites per axis, with transport on. Ψ(t) starts at the quantum
-      and leaves it; the band stays. Press Tour to stop on a box, Transport to pause.</p>
-    <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
+  <div class="card mt"><h2>Light and dark on every axis</h2>
+    <p class="sub"><code>light = |⟨δT°, δP₃⟩|² / (σ<sub>T</sub>² σ<sub>P</sub>²)</code> and <code>dark = 1 − light</code>, for every
+      state (<code>TorusDark.lightShare_add_darkShare</code>). In the band <code>|t| &gt; 1</code> the dark share is
+      positive for every state (<code>darkShare_pos_of_band</code>); at <code>c</code> it is exactly 1/5
+      (<code>darkShare_maxState</code>). At tension 1 the axis saturates: dark 0. Transport by <code>T°</code> moves Ψ(t)
+      off <code>c</code>; the orange mark stays at 4/5.</p>
+    <canvas id="shares" aria-label="Light and dark shares of every axis, with the tension"></canvas></div>
 
-  <div class="card bandcard"><h2>The octahedron of the quantum (D25, D37e)</h2>
-    <span class="hint">drag to turn · dashed: d → ∞</span>
-    <p class="sub">Each axis with <code>d</code> sites carries the excess over saturation <code>δ(d) = C<sub>Nava</sub>(d) − 1</code>,
-      zero only with 2 or 3 sites (D25). Put a vertex at <code>±δ</code> on every axis: the octahedron of the box. The regular
-      <code>4 × 4 × 4</code> gives the smallest, <code>δ(4) ≈ 0.00848</code> on every axis; no box reaches the dashed one of
-      <code>d → ∞</code>, <code>δ<sub>∞</sub> = C<sub>∞</sub> − 1 ≈ 0.13572</code> on every axis. Its volume is
-      <code>(4/3)·𝒱</code>, with <code>𝒱 = δ(d<sub>x</sub>) δ(d<sub>y</sub>) δ(d<sub>z</sub>)</code> the volumetric quantum and
-      <code>δ(4)³ ≤ 𝒱 &lt; δ<sub>∞</sub>³</code> (D37e).</p>
-    <div class="octagrid">
-      <canvas id="octa" aria-label="The octahedron of the box, vertices at plus or minus delta on every axis, inside the one of d to infinity"></canvas>
-      <canvas id="delta" aria-label="The excess delta of d against the number of sites, with the three axes of the box"></canvas>
+  <div class="card mt"><h2>The ladder of Robertson 1934 (<code>Torus.ladder</code>)</h2>
+    <p class="sub">At the maximal current state, <code>det Σ / |det Ω|</code>: the open cube saturates (1); each closed axis
+      multiplies by <code>5/4</code>; <code>T³</code> gives <code>125/64</code>, <code>T⁴</code> gives <code>625/256</code>, strict from one
+      closed axis on (<code>robertson_det_maxState_strict</code>). For every state with the three axes in the band,
+      entangled or not, the inequality on <code>T³</code> is strict (<code>TorusStrict.robertson_det_torus_lt</code>).
+      The orange dot is the value at Ψ(t).</p>
+    <canvas id="ladder" aria-label="The ladder: open cube 1, box 5/4, T³ 125/64, T⁴ 625/256"></canvas>
+    <div class="badges" aria-live="polite">
+      <div><span class="k">det Σ / |det Ω| at Ψ(t)</span><span id="b-det">–</span></div>
+      <div><span class="k">at c (exact)</span><span>125/64 = 1.953125</span></div>
+      <div><span class="k">band</span><span id="b-band">–</span></div>
+      <div><span class="k">state</span><span id="b-state">–</span></div>
     </div>
-    <div class="octabadges" aria-live="polite">
-      <div><span class="k">δ on x, y, z</span><span id="o-d">–</span></div>
-      <div><span class="k">𝒱 = δ<sub>x</sub>δ<sub>y</sub>δ<sub>z</sub></span><span id="o-v">–</span></div>
-      <div><span class="k">𝒱 / δ(4)³ (floor = 1)</span><span id="o-f">–</span></div>
-      <div><span class="k">𝒱 / δ<sub>∞</sub>³ (ceiling = 1, never)</span><span id="o-c">–</span></div>
-    </div></div>
-
-  <div class="card bandcard"><h2>Speed and the quantum (D44)</h2>
-    <span class="hint">|v(t)| against θ(t), one panel per axis</span>
-    <p class="sub">The speed of an axis is <code>v = ((d − 1)/2)·⟨K⟩</code>, <code>K = i[T, P]</code> (D38). Minimum
-      uncertainty (θ = 0) is possible only up to <code>v*(d)</code>; on the band <code>Ϙ(d) = (v*(d), 1]</code> every
-      state has a forced defect, and at the cone <code>v = 1</code> the angle is exactly the quantum
-      <code>θ<sub>NRS</sub>(d)</code>. Press Transport: Ψ(t) starts at the quantum and leaves it as it slows down.</p>
-    <canvas id="speed" aria-label="Speed against angle, with the velocity band of each axis"></canvas>
-    <p class="sub">Exact in Lean: <code>v*(4) = 3(√5 − 1)/4</code> (D23f, D23g, D43); the band is empty for 2 or 3
-      sites and non-empty from 4 on (D44); θ = θ<sub>NRS</sub>(d) at <code>v = 1</code> (D48). Numerical: <code>v*(d)</code>
-      for <code>d ≥ 5</code> and the dotted envelope (the smallest angle at each speed). The horizontal scale is
-      stretched above <code>v = 0.9</code>.</p></div>
-
-  <div class="badges" aria-live="polite">
-    <div class="badge"><span class="k">family (D37i)</span><span class="fam" id="b-fam">–</span></div>
-    <div class="badge"><span class="k">orbit under axis permutations</span><span id="b-orb">–</span></div>
-    <div class="badge"><span class="k">signed permutations keeping every angle</span><span id="b-sym">–</span></div>
-    <div class="badge"><span class="k">the quantum</span><span id="b-q">–</span></div>
+    <div class="tablewrap"><table aria-label="Axis statistics">
+      <thead><tr><th>axis</th><th>σ<sub>T</sub>²</th><th>σ<sub>P</sub>²</th><th>Cov</th><th>Im</th><th>tension</th>
+        <th>light</th><th>dark</th><th>det Σ / |det Ω|</th></tr></thead>
+      <tbody id="rows"></tbody>
+      <tbody><tr class="exact"><td>c, exact</td><td>9/16</td><td>5/6</td><td>0</td><td>−√6/4</td><td>√6/2</td>
+        <td>4/5</td><td>1/5</td><td>5/4</td></tr></tbody>
+    </table></div>
   </div>
 
-  <div class="tablewrap"><table aria-label="Axis statistics">
-    <thead><tr><th>axis</th><th>sites</th><th>θ(t)</th><th>θ<sub>NRS</sub>(d) at t = 0</th>
-      <th>C<sub>Nava</sub> = 1/cos θ<sub>NRS</sub></th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table></div>
+  <h2 class="part">Rings of any size</h2>
+  <p class="lead">With <code>d<sub>x</sub>, d<sub>y</sub>, d<sub>z</sub> ≥ 3</code> positions on each closed axis, the transport of
+    the torus is the sum of the three rings. With three positions it is the <code>T°</code> above.</p>
+  <div class="card">
+    <h2>Spectrum, speed and the cut</h2>
+    <div class="sliders">
+      <label class="sl">d<sub>x</sub><input type="range" id="rx" min="3" max="24" value="4"><b id="vrx">4</b></label>
+      <label class="sl">d<sub>y</sub><input type="range" id="ry" min="3" max="24" value="4"><b id="vry">4</b></label>
+      <label class="sl">d<sub>z</sub><input type="range" id="rz" min="3" max="24" value="4"><b id="vrz">4</b></label>
+    </div>
+    <canvas id="spectrum" aria-label="Histogram of the spectrum of the torus transport, with the bound |E| ≤ 3"></canvas>
+    <div class="badges" aria-live="polite">
+      <div><span class="k">positions</span><span id="r-sites">–</span></div>
+      <div><span class="k">orthogonality time</span><span id="r-time">–</span></div>
+      <div><span class="k">steps across a cut of x</span><span id="r-cut">–</span></div>
+      <div><span class="k">entropy of the cut S</span><span id="r-S">–</span></div>
+    </div>
+    <p class="sub">The spectrum is exactly the sums of cosines (<code>TorusSpectrum.eq_lam3_of_eigenvector</code>), so
+      <code>|E| ≤ 3</code> (<code>TorusSpeed.abs_energy_torus_le_three</code>) and no state becomes orthogonal to itself before
+      <code>π/6</code> (<code>pi_div_six_le_time_torus</code>); on a single ring the bound is <code>π/2</code>. With even sizes both
+      are attained (<code>TorusSharp.torus_orthogonality_exact</code>, <code>ring_orthogonality_exact</code>). A cut across
+      <code>x</code> crosses a plane and the seam, <code>d<sub>y</sub>·d<sub>z</sub></code> steps each, so
+      <code>S = 2·d<sub>y</sub>·d<sub>z</sub>·log 2</code>, an area, independent of the depth
+      (<code>TorusArea.cutEntropy_eq</code>, <code>cutEntropy_eq_of_depth</code>).</p>
+  </div>
 
-  <p class="note">Exact in Lean (repository <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a>):
-    the angle is <code>angleG = arccos(‖⟨δT, δP⟩‖ / (σ<sub>T</sub> σ<sub>P</sub>))</code>, the same formula as here, with <code>cos θ<sub>NRS</sub>(d) = 1/C<sub>Nava</sub>(d)</code> and <code>θ<sub>NRS</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b); the band <code>θ<sub>NRS</sub>(4) ≤ θ<sub>NRS</sub>(d) < arccos(1/C<sub>∞</sub>)</code>, <code>C<sub>∞</sub> = √(π²/3 − 2)</code>, holds at the maximal current state of the cube and at its 48 images under turns and reflections (<code>angleNRS_spectrum_bounds</code>, D48; <code>octahedral_symmetry</code>, D37h), not at Ψ(t) under transport (<code>angleAxis</code> at any state);
-    at the maximal current state of the cube each axis has its own angle and the axes commute (D37, D37h); the three families, orbits of 1, 3, 6
-    boxes and 48, 16, 8 angle-keeping symmetries, and the quantum is never erased from 4 sites on (D37i);
-    transport spreads at most one site per step (D37f). The numbers on this page are computed in your browser
-    from the same matrices (T = path adjacency / ρ<sub>d</sub>, P = centred position); the star is drawn
-    schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.</p>
+  <div class="note">
+    <p>Exact in Lean, standard axioms only (repositories <code>nrs3-tritoro</code> on <code>nrs3-hopf</code>):</p>
+    <ul>
+      <li><code>Torus.robertson_det_torus</code>: Robertson 1934 on the torus, every state;
+        <code>Torus.gramDefect_pos</code>: tension above 1 on an axis forces a positive defect, every state.</li>
+      <li><code>Torus.det_covMatrix_maxState</code>: <code>det Σ = (5/4)^k |det Ω|</code> on <code>T^k</code>;
+        <code>Torus.three_torus</code>: <code>125/64</code>; <code>Torus.ladder</code>: 1, 5/4, 125/64, 625/256.</li>
+      <li><code>TorusCommute.torusPairs_comm</code>: different axes commute.</li>
+      <li><code>TorusStrict.robertson_det_torus_lt</code>: det|NRS³| strict on <code>T³</code> for every state with the three
+        axes in the band, by the double bracket <code>[[T°, P₃], w₀T° + w₁P₃] ≠ 0</code>.</li>
+      <li><code>TorusCone.axisVector_mem_futureCone</code>, <code>timelike_of_band</code>: every axis of every state lies in the
+        closed future cone, strictly timelike in the band.</li>
+      <li><code>TorusDark.lightShare_maxState</code>, <code>darkShare_maxState</code>: 4/5 and 1/5 at <code>c</code>.</li>
+      <li><code>BoxExcess.variance_TcOp_maxState</code> (9/16), <code>variance_PdOp_maxState</code> (5/6),
+        <code>covariance_maxState</code> (0), <code>ClosedThree.tension_maxState</code> (√6/2),
+        <code>ClosedThree.tension_satState</code> (1).</li>
+    </ul>
+    <p>The open box with <code>d</code> sites per axis, its angle <code>θ<sub>NRS</sub>(d)</code>, the band and the octahedron of the
+      quantum are on <a href="box.html">the open box page</a>; those theorems are merged in Physlib.</p>
+  </div>
 </main>
-<script src="nrs3-speed-data.js?v=20261013b"></script>
-<script src="nrs3-draw.js?v=20261013b"></script>
-<script src="nrs3-box.js?v=20261013b"></script>
+<script src="nrs3-draw.js?v=20261020"></script>
+<script src="t3.js?v=20261020"></script>
 </body>
 </html>
