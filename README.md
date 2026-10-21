@@ -44,7 +44,8 @@ bridge, stated and not proved.
 [`nrs3-hopf`](https://github.com/naype888-cloud/nrs3-hopf). Pages on `T³`:
 [de Sitter](https://naype888-cloud.github.io/nrs3-de-sitter/t3.html) ·
 [SL(2, ℂ) and the cone](https://naype888-cloud.github.io/nrs3-uncertainty-cone/lorentz-t3.html) ·
-[NRS³-Minkowski](https://naype888-cloud.github.io/nrs3-uncertainty-cone/index-t3.html).
+[NRS³-Minkowski](https://naype888-cloud.github.io/nrs3-uncertainty-cone/index-t3.html) ·
+[Dark](https://naype888-cloud.github.io/nrs3-dark/t3.html).
 
 ## The open cube, kept separate
 
