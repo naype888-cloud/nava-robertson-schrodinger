@@ -91,6 +91,15 @@
   .card.full canvas { height: calc(100vh - 150px); aspect-ratio: auto; }
   .card.full .octagrid canvas { height: calc(100vh - 260px); }
   .card.full .sub { display: none; }
+  .dblgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  @media (max-width: 820px) { .dblgrid { grid-template-columns: 1fr; } }
+  .dblpane h3 { font-size: 0.85rem; margin: 2px 4px 4px; font-weight: 600; color: var(--ink2); }
+  .minis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
+  .minis canvas { border: 1px solid var(--grid); border-radius: 8px; aspect-ratio: 1 / 1; }
+  #dsum { aspect-ratio: 16 / 7; }
+  .minis.wide { grid-template-columns: repeat(8, 1fr); }
+  @media (max-width: 820px) { .minis.wide { grid-template-columns: repeat(4, 1fr); } #dsum { aspect-ratio: 1 / 1; } }
+  .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 </head>
 <body>
@@ -136,6 +145,40 @@
       <canvas id="box" aria-label="The lattice of the box with the state on every site, in 3D"></canvas></div>
     <div class="card"><h2>The star of the torus</h2><span class="hint">δT° and δP of each axis</span>
       <canvas id="star" aria-label="The star of fluctuation vectors of the three axes, in 3D"></canvas></div>
+  </div>
+
+  <div class="card bandcard" id="dblcard"><h2>The eight corners: position, momentum and their sum</h2>
+    <span class="hint">drag to turn · the small squares zoom on each corner</span>
+    <p class="sub">The corners <code>{0, d − 1}³</code> of the box above are neighbours through the three seams: on the torus they
+      are one <code>2 × 2 × 2</code> cube. The colour is the staggered sign <code>ε = (−1)<sup>x+y+z</sup></code>, Dirac's <code>β</code>:
+      it anticommutes with the transport, so <code>(T° + mε)² = T°² + m²</code>. In momentum the transport with the
+      Kogut–Susskind signs vanishes at the 8 corners <code>(±π/2)³</code> of the Brillouin cube: the doublers. A closed axis has
+      a closed momentum circle, so every right mover comes with a left mover; the indices <code>±1</code> of the 8 corners add to
+      <code>0</code> (Nielsen–Ninomiya, the Poincaré–Hopf count on <code>T³</code>). Below, their sum: each doubler as the phase
+      <code>θ·x</code> on the corner cube. With the closed fibre <code>w</code> (3 positions) as a fourth axis,
+      <code>D₄ = D₃ + ε T<sub>w</sub></code>, <code>D₄² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + T<sub>w</sub>²</code>: the fibre is a
+      Kaluza–Klein mass, <code>1, −½, −½</code>, and the light level <code>½</code> comes twice, once per sense of turn.</p>
+    <div class="bar">
+      <label class="sl" style="min-width:260px">mass m<input type="range" id="dmass" min="0" max="1" step="0.01" value="0"><b id="vmass">0.00</b></label>
+      <button class="act" type="button" id="dfiber" aria-pressed="false">+ fibre w (4D)</button>
+    </div>
+    <div class="dblgrid">
+      <div class="dblpane"><h3>Position: the corner cube, ε on every site</h3>
+        <canvas id="dpos" aria-label="The torus with its 8 corners coloured by the staggered sign"></canvas>
+        <div class="minis" id="mpos"></div></div>
+      <div class="dblpane"><h3>Momentum: the 8 doublers and their Dirac cones</h3>
+        <canvas id="dmom" aria-label="The Brillouin cube with the 8 doublers at plus or minus pi over 2"></canvas>
+        <div class="minis" id="mmom"></div></div>
+    </div>
+    <div class="dblpane" style="margin-top:12px"><h3>Sum: the doubler θ on the corner cube x, colour = phase θ·x</h3>
+      <canvas id="dsum" aria-label="Each doubler drawn as its phase on the corner cube, at the corners of the Brillouin cube"></canvas>
+      <div class="minis wide" id="msum"></div></div>
+    <p class="sub" style="margin-top:8px">Lean (<code>nrs3-tritoro</code>, one closed axis, even size): <code>TorusDirac.transport_stagger</code>
+      (<code>ε</code> anticommutes with <code>T°</code> and with the current), <code>stagger_wave</code> (<code>ε</code> exchanges the two
+      fastest waves, the doublers), <code>dirac_sq</code> (<code>D<sub>m</sub>² = T°² + m²</code>), <code>abs_velocity_lt_one_of_dirac</code>
+      and <code>TorusDiracBound.abs_velocity_le_of_dirac</code> (a massive stationary state moves at most at
+      <code>√(1 + m²) − |m|</code>, never at the cone). Numerical here: the three-axis Kogut–Susskind signs, the fibre as fourth axis
+      and its masses; the index count is the classical theorem, not yet in Lean.</p>
   </div>
 
   <div class="card bandcard"><h2>The angle at c on every ring</h2>
@@ -205,5 +248,6 @@
 </main>
 <script src="t3-draw.js?v=20261020c"></script>
 <script src="t3-box.js?v=20261020c"></script>
+<script src="t3-doublers.js?v=20261022e"></script>
 </body>
 </html>
