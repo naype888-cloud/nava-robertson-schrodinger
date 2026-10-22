@@ -86,6 +86,15 @@
   .card.full canvas { height: calc(100vh - 150px); aspect-ratio: auto; }
   .card.full .octagrid canvas { height: calc(100vh - 260px); }
   .card.full .sub { display: none; }
+  .dblgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  @media (max-width: 820px) { .dblgrid { grid-template-columns: 1fr; } }
+  .dblpane h3 { font-size: 0.85rem; margin: 2px 4px 4px; font-weight: 600; color: var(--ink2); }
+  .minis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
+  .minis canvas { border: 1px solid var(--grid); border-radius: 8px; aspect-ratio: 1 / 1; }
+  #hsum { aspect-ratio: 16 / 7; }
+  .minis.wide { grid-template-columns: repeat(8, 1fr); }
+  @media (max-width: 820px) { .minis.wide { grid-template-columns: repeat(4, 1fr); } #hsum { aspect-ratio: 1 / 1; } }
+  .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 </head>
 <body>
@@ -136,6 +145,39 @@
       <canvas id="box" aria-label="The torus with the hopping state on every site"></canvas></div>
     <div class="card"><h2>The spectral star</h2><span class="hint">⟨cos⟩ on each axis, spread of the cosine</span>
       <canvas id="star" aria-label="The three cosine expectations and their spreads"></canvas></div>
+  </div>
+
+  <div class="card bandcard" id="hdblcard"><h2>The eight doublers, spectral side: hopping, Dirac and their sum</h2>
+    <span class="hint">drag to turn · the small squares zoom on each doubler</span>
+    <p class="sub">Every mode <code>(a, b, c)</code> of the torus sits at <code>(cos θ<sub>a</sub>, cos θ<sub>b</sub>, cos θ<sub>c</sub>)</code>
+      in the cube of cosines. The hopping <code>E = −2t Σ cos</code> vanishes on a whole plane, <code>Σ cos = 0</code>. With the
+      Kogut–Susskind signs the three axes anticommute and the energy becomes a length,
+      <code>E = ±√(cos²θ<sub>a</sub> + cos²θ<sub>b</sub> + cos²θ<sub>c</sub> + m²)</code>: it vanishes at one point only, the origin,
+      where the eight doublers <code>(±π/2)³</code> sit. The square root turns the zero plane of the hopping into the zero point
+      of Dirac. Below, their sum: in the squares <code>(cos², cos², cos²)</code> the Dirac energy squared is the sum of the
+      three axes, <code>D² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code>. The fibre of 3 positions gives the mass
+      <code>½</code>.</p>
+    <div class="bar">
+      <label class="sl" style="min-width:260px">mass m<input type="range" id="hmass" min="0" max="1" step="0.01" value="0"><b id="vhmass">0.00</b></label>
+      <button class="act" type="button" id="hfiber" aria-pressed="false">+ fibre w (4D)</button>
+    </div>
+    <div class="dblgrid">
+      <div class="dblpane"><h3>Hopping: E = −2t Σ cos, zero on a plane</h3>
+        <canvas id="hhop" aria-label="The modes in the cube of cosines, coloured by the hopping energy"></canvas>
+        <div class="minis" id="nhop"></div></div>
+      <div class="dblpane"><h3>Dirac: E = ±√(Σ cos² + m²), zero at one point</h3>
+        <canvas id="hdir" aria-label="The modes in the cube of cosines, coloured by the Dirac energy"></canvas>
+        <div class="minis" id="ndir"></div></div>
+    </div>
+    <div class="dblpane" style="margin-top:12px"><h3>Sum: the squares, E² − m² = cos² + cos² + cos²</h3>
+      <canvas id="hsum" aria-label="The modes in the cube of squared cosines, with level planes of the Dirac energy"></canvas>
+      <div class="minis wide" id="nsum"></div></div>
+    <p class="sub" style="margin-top:8px">Lean (<code>nrs3-tritoro</code>): <code>TorusDirac3.dirac3_sq</code>
+      (<code>D<sub>m</sub>² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code> on <code>T³</code>, even sizes), the anticommutations
+      <code>Tx_Ay</code>, <code>Tx_Az</code>, <code>Ay_Az</code>, <code>eps_Tx</code>, <code>eps_Ay</code>, <code>eps_Az</code>, and
+      <code>dirac3_wave</code> (the eight waves <code>(±i)<sup>x</sup>(±i)<sup>y</sup>(±i)<sup>z</sup></code> are zero modes of
+      <code>D₀</code>, and the mass sends each to the opposite corner). The spectrum of each ring is the Lean
+      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre and its mass are numerical.</p>
   </div>
 
   <div class="card bandcard"><h2>The hopping band of every ring</h2>
@@ -200,5 +242,6 @@
     torus, the angle <code>θ</code> and the dark share, is on <a href="index.html">the star page</a>.</p>
 </main>
 <script src="hopping.js?v=20261020d"></script>
+<script src="hopping-doublers.js?v=20261022b"></script>
 </body>
 </html>
