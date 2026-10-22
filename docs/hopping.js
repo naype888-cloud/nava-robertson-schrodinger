@@ -336,6 +336,7 @@
     syncModeSliders();
   }
 
+  window.NRS3Rotate = (y, p) => { yaw = y; pitch = p; lastInteract = performance.now(); };
   let lastTs = 0;
   function frame(ts) {
     const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0; lastTs = ts;
@@ -349,6 +350,9 @@
       $("tt").value = s; $("vt").textContent = s.toFixed(2);
     }
     const st = axesNow();
+    // the state of the page, read by the doubler card (hopping-doublers.js) on every frame
+    window.NRS3Shared = { box: box.slice(), mode: mode.map((m, i) => ((m % box[i]) + box[i]) % box[i]), s, tHop, yaw, pitch,
+      lam: st.map((a) => a.lam), V: st.map((a) => a.v) };
     drawBox(st); drawStar(st); drawBand(st); drawOcta(st); drawDisp(st); drawSpeed(st); readouts(st);
     requestAnimationFrame(frame);
   }

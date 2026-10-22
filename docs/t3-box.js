@@ -422,6 +422,7 @@
     $("o-f").textContent = (V / d4 ** 3).toFixed(2);
     $("o-c").textContent = (V / D_INF ** 3).toFixed(4);
   }
+  window.NRS3Rotate = (y, p) => { yaw = y; pitch = p; lastInteract = performance.now(); };
   let lastTs = 0;
   function frame(ts) {
     const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0; lastTs = ts;
@@ -435,6 +436,8 @@
       $("tt").value = t; $("vt").textContent = t.toFixed(1);
     }
     const st = currentStats();
+    // the state of the page, read by the corner card (t3-doublers.js) on every frame
+    window.NRS3Shared = { box: box.slice(), t, yaw, pitch, V: box.map((d) => evolve(axis(d), t)) };
     if (tipsTo) {
       const u = Math.min(1, (ts - morph0) / 900), e = ease(u);
       tips = tipsFrom.map((p, i) => p.map((v, m) => v + (tipsTo[i][m] - v) * e));
