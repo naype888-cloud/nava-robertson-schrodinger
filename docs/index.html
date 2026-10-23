@@ -221,6 +221,46 @@
       <code>c</code> and leaves it.</p>
     <canvas id="speed" aria-label="Tension against angle, with the band of each axis"></canvas></div>
 
+  <div class="card bandcard" id="zcard"><h2>The windings: redshift from the seam</h2>
+    <span class="hint">▶ Wind or move n</span>
+    <p class="sub">On <code>T³</code> the light that leaves a galaxy comes back to it: the same galaxy is seen again after every
+      winding, at the apparent distance <code>D = d₀ + nL</code> (<code>TorusCover.infinite_paths</code>). The windings alone keep
+      the colour: the spectrum of a state never changes (<code>EventClock.weight_evolve</code>). Every winding crosses the seam of
+      the axis, the link that closes it and carries one quantum. The one input: at each seam the light keeps the light share
+      of the ring of 3 at <code>c</code>, <b>4/5</b>, and leaves <b>1/5</b> to the dark share. Then
+      <code>1 + z = (5/4)ⁿ = exp(κ (D − d₀))</code> with <code>κ = log(5/4)/L</code>, Hubble's law <code>z ≥ κ (D − d₀)</code>, and the
+      light runs <code>(5/4)ⁿ</code> times slower: no event in it goes from 0 to 1 before <code>(5/4)ⁿ π/(2ΔE)</code>. With
+      <code>κ = H₀/c</code> the size of the axis is <code>L = log(5/4) c/H₀</code>.</p>
+    <div class="bar">
+      <label class="sl" style="min-width:260px">windings n<input type="range" id="zn" min="0" max="35" step="1" value="0"><b id="vzn">0</b></label>
+      <button class="act" type="button" id="zplay" aria-pressed="false">▶ Wind</button>
+      <div class="chips" role="group" aria-label="Fraction kept at each seam">
+        <button class="chip" type="button" data-r="0.8" aria-pressed="true">ring of 3: 4/5 (Lean)</button>
+        <button class="chip" type="button" data-r="0.5" aria-pressed="false">ring of many positions: → 1/2</button>
+      </div>
+    </div>
+    <div class="dblgrid">
+      <div class="dblpane"><h3>One axis of T³ and its cover: the same galaxy, farther and redder</h3>
+        <canvas id="zring" aria-label="The closed axis with its seam, the light winding around it, and the images of the galaxy on the cover"></canvas></div>
+      <div class="dblpane"><h3>1 + z against the apparent distance</h3>
+        <canvas id="zplot" aria-label="One plus z against the apparent distance, with Hubble's law as a lower bound"></canvas></div>
+    </div>
+    <div class="octabadges" aria-live="polite">
+      <div><span class="k">1 + z</span><span id="z-z">–</span></div>
+      <div><span class="k">light · dark after n seams</span><span id="z-ld">–</span></div>
+      <div><span class="k">apparent distance D − d₀ = nL</span><span id="z-d">–</span></div>
+      <div><span class="k">the tick of the light</span><span id="z-t">–</span></div>
+    </div>
+    <p class="sub" style="margin-top:8px">Lean (<code>nrs3-tritoro</code>, standard axioms only): <code>SeamLightShare.seamFraction_eq</code>
+      (the fraction of a seam of <code>T³</code> is the light share at <code>c</code>, 4/5), <code>seamFraction_eq_fiber</code> (the closed
+      fibre keeps the same), <code>light_seam</code>, <code>dark_seam</code>, <code>onePlusZ_seam</code> (<code>1 + z = (5/4)ⁿ</code>),
+      <code>hubble_seam</code>, <code>size_of_hubble</code>, <code>orthogonality_time_seam</code>; for any fraction
+      <code>SeamRedshift.onePlusZ_eq_exp</code>, <code>hubble_le</code> and <code>amplitude_redshift</code> (the light after <code>n</code> seams
+      is the original one in slow motion); on a ring of many positions the light share at <code>c</code> tends to 1/2
+      (<code>SeamLightShare.tendsto_lightShare_cState</code>, <code>RingSzego</code>). Numerical here: <code>H₀ = 67.66 km/s/Mpc</code>
+      (Planck 2018), the size in Gly, and the colours, a line emitted at 400 nm.</p>
+  </div>
+
   <div class="badges" aria-live="polite">
     <div class="badge"><span class="k">family</span><span class="fam" id="b-fam">–</span></div>
     <div class="badge"><span class="k">orbit under axis permutations</span><span id="b-orb">–</span></div>
@@ -252,5 +292,6 @@
 <script src="t3-draw.js?v=20261020c"></script>
 <script src="t3-box.js?v=20261020c"></script>
 <script src="t3-doublers.js?v=20261022f"></script>
+<script src="t3-redshift.js?v=20261023a"></script>
 </body>
 </html>
