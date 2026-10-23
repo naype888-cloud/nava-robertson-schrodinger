@@ -177,9 +177,11 @@
     <p class="sub" style="margin-top:8px">Lean (<code>nrs3-tritoro</code>, one closed axis, even size): <code>TorusDirac.transport_stagger</code>
       (<code>ε</code> anticommutes with <code>T°</code> and with the current), <code>stagger_wave</code> (<code>ε</code> exchanges the two
       fastest waves, the doublers), <code>dirac_sq</code> (<code>D<sub>m</sub>² = T°² + m²</code>), <code>abs_velocity_lt_one_of_dirac</code>
-      and <code>TorusDiracBound.abs_velocity_le_of_dirac</code> (a massive stationary state moves at most at
-      <code>√(1 + m²) − |m|</code>, never at the cone). Numerical here: the three-axis Kogut–Susskind signs, the fibre as fourth axis
-      and its masses; the index count is the classical theorem, not yet in Lean.</p>
+      and <code>TorusUniverse.abs_velocity_le_of_dirac</code> (a massive stationary state moves at most at
+      <code>√(1 + m²) − |m|</code>, never at the cone). Also in Lean: the three-axis Kogut–Susskind signs (<code>TorusDirac3.dirac3_sq</code>),
+      the fibre as fourth axis (<code>TorusFiberDirac.dirac_sq</code>), its masses (<code>FiberDiracAxis.transport_rotating</code>,
+      <code>FiberDirac.Tc_uniform</code>) and the gap <code>|E| ≥ ½</code> (<code>TorusFiberDirac.abs_energy_ge</code>). Still numerical: the index count,
+      the classical theorem, not yet in Lean.</p>
   </div>
 
   <div class="card bandcard"><h2>The angle at c on every ring</h2>
