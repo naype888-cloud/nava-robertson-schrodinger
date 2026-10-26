@@ -91,12 +91,22 @@
   .card.full canvas { height: calc(100vh - 150px); aspect-ratio: auto; }
   .card.full .octagrid canvas { height: calc(100vh - 260px); }
   .card.full .sub { display: none; }
+  .dblgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  @media (max-width: 820px) { .dblgrid { grid-template-columns: 1fr; } }
+  .dblpane h3 { font-size: 0.85rem; margin: 2px 4px 4px; font-weight: 600; color: var(--ink2); }
+  .minis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
+  .minis canvas { border: 1px solid var(--grid); border-radius: 8px; aspect-ratio: 1 / 1; }
+  #dsum { aspect-ratio: 16 / 7; }
+  .minis.wide { grid-template-columns: repeat(8, 1fr); }
+  @media (max-width: 820px) { .minis.wide { grid-template-columns: repeat(4, 1fr); } #dsum { aspect-ratio: 1 / 1; } }
+  .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 </head>
 <body>
 <main>
   <button class="theme" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
+  <a class="theme" style="margin-right:8px;text-decoration:none" href="hopping.html">The hopping ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="./">◂ T³, the canonical torus</a>
   <h1>NRS³ — every box has its star</h1>
   <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
@@ -135,6 +145,29 @@
       <canvas id="box" aria-label="The lattice of the box with the state on every site, in 3D"></canvas></div>
     <div class="card"><h2>The star of the box</h2><span class="hint">δT and δP of each axis</span>
       <canvas id="star" aria-label="The star of fluctuation vectors of the three axes, in 3D"></canvas></div>
+  </div>
+
+  <div class="card bandcard" id="dblcard"><h2>The eight corners: position and the waves of the box</h2>
+    <span class="hint">follows the box, Ψ(t) and the turn above · drag any panel to turn all</span>
+    <p class="sub">Everything here is the box above, at the same time: the same sizes, the same Ψ(t), the same turn. The corners
+      <code>{0, d − 1}³</code> of the open box are <b>not</b> neighbours: there is no seam, each corner has three links, not six. The colour is the
+      staggered sign <code>ε = (−1)<sup>x+y+z</sup></code>. On the path it anticommutes with the transport, <code>ε T = −T ε</code>, so
+      <code>(T + mε)² = T² + m²</code>, and it pairs the wave <code>k</code> with the wave <code>d + 1 − k</code>, of opposite speed. An open axis has no
+      momentum circle: the waves are the standing waves <code>sin(jkπ/(d+1))</code>, one of each speed, so there are no doublers to
+      count and no Nielsen–Ninomiya sum; the fastest pair, the 8 extreme waves, are the ones <code>ε</code> exchanges. Compare the torus page, where the same 8
+      corners are one <code>2 × 2 × 2</code> cube through the seams.</p>
+    <div class="dblgrid">
+      <div class="dblpane"><h3>Position: the 8 corners of the box, ε on every site</h3>
+        <canvas id="dpos" aria-label="The open box with its 8 corners coloured by the staggered sign, not linked to each other"></canvas>
+        <div class="minis" id="mpos"></div></div>
+      <div class="dblpane"><h3>Waves: the extreme standing waves of the box and their ε pairs</h3>
+        <canvas id="dmom" aria-label="The cube of standing waves of the box with the 8 extreme waves and the pairing by epsilon"></canvas>
+        <div class="minis" id="mmom"></div></div>
+    </div>
+    <p class="sub" style="margin-top:8px">Lean (this repository, one open axis): <code>J_mul_Td</code> and <code>J_mul_Pd</code> (D49m: the mirror
+      <code>J</code>, position <code>j → d − 1 − j</code> with sign <code>(−1)<sup>j</sup></code>, anticommutes with <code>T<sub>d</sub></code> and
+      <code>P<sub>d</sub></code>). The staggered <code>ε</code> alone anticommuting with <code>T</code>, and the wave pairing, are drawn here from the same matrices,
+      not yet stated in Lean for the open path.</p>
   </div>
 
   <div class="card bandcard"><h2>The band of the quantum</h2>
@@ -176,6 +209,33 @@
       for <code>d ≥ 5</code> and the dotted envelope (the smallest angle at each speed). The horizontal scale is
       stretched above <code>v = 0.9</code>.</p></div>
 
+  <div class="card bandcard" id="zcard"><h2>No windings: the wall does not redden</h2>
+    <span class="hint">▶ Bounce or move n</span>
+    <p class="sub">On the open box the light that leaves a galaxy does not come back to it by going around: it reaches the end of the axis and is
+      reflected. There is no link that closes the axis, so no seam, no quantum added per turn and no cover: the images are mirror images inside the
+      box, at distances bounded by <code>d − 1</code> sites, not new galaxies at <code>d₀ + nL</code>. The spectrum of a state never changes
+      (<code>EventClock.weight_evolve</code>, any state), and with no seam nothing is left dark by a winding: <code>1 + z = 1</code> at every bounce.
+      The redshift <code>1 + z = (5/4)ⁿ</code> of the torus page needs the closed axis; here the same card stays flat, which is the difference of topology.</p>
+    <div class="bar">
+      <label class="sl" style="min-width:260px">bounces n<input type="range" id="zn" min="0" max="35" step="1" value="0"><b id="vzn">0</b></label>
+      <button class="act" type="button" id="zplay" aria-pressed="false">▶ Bounce</button>
+    </div>
+    <div class="dblgrid">
+      <div class="dblpane"><h3>One axis of the box and its walls: the light is reflected</h3>
+        <canvas id="zring" aria-label="The open axis with its two walls and the light bouncing between them"></canvas></div>
+      <div class="dblpane"><h3>1 + z against the apparent distance</h3>
+        <canvas id="zplot" aria-label="One plus z against the apparent distance, flat at one"></canvas></div>
+    </div>
+    <div class="octabadges" aria-live="polite">
+      <div><span class="k">1 + z</span><span id="z-z">–</span></div>
+      <div><span class="k">seams crossed</span><span id="z-ld">–</span></div>
+      <div><span class="k">walls hit</span><span id="z-d">–</span></div>
+      <div><span class="k">the tick of the light</span><span id="z-t">–</span></div>
+    </div>
+    <p class="sub" style="margin-top:8px">Lean: the windings and <code>SeamRedshift</code> live in <code>nrs3-tritoro</code> and need a closed axis; for the open
+      path the corresponding bound is transport spreading at most one site per step (D37f). Nothing on this card is a new theorem.</p>
+  </div>
+
   <div class="badges" aria-live="polite">
     <div class="badge"><span class="k">family (D37i)</span><span class="fam" id="b-fam">–</span></div>
     <div class="badge"><span class="k">orbit under axis permutations</span><span id="b-orb">–</span></div>
@@ -195,10 +255,13 @@
     boxes and 48, 16, 8 angle-keeping symmetries, and the quantum is never erased from 4 sites on (D37i);
     transport spreads at most one site per step (D37f). The numbers on this page are computed in your browser
     from the same matrices (T = path adjacency / ρ<sub>d</sub>, P = centred position); the star is drawn
-    schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.</p>
+    schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.
+    The torus, every axis closed, with its light and dark share, its doublers and its windings, is on <a href="./">the T³ page</a>.</p>
 </main>
-<script src="nrs3-speed-data.js?v=20261020c"></script>
-<script src="nrs3-draw.js?v=20261020c"></script>
-<script src="nrs3-box.js?v=20261020c"></script>
+<script src="nrs3-speed-data.js?v=20261025a"></script>
+<script src="nrs3-draw.js?v=20261025a"></script>
+<script src="nrs3-box.js?v=20261025a"></script>
+<script src="nrs3-doublers.js?v=20261025a"></script>
+<script src="nrs3-redshift.js?v=20261025a"></script>
 </body>
 </html>
