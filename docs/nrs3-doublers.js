@@ -56,7 +56,12 @@
   const site = (c) => c.map((v, i) => (v ? ST().box[i] - 1 : 0));          // corner bit 1 → d − 1, 0 → 0 (no seam)
   const wave = (c) => c.map((v, i) => (v ? ST().box[i] - 1 : 0));          // extreme wave: bit 1 → slowest (k = d−1)
   const pair = (k) => k.map((v, i) => ST().box[i] - 1 - v);                // ε: k → d − 1 − k
-  let PROB, PHASE, MODE;
+  let PROB, PHASE, MODE, mass = 0, fiber = false, time = 0, phi4 = 0;
+  const effMass = () => (fiber ? 0.5 : mass);
+  function four([x, y, z, w]) {
+    const c = Math.cos(phi4), s = Math.sin(phi4), x1 = c * x - s * w, w1 = s * x + c * w, f = 2.4 / (2.4 + w1);
+    return [x1 * f, y * f, z * f];
+  }
   const wAxis = (i, k) => MODE[i][k];
 
   function drawPos() {
@@ -123,7 +128,7 @@
       g.fillStyle = css("--muted"); g.globalAlpha = 0.25 + 0.6 * Math.sqrt(pr);
       g.beginPath(); g.arc(P[0], P[1], Math.max(1, S * 0.06 * Math.sqrt(pr) * P[3]), 0, 7); g.fill(); g.globalAlpha = 1;
     }
-    legend(g, [[sgnCol(1), "sign of the speed product +"], [sgnCol(-1), "−"]], "· size |⟨k|Ψ⟩|²");
+    legend(g, [[sgnCol(1), "sign of the speed product +"], [sgnCol(-1), "−"]], "· size |⟨k|Ψ⟩|² · m = " + effMass().toFixed(2));
     label(g, "violet: ε sends k to d−1−k (opposite speed); one wave per speed, no doubler", 10, h - 28, css("--violet"));
     label(g, "speed cube [−1, 1]³ · dashed: half speed", 10, h - 10, css("--muted"));
   }
@@ -145,12 +150,51 @@
     label(g, `Ψ on it ${(100 * wgt).toFixed(1)}%`, 5, h - 6, css("--orange"), 10);
   }
 
-  const minis = { mpos: [], mmom: [] };
+
+  // ---------- bottom: the extreme wave on the corner cube (3D or 4D) ----------
+  const energy = (k) => Math.sqrt(k.reduce((s, v, i) => s + ST().A[i].lam[v] ** 2, 0) + effMass() ** 2);
+  function blockPoints(c, t) {
+    const { A } = ST(), k = wave(c), E = energy(k), out = [];
+    for (const w of fiber ? [0, 1, 2] : [0]) for (const x of CORNERS) {
+      const p = site(x), sg = p.reduce((s, v, i) => s + (A[i].U[k[i]][v] < 0 ? Math.PI : 0), 0);
+      const q = x.map((v) => v - 0.5), pw = fiber ? (w - 1) * 0.55 : 0;
+      out.push({ v: fiber ? four([q[0], q[1], q[2], pw]) : q, ph: sg + (fiber ? 2 * Math.PI * w / 3 : 0) - E * t, e: eps(p), w, x, pr: PROB[0][p[0]] * PROB[1][p[1]] * PROB[2][p[2]] });
+    }
+    return out;
+  }
+  function drawBlock(g, cx, cy, S, c, t, r, off = [0, 0, 0], kk = 1) {
+    const P = blockPoints(c, t), pr = P.map((q) => proj(W(q.v.map((v, m) => off[m] + v * kk)), cx, cy, S));
+    const pm = Math.max(...P.map((q) => q.pr)) || 1;
+    g.strokeStyle = css("--grid"); g.lineWidth = 1;
+    for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
+      const a = P[i], b = P[j], dx = a.x.reduce((n, v, m) => n + Math.abs(v - b.x[m]), 0);
+      if (!((a.w === b.w && dx === 1) || (dx === 0 && Math.abs(a.w - b.w) === 1))) continue;
+      g.beginPath(); g.moveTo(pr[i][0], pr[i][1]); g.lineTo(pr[j][0], pr[j][1]); g.stroke();
+    }
+    P.map((q, i) => [q, pr[i]]).sort((a, b) => b[1][2] - a[1][2])
+      .forEach(([q, p]) => ball(g, p, r * (0.6 + 0.6 * Math.sqrt(q.pr / pm)), hue(q.ph), sgnCol(q.e)));
+  }
+  function drawSum() {
+    const [g, w, h] = setup($("dsum")), cx = w / 2, cy = h / 2 + 4, S = Math.min(w / 2.4, h) * 0.19;
+    cube(g, cx, cy, S, 1, css("--grid"), [3, 3]);
+    CORNERS.map((c) => { const s = c.map((v) => (v ? 1 : -1)); return [proj(W(s), cx, cy, S), s, c]; })
+      .sort((a, b) => b[0][2] - a[0][2]).forEach(([, s, c]) => drawBlock(g, cx, cy, S, c, time, S * 0.045, s, 0.5));
+    label(g, fiber ? "box × w: each extreme wave on the 2×2×2×3 block, phase sign + 2πw/3 − E t, size |Ψ(t)|²"
+      : "each extreme wave k (outer corner) on the corner sites x (inner block): colour sign(k, x) − E t, size |Ψ(t)|²", 10, h - 10, css("--muted"));
+  }
+  function drawSumMini(cv, c) {
+    const [g, w, h] = setup(cv), cx = w / 2, cy = h / 2 + 8, S = Math.min(w, h) * 0.42, k = wave(c);
+    drawBlock(g, cx, cy, S, c, time, S * 0.09);
+    label(g, `k = (${k.join(",")})`, 5, 13, css("--ink2"), 10);
+    label(g, `E ${energy(k).toFixed(2)}`, 5, h - 6, css("--orange"), 10);
+  }
+
+  const minis = { mpos: [], mmom: [], msum: [] };
   for (const id of Object.keys(minis)) CORNERS.forEach((c, i) => {
     const cv = document.createElement("canvas"); cv.setAttribute("aria-label", `local zoom on corner ${i + 1}`);
     $(id).appendChild(cv); minis[id].push([cv, c]);
   });
-  for (const c of [$("dpos"), $("dmom"), ...Object.values(minis).flat().map(([cv]) => cv)]) {
+  for (const c of [$("dpos"), $("dmom"), $("dsum"), ...Object.values(minis).flat().map(([cv]) => cv)]) {
     let drag = null;
     c.addEventListener("pointerdown", (e) => { const s = ST(); if (!s) return; drag = [e.clientX, e.clientY, s.yaw, s.pitch]; c.setPointerCapture(e.pointerId); });
     c.addEventListener("pointermove", (e) => {
@@ -159,16 +203,24 @@
     });
     c.addEventListener("pointerup", () => { drag = null; });
   }
+  $("dmass").addEventListener("input", (e) => { mass = +e.target.value; $("vmass").textContent = mass.toFixed(2); });
+  $("dfiber").addEventListener("click", (e) => {
+    fiber = !fiber; e.target.setAttribute("aria-pressed", String(fiber));
+    $("dmass").disabled = fiber; $("vmass").textContent = fiber ? "½ (fibre)" : mass.toFixed(2);
+  });
   const visible = (el) => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
-  function frame() {
+  let last = 0;
+  function frame(ts) {
+    const dt = last ? Math.min(0.05, (ts - last) / 1000) : 0; last = ts;
     if (ST() && visible($("dblcard"))) {
-      const { V, A } = ST();
+      const { V, A } = ST(); time = ST().t; phi4 += dt * 0.5;
       PROB = V.map((v) => Array.from(v.re, (r, j) => r * r + v.im[j] * v.im[j]));
       PHASE = V.map((v) => Array.from(v.re, (r, j) => Math.atan2(v.im[j], r)));
       MODE = A.map((a) => a.cr.map((r, k) => r * r + a.ci[k] * a.ci[k]));
-      drawPos(); drawMom();
+      drawPos(); drawMom(); drawSum();
       minis.mpos.forEach(([cv, c]) => drawPosMini(cv, c));
       minis.mmom.forEach(([cv, c]) => drawModeMini(cv, c));
+      minis.msum.forEach(([cv, c]) => drawSumMini(cv, c));
     }
     requestAnimationFrame(frame);
   }

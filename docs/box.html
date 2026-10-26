@@ -154,8 +154,12 @@
       staggered sign <code>ε = (−1)<sup>x+y+z</sup></code>. On the path it anticommutes with the transport, <code>ε T = −T ε</code>, so
       <code>(T + mε)² = T² + m²</code>, and it pairs the wave <code>k</code> with the wave <code>d + 1 − k</code>, of opposite speed. An open axis has no
       momentum circle: the waves are the standing waves <code>sin(jkπ/(d+1))</code>, one of each speed, so there are no doublers to
-      count and no Nielsen–Ninomiya sum; the fastest pair, the 8 extreme waves, are the ones <code>ε</code> exchanges. Compare the torus page, where the same 8
+      count and no Nielsen–Ninomiya sum; the fastest pair, the 8 extreme waves, are the ones <code>ε</code> exchanges. With mass, each wave has the energy <code>±√(λ² + m²)</code>; the closed fibre <code>w</code> (3 positions) added as a fourth axis gives the Kaluza–Klein masses <code>1, −½, −½</code> as on the torus. Compare the torus page, where the same 8
       corners are one <code>2 × 2 × 2</code> cube through the seams.</p>
+    <div class="bar">
+      <label class="sl" style="min-width:260px">mass m<input type="range" id="dmass" min="0" max="1" step="0.01" value="0"><b id="vmass">0.00</b></label>
+      <button class="act" type="button" id="dfiber" aria-pressed="false">+ fibre w (4D)</button>
+    </div>
     <div class="dblgrid">
       <div class="dblpane"><h3>Position: the 8 corners of the box, ε on every site</h3>
         <canvas id="dpos" aria-label="The open box with its 8 corners coloured by the staggered sign, not linked to each other"></canvas>
@@ -164,6 +168,9 @@
         <canvas id="dmom" aria-label="The cube of standing waves of the box with the 8 extreme waves and the pairing by epsilon"></canvas>
         <div class="minis" id="mmom"></div></div>
     </div>
+    <div class="dblpane" style="margin-top:12px"><h3>Sum: each extreme wave on the corner cube, colour = its phase</h3>
+      <canvas id="dsum" aria-label="Each extreme wave drawn as its phase on the corner sites of the open box"></canvas>
+      <div class="minis wide" id="msum"></div></div>
     <p class="sub" style="margin-top:8px">Lean (this repository, one open axis): <code>J_mul_Td</code> and <code>J_mul_Pd</code> (D49m: the mirror
       <code>J</code>, position <code>j → d − 1 − j</code> with sign <code>(−1)<sup>j</sup></code>, anticommutes with <code>T<sub>d</sub></code> and
       <code>P<sub>d</sub></code>). The staggered <code>ε</code> alone anticommuting with <code>T</code>, and the wave pairing, are drawn here from the same matrices,
@@ -258,10 +265,10 @@
     schematically, one axis per direction, with the true angles and lengths; the hull is its convex envelope.
     The torus, every axis closed, with its light and dark share, its doublers and its windings, is on <a href="./">the T³ page</a>.</p>
 </main>
-<script src="nrs3-speed-data.js?v=20261025a"></script>
-<script src="nrs3-draw.js?v=20261025a"></script>
-<script src="nrs3-box.js?v=20261025a"></script>
-<script src="nrs3-doublers.js?v=20261025a"></script>
-<script src="nrs3-redshift.js?v=20261025a"></script>
+<script src="nrs3-speed-data.js?v=20261025b"></script>
+<script src="nrs3-draw.js?v=20261025b"></script>
+<script src="nrs3-box.js?v=20261025b"></script>
+<script src="nrs3-doublers.js?v=20261025b"></script>
+<script src="nrs3-redshift.js?v=20261025b"></script>
 </body>
 </html>

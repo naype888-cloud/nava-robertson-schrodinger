@@ -28,8 +28,18 @@
       g.beginPath(); g.arc(m + q * L, y, 6 - k * 0.3, 0, 7); g.fill();
     }
     g.globalAlpha = 1;
-    label(g, `bounce n = ${n}: same colour, same light, same axis`, m, h * 0.72, css("--ink2"), 12);
-    label(g, "no seam: the axis is not closed, nothing is kept or left at the wall", m, h * 0.72 + 20, css("--muted"), 11);
+    // the cover: here only mirror images of the same box, never a new distance
+    const my = h * 0.82, N = Math.max(6, n + 2), seg = (w - 2 * m) / N;
+    g.strokeStyle = css("--grid"); g.lineWidth = 1.5; g.beginPath(); g.moveTo(m, my); g.lineTo(w - m, my); g.stroke();
+    for (let k = 0; k <= N; k++) { const x = m + k * seg; g.strokeStyle = css("--red"); g.lineWidth = 2; g.globalAlpha = 0.6; g.beginPath(); g.moveTo(x, my - 7); g.lineTo(x, my + 7); g.stroke(); g.globalAlpha = 1; }
+    for (let k = 0; k < N; k++) {
+      const x = m + (k + (k % 2 ? 0.65 : 0.35)) * seg, rad = Math.max(2, Math.min(9, seg * 0.3));
+      g.fillStyle = css("--ink2"); g.beginPath(); g.arc(x, my, rad, 0, 7); g.fill();
+      if (k === n) { g.strokeStyle = css("--ink"); g.lineWidth = 1.5; g.beginPath(); g.arc(x, my, rad + 4, 0, 7); g.stroke(); }
+    }
+    label(g, "mirror images (red: walls); all the same colour, no redshift", m, my - 22, css("--ink2"), 11);
+    label(g, `bounce n = ${n}: same colour, same light, same axis`, m, h * 0.6, css("--ink2"), 12);
+    label(g, "no seam: the axis is not closed, nothing is kept or left at the wall", m, h * 0.6 + 20, css("--muted"), 11);
   }
   function drawPlot() {
     const [g, w, h] = setup($("zplot")), L = 46, R = 14, T = 18, B = 40, YMAX = 4;
