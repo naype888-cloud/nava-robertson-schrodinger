@@ -3,22 +3,22 @@
 Robertson (1929) and Schrödinger (1930) state their inequality for any two observables `A`, `B`
 and a normalized state; the theorem carries no list of pairs (`D2`). In finite dimension no
 commutator is a nonzero multiple of the identity (`D12`), so every pair on `d` levels enters
-through `⟨[A, B]⟩` at a state. NRS evaluates it on `T_d : P_d` at the maximal current state.
+through `⟨[A, B]⟩` at a state. RS^N evaluates it on `T_d : P_d` at the maximal current state.
 
 A pair realized on `T_d : P_d` is `A = a T_d + b`, `B = c P_d + e` with `a, c ≠ 0`: `P_d` orders
 the `d` values of the pair, `T_d` is the step between consecutive values, and `a, b, c, e` are
-its units and origins. `D39` proves that none of them reaches NRS or NRS³:
+its units and origins. `D39` proves that none of them reaches RS^N or RS^N³:
 
-* ratio `R = σ_A σ_B / |⟨Ã maxCurrentState, B̃ maxCurrentState⟩| = C_Nava(d)` for every pair (`ratio_pair`);
+* ratio `R = σ_A σ_B / |⟨Ã maxCurrentState, B̃ maxCurrentState⟩| = C_N(d)` for every pair (`ratio_pair`);
 * `R = 1` exactly at `d = 2, 3` (`saturated_pair_iff`); from `d = 4` on the angle is positive
   (`angle_pair_pos`), grows strictly with `d` (`angle_pair_lt_of_lt`) and stays below
-  `arccos (1 / C_∞)`, which no `d` attains (`angle_pair_lt_limit`);
+  `arccos (1 / C_N^∞)`, which no `d` attains (`angle_pair_lt_limit`);
 * three pairs on the cube, each in its own units: the product of their excesses is the
   volumetric quantum `𝒱(dx, dy, dz)`; zero only at a seed axis, positive from `4 × 4 × 4`,
   below `δ_∞³` (`volQuantum_pairs`, `volQuantum_pairs_certificate`).
 
 What a pair changes is only its floor, `|a c| · ½ |⟨[T_d, P_d]⟩| = |a c| / (d − 1)`, in its own
-units. The column `C_Nava(d)` of the README table is the same for every row below.
+units. The column `C_N(d)` of the README table is the same for every row below.
 
 | # | Pair | `P_d`: the ordered values | `T_d`: the step |
 |---|---|---|---|

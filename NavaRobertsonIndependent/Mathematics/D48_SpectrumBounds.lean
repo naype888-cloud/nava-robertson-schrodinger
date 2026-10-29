@@ -20,7 +20,7 @@ The original Robertson–Schrödinger inequality is not contradicted by the tran
 * **Maximum on maximal tension.** Over the maximal-tension states (`⟨K_d⟩ = 2/(d−1)`,
   `D21`) the angle is `θ_NRS(d)`, attained at the maximal current state; the universal floor is
   `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5))` (D37b).
-* **Uniform ceiling, never attained.** `θ_NRS(d) < arccos (1 / C_∞)` for every `d ≥ 4`
+* **Uniform ceiling, never attained.** `θ_NRS(d) < arccos (1 / C_N^∞)` for every `d ≥ 4`
   (D37b), so no state of any `d` reaches the ceiling.
 * **Cone exclusion.** A unit state moving at the cone velocity `velocity d ψ = 1` has
   strictly positive defect (`D40`): minimum uncertainty never rides at the speed limit.
@@ -35,7 +35,7 @@ The original Robertson–Schrödinger inequality is not contradicted by the tran
 - `SpectrumBounds.angleState_eq_zero_iff` : `θ(ψ) = 0` iff the Gram defect vanishes.
 - `SpectrumBounds.angleState_eq_angleNRS_of_maxTension` : the maximum over the
   maximal-tension states is `θ_NRS(d)`.
-- `SpectrumBounds.angleNRS_spectrum_bounds` : `θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`.
+- `SpectrumBounds.angleNRS_spectrum_bounds` : `θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_N^∞)`.
 - `SpectrumBounds.defect_pos_of_velocity_eq_one` : at the cone velocity the defect is strict.
 - `SpectrumBounds.spectrum_band` : the open forced-defect band of `D23d`.
 
@@ -146,7 +146,7 @@ theorem angleState_eq_angleNRS_of_maxTension {d : ℕ} (hd : 4 ≤ d) {ψ : Hd d
     norm_smul, norm_smul, norm_mul, norm_mul, Complex.norm_conj, hc, one_mul, one_mul,
     one_mul, one_mul]
 
-/-- The uniform ceiling of `D37b`, never attained: `θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`
+/-- The uniform ceiling of `D37b`, never attained: `θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_N^∞)`
 for every `d ≥ 4`. -/
 theorem angleNRS_spectrum_bounds {d : ℕ} (hd : 4 ≤ d) :
     0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS d ∧

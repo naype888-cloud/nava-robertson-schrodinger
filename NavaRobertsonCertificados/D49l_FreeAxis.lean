@@ -12,7 +12,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 /-!
 # D49l — A free axis leaves no state
 
-Equality in det|NRS³ makes `Φ` an eigenvector of every `L_a = Σ a_p A_p` with `a` in the kernel
+Equality in det|RS^N³ makes `Φ` an eigenvector of every `L_a = Σ a_p A_p` with `a` in the kernel
 `N` of the Gram matrix (`D49g`, `D49h`), so `[L_a, L_b] Φ = 0`. Suppose the brackets of `N`
 reach one axis `i` alone: `[L_a, L_b] = σ [T_i, P_i]` with `σ ≠ 0`, and some `c ∈ N` carries
 position on axis `i` but no transport there. Then `[T_i, P_i] Φ = 0`, and since `L_c Φ = λ Φ`,

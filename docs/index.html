@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NRS³ on T³</title>
+<title>RS^N³ on T³</title>
 <meta name="description" content="T³: every axis closed. Each torus d_x × d_y × d_z has its own star of uncertainty; with 3 positions per axis every axis resolves 4/5, keeps 1/5 dark, and det Σ = 125/64 |det Ω|.">
 <style>
   :root {
@@ -108,7 +108,7 @@
   <a class="theme" style="margin-right:8px;text-decoration:none" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="hopping.html">The hopping ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="box.html">The open box ▸</a>
-  <h1>NRS³ on T³ — every torus has its star</h1>
+  <h1>RS^N³ on T³ — every torus has its star</h1>
   <p class="lead">On the torus <code>T³ = d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> every axis is closed: the last
     position is linked to the first. Each axis carries the closed transport <code>T°</code> (ring adjacency / 2) and the position
     <code>P</code>. At the maximal current state <code>c</code> their fluctuations open the angle <code>θ</code>, and
@@ -213,7 +213,7 @@
   <div class="card bandcard"><h2>Tension and the angle</h2>
     <span class="hint">|t(t)| against θ(t), one panel per axis</span>
     <p class="sub">The tension of an axis is <code>t = ⟨K⟩</code>, <code>K = i[T°, P]</code>. In the band <code>|t| &gt; 1</code> every state
-      keeps a positive dark share (<code>TorusDark.darkShare_pos_of_band</code>) and det|NRS³| is strict on <code>T³</code> for every
+      keeps a positive dark share (<code>TorusDark.darkShare_pos_of_band</code>) and det|RS^N³| is strict on <code>T³</code> for every
       state with the three axes in the band (<code>TorusStrict.robertson_det_torus_lt</code>). The maximal tension is the state
       <code>c</code>: <code>√6/2</code> with 3 positions (<code>ClosedThree.tension_maxState</code>); for every <code>d</code> it lies in
       <code>[1, 1 + 2/(d − 1)]</code> and tends to 1 as the ring grows (<code>ClosedAxis.one_le_cMax</code>,
@@ -287,7 +287,7 @@
     before <code>π/6</code>, attained with even sizes, and a cut across <code>x</code> has <code>S = 2·d<sub>y</sub>·d<sub>z</sub>·log 2</code>
     (<code>TorusSpectrum</code>, <code>TorusSpeed</code>, <code>TorusSharp</code>, <code>TorusArea.cutEntropy_eq</code>). The numbers on this
     page are computed in your browser from the same matrices; with 4 or more positions per axis they are numerical. The open box,
-    with its angle <code>θ<sub>NRS</sub>(d)</code> and the band of the quantum, is on <a href="box.html">the open box page</a>.</p>
+    with its angle <code>θ<sub>RS^N</sub>(d)</code> and the band of the quantum, is on <a href="box.html">the open box page</a>.</p>
 </main>
 <script src="t3-draw.js?v=20261020c"></script>
 <script src="t3-box.js?v=20261020c"></script>

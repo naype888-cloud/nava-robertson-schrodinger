@@ -20,10 +20,10 @@ its floor `|a c| / (d − 1)`. The catalogue of named pairs is in `docs/PAIRS.md
 
 - `ConjugatePairs.angleG_affineOp`, `ConjugatePairs.ratioG_affineOp` : units do not change the
   angle or the ratio, at every unit state.
-- `ConjugatePairs.ratio_pair` : at the maximal current state, `R = C_Nava(d)` for every pair.
+- `ConjugatePairs.ratio_pair` : at the maximal current state, `R = C_N(d)` for every pair.
 - `ConjugatePairs.saturated_pair_iff` : every pair saturates iff `d = 2, 3`.
 - `ConjugatePairs.angle_pair_lt_of_lt`, `ConjugatePairs.angle_pair_lt_limit` : the angle grows
-  strictly with `d`, whatever the units, below `arccos (1 / C_∞)`.
+  strictly with `d`, whatever the units, below `arccos (1 / C_N^∞)`.
 - `ConjugatePairs.volQuantum_pairs_certificate` : three pairs on the cube, each in its own
   units, give `𝒱(dx, dy, dz)`: zero iff some axis has `2` or `3` positions, positive from
   `4 × 4 × 4`, below `δ_∞³`.
@@ -110,7 +110,7 @@ theorem ratioG_TdPd (hd : 2 ≤ d) :
   rw [ratioG, ← one_div_div]
   exact (congrArg (1 / ·) h).trans (one_div_one_div _)
 
-/-- **The ratio of every pair is `C_Nava(d)`** at the maximal-tension state. -/
+/-- **The ratio of every pair is `C_N(d)`** at the maximal-tension state. -/
 theorem ratio_pair (ha : a ≠ 0) (hc : c ≠ 0) (hd : 2 ≤ d) :
     ratioG (affineOp a b (TdOp d)) (affineOp c e (PdOp d)) (maxCurrentState d) = CoherenceConstant d
         := by

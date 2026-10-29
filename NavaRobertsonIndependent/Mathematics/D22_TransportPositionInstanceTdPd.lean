@@ -15,7 +15,7 @@ The interface `PositionTransport d` of `D17` built from the concrete operators:
 `σ_A = ‖T_d maxCurrentState‖`, `σ_B = ‖P_d maxCurrentState‖`, covariance `0`, commutator `c/2`,
 `c = −2/(d−1)`. The field
 `saturated_iff_path` is proved (`D21`, `D7`), and the intrinsic defect of `D17` is the Gram
-defect `(C_Nava(d)² − 1)/(d−1)²` of `D20`.
+defect `(C_N(d)² − 1)/(d−1)²` of `D20`.
 
 ## Main results
 

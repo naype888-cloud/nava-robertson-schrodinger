@@ -18,7 +18,7 @@ On `T_d`, `P_d` of the path at the maximal current state, with `K_d = i[T_d, P_d
 * the means and `cov(T_d, P_d)` vanish;
 * `Var T_d · Var P_d = (c/2)² (1 + δ(d))²` exactly;
 * the Robertson–Schrödinger gap `Var T · Var P − (cov² + (c/2)²) = (c/2)² δ(d) (2 + δ(d))` is
-  the Gram defect `(C_Nava(d)² − 1)/(d−1)²`, zero exactly at `d = 2, 3`, positive from `d = 4`;
+  the Gram defect `(C_N(d)² − 1)/(d−1)²`, zero exactly at `d = 2, 3`, positive from `d = 4`;
 * the top eigenvalue `2/(d−1)` of `K_d` is simple, so the inequality is strict at every
   maximal-tension state.
 
@@ -153,7 +153,7 @@ theorem gap_eq_geometricGap {d : ℕ} (hd : 2 ≤ d) :
   rw [variance_mul_variance hd, covariance_eq_zero hd]
   ring
 
-/-- The gap is the Gram defect `(C_Nava(d)² − 1)/(d−1)²`. -/
+/-- The gap is the Gram defect `(C_N(d)² − 1)/(d−1)²`. -/
 theorem gap_eq_defectGram {d : ℕ} (hd : 2 ≤ d) :
     variance (TdOp d) (maxCurrentState d) * variance (PdOp d) (maxCurrentState d) -
       (covariance (TdOp d) (PdOp d) (maxCurrentState d) ^ 2 + (commutatorConstant d / 2) ^ 2) =

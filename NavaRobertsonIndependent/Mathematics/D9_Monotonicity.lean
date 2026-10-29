@@ -8,7 +8,7 @@ module
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# D9 — Strict monotonicity of `C_Nava` and `geometricGap`
+# D9 — Strict monotonicity of `C_N` and `geometricGap`
 
 `CoherenceConstant`, and so `geometricGap`, is strictly increasing for `d ≥ 4`. Hence `d = 4`
 is the minimum on `d ≥ 4`, and every value lies strictly below `CoherenceConstantInf`.
@@ -19,8 +19,8 @@ certificate that the remainder is negative on the relevant box.
 
 ## Main results
 
-- `Gnomon.CoherenceConstant_strictMonoOn_ge_four` : `C_Nava` is strictly increasing on `d ≥ 4`.
-- `Gnomon.CoherenceConstant_lt_CoherenceConstantInf` : `C_Nava(d) < C_∞` for `d ≥ 4`.
+- `Gnomon.CoherenceConstant_strictMonoOn_ge_four` : `C_N` is strictly increasing on `d ≥ 4`.
+- `Gnomon.CoherenceConstant_lt_CoherenceConstantInf` : `C_N(d) < C_N^∞` for `d ≥ 4`.
 - `Gnomon.geometricGap_lt_deltaInf` : `δ(d) < δ_∞` for `d ≥ 4`.
 -/
 
@@ -331,7 +331,7 @@ private lemma remainder_poly_neg {y p : ℝ}
             hb_12_1, hb_12_2, hb_12_3, hb_12_4, hb_12_5, hb_12_6, hb_12_7, hb_12_8, hb_12_9,
             hb_12_10, hb_12_11, hb_12_12]
 
-/-- `C_Nava²` as a function of the angle `x = π/(d+1)`. -/
+/-- `C_N²` as a function of the angle `x = π/(d+1)`. -/
 private noncomputable def coherenceSqAngle (x : ℝ) : ℝ :=
   ((Real.pi ^ 2 / x ^ 2 - 2 * Real.pi / x - 4 + 8 * x / Real.pi) / 3) *
       Real.tan x ^ 2 - 2 + 4 * x / Real.pi
@@ -510,7 +510,7 @@ private lemma coherenceSqAngle_strictAntiOn :
     rw [interior_Ioc] at hx
     exact deriv_coherenceSqAngle_neg hx.1 hx.2.le
 
-/-- `C_Nava²` is strictly increasing on `d ≥ 4`. -/
+/-- `C_N²` is strictly increasing on `d ≥ 4`. -/
 theorem CoherenceConstantSq_strictMonoOn_ge_four :
     StrictMonoOn CoherenceConstantSq {d : ℕ | 4 ≤ d} := by
   intro a ha b hb hab
@@ -535,7 +535,7 @@ theorem CoherenceConstantSq_strictMonoOn_ge_four :
     nlinarith [Real.pi_pos]
   exact coherenceSqAngle_strictAntiOn ⟨htb0, htb5⟩ ⟨hta0, hta5⟩ htheta
 
-/-- `C_Nava` is strictly increasing on `d ≥ 4`. -/
+/-- `C_N` is strictly increasing on `d ≥ 4`. -/
 theorem CoherenceConstant_strictMonoOn_ge_four :
     StrictMonoOn CoherenceConstant {d : ℕ | 4 ≤ d} := by
   intro a ha b hb hab
@@ -549,7 +549,7 @@ theorem geometricGap_strictMonoOn_ge_four :
   intro a ha b hb hab
   simpa [geometricGap] using CoherenceConstant_strictMonoOn_ge_four ha hb hab
 
-/-- `C_Nava(4)` is the minimum on `d ≥ 4`. -/
+/-- `C_N(4)` is the minimum on `d ≥ 4`. -/
 theorem CoherenceConstant_four_le (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant 4 ≤ CoherenceConstant d
     := by
   rcases eq_or_lt_of_le hd with h | h
@@ -584,7 +584,7 @@ private theorem CoherenceConstant_tail_tendsto :
     Tendsto (fun n : ℕ => CoherenceConstant (n + 4)) atTop (𝓝 CoherenceConstantInf) := by
   exact (Filter.tendsto_add_atTop_iff_nat 4).2 szego_limit_CoherenceConstant
 
-/-- `C_Nava(d) < C_∞` for `d ≥ 4`. -/
+/-- `C_N(d) < C_N^∞` for `d ≥ 4`. -/
 theorem CoherenceConstant_lt_CoherenceConstantInf (d : ℕ) (hd : 4 ≤ d) : CoherenceConstant d <
     CoherenceConstantInf := by
   let n := d - 4

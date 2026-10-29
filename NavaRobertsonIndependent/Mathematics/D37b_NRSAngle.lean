@@ -9,21 +9,21 @@ public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 public import NavaRobertsonIndependent.Mathematics.D37_PathGraph3D
 
 /-!
-# D37b — The NRS angle
+# D37b — The RS^N angle
 
 Robertson–Schrödinger is Cauchy–Schwarz for the fluctuation vectors `x = (T − ⟨T⟩)ψ`,
 `y = (P − ⟨P⟩)ψ`: it saturates iff they are parallel. At the maximal current state their angle
 satisfies
-`cos θ_NRS(d) = |⟪x, y⟫| / (‖x‖ ‖y‖) = 1 / C_Nava(d)`.
+`cos θ_NRS(d) = |⟪x, y⟫| / (‖x‖ ‖y‖) = 1 / C_N(d)`.
 
 ## Main results
 
-- `NRSAngle.cos_angleNRS` : `cos θ_NRS(d) = 1 / C_Nava(d)`.
+- `NRSAngle.cos_angleNRS` : `cos θ_NRS(d) = 1 / C_N(d)`.
 - `NRSAngle.angleNRS_eq_zero_iff` : `θ_NRS(d) = 0 ↔ d = 2 ∨ d = 3`.
-- `NRSAngle.angle_floor` : for `d ≥ 4`, `0 < θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_∞)`, with
+- `NRSAngle.angle_floor` : for `d ≥ 4`, `0 < θ_NRS(4) ≤ θ_NRS(d) < arccos (1 / C_N^∞)`, with
   `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` (`angleNRS_four`).
 - `NRSAngle.finite_isotropy_cube` : axes with at least `D ≥ 4` positions differ in angle by less
-  than `arccos (1 / C_∞) − θ_NRS(D)`.
+  than `arccos (1 / C_N^∞) − θ_NRS(D)`.
 -/
 
 @[expose] public noncomputable section
@@ -40,14 +40,14 @@ def angleG {ι : Type*} [Fintype ι] (L M : EuclideanSpace ℂ ι →ₗ[ℂ] Eu
     (Ψ : EuclideanSpace ℂ ι) : ℝ :=
   arccos (‖inner ℂ (centeredG L Ψ) (centeredG M Ψ)‖ / (‖centeredG L Ψ‖ * ‖centeredG M Ψ‖))
 
-/-- The NRS angle of `(T_d, P_d)` at the maximal current state. -/
+/-- The RS^N angle of `(T_d, P_d)` at the maximal current state. -/
 def angleNRS (d : ℕ) : ℝ := angleG (TdOp d) (PdOp d) (maxCurrentState d)
 
 theorem CoherenceConstant_ge_one {d : ℕ} (hd : 2 ≤ d) : 1 ≤ CoherenceConstant d := by
   rw [CoherenceConstant_eq_one_add_geometricGap]
   linarith [geometricGap_nonneg hd]
 
-/-- **The NRS angle.** `cos θ_NRS(d) = 1 / C_Nava(d)`. -/
+/-- **The RS^N angle.** `cos θ_NRS(d) = 1 / C_N(d)`. -/
 theorem cos_angleNRS {d : ℕ} (hd : 2 ≤ d) :
     ‖inner ℂ (centered (TdOp d) (maxCurrentState d)) (centered (PdOp d) (maxCurrentState d))‖ /
         (‖centered (TdOp d) (maxCurrentState d)‖ * ‖centered (PdOp d) (maxCurrentState d)‖) =
@@ -125,7 +125,7 @@ theorem angleNRS_strictMonoOn : StrictMonoOn angleNRS {d : ℕ | 4 ≤ d} := by
   · exact one_div_lt_one_div_of_lt (by linarith) hlt
   · rw [div_le_one (by linarith)]; exact hCa
 
-/-- The angle stays strictly below `arccos (1 / C_∞)`, which no `d` attains. -/
+/-- The angle stays strictly below `arccos (1 / C_N^∞)`, which no `d` attains. -/
 theorem angleNRS_lt_limit {d : ℕ} (hd : 4 ≤ d) :
     angleNRS d < arccos (1 / CoherenceConstantInf) := by
   have hCd := CoherenceConstant_ge_one (by omega : 2 ≤ d)
@@ -143,7 +143,7 @@ theorem angleNRS_four :
   rw [angleNRS_eq (by norm_num), CoherenceConstant, CoherenceConstantSq_four_eq]
 
 /-- **Universal angular floor.** Every axis with `4` or more positions opens at least `θ_NRS(4)`,
-and never reaches `arccos (1 / C_∞)`. -/
+and never reaches `arccos (1 / C_N^∞)`. -/
 theorem angle_floor {d : ℕ} (hd : 4 ≤ d) :
     0 < angleNRS 4 ∧ angleNRS 4 ≤ angleNRS d ∧
       angleNRS d < arccos (1 / CoherenceConstantInf) :=
@@ -152,8 +152,8 @@ theorem angle_floor {d : ℕ} (hd : 4 ≤ d) :
     angleNRS_lt_limit hd⟩
 
 /-- **Finite isotropy for two rows.** If both rows have at least `D ≥ 4` positions, their angles
-differ by less than `arccos (1 / C_∞) − θ_NRS(D)`: a statement about finite rows only, with the
-unattained ceiling `arccos (1 / C_∞)` as the sole reference. -/
+differ by less than `arccos (1 / C_N^∞) − θ_NRS(D)`: a statement about finite rows only, with the
+unattained ceiling `arccos (1 / C_N^∞)` as the sole reference. -/
 theorem angleNRS_isotropy {D a b : ℕ} (hD : 4 ≤ D) (ha : D ≤ a) (hb : D ≤ b) :
     |angleNRS a - angleNRS b| < arccos (1 / CoherenceConstantInf) - angleNRS D := by
   have mono := angleNRS_strictMonoOn.monotoneOn
@@ -199,7 +199,7 @@ theorem angleG_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) :
   exact angleG_lift _ (norm_rest hx hy) _ _ _
 
 /-- **On the `4 × 4 × 4` cube and beyond**, all three axes carry a strictly positive angle,
-each below the same unattained bound `arccos (1 / C_∞)`. -/
+each below the same unattained bound `arccos (1 / C_N^∞)`. -/
 theorem angles_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
     (0 < angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ∧
         angleG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) <
@@ -226,7 +226,7 @@ theorem angle_floor_cube (hx : 4 ≤ dx) (hy : 4 ≤ dy) (hz : 4 ≤ dz) :
   exact ⟨(angle_floor hx).2.1, (angle_floor hy).2.1, (angle_floor hz).2.1⟩
 
 /-- **Finite isotropy of the cube.** In any cube with at least `D ≥ 4` positions on every axis, the
-angles of any two axes differ by less than `arccos (1 / C_∞) − θ_NRS(D)`. With `D = 100` this is
+angles of any two axes differ by less than `arccos (1 / C_N^∞) − θ_NRS(D)`. With `D = 100` this is
 about `1.05°`: the three axes agree more closely the more positions each has, with no appeal
 to infinitely many positions. -/
 theorem finite_isotropy_cube {D : ℕ} (hD : 4 ≤ D) (hx : D ≤ dx) (hy : D ≤ dy) (hz : D ≤ dz) :

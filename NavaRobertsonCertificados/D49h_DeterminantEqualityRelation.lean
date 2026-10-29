@@ -10,9 +10,9 @@ public import NavaRobertsonIndependent.Mathematics.D49g_RobertsonDeterminantEqua
 public import Mathlib.Analysis.Matrix.Order
 
 /-!
-# D49h — Equality in det|NRS³ needs a relation among the three tensions
+# D49h — Equality in det|RS^N³ needs a relation among the three tensions
 
-Suppose the speeds on `x`, `y`, `z` lie in the band and det|NRS³ is an equality,
+Suppose the speeds on `x`, `y`, `z` lie in the band and det|RS^N³ is an equality,
 `det Σ = |det Ω|`. By `D49g` the kernel `N` of the Gram matrix `Σ + iΩ` of the six fluctuation
 vectors has dimension at least `3`. Each `a ∈ N` is a relation `Σ a_p (A_p − ⟨A_p⟩)Φ = 0`, so `Φ`
 is an eigenvector of `L_a = Σ a_p A_p`, and `[L_a, L_b]Φ = 0` for `a, b ∈ N`. Pairs of different
@@ -190,7 +190,7 @@ theorem gramDefectC_eq_zero_of_rel {x y : H3D dx dy dz} {α β : ℂ} (h : α �
 
 variable {Φ}
 
-/-- **The kernel of the Gram matrix has dimension at least three** when det|NRS³ is an equality
+/-- **The kernel of the Gram matrix has dimension at least three** when det|RS^N³ is an equality
 with the three speeds in the band. -/
 theorem three_le_finrank_ker (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
     (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy) (hbz : |velocityZ Φ| ∈ Ϙ dz)
@@ -262,7 +262,7 @@ theorem three_le_finrank_ker (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
   simp only [Fintype.card_prod, Fintype.card_fin] at h
   omega
 
-/-- **Equality in det|NRS³ needs a relation among the three tensions.** If the speeds on `x`, `y`,
+/-- **Equality in det|RS^N³ needs a relation among the three tensions.** If the speeds on `x`, `y`,
 `z` lie in the band and `det Σ = |det Ω|`, then `Σ_i σ_i [T_i, P_i] Φ = 0` for some `σ ≠ 0`. -/
 theorem exists_sigma_of_det_eq (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (hΦ : ‖Φ‖ = 1)
     (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy) (hbz : |velocityZ Φ| ∈ Ϙ dz)

@@ -11,7 +11,7 @@ public import NavaRobertsonIndependent.Mathematics.D42_DirectionOctants
 /-!
 # D43 — The Nava–Robertson–Schrödinger octahedron
 
-The irreducible elemental dimensional quantum of uncertainty, on the base `4 × 4 × 4` of NRS³.
+The irreducible elemental dimensional quantum of uncertainty, on the base `4 × 4 × 4` of RS^N³.
 In `k` steps, transport spreads inside the octahedron `k·β₃ = {|Δx| + |Δy| + |Δz| ≤ k}`, the
 cross-polytope `β₃` in Coxeter's notation (`D37f`); in each of its eight directions the state
 at the speed limit meets Robertson–Schrödinger at `θ_NRS(4) ≈ 7.43°` on every axis (`D42`), and
@@ -138,13 +138,13 @@ theorem lightCone_rhombus {dx dy : ℕ} (k : ℕ) (p q : Site3D dx dy 1)
 /-! ## 4. The octahedron -/
 
 /-- **The Nava–Robertson–Schrödinger octahedron**: the irreducible elemental dimensional quantum
-of uncertainty on the base `4 × 4 × 4` of NRS³.
+of uncertainty on the base `4 × 4 × 4` of RS^N³.
 
 1. In `k` steps, transport spreads inside the octahedron `k·β₃`: `|Δx| + |Δy| + |Δz| ≤ k`.
 2. Each of its eight directions moves at the speed limit on every axis, meets
    Robertson–Schrödinger at `θ_NRS(4)` on every axis, and misses Mandelstam–Tamm and Cramér–Rao.
 3. `θ_NRS(4) = arccos (1 / √((99 − 42√5)/5)) ≈ 7.43°` is positive, is the floor of every axis
-   with `d ≥ 4` positions, and no axis reaches `arccos (1 / C_∞)`.
+   with `d ≥ 4` positions, and no axis reaches `arccos (1 / C_N^∞)`.
 4. At the speed limit the Mandelstam–Tamm and Cramér–Rao ratio is `5 / (99 − 42√5) < 1`.
 5. Minimum uncertainty reaches exactly `±v*(4) = ±3(√5 − 1)/4`, below the cone; beyond it the
    defect is forced. -/

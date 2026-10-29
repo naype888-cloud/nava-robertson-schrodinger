@@ -1,4 +1,4 @@
-// Drawing helpers for the NRS³ explorer on T³: the convex envelope of the star, and the range of
+// Drawing helpers for the RS^N³ explorer on T³: the convex envelope of the star, and the range of
 // the angle at the maximal current state of a closed axis. With 3 positions it is exact in Lean,
 // arccos(2/√5) (TorusDark.lightShare_maxState: light 4/5); with 4 or more it is computed in the browser.
 window.T3Draw = (() => {

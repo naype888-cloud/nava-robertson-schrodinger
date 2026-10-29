@@ -12,7 +12,7 @@ public import NavaRobertsonIndependent.Mathematics.D37h_OctahedralSymmetry
 # D37i — The three families of boxes
 
 A box is the number of positions on each of the three axes, `b : Fin 3 → ℕ`. With `4` or more
-positions on every axis, each axis has its own NRS angle `θ_NRS(b i)` (`D37b`), and a box is a
+positions on every axis, each axis has its own RS^N angle `θ_NRS(b i)` (`D37b`), and a box is a
 deformation of the regular `4 × 4 × 4`. The boxes split into three families by how many axes have
 the same length:
 
@@ -37,7 +37,7 @@ turned. Orbit and stabilizer multiply to `3! = 6` (`card_orbit_mul_card_stab`).
   that is `7 + 42 + 35 = 84` different figures.
 - `BoxFamilies.quantum_never_erased` : for every box with `4` or more positions per axis, of any
   family and turned or reflected in any of the `48` ways, every axis opens between `θ_NRS(4) > 0`
-  and the unattained `arccos (1 / C_∞)`, and `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes,
+  and the unattained `arccos (1 / C_N^∞)`, and `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes,
   turns and deforms, but it is not erased.
 - `BoxFamilies.quantum_erased_iff` : it is erased only when some axis has `2` or `3` positions.
 -/
@@ -138,7 +138,7 @@ theorem card_signedStab (b : Box) :
         simp [mul_comm]
 
 /-- **The symmetries of each family.** With `4` or more positions on every axis, `48`, `16` or `8`
-signed permutations keep the NRS angle of every axis. -/
+signed permutations keep the RS^N angle of every axis. -/
 theorem card_keepsAngles_family {b : Box} (h4 : ∀ i, 4 ≤ b i)
     [DecidablePred (KeepsAngles b)] :
     (IsRegular b → Fintype.card {g // KeepsAngles b g} = 48) ∧
@@ -235,7 +235,7 @@ theorem volQuantum_perm (b : Box) (σ : Equiv.Perm (Fin 3)) :
 
 /-- **The quantum is never erased.** Take any box with `4` or more positions on every axis.
 Whatever its family, each axis opens at an angle between `θ_NRS(4) > 0` (the regular
-`4 × 4 × 4`) and the ceiling `arccos (1 / C_∞)` that no box attains; the volumetric quantum lies
+`4 × 4 × 4`) and the ceiling `arccos (1 / C_N^∞)` that no box attains; the volumetric quantum lies
 between the floor `δ(4)³ > 0` and the unattained ceiling `δ_∞³`; and turning or reflecting the
 box, in any of the `48` ways, leaves the quantum as it is. -/
 theorem quantum_never_erased (b : Box) (h4 : ∀ i, 4 ≤ b i) :

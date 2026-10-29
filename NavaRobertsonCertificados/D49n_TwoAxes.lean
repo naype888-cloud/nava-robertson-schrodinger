@@ -10,7 +10,7 @@ public import NavaRobertsonCertificados.D49l_FreeAxis
 /-!
 # D49n — Brackets on two axes
 
-Equality in det|NRS³ gives `Σ_k σ_k [T_k, P_k] Φ = 0` (`D49h`). Here the brackets reach two axes
+Equality in det|RS^N³ gives `Σ_k σ_k [T_k, P_k] Φ = 0` (`D49h`). Here the brackets reach two axes
 `i`, `j`: `σ_i [T_i, P_i] Φ + σ_j [T_j, P_j] Φ = 0` with `σ_i ≠ 0`. If a relation `c` of `Φ`
 carries position on axis `i` and nothing else on the axes `i`, `j`, its bracket with that
 combination isolates axis `i`: `[P_i, [T_i, P_i]] Φ = −h² T_i Φ = 0` (`D49i`). Then `T_i Φ = 0`,

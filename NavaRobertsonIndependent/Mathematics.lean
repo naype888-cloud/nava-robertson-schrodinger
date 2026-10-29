@@ -72,7 +72,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
 
 /-!
-# NRS, NRS³ and det|NRS³
+# RS^N, RS^N³ and det|RS^N³
 
 `T_d` (normalized adjacency of the path graph) and `P_d` (equispaced diagonal) on `ℂ^d`, and
 their lifts to the product of three paths (`D37`). Stated over Mathlib; physlib is imported by
@@ -87,11 +87,11 @@ theorem.
 - `D7`–`D10` : Niven, the Szegő limit, monotonicity, the joint certificate.
 - `D11`–`D17`, `D24`, `D25`, `SumInvSinSq` : area quantum, scalar commutator, first rupture,
   excess, closed surfaces, intrinsic defect, the gap at `d = 4`, the dimensional quantum.
-- `D19`–`D23f` : position variance, Gram step, the NRS inequality (`D21`) and its instance,
+- `D19`–`D23f` : position variance, Gram step, the RS^N inequality (`D21`) and its instance,
   saturation on eigenvectors, the strict band, transport–tension exclusion, `1/φ` at `d = 4`.
-- `D26a` : a rational enclosure of `(1 − 1/C_∞) e^{−1/C_∞}`.
+- `D26a` : a rational enclosure of `(1 − 1/C_N^∞) e^{−1/C_N^∞}`.
 - `D28`, `D28b` : the interior of the path is flat (Bakry–Émery, Ollivier–Ricci).
-- `D37`–`D37i` : the cube, the NRS angle, spectrum, Pythagoras, volumetric quantum, light
+- `D37`–`D37i` : the cube, the RS^N angle, spectrum, Pythagoras, volumetric quantum, light
   cone, Lieb–Robinson, octahedral symmetry, the three families of boxes.
 - `D38` : dispersion, group velocity, the Heisenberg equation.
 - `D39` : every conjugate pair realized on `T_d : P_d`.
@@ -104,14 +104,14 @@ theorem.
   while the maximal current state does for `d ≥ 4`.
 - `D48` : Robertson–Schrödinger 1929–30 with discrete transport; the spectrum bounds of the
   per-state angle, the uniform ceiling, the cone exclusion and the forced-defect band.
-- `D49`–`D49c` : det|NRS³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
+- `D49`–`D49c` : det|RS^N³, Robertson 1934 for several observables, `|det Ω| ≤ det Σ`; on the
   cube, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`; on product states the defects
   multiply, and at the maximal current state of the cube the ratio is
-  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4`.
+  `C_N(dx)² C_N(dy)² C_N(dz)²`, strict from `4`.
 - `D49g` : the equality case of Robertson 1934, `(A + B) A⁻¹ (A − B) = 0`.
 - `D49i` : the commutators of `T_d` and `P_d` close (`[T, [T, P]] ∈ span {T, P, [T, P]}`) iff
   `d ∈ {2, 3}`.
-- `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|NRS³ as
+- `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|RS^N³ as
   `0 = 0`, with every tension zero; the trivial case of the equality step, far from the band.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/

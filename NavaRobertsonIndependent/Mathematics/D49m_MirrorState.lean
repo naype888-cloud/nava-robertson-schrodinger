@@ -8,7 +8,7 @@ module
 public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClosure
 
 /-!
-# D49m — The mirror state: equality in det|NRS³ with nothing moving
+# D49m — The mirror state: equality in det|RS^N³ with nothing moving
 
 The mirror `J` sends position `j` to `d − 1 − j` with sign `(−1)^j`. It anticommutes with
 transport and with position, `J T_d = −T_d J` and `J P_d = −P_d J`, and it is unitary.

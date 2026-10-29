@@ -15,20 +15,20 @@ public import Mathlib.Tactic.IntervalCases
 /-!
 # D8 — The Szegő limit and the positivity of the gap
 
-The coherence constant `C_Nava(d)`, in closed form in `π/(d+1)`, and its gap
-`geometricGap d = C_Nava(d) − 1`.
+The coherence constant `C_N(d)`, in closed form in `π/(d+1)`, and its gap
+`geometricGap d = C_N(d) − 1`.
 
 1. **Positivity** (`geometricGap_pos_of_four_le`): `geometricGap d > 0` for `d ≥ 4`; `d = 4, 5`
    in closed form, `d ≥ 6` by certified Taylor bounds and `Real.pi_gt_d2`, `Real.pi_lt_d2`.
-2. **Szegő limit** (`tendsto_CoherenceConstant`): `C_Nava(d) → C_∞ = √(π²/3 − 2)` along
+2. **Szegő limit** (`tendsto_CoherenceConstant`): `C_N(d) → C_N^∞ = √(π²/3 − 2)` along
    `atTop`, a limit of the finite spaces, not a space at `d = ∞` (`deltaInf_is_limit`);
-   `deltaInf = C_∞ − 1 > 0` since `π > 3`.
+   `deltaInf = C_N^∞ − 1 > 0` since `π > 3`.
 
 ## Main results
 
-- `Gnomon.tendsto_CoherenceConstant` : `C_Nava(d) → √(π²/3 − 2)`.
+- `Gnomon.tendsto_CoherenceConstant` : `C_N(d) → √(π²/3 − 2)`.
 - `Gnomon.deltaInf_pos` : `δ_∞ > 0`.
-- `Gnomon.geometricGap_pos_of_four_le` : `C_Nava(d) > 1` for `d ≥ 4`.
+- `Gnomon.geometricGap_pos_of_four_le` : `C_N(d) > 1` for `d ≥ 4`.
 -/
 
 @[expose] public noncomputable section
@@ -47,21 +47,21 @@ noncomputable def Nreal (d : ℕ) : ℝ := (d : ℝ) + 1
 /-- The fundamental angle `θ_d = π/(d+1)`. -/
 noncomputable def theta (d : ℕ) : ℝ := π / Nreal d
 
-/-- `C_Nava(d)²` in closed form. -/
+/-- `C_N(d)²` in closed form. -/
 noncomputable def CoherenceConstantSq (d : ℕ) : ℝ :=
   2 * ((d : ℝ) - 1) / (Nreal d * Real.cos (theta d) ^ 2) *
     (((Nreal d ^ 2 + 2) / 6) * Real.sin (theta d) ^ 2 - 1)
 
-/-- The coherence constant `C_Nava(d)`. -/
+/-- The coherence constant `C_N(d)`. -/
 noncomputable def CoherenceConstant (d : ℕ) : ℝ := Real.sqrt (CoherenceConstantSq d)
 
-/-- The Szegő limit `C_∞ = √(π²/3 − 2)`. -/
+/-- The Szegő limit `C_N^∞ = √(π²/3 − 2)`. -/
 noncomputable def CoherenceConstantInf : ℝ := Real.sqrt (π ^ 2 / 3 - 2)
 
-/-- The geometric gap `δ(d) = C_Nava(d) − 1`. -/
+/-- The geometric gap `δ(d) = C_N(d) − 1`. -/
 noncomputable def geometricGap (d : ℕ) : ℝ := CoherenceConstant d - 1
 
-/-- The asymptotic gap `δ_∞ = C_∞ − 1`. -/
+/-- The asymptotic gap `δ_∞ = C_N^∞ − 1`. -/
 noncomputable def deltaInf : ℝ := CoherenceConstantInf - 1
 
 /-- The leading term of the Szegő expansion. -/
@@ -143,20 +143,20 @@ private theorem CoherenceConstantSq_sinc_tendsto :
   · ext d
     ring_nf
 
-/-- **Szegő, squared form.** `C_Nava(d)² → (π² − 6)/3`. -/
+/-- **Szegő, squared form.** `C_N(d)² → (π² − 6)/3`. -/
 theorem tendsto_CoherenceConstantSq :
     Tendsto CoherenceConstantSq atTop (𝓝 (π ^ 2 / 3 - 2)) := by
   apply CoherenceConstantSq_sinc_tendsto.congr'
   filter_upwards with d
   exact (CoherenceConstantSq_sinc_form d).symm
 
-/-- **Szegő limit.** `C_Nava(d) → C_∞ = √((π² − 6)/3)`. -/
+/-- **Szegő limit.** `C_N(d) → C_N^∞ = √((π² − 6)/3)`. -/
 theorem tendsto_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝 CoherenceConstantInf) :=
     by
   unfold CoherenceConstant CoherenceConstantInf
   exact Real.continuous_sqrt.continuousAt.tendsto.comp tendsto_CoherenceConstantSq
 
-/-- The Szegő limit of `C_Nava`, under its citation name. -/
+/-- The Szegő limit of `C_N`, under its citation name. -/
 theorem szego_limit_CoherenceConstant : Tendsto CoherenceConstant atTop (𝓝
     CoherenceConstantInf) :=
   tendsto_CoherenceConstant
@@ -178,7 +178,7 @@ theorem deltaInf_pos : 0 < deltaInf := by
   linarith
 
 /-- `δ_∞` is a limit of finite gaps, not the gap of a space: the gaps converge to
-`δ_∞ = C_∞ − 1 > 0`. -/
+`δ_∞ = C_N^∞ − 1 > 0`. -/
 theorem deltaInf_is_limit :
     Tendsto geometricGap atTop (𝓝 deltaInf) ∧ deltaInf = CoherenceConstantInf - 1 ∧ 0 < deltaInf :=
   ⟨tendsto_geometricGap, rfl, deltaInf_pos⟩
@@ -188,7 +188,7 @@ theorem CoherenceConstantInf_pos : 0 < CoherenceConstantInf := by
   unfold deltaInf at h
   linarith
 
-/-- The leading term `δ_∞ − C_∞/(d+1)` is strictly increasing. -/
+/-- The leading term `δ_∞ − C_N^∞/(d+1)` is strictly increasing. -/
 theorem deltaSzegoPrincipal_strictMono : StrictMono deltaSzegoPrincipal := by
   intro a b hab
   have hNa : 0 < Nreal a := by
@@ -206,7 +206,7 @@ theorem deltaSzegoPrincipal_strictMono : StrictMono deltaSzegoPrincipal := by
 
 /-! ## Positivity of the gap for `d ≥ 4`
 
-Niven closes saturation at `d ∈ {2, 3}` (`D7`). Here that becomes `1 < C_Nava(d)` for
+Niven closes saturation at `d ∈ {2, 3}` (`D7`). Here that becomes `1 < C_N(d)` for
 `d ≥ 4`: `d = 4, 5` in closed form, `d ≥ 6` by certified Taylor bounds. -/
 
 /-! ## Consequence: `δ(d) > 0` for `d ≥ 4`
@@ -624,7 +624,7 @@ theorem one_lt_CoherenceConstantSq_of_six_le (d : ℕ) (hd : 6 ≤ d) : 1 < Cohe
     (by simpa [N] using hcos_pos)
     (by simpa [N] using hcos_thr)
 
-/-- `C_Nava(d)² > 1` for `d ≥ 4`: `d = 4, 5` exactly, `d ≥ 6` by Taylor bounds. -/
+/-- `C_N(d)² > 1` for `d ≥ 4`: `d = 4, 5` exactly, `d ≥ 6` by Taylor bounds. -/
 theorem one_lt_CoherenceConstantSq (d : ℕ) (hd : 4 ≤ d) : 1 < CoherenceConstantSq d := by
   match d with
   | 0 | 1 | 2 | 3 => omega

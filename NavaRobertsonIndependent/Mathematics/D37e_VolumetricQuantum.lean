@@ -12,7 +12,7 @@ public import NavaRobertsonIndependent.Mathematics.D37b_NRSAngle
 /-!
 # D37e — The volumetric quantum
 
-Each axis carries its dimensional quantum `δ(d) = C_Nava(d) − 1` (`D25`), with
+Each axis carries its dimensional quantum `δ(d) = C_N(d) − 1` (`D25`), with
 `θ_NRS(d) = arccos (1 / (1 + δ(d)))`. The volumetric quantum of the cube is
 `𝒱(dx, dy, dz) = δ(dx) δ(dy) δ(dz)`; adding positions never cancels it.
 
@@ -30,7 +30,7 @@ open Real Gnomon DimensionalQuantum MinimalAreaQuantum NRSAngle NRSInequality
 
 namespace VolumetricQuantum
 
-/-- The linear quantum of an axis fixes its NRS angle: `θ_NRS(d) = arccos (1 / (1 + δ(d)))`. -/
+/-- The linear quantum of an axis fixes its RS^N angle: `θ_NRS(d) = arccos (1 / (1 + δ(d)))`. -/
 theorem angleNRS_eq_dimQuantum {d : ℕ} (hd : 2 ≤ d) :
     angleNRS d = arccos (1 / (1 + dimQuantum d)) := by
   rw [angleNRS_eq hd, dimQuantum, ← CoherenceConstant_eq_one_add_geometricGap]

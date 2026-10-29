@@ -9,7 +9,7 @@ public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 public import NavaRobertsonIndependent.Mathematics.D38_GroupVelocity
 
 /-!
-# D49b — det|NRS³: Robertson 1934 on the three axes of the cube
+# D49b — det|RS^N³: Robertson 1934 on the three axes of the cube
 
 On the cube `Site3D dx dy dz` of `D37` the six observables are the pairs `(T_x, P_x)`,
 `(T_y, P_y)`, `(T_z, P_z)`, one per axis. Operators on different axes commute (`D37`), so
@@ -133,7 +133,7 @@ theorem robertson_det_cube :
   convert h using 1
   ring
 
-/-- **det|NRS³** in the velocities of `D38`: on a box with at least two positions per axis,
+/-- **det|RS^N³** in the velocities of `D38`: on a box with at least two positions per axis,
 `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²`. -/
 theorem robertson_det_cube_velocity (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (velocityX Φ * velocityY Φ * velocityZ Φ / (((dx : ℝ) - 1) * ((dy : ℝ) - 1) * ((dz : ℝ) - 1)))

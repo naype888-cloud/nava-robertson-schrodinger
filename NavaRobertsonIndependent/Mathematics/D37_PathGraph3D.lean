@@ -168,7 +168,7 @@ theorem tensionG_lift (A B : Matrix α α ℂ) (ψ : EuclideanSpace ℂ α) :
     LinearMap.comp_apply, toEuclideanLin_liftAlong, ← prodAlong_sub, ← prodAlong_smul,
     inner_prodAlong, inner_self_of_norm_one hφ, mul_one]
 
-/-! ## 4. NRS on one axis of a product -/
+/-! ## 4. RS^N on one axis of a product -/
 
 /-- On any axis with `d ≥ 2` positions, lifted into a product with a unit state `φ` on the rest,
 the four statistics of `(T, P)` at `maxCurrentState ⊗ φ` are those of `(T_d, P_d)` at the maximal
@@ -187,7 +187,7 @@ theorem stats_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
   ⟨varianceG_lift e hφ _ _, varianceG_lift e hφ _ _, covarianceG_lift e hφ _ _ _,
     (tensionG_lift e hφ _ _ _).trans (NearMaxTension.tension_maxCurrentState hd)⟩
 
-/-- NRS on one axis: saturation exactly for `2` or `3` positions on that axis. -/
+/-- RS^N on one axis: saturation exactly for `2` or `3` positions on that axis. -/
 theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) ^ 2 +
@@ -199,7 +199,7 @@ theorem saturation_axis {d : ℕ} (hd : 2 ≤ d) (e : ι ≃ Fin d × β) :
   rw [h1, h2, h3]
   exact saturation_iff hd
 
-/-- NRS on one axis: from `4` positions on, the inequality is strict (the algebraic quantum). -/
+/-- RS^N on one axis: from `4` positions on, the inequality is strict (the algebraic quantum). -/
 theorem strict_axis {d : ℕ} (hd : 4 ≤ d) (e : ι ≃ Fin d × β) :
     covarianceG (Matrix.toEuclideanLin (liftAlong e (Td d)))
           (Matrix.toEuclideanLin (liftAlong e (Pd d))) (prodAlong e (maxCurrentState d) φ) ^ 2 +
@@ -343,7 +343,7 @@ theorem norm_rest {a b : ℕ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
     ‖prodAlong (Equiv.refl (Fin a × Fin b)) (maxCurrentState a) (maxCurrentState b)‖ = 1 :=
   norm_prodAlong_eq_one _ (norm_maxCurrentState ha) (norm_maxCurrentState hb)
 
-/-! ## 7. NRS on each axis of the cube -/
+/-! ## 7. RS^N on each axis of the cube -/
 
 theorem stats_axis_x (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     varianceG (TX dx dy dz) (maxCurrentCubeState dx dy dz) = variance (TdOp dx) (maxCurrentState dx)
@@ -378,7 +378,7 @@ theorem stats_axis_z (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
   rw [maxCurrentCubeState_eq_eZ]
   exact stats_axis (norm_rest hx hy) hz _
 
-/-- **NRS on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
+/-- **RS^N on the cube.** Each axis saturates Robertson–Schrödinger exactly when it has `2` or
 `3` positions, independently of the other two axes. -/
 theorem saturation_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (covarianceG (TX dx dy dz) (PX dx dy dz) (maxCurrentCubeState dx dy dz) ^ 2 +

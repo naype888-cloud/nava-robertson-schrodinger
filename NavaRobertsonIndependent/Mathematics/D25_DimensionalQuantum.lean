@@ -11,7 +11,7 @@ public import NavaRobertsonIndependent.Mathematics.D20_GramStepCoherenceConstant
 /-!
 # D25 — The dimensional quantum
 
-Each `H_d` has its own quantum `dimQuantum d = δ(d) = C_Nava(d) − 1`, the obstruction of
+Each `H_d` has its own quantum `dimQuantum d = δ(d) = C_N(d) − 1`, the obstruction of
 Robertson's bound on `T_d : P_d`. It vanishes exactly at `d = 2, 3`, is positive from `d = 4`,
 grows strictly with `d` from `dimQuantum 4`, stays below `δ_∞` and tends to it: `d = ∞` is a
 limit of the family, not a dimension, and does not close the quantum. No units appear.

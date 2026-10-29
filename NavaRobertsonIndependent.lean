@@ -8,7 +8,7 @@ module
 public import NavaRobertsonIndependent.Mathematics
 
 /-!
-# NRS and NRS³ — Nava–Robertson–Schrödinger elemental dimensional uncertainty
+# RS^N and RS^N³ — Nava–Robertson–Schrödinger elemental dimensional uncertainty
 
 The package target. `Verification/Layer1_Mathematics.lean` checks the import closure and
 prints the axioms of the main theorems.

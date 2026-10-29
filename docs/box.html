@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NRS³ Open Box</title>
+<title>RS^N³ Open Box</title>
 <meta name="description" content="Every box d_x × d_y × d_z has its own star of uncertainty. Change the box, watch the star deform in 3D, and let transport move the maximal current state of the cube through the lattice.">
 <style>
   :root {
@@ -108,11 +108,11 @@
   <a class="theme" style="margin-right:8px;text-decoration:none" href="robertson-det.html">Robertson 1934 in every basis ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="hopping.html">The hopping ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="./">◂ T³, the canonical torus</a>
-  <h1>NRS³ — every box has its star</h1>
+  <h1>RS^N³ — every box has its star</h1>
   <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
     pair transport <code>T</code> and position <code>P</code>. At the maximal current state of
     the cube, the product of the maximal current states of the axes, their fluctuations open the angle
-    <code>θ<sub>NRS</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
+    <code>θ<sub>RS^N</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
     4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. It runs on its own:
     the transport bar fills once, then a new random box, 4 to 25 sites per axis, with transport moving Ψ and the view turning.
     Change the box and the star deforms. Drag either panel to turn both.</p>
@@ -179,18 +179,18 @@
 
   <div class="card bandcard"><h2>The band of the quantum</h2>
     <span class="hint"><label><input type="checkbox" id="showband" checked> show the band in the star</label></span>
-    <p class="sub">At the maximal current state of the cube every axis with 4 or more sites opens between θ<sub>NRS</sub>(4) and arccos(1/C<sub>∞</sub>), never on the
-      ceiling: the shape changes from box to box, the band does not. ○ θ<sub>NRS</sub>(d) at the maximal current state of the cube · ● θ at Ψ(t).
+    <p class="sub">At the maximal current state of the cube every axis with 4 or more sites opens between θ<sub>RS^N</sub>(4) and arccos(1/C<sub>N</sub><sup>∞</sup>), never on the
+      ceiling: the shape changes from box to box, the band does not. ○ θ<sub>RS^N</sub>(d) at the maximal current state of the cube · ● θ at Ψ(t).
       The page runs on its own: the transport bar fills once, then a new random box, 4 to 25 sites per axis, with transport on. Ψ(t) starts at the quantum
       and leaves it; the band stays. Press Tour to stop on a box, Transport to pause.</p>
     <canvas id="band" aria-label="The band of the quantum, one ruler per axis"></canvas></div>
 
   <div class="card bandcard"><h2>The octahedron of the quantum (D25, D37e)</h2>
     <span class="hint">drag to turn · dashed: d → ∞</span>
-    <p class="sub">Each axis with <code>d</code> sites carries the excess over saturation <code>δ(d) = C<sub>Nava</sub>(d) − 1</code>,
+    <p class="sub">Each axis with <code>d</code> sites carries the excess over saturation <code>δ(d) = C<sub>N</sub>(d) − 1</code>,
       zero only with 2 or 3 sites (D25). Put a vertex at <code>±δ</code> on every axis: the octahedron of the box. The regular
       <code>4 × 4 × 4</code> gives the smallest, <code>δ(4) ≈ 0.00848</code> on every axis; no box reaches the dashed one of
-      <code>d → ∞</code>, <code>δ<sub>∞</sub> = C<sub>∞</sub> − 1 ≈ 0.13572</code> on every axis. Its volume is
+      <code>d → ∞</code>, <code>δ<sub>∞</sub> = C<sub>N</sub><sup>∞</sup> − 1 ≈ 0.13572</code> on every axis. Its volume is
       <code>(4/3)·𝒱</code>, with <code>𝒱 = δ(d<sub>x</sub>) δ(d<sub>y</sub>) δ(d<sub>z</sub>)</code> the volumetric quantum and
       <code>δ(4)³ ≤ 𝒱 &lt; δ<sub>∞</sub>³</code> (D37e).</p>
     <div class="octagrid">
@@ -209,10 +209,10 @@
     <p class="sub">The speed of an axis is <code>v = ((d − 1)/2)·⟨K⟩</code>, <code>K = i[T, P]</code> (D38). Minimum
       uncertainty (θ = 0) is possible only up to <code>v*(d)</code>; on the band <code>Ϙ(d) = (v*(d), 1]</code> every
       state has a forced defect, and at the cone <code>v = 1</code> the angle is exactly the quantum
-      <code>θ<sub>NRS</sub>(d)</code>. Press Transport: Ψ(t) starts at the quantum and leaves it as it slows down.</p>
+      <code>θ<sub>RS^N</sub>(d)</code>. Press Transport: Ψ(t) starts at the quantum and leaves it as it slows down.</p>
     <canvas id="speed" aria-label="Speed against angle, with the velocity band of each axis"></canvas>
     <p class="sub">Exact in Lean: <code>v*(4) = 3(√5 − 1)/4</code> (D23f, D23g, D43); the band is empty for 2 or 3
-      sites and non-empty from 4 on (D44); θ = θ<sub>NRS</sub>(d) at <code>v = 1</code> (D48). Numerical: <code>v*(d)</code>
+      sites and non-empty from 4 on (D44); θ = θ<sub>RS^N</sub>(d) at <code>v = 1</code> (D48). Numerical: <code>v*(d)</code>
       for <code>d ≥ 5</code> and the dotted envelope (the smallest angle at each speed). The horizontal scale is
       stretched above <code>v = 0.9</code>.</p></div>
 
@@ -251,13 +251,13 @@
   </div>
 
   <div class="tablewrap"><table aria-label="Axis statistics">
-    <thead><tr><th>axis</th><th>sites</th><th>θ(t)</th><th>θ<sub>NRS</sub>(d) at t = 0</th>
-      <th>C<sub>Nava</sub> = 1/cos θ<sub>NRS</sub></th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
+    <thead><tr><th>axis</th><th>sites</th><th>θ(t)</th><th>θ<sub>RS^N</sub>(d) at t = 0</th>
+      <th>C<sub>N</sub> = 1/cos θ<sub>RS^N</sub></th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
 
   <p class="note">Exact in Lean (repository <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a>):
-    the angle is <code>angleG = arccos(‖⟨δT, δP⟩‖ / (σ<sub>T</sub> σ<sub>P</sub>))</code>, the same formula as here, with <code>cos θ<sub>NRS</sub>(d) = 1/C<sub>Nava</sub>(d)</code> and <code>θ<sub>NRS</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b); the band <code>θ<sub>NRS</sub>(4) ≤ θ<sub>NRS</sub>(d) < arccos(1/C<sub>∞</sub>)</code>, <code>C<sub>∞</sub> = √(π²/3 − 2)</code>, holds at the maximal current state of the cube and at its 48 images under turns and reflections (<code>angleNRS_spectrum_bounds</code>, D48; <code>octahedral_symmetry</code>, D37h), not at Ψ(t) under transport (<code>angleAxis</code> at any state);
+    the angle is <code>angleG = arccos(‖⟨δT, δP⟩‖ / (σ<sub>T</sub> σ<sub>P</sub>))</code>, the same formula as here, with <code>cos θ<sub>RS^N</sub>(d) = 1/C<sub>N</sub>(d)</code> and <code>θ<sub>RS^N</sub>(d) = 0 ⇔ d ∈ {2, 3}</code> (D37b); the band <code>θ<sub>RS^N</sub>(4) ≤ θ<sub>RS^N</sub>(d) < arccos(1/C<sub>N</sub><sup>∞</sup>)</code>, <code>C<sub>N</sub><sup>∞</sup> = √(π²/3 − 2)</code>, holds at the maximal current state of the cube and at its 48 images under turns and reflections (<code>angleNRS_spectrum_bounds</code>, D48; <code>octahedral_symmetry</code>, D37h), not at Ψ(t) under transport (<code>angleAxis</code> at any state);
     at the maximal current state of the cube each axis has its own angle and the axes commute (D37, D37h); the three families, orbits of 1, 3, 6
     boxes and 48, 16, 8 angle-keeping symmetries, and the quantum is never erased from 4 sites on (D37i);
     transport spreads at most one site per step (D37f). The numbers on this page are computed in your browser

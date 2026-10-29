@@ -8,7 +8,7 @@ module
 public import NavaRobertsonCertificados.D49h_DeterminantEqualityRelation
 
 /-!
-# D49j — An axis on its own keeps det|NRS³ strict in the band
+# D49j — An axis on its own keeps det|RS^N³ strict in the band
 
 If the fluctuation vectors of the `z` axis are orthogonal to those of `x` and `y`, the `6 × 6`
 matrices split into a `4 × 4` block for `(x, y)` and a `2 × 2` block for `z`:
@@ -123,7 +123,7 @@ theorem det_z_sub (Φ : H3D dx dy dz) :
       (inner ℂ u v).im * (inner ℂ u v).im by ring, abs_of_nonneg (mul_self_nonneg _)]
   ring
 
-/-- **An orthogonal axis keeps det|NRS³ strict in the band.** -/
+/-- **An orthogonal axis keeps det|RS^N³ strict in the band.** -/
 theorem robertson_det_strict_of_orthogonal (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
     (hΦ : ‖Φ‖ = 1) (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy)
     (hbz : |velocityZ Φ| ∈ Ϙ dz) :
@@ -217,7 +217,7 @@ theorem liftY_prodZ (A : Matrix (Fin dy) (Fin dy) ℂ) (w : Hd dz)
   ring
 
 /-- **The third axis split off.** If `Φ = w ⊗ χ` with `w` on `z` and `χ` on `(x, y)` (however
-entangled), and the three speeds lie in the band, det|NRS³ is strict. -/
+entangled), and the three speeds lie in the band, det|RS^N³ is strict. -/
 theorem robertson_det_strict_of_split (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {w : Hd dz}
     {χ : EuclideanSpace ℂ (Fin dx × Fin dy)} (hw : ‖w‖ = 1) (hχ : ‖χ‖ = 1)
     (hbx : |velocityX (prodAlong (eZ dx dy dz) w χ)| ∈ Ϙ dx)

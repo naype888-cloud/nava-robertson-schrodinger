@@ -9,7 +9,7 @@ public import NavaRobertsonIndependent.Mathematics.D49b_RobertsonDeterminant3D
 public import NavaRobertsonIndependent.Mathematics.D37d_CubePythagoras
 
 /-!
-# D49c — det|NRS³ on product states: the defects multiply
+# D49c — det|RS^N³ on product states: the defects multiply
 
 For a product state `Φ = u ⊗ v ⊗ w` of the cube (`prod3`, unit factors) the fluctuation vectors
 of different axes are orthogonal (`D37d`), so the covariance matrix `Σ` of the six observables
@@ -19,10 +19,10 @@ tension of that factor. Hence
 
   `det Σ = (s_x + t_x²/4)(s_y + t_y²/4)(s_z + t_z²/4)`,  `|det Ω| = (t_x t_y t_z / 8)²`,
 
-and a positive surplus on each of the three axes makes `det|NRS³` strict. At the state of the
-cube the maximal current state of the cube every block is `C_Nava(d)² t²/4`, so
+and a positive surplus on each of the three axes makes `det|RS^N³` strict. At the state of the
+cube the maximal current state of the cube every block is `C_N(d)² t²/4`, so
 
-  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`,
+  `det Σ = C_N(dx)² C_N(dy)² C_N(dz)² · (t_x t_y t_z / 8)²`,
 
 strictly above the bound on every box with at least `4` positions on each of `x`, `y`, `z`.
 
@@ -34,7 +34,7 @@ strictly above the bound on every box with at least `4` positions on each of `x`
   axes gives `(t_x t_y t_z / 8)² < det Σ`.
 - `RobertsonDeterminantProduct.det_covMatrix_maxCurrentCubeState` : at the maximal current state of
   the cube, the ratio is
-  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`.
+  `C_N(dx)² C_N(dy)² C_N(dz)²`.
 - `RobertsonDeterminantProduct.robertson_det_maxCurrentCubeState_strict` : strict for
   `dx, dy, dz ≥ 4`.
 -/
@@ -128,7 +128,7 @@ theorem tensions_prod3 :
   · rw [prod3_eq_eY]; exact tensionG_lift _ (norm_prodAlong_eq_one _ hu hw) _ _ _
   · rw [prod3_eq_eZ]; exact tensionG_lift _ (norm_prodAlong_eq_one _ hu hv) _ _ _
 
-/-- **det|NRS³ strict on product states.** A positive surplus on each of the three axes makes
+/-- **det|RS^N³ strict on product states.** A positive surplus on each of the three axes makes
 the bound strict. -/
 theorem robertson_det_prod3_strict (hsx : 0 < surplus dx u) (hsy : 0 < surplus dy v)
     (hsz : 0 < surplus dz w) :
@@ -151,7 +151,7 @@ theorem robertson_det_prod3_strict (hsx : 0 < surplus dx u) (hsy : 0 < surplus d
 
 omit hu hv hw
 
-/-- One block at the maximal current state: `C_Nava(d)² · t²/4`. -/
+/-- One block at the maximal current state: `C_N(d)² · t²/4`. -/
 theorem block_maxCurrentState {d : ℕ} (hd : 2 ≤ d) :
     surplus d (maxCurrentState d) + tension d (maxCurrentState d) ^ 2 / 4 =
       CoherenceConstant d ^ 2 * (tension d (maxCurrentState d) ^ 2 / 4) := by
@@ -165,7 +165,7 @@ theorem block_maxCurrentState {d : ℕ} (hd : 2 ≤ d) :
   field_simp
   ring
 
-/-- **det|NRS³ at the state of the cube.** `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² ·
+/-- **det|RS^N³ at the state of the cube.** `det Σ = C_N(dx)² C_N(dy)² C_N(dz)² ·
 (t_x t_y t_z / 8)²`. -/
 theorem det_covMatrix_maxCurrentCubeState (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) :
     (covMatrix (pairs dx dy dz) (maxCurrentCubeState dx dy dz)).det =

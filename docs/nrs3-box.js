@@ -405,7 +405,7 @@
     const d4 = deltaOf(4);
     g.strokeStyle = css("--blue"); g.setLineDash([2, 3]); g.beginPath(); g.moveTo(L, Y(d4)); g.lineTo(L + Wd, Y(d4)); g.stroke();
     g.setLineDash([]);
-    g.fillStyle = css("--ink2"); g.fillText("δ∞ = C∞ − 1 ≈ 0.13572 · 28.30°", L + 6, Y(D_INF) - 6);
+    g.fillStyle = css("--ink2"); g.fillText("δ∞ = C_N^∞ − 1 ≈ 0.13572 · 28.30°", L + 6, Y(D_INF) - 6);
     g.fillStyle = css("--blue"); g.fillText("δ(4) ≈ 0.00848 · 7.43°", L + Wd * 0.55, Y(d4) - 6);
     // the curve δ(d)
     g.strokeStyle = css("--violet"); g.lineWidth = 2; g.beginPath();

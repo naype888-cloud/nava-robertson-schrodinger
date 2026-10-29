@@ -10,21 +10,21 @@ public import NavaRobertsonIndependent.Mathematics.D6_Fiedler
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
-# D20 — The Gram defect of `(T_d maxCurrentState, P_d maxCurrentState)` and `C_Nava(d)²`
+# D20 — The Gram defect of `(T_d maxCurrentState, P_d maxCurrentState)` and `C_N(d)²`
 
 Joins the closed form `CoherenceConstantSq d` to the concrete `T_d`, `P_d` and
 `maxCurrentState = fiedlerVec d`.
-For `d ≥ 2`, `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`
+For `d ≥ 2`, `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_N(d)²`
 (`gramStep_product`); the cross product
 `⟪T_d maxCurrentState, P_d maxCurrentState⟫` has real part `0` and imaginary part `−1/(d−1)`, so the
 Gram defect is
-`(C_Nava(d)² − 1)/(d−1)²` (`gramStep_gram`). Both means vanish, so this is the centred defect: it
+`(C_N(d)² − 1)/(d−1)²` (`gramStep_gram`). Both means vanish, so this is the centred defect: it
 is zero exactly at `d = 2, 3` and positive from `d = 4`.
 
 ## Main results
 
-- `GramStep.gramStep_product` : `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`.
-- `GramStep.gramStep_gram` : the Gram defect is `(C_Nava(d)² − 1)/(d−1)²`.
+- `GramStep.gramStep_product` : `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_N(d)²`.
+- `GramStep.gramStep_gram` : the Gram defect is `(C_N(d)² − 1)/(d−1)²`.
 - `GramStep.gramStep_gram_eq_zero_iff`, `GramStep.gramStep_gram_pos`.
 -/
 
@@ -32,7 +32,7 @@ is zero exactly at `d = 2, 3` and positive from `d = 4`.
 
 namespace Gnomon
 
-/-- `C_Nava(d) = 1` exactly at `d = 2, 3`. -/
+/-- `C_N(d) = 1` exactly at `d = 2, 3`. -/
 theorem CoherenceConstant_eq_one_iff (d : ℕ) (hd : 2 ≤ d) : CoherenceConstant d = 1 ↔ d = 2 ∨ d = 3
     := by
   constructor
@@ -237,7 +237,7 @@ theorem norm_sq_Pd_psi {d : ℕ} (hd : 2 ≤ d) :
   rw [PdOp_apply, WithLp.ofLp_toLp, Pd_mulVec, norm_mul, Complex.norm_real, Real.norm_eq_abs,
     mul_pow, sq_abs, mul_comm]
 
-/-- `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`. -/
+/-- `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_N(d)²`. -/
 theorem gramStep_product {d : ℕ} (hd : 2 ≤ d) :
     ((d : ℝ) - 1) ^ 2 *
         (‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2) =
@@ -339,7 +339,7 @@ def defectGram (d : ℕ) : ℝ :=
   ‖TdOp d (fiedlerVec d)‖ ^ 2 * ‖PdOp d (fiedlerVec d)‖ ^ 2 -
     ‖inner ℂ (TdOp d (fiedlerVec d)) (PdOp d (fiedlerVec d))‖ ^ 2
 
-/-- The Gram defect is `(C_Nava(d)² − 1)/(d−1)²`. -/
+/-- The Gram defect is `(C_N(d)² − 1)/(d−1)²`. -/
 theorem gramStep_gram {d : ℕ} (hd : 2 ≤ d) :
     defectGram d = (CoherenceConstantSq d - 1) / ((d : ℝ) - 1) ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by

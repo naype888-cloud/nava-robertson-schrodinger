@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Malla espectral NRS³</title>
+<title>Malla espectral RS^N³</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: lattice canvas as the hero, a readout rail beside it; below, the uncertainty cone and the C_Nava curve, then the proof ledger. */
+/* Layout: lattice canvas as the hero, a readout rail beside it; below, the uncertainty cone and the C_N curve, then the proof ledger. */
 :root{
   --bg:#f3f4f7; --panel:#ffffff; --ink:#151a26; --muted:#5b6476; --rule:#d9dde6;
   --quantum:#c2620c; --quantum-soft:#f1d9c2; --cone:#0e7c86; --cone-soft:#cfe9ea; --proposal:#7a4fa8;
@@ -92,9 +92,9 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">NRS y NRS³ · fusionados en Physlib (#1723, #1725)</div>
-    <h1>Malla espectral NRS³</h1>
-    <p>Cada nodo es una celda N<sub>x</sub> × N<sub>y</sub> × N<sub>z</sub>. Su cuanto volumétrico 𝒱 = δ(N<sub>x</sub>)·δ(N<sub>y</sub>)·δ(N<sub>z</sub>), con δ = C<sub>Nava</sub> − 1, vale cero si algún eje tiene 2 o 3 sitios (saturación, sobre el cono de luz) y crece estrictamente en cada eje desde 4 × 4 × 4. Arrastra para girar; toca un nodo para leer sus valores exactos.</p>
+    <div class="eyebrow">RS^N y RS^N³ · fusionados en Physlib (#1723, #1725)</div>
+    <h1>Malla espectral RS^N³</h1>
+    <p>Cada nodo es una celda N<sub>x</sub> × N<sub>y</sub> × N<sub>z</sub>. Su cuanto volumétrico 𝒱 = δ(N<sub>x</sub>)·δ(N<sub>y</sub>)·δ(N<sub>z</sub>), con δ = C<sub>N</sub> − 1, vale cero si algún eje tiene 2 o 3 sitios (saturación, sobre el cono de luz) y crece estrictamente en cada eje desde 4 × 4 × 4. Arrastra para girar; toca un nodo para leer sus valores exactos.</p>
   </header>
 
   <section class="lagr" aria-label="El Lagrangiano">
@@ -248,7 +248,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
 </svg>
     <div class="hair"></div>
     <div class="conds">
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="eq-C" role="img" aria-label="Condición NRS³" viewBox="0 0 83.34 18.75">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="eq-C" role="img" aria-label="Condición RS^N³" viewBox="0 0 83.34 18.75">
 <defs>
 <g>
 <g id="C-glyph-0-0">
@@ -388,7 +388,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
     </div>
     <div class="units">ħ = c = 1 · ℓ<sub>P</sub>² = G</div>
     <div class="dedic">Euclides · von Neumann · Dirac</div>
-    <p class="note">El vacío es Boltzmann: Λ = 3π/(ℓ<sub>P</sub>² log W) con W = M<sup>k</sup> estados en el corte (<code>countCosmologicalConstant_eq</code>), y log W = (log M/δ)·Ω con δ = C<sub>Nava</sub> − 1 (<code>cutEntropy_eq_mul_quantumDefect</code>). Debajo, NRS³: det Σ = [(1+δ<sub>x</sub>)(1+δ<sub>y</sub>)(1+δ<sub>z</sub>)]² det Ω, igualdad en 2 y 3 sitios, estricta desde 4 (D49c, <code>floor_lt_det_of_four_le</code>). A la derecha, el tiempo propio del vector de incertidumbre: τ = σ<sub>A</sub>σ<sub>B</sub> sen θ<sub>nrs</sub>, cero en la saturación (2 y 3 sitios, sobre el cono de luz) y positivo desde 4 (<code>properTime_eq_mul_sin</code>, <code>properTime_uncertaintyVector_eq_mul_sin</code>). En Lean están el término de vacío como densidad y las dos condiciones; la integral, la curvatura R y el término de Dirac no.</p>
+    <p class="note">El vacío es Boltzmann: Λ = 3π/(ℓ<sub>P</sub>² log W) con W = M<sup>k</sup> estados en el corte (<code>countCosmologicalConstant_eq</code>), y log W = (log M/δ)·Ω con δ = C<sub>N</sub> − 1 (<code>cutEntropy_eq_mul_quantumDefect</code>). Debajo, RS^N³: det Σ = [(1+δ<sub>x</sub>)(1+δ<sub>y</sub>)(1+δ<sub>z</sub>)]² det Ω, igualdad en 2 y 3 sitios, estricta desde 4 (D49c, <code>floor_lt_det_of_four_le</code>). A la derecha, el tiempo propio del vector de incertidumbre: τ = σ<sub>A</sub>σ<sub>B</sub> sen θ<sub>nrs</sub>, cero en la saturación (2 y 3 sitios, sobre el cono de luz) y positivo desde 4 (<code>properTime_eq_mul_sin</code>, <code>properTime_uncertaintyVector_eq_mul_sin</code>). En Lean están el término de vacío como densidad y las dos condiciones; la integral, la curvatura R y el término de Dirac no.</p>
   </section>
 
   <section class="hero">
@@ -421,7 +421,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
         <h3 id="startitle">Forma exacta</h3>
         <div class="fam" id="starfam"></div>
         <svg id="star" viewBox="-135 -128 270 250" width="270" height="250" font-size="10" role="img" aria-label="Estrella de la celda: rayos de T y P por eje con su ángulo y longitudes reales"></svg>
-        <p class="note">Como en D37i: por eje, la fluctuación de T (rayo superior) y la de P (rayo inferior) en el estado de máxima corriente, con longitudes reales σ<sub>T</sub>, σ<sub>P</sub> y ángulo real θ<sub>NRS</sub>; los rayos tenues son sus opuestos. Ejes iguales abren igual. Escala: el rayo más largo de la celda llena el cuadro.</p>
+        <p class="note">Como en D37i: por eje, la fluctuación de T (rayo superior) y la de P (rayo inferior) en el estado de máxima corriente, con longitudes reales σ<sub>T</sub>, σ<sub>P</sub> y ángulo real θ<sub>RS^N</sub>; los rayos tenues son sus opuestos. Ejes iguales abren igual. Escala: el rayo más largo de la celda llena el cuadro.</p>
       </div>
       <div class="tablebox">
         <table>
@@ -429,7 +429,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
           <tbody id="axes"></tbody>
         </table>
       </div>
-      <p class="note">β = 1/C<sub>Nava</sub> = cos θ<sub>NRS</sub> (Cone.lean, D37b) y η/(σσ)² = 1 − β² (<code>interval_eq_speed</code>). El cociente de Mandelstam–Tamm es 1/C<sub>Nava</sub>² (<code>mandelstamTammRatio_maxCurrentState</code>, Physlib #1739).</p>
+      <p class="note">β = 1/C<sub>N</sub> = cos θ<sub>RS^N</sub> (Cone.lean, D37b) y η/(σσ)² = 1 − β² (<code>interval_eq_speed</code>). El cociente de Mandelstam–Tamm es 1/C<sub>N</sub>² (<code>mandelstamTammRatio_maxCurrentState</code>, Physlib #1739).</p>
     </aside>
   </section>
 
@@ -437,15 +437,15 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
     <div class="card">
       <span class="tag ok">demostrado · nrs3-uncertainty-cone/Cone.lean</span>
       <h2>El cono de incertidumbre de la celda</h2>
-      <p>La matriz de Gram de las fluctuaciones es un cuadrivector del cono futuro (<code style="font-family:var(--mono)">mem_futureCone</code>). El boost lleva al marco v₃ = 0 (<code style="font-family:var(--mono)">balanced_frame</code>), donde la velocidad es β = 1/C<sub>Nava</sub>(d) (<code style="font-family:var(--mono)">speed_maxCurrentState</code>) y η(v, v) = (‖x‖‖y‖)²(1 − β²) (<code style="font-family:var(--mono)">interval_eq_speed</code>). Nulo si y sólo si d = 2, 3; temporal desde d = 4 (<code style="font-family:var(--mono)">null_maxCurrentState_iff</code>, <code style="font-family:var(--mono)">timelike_maxCurrentState</code>).</p>
+      <p>La matriz de Gram de las fluctuaciones es un cuadrivector del cono futuro (<code style="font-family:var(--mono)">mem_futureCone</code>). El boost lleva al marco v₃ = 0 (<code style="font-family:var(--mono)">balanced_frame</code>), donde la velocidad es β = 1/C<sub>N</sub>(d) (<code style="font-family:var(--mono)">speed_maxCurrentState</code>) y η(v, v) = (‖x‖‖y‖)²(1 − β²) (<code style="font-family:var(--mono)">interval_eq_speed</code>). Nulo si y sólo si d = 2, 3; temporal desde d = 4 (<code style="font-family:var(--mono)">null_maxCurrentState_iff</code>, <code style="font-family:var(--mono)">timelike_maxCurrentState</code>).</p>
       <svg id="cone" viewBox="0 0 420 330" role="img" aria-label="Diagrama de Minkowski con los tres ejes de la celda"></svg>
       <p class="note">Las cuatro componentes son estadísticas del par (varianzas, covarianza, conmutador), no coordenadas de eventos.</p>
     </div>
     <div class="card">
       <span class="tag ok">demostrado · Physlib #1734 #1735 · git D8 D9</span>
-      <h2>C<sub>Nava</sub>(N)</h2>
-      <p>Vale 1 en 2 y 3 sitios. Desde 4 crece estrictamente (D9, <code style="font-family:var(--mono)">CNava_lt_CNava</code>) sin tocar nunca C<sub>∞</sub> = √(π²/3 − 2) ≈ 1.13572 (D8, Szegő).</p>
-      <svg id="curve" viewBox="0 0 420 330" role="img" aria-label="C_Nava en función de N con su asíntota"></svg>
+      <h2>C<sub>N</sub>(N)</h2>
+      <p>Vale 1 en 2 y 3 sitios. Desde 4 crece estrictamente (D9, <code style="font-family:var(--mono)">CNava_lt_CNava</code>) sin tocar nunca C<sub>N</sub><sup>∞</sup> = √(π²/3 − 2) ≈ 1.13572 (D8, Szegő).</p>
+      <svg id="curve" viewBox="0 0 420 330" role="img" aria-label="C_N en función de N con su asíntota"></svg>
     </div>
   </section>
 
@@ -455,20 +455,20 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
       <div>
         <span class="tag ok">Lean, axiomas estándar</span>
         <ul>
-          <li><b>NRS</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality</code> (ElementalUncertainty.lean, #1723).</li>
-          <li><b>NRS³</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_cube</code> (Cube.lean, #1725), estricto en los tres ejes desde 4 × 4 × 4.</li>
+          <li><b>RS^N</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality</code> (ElementalUncertainty.lean, #1723).</li>
+          <li><b>RS^N³</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_cube</code> (Cube.lean, #1725), estricto en los tres ejes desde 4 × 4 × 4.</li>
           <li>Saturación sólo en 2 y 3 sitios: <code>centeredGramDefect_maxCurrentState_eq_zero_iff</code> (#1718).</li>
-          <li>Cada eje del cubo lleva su C<sub>Nava</sub>: <code>CNava_alongX</code>/<code>Y</code>/<code>Z</code> (#1725).</li>
+          <li>Cada eje del cubo lleva su C<sub>N</sub>: <code>CNava_alongX</code>/<code>Y</code>/<code>Z</code> (#1725).</li>
           <li>Monotonía y techo: <code>CNava_lt_CNava</code>, <code>CNava_lt_sqrt_pi_sq_div_three_sub_two</code> (#1735).</li>
-          <li>Cociente de Mandelstam–Tamm = 1/C<sub>Nava</sub>²: <code>mandelstamTammRatio_maxCurrentState</code> (#1739).</li>
-          <li>Ángulo NRS, δ y 𝒱: <code>angleNRS_eq</code>, <code>volQuantum_lt_volQuantum_z</code> (PR local 9fd96397).</li>
+          <li>Cociente de Mandelstam–Tamm = 1/C<sub>N</sub>²: <code>mandelstamTammRatio_maxCurrentState</code> (#1739).</li>
+          <li>Ángulo RS^N, δ y 𝒱: <code>angleNRS_eq</code>, <code>volQuantum_lt_volQuantum_z</code> (PR local 9fd96397).</li>
           <li>Cono de incertidumbre: <code>speed_maxCurrentState</code>, <code>interval_eq_speed</code>, <code>timelike_maxCurrentState</code> (nrs3-uncertainty-cone/Cone.lean).</li>
           <li>Familias de cajas (regular, dos iguales, tres distintas) y su simetría: <code>family_partition</code>, <code>card_axisStab_*</code> (D37i_BoxFamilies.lean); la estrella es la de su figura.</li>
           <li>Cuanto volumétrico en el git: <code>volQuantum_eq_zero_iff</code>, <code>volQuantum_certificate</code> (D37e_VolumetricQuantum.lean).</li>
           <li>Un enlace es una punción: la entropía de un corte con M = 2j + 1 enlaces que lo cruzan es la de punciones de espín j, <code>cutEntropy_eq_punctureEntropy</code> (nrs3-rovelli-lqg, D16g).</li>
           <li>Espectro de área de LQG con cuanto mínimo A(1/2) y entropía ∝ área: <code>areaSpectrum_min</code>, <code>entropy_proportional_to_area</code>, <code>bekensteinHawking_iff_immirzi</code>.</li>
-          <li>Puente NRS³ → Λ: la entropía del corte es el defecto, S = (log M/δ)·Ω con Ω = kδ, y Λ = 3πδ/(ℓ<sub>P</sub>² log M·Ω); Ω = 0 en 2 y 3 sitios, Ω<sub>x</sub> = 0 si y sólo si satura el eje x: <code>cutEntropy_eq_mul_quantumDefect</code>, <code>quantumDefect_alongX_eq_zero_iff</code>, <code>countCosmologicalConstant_cube</code> (rama nrs3-cosmological-constant).</li>
-          <li>θ<sub>NRS</sub> sube hasta arccos(1/C∞) ≈ 28.30° sin alcanzarlo: <code>ceiling_not_attained</code>, <code>ceiling_isLUB</code>.</li>
+          <li>Puente RS^N³ → Λ: la entropía del corte es el defecto, S = (log M/δ)·Ω con Ω = kδ, y Λ = 3πδ/(ℓ<sub>P</sub>² log M·Ω); Ω = 0 en 2 y 3 sitios, Ω<sub>x</sub> = 0 si y sólo si satura el eje x: <code>cutEntropy_eq_mul_quantumDefect</code>, <code>quantumDefect_alongX_eq_zero_iff</code>, <code>countCosmologicalConstant_cube</code> (rama nrs3-cosmological-constant).</li>
+          <li>θ<sub>RS^N</sub> sube hasta arccos(1/C_N^∞) ≈ 28.30° sin alcanzarlo: <code>ceiling_not_attained</code>, <code>ceiling_isLUB</code>.</li>
         </ul>
       </div>
       <div>
@@ -489,7 +489,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
 const PI = Math.PI;
 const CINF = Math.sqrt(PI * PI / 3 - 2);
 const cache = new Map();
-// C_Nava(N) from the closed form cNavaSqForm(N + 1) (LongChainLimit.lean).
+// C_N from the closed form cNavaSqForm(N + 1) (LongChainLimit.lean).
 function C(N) {
   if (N <= 3) return 1;
   if (cache.has(N)) return cache.get(N);
@@ -502,7 +502,7 @@ const delta = N => C(N) - 1;
 const theta = N => N <= 3 ? 0 : Math.acos(Math.min(1, 1 / C(N))) * 180 / PI;
 const vol = (a, b, c) => delta(a) * delta(b) * delta(c);
 const AX = new Map();
-// σ_T, σ_P and the NRS angle of (T_d, P_d) at the maximal current state (D3 matrices, as in D37i).
+// σ_T, σ_P and the RS^N angle of (T_d, P_d) at the maximal current state (D3 matrices, as in D37i).
 function axisStats(d) {
   if (AX.has(d)) return AX.get(d);
   const rho = 2 * Math.cos(PI / (d + 1)), c = [];
@@ -676,10 +676,10 @@ function update() {
   const [a, b, c] = sel;
   const V = vol(a, b, c);
   document.getElementById('vq').innerHTML =
-    `${V === 0 ? '0' : V.toExponential(4)}<small>𝒱(${a}, ${b}, ${c}) · techo (C∞ − 1)³ = ${VMAX.toExponential(4)}</small>`;
+    `${V === 0 ? '0' : V.toExponential(4)}<small>𝒱(${a}, ${b}, ${c}) · techo (C_N^∞ − 1)³ = ${VMAX.toExponential(4)}</small>`;
   const rows = [
     ['N', n => n, x => x],
-    ['C_Nava', C, f],
+    ['C_N', C, f],
     ['δ = C − 1', delta, f],
     ['θ_NRS (°)', theta, v => v.toFixed(3)],
     ['β = 1/C', n => 1 / C(n), f],
@@ -710,10 +710,10 @@ function drawCone() {
   // light cone
   el('line', { x1: ox, y1: oy, x2: ox + L, y2: oy - L, stroke: colors.cone, 'stroke-width': 2 }, svg);
   el('text', { x: ox + L - 70, y: oy - L - 6, fill: colors.cone, style: `fill:${colors.cone}` }, svg).textContent = 'cono · N = 2, 3';
-  // limit ray 1/C∞
+  // limit ray 1/C_N^∞
   const bInf = 1 / CINF;
   el('line', { x1: ox, y1: oy, x2: ox + L * bInf, y2: oy - L, stroke: colors.muted, 'stroke-dasharray': '5 5' }, svg);
-  el('text', { x: ox + L * bInf - 64, y: oy - L - 6 }, svg).textContent = `límite 1/C∞`;
+  el('text', { x: ox + L * bInf - 64, y: oy - L - 6 }, svg).textContent = `límite 1/C_N^∞`;
   // the three axes of the selected cell
   const names = ['x', 'y', 'z'];
   sel.forEach((n, i) => {
@@ -833,7 +833,7 @@ function drawStar() {
   });
 }
 
-/* ---------- C_Nava(N) curve ---------- */
+/* ---------- C_N curve ---------- */
 function drawCurve() {
   const svg = document.getElementById('curve'); svg.innerHTML = '';
   const x0 = 54, x1 = 400, y0 = 290, y1 = 30, Nmax = 80;
@@ -849,7 +849,7 @@ function drawCurve() {
   }
   el('text', { x: x1 - 12, y: y0 + 32 }, svg).textContent = 'N';
   el('line', { x1: x0, y1: Y(CINF), x2: x1, y2: Y(CINF), stroke: colors.cone, 'stroke-dasharray': '5 5' }, svg);
-  el('text', { x: x0 + 6, y: Y(CINF) - 6, style: `fill:${colors.cone}` }, svg).textContent = `C∞ = √(π²/3 − 2) ≈ ${CINF.toFixed(5)}`;
+  el('text', { x: x0 + 6, y: Y(CINF) - 6, style: `fill:${colors.cone}` }, svg).textContent = `C_N^∞ = √(π²/3 − 2) ≈ ${CINF.toFixed(5)}`;
   let d = '';
   for (let n = 2; n <= Nmax; n++) d += (n === 2 ? 'M' : 'L') + X(n).toFixed(1) + ' ' + Y(C(n)).toFixed(1);
   el('path', { d, fill: 'none', stroke: colors.q, 'stroke-width': 2 }, svg);

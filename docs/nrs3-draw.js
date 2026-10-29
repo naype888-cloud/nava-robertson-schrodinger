@@ -1,7 +1,7 @@
-// Drawing helpers for the NRS³ box explorer: the convex envelope of the star, and the band of
-// the quantum θ_NRS(4) ≤ θ_NRS(d) < arccos(1/C_∞) (D37b angle_floor, D48 angleNRS_spectrum_bounds).
+// Drawing helpers for the RS^N³ box explorer: the convex envelope of the star, and the band of
+// the quantum θ_NRS(4) ≤ θ_NRS(d) < arccos(1/C_N^∞) (D37b angle_floor, D48 angleNRS_spectrum_bounds).
 window.NRS3Draw = (() => {
-  // θ_NRS(4) = arccos(1/√((99 − 42√5)/5)) (D37b angleNRS_four); C_∞ = √(π²/3 − 2) (D8)
+  // θ_NRS(4) = arccos(1/√((99 − 42√5)/5)) (D37b angleNRS_four); C_N^∞ = √(π²/3 − 2) (D8)
   const TH4 = Math.acos(1 / Math.sqrt((99 - 42 * Math.sqrt(5)) / 5));
   const THINF = Math.acos(1 / Math.sqrt(Math.PI ** 2 / 3 - 2));
   const deg = (r) => r * 180 / Math.PI;
@@ -66,7 +66,7 @@ window.NRS3Draw = (() => {
     g.setLineDash([5, 4]); g.beginPath(); g.moveTo(X(THINF), T - 6); g.lineTo(X(THINF), H0 - B); g.stroke(); g.setLineDash([]);
     g.fillStyle = css("--blue");
     g.fillText(`floor θ_NRS(4) = ${deg(TH4).toFixed(2)}°`, X(TH4) - 4 - g.measureText("floor θ_NRS(4) = 7.43°").width, 13);
-    g.fillText(`ceiling arccos(1/C∞) = ${deg(THINF).toFixed(2)}°, never reached`, X(THINF) + 4, 13);
+    g.fillText(`ceiling arccos(1/C_N^∞) = ${deg(THINF).toFixed(2)}°, never reached`, X(THINF) + 4, 13);
     // angle ticks
     g.fillStyle = css("--muted"); g.strokeStyle = css("--grid");
     for (let a = 0; a <= MAX; a += 10) { const x = X(a * Math.PI / 180);

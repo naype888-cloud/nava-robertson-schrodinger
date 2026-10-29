@@ -29,7 +29,7 @@ entanglement is possible.
 - `MaxTensionCube.eq_smul_octant` : maximal tension on `x`, `y`, `z` makes `Φ` a phase times the
   octant state the product of the maximal current states.
 - `MaxTensionCube.det_covMatrix_maxTension` : then
-  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`, for every state.
+  `det Σ = C_N(dx)² C_N(dy)² C_N(dz)² · (t_x t_y t_z / 8)²`, for every state.
 - `MaxTensionCube.robertson_det_maxTension_strict` : strict on every box with `4` or more positions
   on each axis.
 -/
@@ -180,7 +180,7 @@ theorem surplus_reflect (ψ : Hd d) : surplus d (reflect d ψ) = surplus d ψ :=
   rw [surplus_eq, surplus_eq, h1, h2, h3, tension_reflect]
   ring
 
-/-- One block at the maximal current state in either direction: `C_Nava(d)² · t²/4`. -/
+/-- One block at the maximal current state in either direction: `C_N(d)² · t²/4`. -/
 theorem block_psiDir (hd : 2 ≤ d) (b : Bool) :
     surplus d (psiDir d b) + tension d (psiDir d b) ^ 2 / 4 =
       CoherenceConstant d ^ 2 * (tension d (psiDir d b) ^ 2 / 4) := by
@@ -244,7 +244,7 @@ theorem eq_smul_octant (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {Φ : H3D
   have := congrArg norm hΦc
   rwa [norm_smul, hoct, mul_one, hΦ, eq_comm] at this
 
-/-- **det|NRS³ at maximal tension, for every state.** -/
+/-- **det|RS^N³ at maximal tension, for every state.** -/
 theorem det_covMatrix_maxTension (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {Φ : H3D dx dy dz}
     (hΦ : ‖Φ‖ = 1) (hvx : |velocityX Φ| = 1) (hvy : |velocityY Φ| = 1)
     (hvz : |velocityZ Φ| = 1) :

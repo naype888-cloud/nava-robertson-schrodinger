@@ -18,8 +18,8 @@ signed permutations `(σ, s)`, where `σ` permutes the axes and `s i` reflects a
 
 Relabelling the positions by `(σ, s)` sends `T` of axis `i` to `T` of axis `σ i` (the path is
 symmetric under reflection) and `P` of axis `i` to `± P` of axis `σ i` (reflection reverses the
-position). A sign does not change the angle between the fluctuation vectors, so the NRS angle of
-axis `σ i` in the relabelled state is the NRS angle of axis `i` in the original one, for every
+position). A sign does not change the angle between the fluctuation vectors, so the RS^N angle of
+axis `σ i` in the relabelled state is the RS^N angle of axis `i` in the original one, for every
 state. At the maximal current state of the cube all three axes have the angle `θ_NRS(d)` of `D37b`:
 the angles, and
 with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of `O_h`.
@@ -38,7 +38,7 @@ with them the volumetric quantum `δ(d)³` of `D37e`, are invariant under all of
 - `OctahedralSymmetry.octahedral_symmetry` : for all `48` elements and all three axes, the angle
   at the image of the maximal current state of the cube is `θ_NRS(d)`; from `d = 4` on it is
   positive and below
-  `arccos (1 / C_∞)`.
+  `arccos (1 / C_N^∞)`.
 - `OctahedralSymmetry.keepsAngles_iff` : with unequal axes, all with `4` or more positions, a signed
   permutation keeps the angle of every axis iff it only exchanges axes of the same length.
 - `OctahedralSymmetry.card_keepsAngles_equal`, `card_keepsAngles_two_equal`,
@@ -280,11 +280,11 @@ def TAxis (i : Fin 3) : EuclideanSpace ℂ (CubeSite d) →ₗ[ℂ] EuclideanSpa
 def PAxis (i : Fin 3) : EuclideanSpace ℂ (CubeSite d) →ₗ[ℂ] EuclideanSpace ℂ (CubeSite d) :=
   Matrix.toEuclideanLin (liftAxis d i (Pd d))
 
-/-- The NRS angle of axis `i` at the state `Ψ`. -/
+/-- The RS^N angle of axis `i` at the state `Ψ`. -/
 def angleAxis (i : Fin 3) (Ψ : EuclideanSpace ℂ (CubeSite d)) : ℝ :=
   angleG (TAxis i) (PAxis i) Ψ
 
-/-- **The angle follows the axis.** The NRS angle of axis `σ i` after `(σ, s)` is the NRS angle of
+/-- **The angle follows the axis.** The RS^N angle of axis `σ i` after `(σ, s)` is the RS^N angle of
 axis `i` before, at every state. -/
 theorem angleAxis_cubeSym (σ : Equiv.Perm (Fin 3)) (s : Fin 3 → Bool) (i : Fin 3)
     (Ψ : EuclideanSpace ℂ (CubeSite d)) :
@@ -339,10 +339,10 @@ theorem angleAxis_psiCube (hd : 2 ≤ d) (i : Fin 3) : angleAxis i (psiCube d) =
   exact angleG_lift _ (norm_prodState (norm_maxCurrentState hd)) _ _ _
 
 /-- **Octahedral symmetry.** For each of the `48` signed permutations `(σ, s)` of the axes and each
-axis `j`, the NRS angle of axis `j` at the image of the maximal current state of the cube is
+axis `j`, the RS^N angle of axis `j` at the image of the maximal current state of the cube is
 `θ_NRS(d)`: the three angles of the
 cube `d × d × d` are the same number and are carried into one another by all of `O_h`. From
-`d = 4` on this common angle is positive and below `arccos (1 / C_∞)`. -/
+`d = 4` on this common angle is positive and below `arccos (1 / C_N^∞)`. -/
 theorem octahedral_symmetry (hd : 2 ≤ d) (σ : Equiv.Perm (Fin 3)) (s : Fin 3 → Bool)
     (j : Fin 3) : angleAxis j (permState (cubeSym σ s) (psiCube d)) = angleNRS d := by
   have h := angleAxis_cubeSym σ s (σ.symm j) (psiCube d)
@@ -363,7 +363,7 @@ end Star
 
 section Unequal
 
-/-- The signed permutation `(σ, s)` keeps the NRS angle of every axis of the box with `dims i`
+/-- The signed permutation `(σ, s)` keeps the RS^N angle of every axis of the box with `dims i`
 positions on axis `i`: axis `i` and axis `σ i` have the same angle. A reflection never changes an
 angle (it depends only on the number of positions), so only `σ` matters. -/
 def KeepsAngles (dims : Fin 3 → ℕ) (g : Equiv.Perm (Fin 3) × (Fin 3 → Bool)) : Prop :=

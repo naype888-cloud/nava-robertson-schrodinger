@@ -164,7 +164,7 @@ variable {d : ℕ} (hd : 2 ≤ d)
 include hd
 
 /-- On the cube `d × d × d`, the total pair `(T_x + T_y + T_z, P_x + P_y + P_z)` meets at exactly
-the NRS angle of one axis. -/
+the RS^N angle of one axis. -/
 theorem angle_total_cube :
     angleG (TX d d d + TY d d d + TZ d d d) (PX d d d + PY d d d + PZ d d d) (maxCurrentCubeState d
         d d) =

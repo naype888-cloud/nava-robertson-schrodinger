@@ -12,13 +12,13 @@ public import NavaRobertsonIndependent.Mathematics.D41_MandelstamTammCramerRao
 
 The direction of motion of `⟨P_d⟩` is the sign of the tension `⟨K_d⟩` (`D38`). A symmetry `U`
 that commutes with `L` and reverses `M` reverses the tension and keeps both variances, so the
-Mandelstam–Tamm and Cramér–Rao ratio of `D41` and the NRS angle of `D37b` are the same for both
+Mandelstam–Tamm and Cramér–Rao ratio of `D41` and the RS^N angle of `D37b` are the same for both
 directions. The reflection `j ↦ d − 1 − j` of the path is such a symmetry for `(T_d, P_d)`: the
 spectrum of `K_d` is symmetric, and the maximal current state reflected moves at velocity `−1`.
 
 On the cube `d × d × d` the three reflections give the eight octant states: velocity `(±1, ±1, ±1)`,
 one vertex of the velocity cube for each face of the octahedral cone of `D37f`, and on every axis
-the same ratio `1 / C_Nava(d)²` and the same angle `θ_NRS(d)`; at `4 × 4 × 4`, `7.43°`.
+the same ratio `1 / C_N(d)²` and the same angle `θ_NRS(d)`; at `4 × 4 × 4`, `7.43°`.
 
 ## Main results
 

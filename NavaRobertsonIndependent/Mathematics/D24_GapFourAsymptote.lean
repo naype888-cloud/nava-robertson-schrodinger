@@ -10,15 +10,15 @@ public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 /-!
 # D24 — The gap between `d = 4` and the Szegő limit
 
-`C_Nava` is strictly increasing from `d = 4` (`D9`) and tends to `C_∞ = √(π²/3 − 2)` (`D8`).
-The gap `Δ = C_∞ − C_Nava(4) = δ_∞ − δ(4)` depends only on `π`: it is positive, below `δ_∞`,
+`C_N` is strictly increasing from `d = 4` (`D9`) and tends to `C_N^∞ = √(π²/3 − 2)` (`D8`).
+The gap `Δ = C_N^∞ − C_N(4) = δ_∞ − δ(4)` depends only on `π`: it is positive, below `δ_∞`,
 bounds the rise of the chain from `d = 4`, and is its limit.
 
 ## Main results
 
 - `GapFourAsymptote.gapFourInf_pos_lt_deltaInf` : `0 < Δ < δ_∞`.
 - `GapFourAsymptote.rise_lt_gapFourInf` : `δ(d) − δ(4) < Δ` for `d ≥ 4`.
-- `GapFourAsymptote.rise_tendsto_gapFourInf` : `C_Nava(d) − C_Nava(4) → Δ`.
+- `GapFourAsymptote.rise_tendsto_gapFourInf` : `C_N(d) − C_N(4) → Δ`.
 -/
 
 @[expose] public noncomputable section
@@ -27,7 +27,7 @@ namespace GapFourAsymptote
 
 open Gnomon Filter
 
-/-- The gap `C_∞ − C_Nava(4)`. -/
+/-- The gap `C_N^∞ − C_N(4)`. -/
 def gapFourInf : ℝ := CoherenceConstantInf - CoherenceConstant 4
 
 /-- `Δ = δ_∞ − δ(4)`. -/
@@ -54,7 +54,7 @@ theorem rise_lt_gapFourInf (d : ℕ) (hd : 4 ≤ d) :
   rw [gapFourInf_eq_deltaInf_sub_geometricGap_four]
   linarith
 
-/-- `C_Nava(d) − C_Nava(4) → Δ`. -/
+/-- `C_N(d) − C_N(4) → Δ`. -/
 theorem rise_tendsto_gapFourInf :
     Tendsto (fun d : ℕ => CoherenceConstant d - CoherenceConstant 4) atTop (nhds gapFourInf) := by
   unfold gapFourInf

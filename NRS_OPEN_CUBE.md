@@ -1,12 +1,12 @@
-> **The open cube, kept separate.** This file is the former main README: NRS, NRS³ and det|NRS³ on
+> **The open cube, kept separate.** This file is the former main README: RS^N, RS^N³ and det|RS^N³ on
 > the *open* cube (`D0`–`D49t`) and the Physlib port of that chain. The main
-> [README](README.md) now leads with the three-torus `T³` (NRS³·T³); nothing here was changed
+> [README](README.md) now leads with the three-torus `T³` (RS^N³·T³); nothing here was changed
 > except this note and the title.
 
-# NRS, NRS³ & det|NRS³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
+# RS^N, RS^N³ & det|RS^N³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
 
 **[▶ Try it: change the box and watch its star deform in 3D](https://naype888-cloud.github.io/nava-robertson-schrodinger/)** ·
-**[▶ Malla espectral NRS³ (español): el Lagrangiano, el cuanto volumétrico de cada celda y el cono](https://naype888-cloud.github.io/nava-robertson-schrodinger/malla-nrs3.html)**
+**[▶ Malla espectral RS^N³ (español): el Lagrangiano, el cuanto volumétrico de cada celda y el cono](https://naype888-cloud.github.io/nava-robertson-schrodinger/malla-nrs3.html)**
 
 Independent Lean 4 verification package prepared by Eduardo Nava Hernández for
 external academic review. Lake fetches the exact Mathlib and physlib revisions recorded in
@@ -15,80 +15,80 @@ external academic review. Lake fetches the exact Mathlib and physlib revisions r
 On `H_d = ℂ^d`, let `P_d` be the diagonal operator with equispaced eigenvalues in `[−1, 1]` and
 `T_d = A_d/ρ_d` the normalized adjacency operator of the path graph on `d` vertices
 (`ρ_d = 2 cos(π/(d+1))`); the path graph is the only graph compatible with ordered locality and
-completeness (`D3`). **NRS** is the Robertson–Schrödinger inequality for the pair `(T_d, P_d)`,
-computed exactly. **NRS³** is its extension to the Cartesian product of three path graphs, the
-cube `dx × dy × dz`, with one such pair per factor. **det|NRS³** is Robertson's 1934 relation
+completeness (`D3`). **RS^N** is the Robertson–Schrödinger inequality for the pair `(T_d, P_d)`,
+computed exactly. **RS^N³** is its extension to the Cartesian product of three path graphs, the
+cube `dx × dy × dz`, with one such pair per factor. **det|RS^N³** is Robertson's 1934 relation
 for several observables on that cube: the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` at
 once, `det Σ ≥ (v_x v_y v_z / ((dx − 1)(dy − 1)(dz − 1)))²` (`D49`, `D49b`); on canonical axes
 (the fluctuations of `x`, `y`, `z` orthogonal from one vertex) the ratio is
 `det Σ / |det Ω| = Π (1 + g_i/ω_i²)`, a product of three factors above `1` in the velocity
-band (`D49k`); and in the velocity band det|NRS³ is strict for every state, entangled or not,
+band (`D49k`); and in the velocity band det|RS^N³ is strict for every state, entangled or not,
 canonical axes or not (`D49t`). All statements are theorems in Lean 4 over
 Mathlib (and physlib for `PhyslibBridge`), with no physical constant and no unit. The physical
 reading is a separate, declared bridge (see *Declared physical bridge* below).
 
 ## The mosaic
 
-Topics that grew out of NRS³ live in their own short repositories, each with one figure, one
+Topics that grew out of RS^N³ live in their own short repositories, each with one figure, one
 table of Lean theorems and its own build (Mathlib only; `nrs3-defect-curvature`,
 `nrs3-rovelli-lqg` and `nrs3-dark` build on this repository):
 
 | Repository | In one line |
 |---|---|
-| [**Physlib: merged pull requests**](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) | NRS, NRS³ and det\|NRS³ in Physlib, the Lean physics library of the community (open tight binding chain, cube, Robertson determinant, velocity band, Pauli and Dirac matrices, Planck) — [![merged](https://img.shields.io/github/issues-search?query=repo%3Aleanprover-community%2Fphyslib%20is%3Apr%20is%3Amerged%20author%3Anaype888-cloud&label=merged&color=blue)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) [![in review](https://img.shields.io/github/issues-search?query=repo%3Aleanprover-community%2Fphyslib%20is%3Apr%20is%3Aopen%20author%3Anaype888-cloud&label=in%20review&color=lightgrey)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Aopen+author%3Anaype888-cloud) |
-| [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | no orthogonality before `πħ/(2ΔE)`, sharp; Cramér–Rao `F_X ≤ 4 Var H`, efficiency `1/C_Nava(d)²` on NRS³ — [▶ interactive](https://naype888-cloud.github.io/nrs3-mandelstam-tamm-cramer-rao/) |
+| [**Physlib: merged pull requests**](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) | RS^N, RS^N³ and det\|RS^N³ in Physlib, the Lean physics library of the community (open tight binding chain, cube, Robertson determinant, velocity band, Pauli and Dirac matrices, Planck) — [![merged](https://img.shields.io/github/issues-search?query=repo%3Aleanprover-community%2Fphyslib%20is%3Apr%20is%3Amerged%20author%3Anaype888-cloud&label=merged&color=blue)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) [![in review](https://img.shields.io/github/issues-search?query=repo%3Aleanprover-community%2Fphyslib%20is%3Apr%20is%3Aopen%20author%3Anaype888-cloud&label=in%20review&color=lightgrey)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Aopen+author%3Anaype888-cloud) |
+| [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | no orthogonality before `πħ/(2ΔE)`, sharp; Cramér–Rao `F_X ≤ 4 Var H`, efficiency `1/C_N(d)²` on RS^N³ — [▶ interactive](https://naype888-cloud.github.io/nrs3-mandelstam-tamm-cramer-rao/) |
 | [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | erasing a bit costs `k_B T ln 2`; no engine beats `1 − T_c/T_h`; one bath gives no work (Physlib) — [▶ interactive](https://naype888-cloud.github.io/nrs3-landauer-carnot/) |
 | [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | the horizon entropy fixes the cosmological constant, `Λ = 3π/(ℓ_P² S)`, solving both Friedmann equations (Physlib) — [▶ interactive](https://naype888-cloud.github.io/nrs3-de-sitter/) |
-| [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime (proposal, outside NRS³) |
+| [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Penrose's `ħ/ΔE` is a bound, not a lifetime (proposal, outside RS^N³) |
 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | exclusion, shells `2n²`, three spin matrices in `2 × 2`; with time, `4 × 4` (Dirac) |
-| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | the Gram matrix of a conjugate pair is a Minkowski four-vector; Robertson–Schrödinger is the light cone, the NRS³ quantum keeps it strictly inside — [▶ interactive](https://naype888-cloud.github.io/nrs3-uncertainty-cone/) |
+| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | the Gram matrix of a conjugate pair is a Minkowski four-vector; Robertson–Schrödinger is the light cone, the RS^N³ quantum keeps it strictly inside — [▶ interactive](https://naype888-cloud.github.io/nrs3-uncertainty-cone/) |
 | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Planck's law forces discrete levels (Poincaré 1912) |
 | [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | each non-local link closes a cycle with one quantum `δ∞`; `2g` links fix the curvature of `Σ_g`; the entropy of a cut counts its quanta and its horizon hides them (`D16`–`D16i`) — [▶ interactive](https://naype888-cloud.github.io/nrs3-defect-curvature/) |
-| [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | LQG area quanta and puncture entropy; the NRS angle stays below its ceiling `arccos(1/C∞)`, a limit never attained (proposal, outside NRS³) — [▶ interactive](https://naype888-cloud.github.io/nrs3-rovelli-lqg/) |
+| [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | LQG area quanta and puncture entropy; the RS^N angle stays below its ceiling `arccos(1/C_N^∞)`, a limit never attained (proposal, outside RS^N³) — [▶ interactive](https://naype888-cloud.github.io/nrs3-rovelli-lqg/) |
 | [`nrs3-dark`](https://github.com/naype888-cloud/nrs3-dark) | what light does not resolve, `1 − Ω_b`, is the interior of the volumetric quantum; `omegaPi = (δ∞/(1+δ∞)) e^{−1/(1+δ∞)}` from `π`, inside the measured `Ω_b` of Planck, LUNA and DESI — [▶ interactive](https://naype888-cloud.github.io/nrs3-dark/) |
-| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | the open cube `Nx × Ny × Nz` in one place: the Physlib pull requests merged for it, `C_Nava`, `δ` and the volumetric quantum for any box — [▶ interactive](https://naype888-cloud.github.io/nrs3-cube/) |
+| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | the open cube `Nx × Ny × Nz` in one place: the Physlib pull requests merged for it, `C_N`, `δ` and the volumetric quantum for any box — [▶ interactive](https://naype888-cloud.github.io/nrs3-cube/) |
 
 ## Timeline 1911–1945
 
-NRS answers a question of the Solvay era with later tools. The series is placed in that window:
+RS^N answers a question of the Solvay era with later tools. The series is placed in that window:
 what falls inside it is the history the theorem belongs to; what falls after it is a proposal,
-not part of NRS³.
+not part of RS^N³.
 
 | Year | Event | Repository |
 |---|---|---|
 | 1911 | First Solvay conference: radiation and the quanta | |
 | 1911–12 | Poincaré: Planck's law forces discrete levels | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
-| 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C∞`, `D8`) | **[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
+| 1915–20 | Szegő: limit theorems for Toeplitz matrices (the limit `C_N^∞`, `D8`) | **[base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
 | 1917–27 | Einstein and de Sitter: `Λ` and the empty universe; Friedmann and Lemaître: the expanding universe | [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) |
 | 1925–27 | Pauli: exclusion, shells `2n²`, spin matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
 | 1927 | Heisenberg's relation; fifth Solvay conference: electrons and photons | |
 | 1928 | Dirac: the `4 × 4` gamma matrices | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
 | 1929 | van der Waerden: spinors, `SL(2, ℂ)` on Hermitian matrices; the uncertainty cone | [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) |
-| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (NRS, NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
-| **1934** | **Robertson: the indeterminacy relation for several observables, `det Σ ≥ |det Ω|`** | **[base repository (det\|NRS³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
+| **1929–30** | **Robertson and Schrödinger: the uncertainty inequality** | **[base repository (RS^N, RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
+| **1934** | **Robertson: the indeterminacy relation for several observables, `det Σ ≥ |det Ω|`** | **[base repository (det\|RS^N³)](https://github.com/naype888-cloud/nava-robertson-schrodinger)** (this one) |
 | 1945–46 | Mandelstam–Tamm: the time–energy bound; Rao (1945), Cramér (1946) | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
 
 **Tools from after the window.** Niven (1956: rational values of the trigonometric functions),
 Fiedler (1973: algebraic connectivity), Lean 4 and Mathlib (the verification). The question is
 of 1929; the tools are later; the checking is of 2026.
 
-**After the window: proposals, not NRS³.** [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) (Penrose 1996, gravity-related
-collapse) and [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) (loop quantum gravity, area spectrum 1995). They use NRS³ results
+**After the window: proposals, not RS^N³.** [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) (Penrose 1996, gravity-related
+collapse) and [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) (loop quantum gravity, area spectrum 1995). They use RS^N³ results
 but their physical readings belong to quantum information and quantum gravity.
 [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) restates base theorems (`D16`–`D16i`); its Bekenstein–Hawking (1973–75) reading
 is a declared bridge.
 
 ## Main theorems
 
-**NRS — base theorem (one row, `d` positions).** At the maximal current state,
+**RS^N — base theorem (one row, `d` positions).** At the maximal current state,
 
-    σ_T · σ_P = C_Nava(d) · ½ |⟨[T_d, P_d]⟩|,      ½ |⟨[T_d, P_d]⟩| = 1/(d−1),
+    σ_T · σ_P = C_N(d) · ½ |⟨[T_d, P_d]⟩|,      ½ |⟨[T_d, P_d]⟩| = 1/(d−1),
 
-with `C_Nava(d) = 1` exactly for `d = 2, 3` (Robertson–Schrödinger saturates) and
-`C_Nava(d) > 1` for every `d ≥ 4` (the algebraic quantum), strictly increasing from `d = 4`
-and strictly below `C_∞ = √(π²/3 − 2)`, which no `d` attains (`D8`, `D9`, `D20`, `D21`).
+with `C_N(d) = 1` exactly for `d = 2, 3` (Robertson–Schrödinger saturates) and
+`C_N(d) > 1` for every `d ≥ 4` (the algebraic quantum), strictly increasing from `d = 4`
+and strictly below `C_N^∞ = √(π²/3 − 2)`, which no `d` attains (`D8`, `D9`, `D20`, `D21`).
 Equivalently, the fluctuation vectors of `T_d` and `P_d` meet at the angle
-`θ_NRS(d) = arccos (1/C_Nava(d))`: `0°` for `d = 2, 3`, exactly
+`θ_NRS(d) = arccos (1/C_N(d))`: `0°` for `d = 2, 3`, exactly
 `arccos (1/√((99 − 42√5)/5)) ≈ 7.43°` at `d = 4`, rising towards `≈ 28.30°` (`D37b`).
 The inequality is physlib's `robertson_schrodinger`, instantiated (`PhyslibBridge`).
 The same holds for every conjugate pair realized on `T_d:P_d`, `(a T_d + b, c P_d + e)`: units
@@ -107,12 +107,12 @@ Stark packet moves with minimum uncertainty at `κ = 0.9272 > v*(4)`, so
 it is bounded, with exact restrictions, in the angle `θ(ψ)` between the two fluctuation vectors.
 `θ(ψ) ∈ [0, π/2]`, and `θ(ψ) = 0` exactly when the Gram defect vanishes; on the maximal-tension
 states `θ(ψ) = θ_NRS(d)`; for every `d ≥ 4`,
-`θ_NRS(4) ≈ 7.43° ≤ θ_NRS(d) < arccos (1/C_∞) ≈ 28.30°`, a ceiling no `d` attains. At the
+`θ_NRS(4) ≈ 7.43° ≤ θ_NRS(d) < arccos (1/C_N^∞) ≈ 28.30°`, a ceiling no `d` attains. At the
 cone speed the defect is strict, and below the cone there is an open band where the inequality
 is strict (`D23d`). The statement is about the band
 `Ϙ(d) = (v*(d), 1]`, not every state: its exact form is `D44` and `D46`, in the separate target.
 
-**Localization and tension (the two extremes of NRS).**
+**Localization and tension (the two extremes of RS^N).**
 
 * A position eigenvector has zero tension: if `P_d ψ = a ψ` then `⟨ψ, [T_d, P_d] ψ⟩ = 0`
   (`expectation_commutator_eq_zero`, `D23`).
@@ -136,13 +136,13 @@ is strict (`D23d`). The statement is about the band
 displacement. Robertson for `(T_d, P_d)` is therefore the Mandelstam–Tamm bound
 `⟨K_d⟩² ≤ 4 Var T_d · Var P_d` and the quantum Cramér–Rao bound for estimating with `P_d`
 (Fisher information at most `4 Var T_d`). At the maximal current state both are attained to the fraction
-`1/C_Nava(d)² = cos² θ_NRS(d)`, exactly only at `d = 2, 3`; on the cube, per axis and for the
+`1/C_N(d)² = cos² θ_NRS(d)`, exactly only at `d = 2, 3`; on the cube, per axis and for the
 total pair of `d × d × d`. From `d = 4`, no state at the speed limit has minimum uncertainty.
 
 **Direction and the Nava–Robertson–Schrödinger octahedron (`D42`, `D43`).** The direction of
 motion is the sign of `⟨K_d⟩`. The reflection `j ↦ d − 1 − j` commutes with `T_d` and reverses
 `P_d`: it reverses the tension, keeps both variances, the Mandelstam–Tamm/Cramér–Rao ratio and
-the NRS angle, and makes the spectrum of `K_d` symmetric (`D42`). The bounds do not see
+the RS^N angle, and makes the spectrum of `K_d` symmetric (`D42`). The bounds do not see
 direction. On `4 × 4 × 4` the eight octant states move at `(±1, ±1, ±1)`, one per face of the
 octahedral cone of steps `k·β₃`, all at `θ_NRS(4) ≈ 7.43°` on every axis. `D43` collects the
 irreducible elemental dimensional quantum of uncertainty in one theorem,
@@ -151,15 +151,15 @@ and limit, the ratio `5/(99 − 42√5) ≈ 0.9833` at the speed limit, and the 
 `v*(4) = 3(√5 − 1)/4` of minimum uncertainty, attained in both directions, beyond which the
 defect is forced.
 
-**NRS³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
+**RS^N³ — the cube `dx × dy × dz` (product of three path graphs).** One pair `(T, P)` per
 factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the other two (`D37`):
 
 * pairs on different axes commute — only `T` and `P` of the same axis collide;
-* at the maximal current state of the cube each axis satisfies NRS with its own `C_Nava(d_axis)`: it saturates
+* at the maximal current state of the cube each axis satisfies RS^N with its own `C_N(d_axis)`: it saturates
   only with `2` or `3` positions and is strict from `4` on, on all three axes at once;
 * each axis carries its own angle, at least `θ_NRS(4) ≈ 7.43°` and below `≈ 28.30°` (`D37b`);
 * **finite isotropy**: if every axis has at least `D` positions, the angles of any two axes differ
-  by less than `arccos (1/C_∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
+  by less than `arccos (1/C_N^∞) − θ_NRS(D)` (about `1.05°` for `D = 100`) — a statement on
   finite cubes only (`D37b`);
 * the spectrum is axis by axis: eigenvalues add, and the maximal current state of the cube is the top of
   `K_x + K_y + K_z` with eigenvalue `Σ 2/(dᵢ − 1)`, which no state exceeds (`D37c`);
@@ -167,7 +167,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` and the same for `P`; on the cube
   `d × d × d` the total pair meets at exactly `θ_NRS(d)` — at the first rupture `4 × 4 × 4`,
   exactly `θ_NRS(4) ≈ 7.43°` (`D37d`);
-* **the volumetric quantum** `𝒱(dx, dy, dz) = δ(dx) · δ(dy) · δ(dz)`, with `δ(d) = C_Nava(d) − 1`
+* **the volumetric quantum** `𝒱(dx, dy, dz) = δ(dx) · δ(dy) · δ(dz)`, with `δ(d) = C_N(d) − 1`
   the dimensional quantum of an axis (`θ_NRS(d) = arccos (1/(1 + δ(d)))`): it vanishes only if
   some axis has `2` or `3` positions; from `4 × 4 × 4` it is strictly positive, at least
   `δ(4)³ = (√((99 − 42√5)/5) − 1)³ ≈ 6.09 × 10⁻⁷`, strictly below `δ_∞³ ≈ 2.50 × 10⁻³`, and
@@ -192,7 +192,7 @@ factor, acting as `(T_d, P_d)` on that coordinate and as the identity on the oth
   velocity `(1, 1, 1)`, Euclidean speed `√3` along the diagonal against `1` along an axis — the
   speed limit of transport is a cube, not a sphere (`D38`).
 
-**det|NRS³ — Robertson 1934 on the cube (`D49`–`D49t`).** The covariance matrix `Σ` and the
+**det|RS^N³ — Robertson 1934 on the cube (`D49`–`D49t`).** The covariance matrix `Σ` and the
 tension matrix `Ω` of the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)` satisfy
 `|det Ω| ≤ det Σ` for every state on every box (`D49`, `D49b`). Pairs of different axes commute,
 so `Ω` splits into one `2 × 2` block per axis and `|det Ω| = ω_x² ω_y² ω_z²`: x, y, z, none can be
@@ -201,7 +201,7 @@ dropped.
 * **Canonical axes** (the fluctuation vectors of different axes orthogonal, the three axes
   meeting at one vertex): `Σ` splits as well, `det Σ = Π (g_i + ω_i²)` with `g_i` the defect of
   axis `i`, and `det Σ / |det Ω| = Π (1 + g_i/ω_i²)` (`D49k`). In the band `Ϙ(d)` every defect is
-  positive, for every state (`D49e`), so det|NRS³ is strict on every box with `4` or more positions
+  positive, for every state (`D49e`), so det|RS^N³ is strict on every box with `4` or more positions
   per axis. Product states are canonical (`D49c`); so is any state with one axis split off
   (`D49j`).
 * **Every state in the band** (`D49t`): if the speeds on `x`, `y`, `z` lie in `Ϙ(dx)`, `Ϙ(dy)`,
@@ -212,8 +212,8 @@ dropped.
   `[T_d, [T_d, P_d]]` lives (`D49r`, `D49s`): there the transport relation is a recurrence that
   leaves `Φ = 0` or a state split off `z`, which is strict (`D49j`).
 * **At the maximal current state of the cube** the ratio is exactly
-  `C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, `1` only if every axis has `2` or `3` positions
-  (`D49c`); at `4 × 4 × 4` it is `C_Nava(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
+  `C_N(dx)² C_N(dy)² C_N(dz)²`, `1` only if every axis has `2` or `3` positions
+  (`D49c`); at `4 × 4 × 4` it is `C_N(4)⁶ ≈ 1.0520`. At maximal tension, `|v| = 1` on the three
   axes, there is no room for entanglement: every state is the maximal current state of the cube in its octant (`D49f`).
 * **Why `2` and `3`.** The commutators of transport and position close, `[T_d, [T_d, P_d]]` in
   the span of `T_d`, `P_d`, `[T_d, P_d]`, exactly when `d = 2` or `d = 3` (`D49i`): there they close
@@ -227,8 +227,8 @@ dropped.
 
 | Layer | Build target | What it is | Status |
 |---|---|---|---|
-| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | NRS, NRS³ and the general part of det\|NRS³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
-| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|NRS³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes, the span of the brackets, how many relations, a transport relation, the edge operator, the edge slices, and strictness for every state. | Lean theorems. |
+| **Mathematics** | `NavaRobertsonIndependent.Mathematics` | RS^N, RS^N³ and the general part of det\|RS^N³ (`D49`–`D49c`, `D49g`, `D49i`, `D49m`), over Mathlib (plus physlib in `PhyslibBridge`). No physical constant, no unit. | Lean theorems. |
+| Certificates (separate) | `NavaRobertsonCertificados` | `D23g`: the `1/φ` ceiling of minimum uncertainty at `d = 4`, with its exact certificates; `D43`: the Nava–Robertson–Schrödinger octahedron and the velocity threshold `v*(4)`; `D44`: the velocity band `Ϙ(d)` and its width `ϙ(d)`; `D45b`–`D45d`: `ϙ(d) < ϙ(4)` for every `d ≥ 5`, by a kernel-evaluated interval checker; `D46`: the cone speed lies in every band; `D49d`–`D49l`: det\|RS^N³ in the band — product states, every axis defect for every state, maximal tension, the equality relation, an axis on its own, canonical axes, a free axis, brackets on two axes, the span of the brackets, how many relations, a transport relation, the edge operator, the edge slices, and strictness for every state. | Lean theorems. |
 
 This is checked, not just stated: `Verification/Layer1_Mathematics.lean` computes the import
 closure of the package, fails if it contains any physics, cosmology or ontology module, and
@@ -236,7 +236,7 @@ prints the axioms of the main theorems.
 
 ## Figures
 
-Illustrations of NRS³ at the maximal current state of the cube. For each axis,
+Illustrations of RS^N³ at the maximal current state of the cube. For each axis,
 the solid line is the fluctuation vector of `T` and the dashed line that of `P` (drawn in both
 senses along the axis). The arrows live in the state space of the cube; each pair is shown next
 to the axis it belongs to. Values are exact where stated; magnified drawings say so.
@@ -245,30 +245,30 @@ to the axis it belongs to. Values are exact where stated; magnified drawings say
 pairs are mutually perpendicular (`D37b`, `D37d`). Right: `θ_NRS(d)` against the number of positions,
 from `0°` at `d = 2, 3` to the floor `θ_NRS(4)` and towards the unattained ceiling `≈ 28.30°`.
 
-![NRS³ star at 4×4×4](docs/figures/nrs3_star_4x4x4.png)
+![RS^N³ star at 4×4×4](docs/figures/nrs3_star_4x4x4.png)
 
 **The star in the cube and its growth.** The `4 × 4 × 4` cube with the star; zoom at true
 scale; the same star with the angle drawn `×4`; and the star at `4³`, `8³`, `40³` and at the
 ceiling (`D37b`).
 
-![NRS³ star sketches](docs/figures/nrs3_star_sketches.png)
+![RS^N³ star sketches](docs/figures/nrs3_star_sketches.png)
 
 **Pythagoras for uncertainty.** At `4 × 4 × 4` the per-axis variances add to the variance of the
 total transport: `Var(T_x + T_y + T_z) = Var T_x + Var T_y + Var T_z` (`pythagoras_T`, `D37d`).
 
 ![Pythagoras for uncertainty](docs/figures/nrs3_pythagoras.png)
 
-**The volumetric quantum.** `V = δ(dx) δ(dy) δ(dz)` with `δ = C_Nava − 1`: the box at the heart
+**The volumetric quantum.** `V = δ(dx) δ(dy) δ(dz)` with `δ = C_N − 1`: the box at the heart
 of the star (drawn `×25` in the first panel, true proportions in the second); line → square →
 box (`δ`, the area quantum `δ²` of `D11`, `δ³`); growth from the floor `δ(4)³ ≈ 6.09 × 10⁻⁷`
 towards the unattained ceiling `δ_∞³ ≈ 2.50 × 10⁻³` (`D37e`).
 
 ![Volumetric quantum](docs/figures/nrs3_volumetric_quantum.png)
 
-**The band of the quantum on one axis.** `C_Nava(d)` is `1` at `d = 2, 3` and grows strictly
-from `d = 4` towards `C∞ = √(π²/3 − 2) ≈ 1.13572`, never reached; the excess `δ(d) = C_Nava(d) − 1`
-tends to `δ_∞ ≈ 0.13572`. The angle `θ_NRS(d) = arccos(1/C_Nava(d))` is `0` at `d = 2, 3`, jumps to
-`θ_NRS(4) ≈ 7.435°` and stays below `arccos(1/C∞) ≈ 28.298°` (`angleNRS_eq`, `angle_floor`, `D37b`;
+**The band of the quantum on one axis.** `C_N(d)` is `1` at `d = 2, 3` and grows strictly
+from `d = 4` towards `C_N^∞ = √(π²/3 − 2) ≈ 1.13572`, never reached; the excess `δ(d) = C_N(d) − 1`
+tends to `δ_∞ ≈ 0.13572`. The angle `θ_NRS(d) = arccos(1/C_N(d))` is `0` at `d = 2, 3`, jumps to
+`θ_NRS(4) ≈ 7.435°` and stays below `arccos(1/C_N^∞) ≈ 28.298°` (`angleNRS_eq`, `angle_floor`, `D37b`;
 `D8`, `D9`).
 
 ![The band of the quantum](docs/figures/nrs_band.png)
@@ -292,7 +292,7 @@ octahedron they span. This is a picture of the star, not a volume: the volumetri
 
 **The octahedral symmetry (`D37h`).** The `48` signed permutations of the axes of `d × d × d`
 (the group `O_h`) act faithfully on the positions and send `(T, P)` of axis `i` to `(T, ±P)` of axis
-`σ i`, so the NRS angle follows the axis at every state; at the maximal current state of the cube all three angles are `θ_NRS(d)`
+`σ i`, so the RS^N angle follows the axis at every state; at the maximal current state of the cube all three angles are `θ_NRS(d)`
 for all `48`. With unequal axes each keeps its own angle and only the reflections and the
 exchanges of equal axes survive: `48`, `16`, `8` symmetries for `4 × 4 × 4`, `100 × 100 × 4`,
 `67 × 25 × 1600` (`keepsAngles_iff`, `card_keepsAngles_two_equal`,
@@ -318,7 +318,7 @@ at `N = 10`, `7 + 126 + 210 = 343` boxes are `7 + 42 + 35 = 84` different figure
 
 **The quantum is never erased (`quantum_never_erased`).** For every box with `4` or more positions
 per axis, of any family and turned or reflected in any of the `48` ways, every axis opens between
-`θ_NRS(4) ≈ 7.43° > 0` and the unattained `arccos (1/C_∞) ≈ 28.30°`, and the volumetric quantum
+`θ_NRS(4) ≈ 7.43° > 0` and the unattained `arccos (1/C_N^∞) ≈ 28.30°`, and the volumetric quantum
 stays between the floor and the ceiling, `0 < δ(4)³ ≤ 𝒱 < δ_∞³`. The quantum changes, turns and
 deforms, but it is not erased; finite or infinite, it never reaches `0`. The only way to erase it
 is to leave the rule, an axis with `2` or `3` positions (`quantum_erased_iff`).
@@ -344,7 +344,7 @@ diagonal, against a circle.
 
 **Mandelstam–Tamm and Cramér–Rao (`D41`).** Robertson for `(T_d, P_d)` is the Mandelstam–Tamm
 bound on the speed of `⟨P_d⟩` and the quantum Cramér–Rao bound for estimating with `P_d`. At the
-maximal-tension state both are attained to the fraction `1/C_Nava(d)²`: exactly at `d = 2, 3`,
+maximal-tension state both are attained to the fraction `1/C_N(d)²`: exactly at `d = 2, 3`,
 `0.9833` at `d = 4`, falling towards `3/(π² − 6) ≈ 0.775`, which no `d` reaches.
 
 ![Mandelstam–Tamm and Cramér–Rao](docs/figures/d41_mandelstam_tamm_cramer_rao.png)
@@ -368,7 +368,7 @@ where the defect is forced is proved non-empty, with width `ϙ(d) ≥ ((d − 1)
 
 **The velocity band (`D44`).** The width `ϙ(d) = 1 − v*(d)` of the band where the defect is
 forced, next to the defect at the cone `θ_NRS(d)`: the band narrows while the defect grows
-toward `arccos (1/C_∞) ≈ 28.30°`. Exact at `d = 2, 3, 4` (Lean); numerical for `d ≥ 5`.
+toward `arccos (1/C_N^∞) ≈ 28.30°`. Exact at `d = 2, 3, 4` (Lean); numerical for `d ≥ 5`.
 
 ![Velocity band](docs/figures/d44_velocity_band.png)
 
@@ -416,12 +416,12 @@ against Gram defect at `d = 4`; numerically, `(e₁ + e₂)/√2` has zero tensi
 ![Platform blindness](docs/figures/d47_platform_blindness.png)
 
 **The experiment.** Preparation of the maximal current state in an array of `N` waveguides, the protocol and error
-budget, and the predicted curve `R(N) = C_Nava(N)` with the controls `N = 2, 3`
+budget, and the predicted curve `R(N) = C_N` with the controls `N = 2, 3`
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md)).
 
 ![Photonic experiment](docs/figures/nrs_photonic_experiment.png)
 
-**The Physlib port.** NRS and NRS³ restated on physlib's open tight binding chain (`H`, `X` and
+**The Physlib port.** RS^N and RS^N³ restated on physlib's open tight binding chain (`H`, `X` and
 the current `J = i(HX − XH)`): 6 pull requests merged, 3 in review, 12 ready, then the seal
 (`D8`, `D9`). PR 20 gives a new proof that the band `Ϙ` is open from four positions on, by time
 reversal and compactness (see [`docs/PHYSLIB_PORT.md`](docs/PHYSLIB_PORT.md)). Script:
@@ -456,7 +456,7 @@ identification, which is a premise and not a Lean theorem:
   time (`D4`: the diagonal is never the minimal step).
 * **The three directions are canonical axes.** `x`, `y`, `z` are orthogonal from one vertex:
   the fluctuations of position and transport along one direction are orthogonal to those along
-  the others. On canonical axes det|NRS³ is strict in the whole velocity band with the explicit
+  the others. On canonical axes det|RS^N³ is strict in the whole velocity band with the explicit
   ratio `Π (1 + g_i/ω_i²)` (`D49k`); strictness itself needs no canonical axes: it holds for every
   state in the band (`D49t`).
 
@@ -464,7 +464,7 @@ Under this bridge, a particle localized at one position carries no transport ten
 tension it cannot be localized — it is spread over all the positions, with positive probability
 at each and certainty at none ("exact position, completely uncertain momentum" with `d`
 resolvable positions). From `4` positions on, the most definite states and the most loaded with
-transport are never the same. More generally, NRS and NRS³ are statements about space: in every
+transport are never the same. More generally, RS^N and RS^N³ are statements about space: in every
 direction with at least `4` positions the state of maximal tension carries an irreducible angle
 between position and transport (at least `≈ 7.43°`, below `≈ 28.30°`), and the three directions
 agree more closely the more positions each has. The volumetric quantum `𝒱` is the
@@ -475,7 +475,7 @@ positions enlarges it); it is cancelled only by reducing some direction to `2` o
 light cone (`D37f`, exactly one position per step; `D37g` in continuous time) is identified with the
 measured limiting speed — `c` for motion in space, the coupling `κ` in a waveguide array. That
 ties position to step and leaves a single scale, set by one more measurement. Ratios such as
-`C_Nava(d)` and the NRS angle need no calibration: they are the same number on every platform
+`C_N(d)` and the RS^N angle need no calibration: they are the same number on every platform
 (see [`docs/EXPERIMENT.md`](docs/EXPERIMENT.md), §6).
 
 ## Experimental proposal
@@ -506,11 +506,11 @@ the position basis; `T_N` is diagonal in the sine-mode basis), and the commutato
 `½ |⟨[T_N, P_N]⟩| = 1/(N−1)`.
 
 **Prediction.** The Robertson–Schrödinger ratio `R = σ_T σ_P / |⟨x, y⟩|`, with `x`, `y` the
-fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_Nava(N)`; at the maximal current state the
+fluctuation vectors of `T_N` and `P_N` (`ratioG`, `D39`), equals `C_N`; at the maximal current state the
 covariance vanishes and `|⟨x, y⟩| = ½ |⟨[T_N, P_N]⟩|`. Under imperfections only this ratio keeps
 the controls at `1` (error budget in `docs/EXPERIMENT.md`):
 
-| positions `N` | `C_Nava(N)` | excess over the floor | NRS angle |
+| positions `N` | `C_N` | excess over the floor | RS^N angle |
 |---|---|---|---|
 | 2 | 1 | 0 (saturates — control) | 0° |
 | 3 | 1 | 0 (saturates — control) | 0° |
@@ -583,7 +583,7 @@ lake env lean Verification/Certificados.lean          # axioms
 ```
 
 It also contains `D43`, **the Nava–Robertson–Schrödinger octahedron**: the irreducible
-elemental dimensional quantum of uncertainty on the base `4 × 4 × 4` of NRS³
+elemental dimensional quantum of uncertainty on the base `4 × 4 × 4` of RS^N³
 (`NRSOctahedron.navaRobertsonSchrodinger_octahedron`). In `k` steps transport spreads inside
 the octahedron `|Δx| + |Δy| + |Δz| ≤ k` (on two axes, the rhombus `|Δx| + |Δy| ≤ k`:
 `lightCone_rhombus`); its eight directions move at the speed limit and meet Robertson–Schrödinger at
@@ -612,7 +612,7 @@ every unit state at the cone speed carries a surplus (`surplus_pos_of_cone`), an
 state within `((d − 1)/2) · bandWidth d` of the cone (`surplus_pos_of_near_cone`); the defect at
 the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 
-## NRS — base theorem, modules
+## RS^N — base theorem, modules
 
 - `D0`–`D14`: Hilbert-space setup, Cauchy–Gram and Robertson inequalities,
   finite-path operators, Fiedler/Niven obstruction, Szegő limit, monotonicity,
@@ -669,7 +669,7 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D25_DimensionalQuantum`: the quantum is dimensional. `dimQuantum d = δ_geom(d)`
   is zero exactly for `d ∈ {2, 3}` (`dimQuantum_three`), positive and strictly
   increasing from `d = 4`, below `δ∞` and converging to it (`dimQuantum_certificate`).
-- `D26a_OmegaFromPi`: `omegaPi = (1 − 1/C∞)·e^{−1/C∞} = 0.04954367888809…`, a
+- `D26a_OmegaFromPi`: `omegaPi = (1 − 1/C_N^∞)·e^{−1/C_N^∞} = 0.04954367888809…`, a
   function of `π` only, with `0.049543679` certified as its 9-digit rounding
   from both sides (`decimal_of_pi`).
 - `SumInvSinSq`: the finite cosecant-square identity
@@ -680,8 +680,8 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   Robertson–Schrödinger defect is strictly positive.
 - `D19_FiedlerPositionVariance`, `D20_GramStepCoherenceConstant`: closed-form variances
   of `T_d` and `P_d` at the maximal current state (the explicit Fiedler mode with
-  phase `(−i)^j`) and the Gram step `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_Nava(d)²`,
-  with Gram defect `(C_Nava(d)² − 1)/(d−1)²`, equal to zero exactly for
+  phase `(−i)^j`) and the Gram step `(d−1)² ‖T_d maxCurrentState‖² ‖P_d maxCurrentState‖² = C_N(d)²`,
+  with Gram defect `(C_N(d)² − 1)/(d−1)²`, equal to zero exactly for
   `d ∈ {2, 3}`.
 - `D21_ElementalNRSInequality`: the inequality for the concrete operators
   `(T_d, P_d)`. At the maximal current state: `cov = 0`, `Var T · Var P = (c/2)² (1 + δ_geom)²` with
@@ -702,11 +702,11 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   vectors with zero product are those with `⟨K_d⟩ = 0`, such as the canonical basis
   vectors, although `T_d` and `P_d` do not commute. Mathlib-only port of the Physlib
   module `UncertaintySaturation` to vector states.
-- `D24_GapFourAsymptote`: the pure gap `Δ = C_∞ − C_Nava(4) = δ_∞ − δ_geom(4)`
+- `D24_GapFourAsymptote`: the pure gap `Δ = C_N^∞ − C_N(4) = δ_∞ − δ_geom(4)`
   between the first open dimension and the Szegő limit. It is positive, strictly
   below `δ_∞`, strictly bounds the rise of the defect from `d = 4`
   (`δ_geom(d) − δ_geom(4) < Δ`), and is the exact limit of that rise
-  (`C_Nava(d) − C_Nava(4) → Δ`). A corollary of `D8` and `D9`; it depends only on
+  (`C_N(d) − C_N(4) → Δ`). A corollary of `D8` and `D9`; it depends only on
   `π`.
 
 - `D23f_MinUncertaintyTensionFour`: an explicit minimum-uncertainty state of `H₄`, with
@@ -715,7 +715,7 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
   minimum-uncertainty state of `H₄` goes higher — is `D23g` in the separate target
   `NavaRobertsonCertificados`.
 - `PhyslibBridge`: `T_d`, `P_d` as physlib `Observable`s and the maximal current state as a vector state; variance,
-  covariance and commutator term coincide with `D21`'s, so the NRS inequality is physlib's
+  covariance and commutator term coincide with `D21`'s, so the RS^N inequality is physlib's
   `robertson_schrodinger` instantiated (`robertson_schrodinger_eq_D21`), strict for `d ≥ 4`
   (`physlib_robertson_schrodinger_strict`).
 
@@ -749,13 +749,13 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D41_MandelstamTammCramerRao`: Robertson for `(T_d, P_d)` read as Mandelstam–Tamm
   (`mandelstamTamm`: `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`, `⟨K_d⟩` the rate of `⟨P_d⟩`, `D38`) and as
   quantum Cramér–Rao (`cramerRao`: error-propagation Fisher information of `P_d` at most
-  `4 Var T_d`). At the maximal current state both are attained to the fraction `1 / C_Nava(d)²` (`mtRatio_maxCurrentState`),
+  `4 Var T_d`). At the maximal current state both are attained to the fraction `1 / C_N(d)²` (`mtRatio_maxCurrentState`),
   exactly at `d = 2, 3` (`mtRatio_maxCurrentState_eq_one_iff`); on the cube, per axis
   (`mtRatioG_axis_x/y/z`) and for the total pair of `d × d × d` (`mtRatioG_total_cube`).
 - `D42_DirectionOctants`: the direction of motion is the sign of `⟨K_d⟩`. The reflection
   `j ↦ d − 1 − j` commutes with `T_d` and reverses `P_d`, so it reverses the tension
   (`tension_reflect`) and keeps the Mandelstam–Tamm/Cramér–Rao ratio (`mtRatio_reflect`) and the
-  NRS angle; the spectrum of `K_d` is symmetric (`KdOp_reflect_eigen`). On the cube the eight
+  RS^N angle; the spectrum of `K_d` is symmetric (`KdOp_reflect_eigen`). On the cube the eight
   octant states move at `(±1, ±1, ±1)` (`velocities_octant`) with the same ratio and angle on
   every axis; at `4 × 4 × 4`, `θ_NRS(4) ≈ 7.43°` and ratio `< 1` in every octant (`octant_four`).
 - `D45_StarkPackets`: minimum uncertainty in motion. The two halves of a Wannier–Stark packet,
@@ -772,7 +772,7 @@ the cone is forced exactly when `4 ≤ d` (`cone_forced_iff`).
 - `D48_SpectrumBounds`: the per-state angle `angleState` in `[0, π/2]` (`angleState_mem_Icc`),
   zero exactly at saturation (`angleState_eq_zero_iff`), equal to `θ_NRS(d)` on the
   maximal-tension states (`angleState_eq_angleNRS_of_maxTension`); the uniform ceiling
-  `θ_NRS(4) ≤ θ_NRS(d) < arccos (1/C_∞)` (`angleNRS_spectrum_bounds`); the strict defect at the
+  `θ_NRS(4) ≤ θ_NRS(d) < arccos (1/C_N^∞)` (`angleNRS_spectrum_bounds`); the strict defect at the
   cone (`defect_pos_of_velocity_eq_one`) and the forced-defect band (`spectrum_band`).
 
 The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
@@ -780,15 +780,15 @@ The word "quantum" in `D11_MinimalAreaQuantum` means the algebraic quantum
 unit and no constant to it.
 
 
-## NRS³ — modules
+## RS^N³ — modules
 
 - `D4_WhyNotDiagonal`: the position of the cube `Fin dx × Fin dy × Fin dz`; the elementary step
   changes one coordinate by one position (lengths `1 < √2 < √3`: the diagonal is never minimal).
 - `D37_PathGraph3D`: one pair `(T, P)` per axis (`liftAlong`, `prodAlong`), commuting across
-  axes (`commutator_axes_xy/xz/yz`); NRS on each axis (`saturation_cube`, `strict_cube`).
-- `D37b_NRSAngle`: the NRS angle `cos θ = 1/C_Nava(d)` (`cos_angleNRS`), zero only at
+  axes (`commutator_axes_xy/xz/yz`); RS^N on each axis (`saturation_cube`, `strict_cube`).
+- `D37b_NRSAngle`: the RS^N angle `cos θ = 1/C_N(d)` (`cos_angleNRS`), zero only at
   `d = 2, 3`, strictly increasing, floor `θ(4)` in closed form (`angle_floor`), below
-  `arccos (1/C_∞)`; one angle per axis of the cube (`angles_cube`, `angle_floor_cube`);
+  `arccos (1/C_N^∞)`; one angle per axis of the cube (`angles_cube`, `angle_floor_cube`);
   finite isotropy (`angleNRS_isotropy`, `finite_isotropy_cube`).
 - `D37c_CubeSpectrum`: eigenvectors lift per axis, spectra add (`eigenvector_sum`), and the
   maximal tension of the cube is `Σ 2/(dᵢ − 1)` (`tensionTotal_maxCurrentState`, `tensionTotal_le`).
@@ -819,21 +819,21 @@ unit and no constant to it.
   `48`, `16`, `8` (`card_keepsAngles_family`), orbit × stabilizer = `6`
   (`card_orbit_mul_card_stab`), orbits `1`, `3`, `6` (`card_orbit_*`); at `N = 10`, `84` figures
   (`count_ten`); `quantum_never_erased`: every box with `4` or more positions per axis keeps
-  `θ_NRS(4) ≤ θ < arccos (1/C_∞)` on each axis and `0 < δ(4)³ ≤ 𝒱 < δ_∞³` under all `48`
+  `θ_NRS(4) ≤ θ < arccos (1/C_N^∞)` on each axis and `0 < δ(4)³ ≤ 𝒱 < δ_∞³` under all `48`
   symmetries; `quantum_erased_iff`: `𝒱 = 0` only with an axis of `2` or `3` positions.
 - `D38_GroupVelocity`: dispersion `hasDerivAt_dispersion`, `Td_mulVec_sineMode`,
   `groupVelocity_le` / `groupVelocity_eq_max_iff`; Heisenberg equation `heisenberg`;
   speed limit `abs_velocity_le`, `velocity_maxCurrentState`, phase modes `velocity_phaseMode`;
   cube `velocities_le`, `velocities_maxCurrentCubeState`, `speed_sq_maxCurrentCubeState`.
 - `D39_ConjugatePairs`: affine invariance of the angle and of the ratio (`angleG_affineOp`,
-  `ratioG_affineOp`); every pair `(a T_d + b, c P_d + e)` has ratio `C_Nava(d)` at the maximal current state
+  `ratioG_affineOp`); every pair `(a T_d + b, c P_d + e)` has ratio `C_N(d)` at the maximal current state
   (`ratio_pair`), saturates exactly at `d = 2, 3` (`saturated_pair_iff`), opens strictly with `d`
-  (`angle_pair_lt_of_lt`) below `arccos (1/C_∞)` (`angle_pair_lt_limit`); on the cube, three
+  (`angle_pair_lt_of_lt`) below `arccos (1/C_N^∞)` (`angle_pair_lt_limit`); on the cube, three
   pairs in their own units give `𝒱(dx, dy, dz)` (`volQuantum_pairs`,
   `volQuantum_pairs_certificate`).
 
 
-## det|NRS³ — modules
+## det|RS^N³ — modules
 
 Robertson 1934 (Phys. Rev. 46, 794): for a finite family of observables, the centered vectors
 have Gram matrix `Σ + iΩ`, with `Σ` the covariance matrix and `Ω` the matrix of tensions, and
@@ -856,11 +856,11 @@ the three tensions — x, y, z, none can be dropped.
   diagonal too (`covMatrix_prod3`) and the defects multiply:
   `det Σ = (s_x + t_x²/4)(s_y + t_y²/4)(s_z + t_z²/4)` (`det_covMatrix_prod3`), with `s` the
   Robertson–Schrödinger surplus of each axis; a positive surplus on `x`, `y` and `z` makes
-  det|NRS³ strict (`robertson_det_prod3_strict`). At the maximal current state of the cube the ratio is exact,
-  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
+  det|RS^N³ strict (`robertson_det_prod3_strict`). At the maximal current state of the cube the ratio is exact,
+  `det Σ = C_N(dx)² C_N(dy)² C_N(dz)² · (t_x t_y t_z / 8)²`
   (`det_covMatrix_maxCurrentCubeState`), strictly above the bound on every box with `4` or more positions on
   each axis (`robertson_det_maxCurrentCubeState_strict`); at `4 × 4 × 4` the ratio is
-  `C_Nava(4)⁶ ≈ 1.0520`.
+  `C_N(4)⁶ ≈ 1.0520`.
 - `D49d_RobertsonDeterminantBand` (certificates target): product states whose speed on each axis
   lies in `Ϙ(d)` satisfy `det Σ > (t_x t_y t_z / 8)²` (`robertson_det_band`); since the cone lies
   in every band, so do product states at the cone speed on `x`, `y`, `z` (`robertson_det_cone`).
@@ -877,7 +877,7 @@ the three tensions — x, y, z, none can be dropped.
   (`tensionG_eq_sum_col`); at `|v| = 1` every column is at the top, hence a multiple of the maximal current state in
   its direction (`cols_of_maxTension`), and with `|v| = 1` on `x`, `y`, `z` the state is a phase
   times the product of the maximal current states (`eq_smul_octant`). For every state at maximal tension,
-  `det Σ = C_Nava(dx)² C_Nava(dy)² C_Nava(dz)² · (t_x t_y t_z / 8)²`
+  `det Σ = C_N(dx)² C_N(dy)² C_N(dz)² · (t_x t_y t_z / 8)²`
   (`det_covMatrix_maxTension`), strict on every box with `4` or more positions per axis
   (`robertson_det_maxTension_strict`).
 - `D49g_RobertsonDeterminantEquality`: the equality case of Robertson 1934. If
@@ -885,7 +885,7 @@ the three tensions — x, y, z, none can be dropped.
   (`Matrix.PosDef.add_mul_inv_mul_sub_eq_zero`); the kernels of `A + B` and `A − B` span
   everything (`Matrix.exists_add_of_norm_det_eq`) and have the same dimension when
   `A − B = (A + B)ᵀ` (`Matrix.finrank_ker_transpose`).
-- `D49h_DeterminantEqualityRelation` (certificates target): equality in det|NRS³ with the three
+- `D49h_DeterminantEqualityRelation` (certificates target): equality in det|RS^N³ with the three
   speeds in the band forces `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with
   `σ ≠ 0` (`exists_sigma_of_det_eq`). The kernel of `Σ + iΩ` has dimension at least `3`; each
   kernel vector makes `Φ` an eigenvector of a combination `L_a`, and
@@ -907,14 +907,14 @@ the three tensions — x, y, z, none can be dropped.
   step for entangled states: a state annihilated by `L_a − λ_a` is annihilated by every nested
   commutator, and those do not stop.
 - `D49j_RobertsonDeterminantSplitAxis` (certificates target): an axis on its own keeps
-  det|NRS³ strict in the band. If the fluctuation vectors of `z` are orthogonal to those of `x`
+  det|RS^N³ strict in the band. If the fluctuation vectors of `z` are orthogonal to those of `x`
   and `y`, the matrices split, `det Σ = det Σ_xy · det Σ_z` and `|det Ω| = |det Ω_xy| · |det Ω_z|`;
   Robertson 1934 on the four observables of `x`, `y` gives `|det Ω_xy| ≤ det Σ_xy` (`D49`) and on
   `z` the gap is the defect of the axis, positive in the band for every state (`D49e`), so
   `|det Ω| < det Σ` (`robertson_det_strict_of_orthogonal`). In particular when `Φ = w ⊗ χ`
   splits off `z`, however entangled `x` and `y` are in `χ` (`robertson_det_strict_of_split`):
   two axes glued together leave the third on its own, and the band does the work through it.
-- `D49k_RobertsonDeterminantCanonicalAxes` (certificates target): det|NRS³ on canonical axes.
+- `D49k_RobertsonDeterminantCanonicalAxes` (certificates target): det|RS^N³ on canonical axes.
   If the fluctuation vectors of different axes are orthogonal, `Σ` is block diagonal
   (`covMatrix_canonical`), `det Σ = (g_x + ω_x²)(g_y + ω_y²)(g_z + ω_z²)` with `g_i` the Gram defect
   of axis `i` (`det_covMatrix_canonical`), `det Σ = Π (1 + g_i/ω_i²) · |det Ω|`
@@ -963,7 +963,7 @@ the three tensions — x, y, z, none can be dropped.
   gives `(α w_x [T_x, [T_x, P_x]] + β w_y [T_y, [T_y, P_y]]) Φ = 0` (`edge_relation`); both live on
   the ends, so on the edge slice at most one position `y*` stays free (`coef_unique`), and
   `Φ = 0` or `Φ(x, y, z) = g(z) f(x, y)` (`eq_zero_or_split`).
-- `D49t_RobertsonDeterminantBandStrict` (certificates target): **det|NRS³ is strict in the band,
+- `D49t_RobertsonDeterminantBandStrict` (certificates target): **det|RS^N³ is strict in the band,
   for every state** (`robertson_det_band_strict`). At equality there are three relations
   (`D49p`); a nonzero recipe without `z` part is closed by `D49o`, `D49n` or the edge (`D49q`,
   `D49s`, with `D49j` for the split state); otherwise a relation without `z` part forces every

@@ -8,7 +8,7 @@ module
 public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 
 /-!
-# D49k — det|NRS³ on canonical axes
+# D49k — det|RS^N³ on canonical axes
 
 Canonical axes: the fluctuation vectors of different axes are orthogonal, the three axes `x`, `y`,
 `z` meeting at one vertex. Then the covariance matrix `Σ` of `(T_x, T_y, T_z, P_x, P_y, P_z)` is
@@ -20,7 +20,7 @@ defect `g_i` (the Gram defect of the axis) and its own tension `ω_i`:
   `det Σ / |det Ω| = (1 + g_x/ω_x²)(1 + g_y/ω_y²)(1 + g_z/ω_z²)`.
 
 In the band every `g_i` is positive (`D49e`), so the ratio is a product of three factors larger
-than `1`: det|NRS³ is strict on every box. No product structure of the state is assumed, only
+than `1`: det|RS^N³ is strict on every box. No product structure of the state is assumed, only
 orthogonal axes.
 
 ## Main results
@@ -96,7 +96,7 @@ theorem det_ratio_canonical (h0 : omega Φ 0 ≠ 0) (h1 : omega Φ 1 ≠ 0) (h2 
   field_simp
   ring
 
-/-- **det|NRS³ is strict on canonical axes in the band**: three positive defects. -/
+/-- **det|RS^N³ is strict on canonical axes in the band**: three positive defects. -/
 theorem robertson_det_canonical_strict (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz)
     (hΦ : ‖Φ‖ = 1) (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy)
     (hbz : |velocityZ Φ| ∈ Ϙ dz) :

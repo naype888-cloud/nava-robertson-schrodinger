@@ -13,7 +13,7 @@ public import NavaRobertsonCertificados.D49o_BracketSpan
 In the band no relation of `Φ` lives on one axis alone: it would make the defect of that axis
 vanish, against `D49e` (`eq_zero_of_single_axis`). So forgetting one axis loses nothing: the
 relations embed into the coefficients of the other two axes, and there are at most four
-independent ones (`finrank_rel_le_four`). At equality in det|NRS³ there are at least three
+independent ones (`finrank_rel_le_four`). At equality in det|RS^N³ there are at least three
 (`three_le_finrank_rel`, from `D49h`). Four relations leave no state
 (`eq_zero_of_finrank_four`): forgetting `z` is then onto, which provides relations with `x`, `y`
 coefficients `T_x`, `P_x`, `T_y`, `P_y` alone, and `D49n`, `D49o` close the case.

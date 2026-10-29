@@ -1,4 +1,4 @@
-# Experimental calibration of NRS in a photonic waveguide array
+# Experimental calibration of RS^N in a photonic waveguide array
 
 This note turns the theorems of the package into a concrete measurement. The mathematics is proved
 in Lean and needs no experiment, as Robertson 1929 needs none. The experiment is a calibration:
@@ -49,7 +49,7 @@ ratio keeps the controls at `1` (section 5).
 
 ## 4. Predictions
 
-| `N` | `R = C_Nava(N)` | excess | NRS angle |
+| `N` | `R = C_N` | excess | RS^N angle |
 |---|---|---|---|
 | 2 | 1 | 0 (control) | 0° |
 | 3 | 1 | 0 (control) | 0° |
@@ -156,7 +156,7 @@ the step is the floor of registrable duration and is not derived from a mass. (A
 non-relativistic discretization with hopping `ħ²/(2ma²)` and `a = l_P` would give steps shorter
 than `t_P`; that is a different model, not this one.)
 
-**Ratios need nothing.** `R = C_Nava(N)`, the NRS angle and the excess are quotients of
+**Ratios need nothing.** `R = C_N`, the RS^N angle and the excess are quotients of
 quantities with the same units: any scale multiplies numerator and denominator alike. They are
 compared with the measurement as they are, with no calibration. This is what makes the
 prediction of §4 the same number on every platform.
@@ -169,13 +169,13 @@ prediction of §4 the same number on every platform.
 * **A single `N`-level system** (for `N = 4`, a ququart) driven only between consecutive levels.
 
 A waveguide array is a lattice in the two transverse directions; the propagation direction plays
-the role of time. It realizes one axis, or two, of NRS³, not the cube `d × d × d`, which needs a
+the role of time. It realizes one axis, or two, of RS^N³, not the cube `d × d × d`, which needs a
 three-dimensional platform (for example atoms in a cubic optical lattice).
 
 ## 8. Three measurements on one chip
 
 The same fabricated arrays serve three measurements. They differ in the input and in what is
-recorded, and only the last two carry the NRS signature.
+recorded, and only the last two carry the RS^N signature.
 
 **M1 — The cone (intensity only).** Light is injected into a single guide and the intensity
 along `z` is imaged (fluorescence microscopy). In a row of guides the light stays inside the cone
@@ -184,11 +184,11 @@ of guides (two axes) the step cone is the rhombus `|Δx| + |Δy| ≤ k`, but pro
 continuous: each axis spreads on its own and the camera records a **square with bright
 corners**, at `|Δx|, |Δy| ≈` the front of one axis (`D38`). This tests locality and the speed
 limit; it holds for any lattice with nearest-neighbour coupling, so it is a check of the
-platform, not of NRS.
+platform, not of RS^N.
 
 **M2 — The tilted beam (`N = 4`, holography).** The input is the envelope of the maximal current state with a phase
 step `θ` per guide, `ψ_j ∝ e^{−ijθ} sin((j+1)π/5)`: a beam launched at an angle, with velocity
-`v = sin θ`. At `θ = 90°` it is the maximal current state and `R = C_Nava(4) = 1.00848`, `θ_NRS(4) ≈ 7.43°`, and the
+`v = sin θ`. At `θ = 90°` it is the maximal current state and `R = C_N(4) = 1.00848`, `θ_NRS(4) ≈ 7.43°`, and the
 Mandelstam–Tamm/Cramér–Rao ratio is `5/(99 − 42√5) ≈ 0.9833` (Lean, `D41`, `D43`). Numerically the
 angle stays at `7.43°` for **every** tilt `θ ≠ 0`: the defect is set by the envelope, not by the
 speed. A curve `R(θ)` flat at `1.00848` is a prediction that needs no fitting.

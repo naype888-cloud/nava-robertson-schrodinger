@@ -15,13 +15,13 @@ public import NavaRobertsonIndependent.Mathematics.D8_Szego
 radius of the maximal current state on the position
 grid `[-1, 1]`, in exact closed form. The trigonometric sums are evaluated with the root of
 unity `z = exp(2iθ)`, `θ = π/(d+1)`. As `d → ∞`, `RNavaSq d → 1/3 − 2/π²`, and the limit of
-`RNava` is `C_∞ / π` (a theorem: `Rinf` is defined without `C_∞`).
+`RNava` is `C_N^∞ / π` (a theorem: `Rinf` is defined without `C_N^∞`).
 
 ## Main results
 
 - `FiedlerPositionVariance.RNavaSq_eq` : the closed form.
 - `FiedlerPositionVariance.RNavaSq_tendsto` : `RNavaSq d → 1/3 − 2/π²`.
-- `FiedlerPositionVariance.Rinf_eq_CoherenceConstantInf_div_pi` : `Rinf = C_∞ / π`.
+- `FiedlerPositionVariance.Rinf_eq_CoherenceConstantInf_div_pi` : `Rinf = C_N^∞ / π`.
 - `FiedlerPositionVariance.RNavaSq_eq_positionVariance` : `RNavaSq d` is the position variance
   of the maximal current state on `Fin d`.
 -/
@@ -414,7 +414,7 @@ theorem RNavaSq_eq (d : ℕ) (hd : 2 ≤ d) :
 
 /-! ## 6. The limit `RNavaSq d → 1/3 − 2/π²` -/
 
-/-- The limit `1/3 − 2/π²`, defined without `C_∞`. -/
+/-- The limit `1/3 − 2/π²`, defined without `C_N^∞`. -/
 noncomputable def RinfSq : ℝ := 1/3 - 2/Real.pi^2
 
 theorem RNavaSq_tendsto :
@@ -524,18 +524,18 @@ theorem RNavaSq_tendsto :
   unfold RinfSq
   exact this
 
-/-! ## 7. `RNava`, `Rinf` and `C_∞` -/
+/-! ## 7. `RNava`, `Rinf` and `C_N^∞` -/
 
 noncomputable def RNava (d : ℕ) : ℝ := Real.sqrt (RNavaSq d)
 
-/-- The limit of `RNava`, defined without `C_∞`. -/
+/-- The limit of `RNava`, defined without `C_N^∞`. -/
 noncomputable def Rinf : ℝ := Real.sqrt RinfSq
 
 theorem RNava_tendsto : Tendsto (fun d : ℕ => RNava (d+2)) atTop (𝓝 Rinf) := by
   unfold RNava Rinf
   exact Real.continuous_sqrt.continuousAt.tendsto.comp RNavaSq_tendsto
 
-/-- `Rinf = C_∞ / π`. -/
+/-- `Rinf = C_N^∞ / π`. -/
 theorem Rinf_eq_CoherenceConstantInf_div_pi : Rinf = CoherenceConstantInf / Real.pi := by
   unfold Rinf RinfSq CoherenceConstantInf
   rw [show (1:ℝ)/3 - 2/Real.pi^2 = (Real.pi^2/3-2)/Real.pi^2 from by

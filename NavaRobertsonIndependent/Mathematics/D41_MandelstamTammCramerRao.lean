@@ -21,7 +21,7 @@ By the Heisenberg equation of `D38`, the tension `⟨K_d⟩ = ⟨i[T_d, P_d]⟩`
   `⟨K_d⟩² / Var P_d`, is at most the quantum Fisher information `4 Var T_d` of a pure state.
 
 Both are one ratio, `mtRatio d ψ = ⟨K_d⟩² / (4 Var T_d · Var P_d) ≤ 1`. At the maximal-tension
-state it equals `1 / C_Nava(d)² = cos² θ_NRS(d)`: both bounds are attained exactly at
+state it equals `1 / C_N(d)² = cos² θ_NRS(d)`: both bounds are attained exactly at
 `d = 2, 3` and missed by the algebraic quantum from `d = 4` on.
 
 ## Main results
@@ -29,14 +29,14 @@ state it equals `1 / C_Nava(d)² = cos² θ_NRS(d)`: both bounds are attained ex
 - `GroupVelocity.mandelstamTamm` : `⟨K_d⟩² ≤ 4 Var T_d · Var P_d`.
 - `GroupVelocity.cramerRao` : `fisherP d ψ ≤ qfi d ψ`.
 - `GroupVelocity.mtRatio_maxCurrentState` : at the maximal current state, the ratio is
-  `1 / C_Nava(d)²`.
+  `1 / C_N(d)²`.
 - `GroupVelocity.mtRatio_maxCurrentState_eq_one_iff`, `GroupVelocity.mtRatio_maxCurrentState_lt_one`
   : both
   bounds are attained at the maximal current state iff `d = 2, 3`.
 - `GroupVelocity.mtRatioG_axis_x` (and `_y`, `_z`) : on the cube each axis has ratio
-  `1 / C_Nava(d_axis)²` at the maximal current state of the cube.
+  `1 / C_N(d_axis)²` at the maximal current state of the cube.
 - `GroupVelocity.mtRatioG_total_cube` : on `d × d × d` the total pair `(ΣT, ΣP)` has ratio
-  `1 / C_Nava(d)²` at the maximal current state of the cube: the three axes add speed and spread
+  `1 / C_N(d)²` at the maximal current state of the cube: the three axes add speed and spread
   without closing the gap.
 -/
 
@@ -81,7 +81,7 @@ theorem fisherP_div_qfi (ψ : Hd d) : fisherP d ψ / qfi d ψ = mtRatio d ψ := 
   rw [fisherP, qfi, mtRatio, div_div]
   ring
 
-/-- At the maximal-tension state the ratio is `1 / C_Nava(d)²`. -/
+/-- At the maximal-tension state the ratio is `1 / C_N(d)²`. -/
 theorem mtRatio_maxCurrentState (hd : 2 ≤ d) : mtRatio d (maxCurrentState d) = 1 / CoherenceConstant
     d ^ 2 := by
   have hd1 : (d : ℝ) - 1 ≠ 0 := by
@@ -196,7 +196,7 @@ theorem tensionG_total :
 end Cube
 
 /-- **Mandelstam–Tamm and Cramér–Rao on the cube.** On `d × d × d`, the total pair `(ΣT, ΣP)`
-at the maximal current state of the cube attains exactly the fraction `1 / C_Nava(d)²` of both
+at the maximal current state of the cube attains exactly the fraction `1 / C_N(d)²` of both
 bounds, as one axis. -/
 theorem mtRatioG_total_cube (hd : 2 ≤ d) :
     mtRatioG (TX d d d + TY d d d + TZ d d d) (PX d d d + PY d d d + PZ d d d) (maxCurrentCubeState

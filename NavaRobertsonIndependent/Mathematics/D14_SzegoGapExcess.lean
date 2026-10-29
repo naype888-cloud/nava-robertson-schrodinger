@@ -10,7 +10,7 @@ public import NavaRobertsonIndependent.Mathematics.D9_Monotonicity
 /-!
 # D14 — The excess below the Szegő limit
 
-The excess `C_∞ − C_Nava(d)` is positive, largest at `d = 4`, strictly decreasing and tends to
+The excess `C_N^∞ − C_N(d)` is positive, largest at `d = 4`, strictly decreasing and tends to
 `0`: monotonicity (`D9`) and the Szegő limit (`D8`), read from the side of the remainder.
 
 ## Main results
@@ -26,10 +26,10 @@ open scoped Topology
 
 namespace Gnomon
 
-/-- The excess `C_∞ − C_Nava(d)`. -/
+/-- The excess `C_N^∞ − C_N(d)`. -/
 noncomputable def gapExcess (d : ℕ) : ℝ := CoherenceConstantInf - CoherenceConstant d
 
-/-- The excess is positive: `C_Nava(d)` never reaches `C_∞`. -/
+/-- The excess is positive: `C_N(d)` never reaches `C_N^∞`. -/
 theorem gapExcess_pos (d : ℕ) (hd : 4 ≤ d) : 0 < gapExcess d := by
   unfold gapExcess
   linarith [CoherenceConstant_lt_CoherenceConstantInf d hd]

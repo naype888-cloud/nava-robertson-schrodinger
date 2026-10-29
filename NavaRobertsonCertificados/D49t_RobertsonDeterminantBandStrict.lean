@@ -9,7 +9,7 @@ public import NavaRobertsonCertificados.D49s_EdgeSlices
 public import NavaRobertsonCertificados.D49j_RobertsonDeterminantSplitAxis
 
 /-!
-# D49t — det|NRS³ is strict in the band, for every state
+# D49t — det|RS^N³ is strict in the band, for every state
 
 **Theorem.** On every box, for every unit state `Φ` whose speeds on `x`, `y`, `z` lie in the bands
 `Ϙ(dx)`, `Ϙ(dy)`, `Ϙ(dz)`, Robertson 1934 on the six observables `(T_x, T_y, T_z, P_x, P_y, P_z)`
@@ -88,7 +88,7 @@ theorem eq_zero_of_T_zero_cube (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) {
   · exact eq_zero_of_T_eq_zero hy (eY dx dy dz) hc1 (rest_comm hc0 0) hT hL
   · exact eq_zero_of_T_eq_zero hz (eZ dx dy dz) hc1 (rest_comm hc0 0) hT hL
 
-/-- **det|NRS³ is strict in the band, for every state.** -/
+/-- **det|RS^N³ is strict in the band, for every state.** -/
 theorem robertson_det_band_strict (hx : 2 ≤ dx) (hy : 2 ≤ dy) (hz : 2 ≤ dz) (hΦ : ‖Φ‖ = 1)
     (hbx : |velocityX Φ| ∈ Ϙ dx) (hby : |velocityY Φ| ∈ Ϙ dy) (hbz : |velocityZ Φ| ∈ Ϙ dz) :
     |(imMatrix (pairs dx dy dz) Φ).det| < (covMatrix (pairs dx dy dz) Φ).det := by
