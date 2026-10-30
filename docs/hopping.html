@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RS^N³ on T³ — the hopping</title>
-<meta name="description" content="The hopping on T³, the complement of the uncertainty star: H = −2t T°, spectrum −2t times a sum of three cosines, |E| ≤ 6|t|. A sharp energy spreads the position.">
+<title>RS^N³ on the open box — the hopping</title>
+<meta name="description" content="The hopping on the open box, the complement of the uncertainty star: H = −2t T°, spectrum −2t times a sum of three cosines cos(πk/(d+1)), strictly |E| &lt; 6|t|. A sharp energy spreads the position.">
 <style>
   :root {
     --bg: #f4f3ef; --panel: #ffffff; --ink: #0b0b0b; --ink2: #3b3a37; --muted: #67665f;
@@ -100,23 +100,26 @@
 <body>
 <main>
   <button class="theme" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  <a class="theme" style="margin-right:8px;text-decoration:none" href="hopping-torus.html">Closed torus, doublers ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="index.html">The star of T³ ▸</a>
   <a class="theme" style="margin-right:8px;text-decoration:none" href="box.html">The open box ▸</a>
-  <h1>RS^N³ on T³ — the hopping, complement of the star</h1>
-  <p class="lead">The same torus <code>T³ = d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code>, read the other way. The
+  <h1>RS^N³ on the open box — the hopping, complement of the star</h1>
+  <p class="lead">The same open box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code>, read the other way. Each axis is a
+    chain of <code>d</code> positions joined by <code>d − 1</code> links, the transport <code>T<sub>d</sub></code> against the position
+    <code>P<sub>d</sub></code>; there is no seam and no link between the two ends. The
     <a href="index.html">star page</a> follows the uncertainty of the pair <code>(T°, P)</code>. This page follows the
-    hopping <code>H = −2t T°</code>, the spectral field of that pair. On each closed axis
-    <code>T°</code> has eigenvalues <code>cos(2πm/d)</code>, so <code>H</code> has eigenvalues
-    <code>−2t cos(2πm/d)</code>, and on the torus
-    <code>E = −2t (cos(2πa/d<sub>x</sub>) + cos(2πb/d<sub>y</sub>) + cos(2πc/d<sub>z</sub>))</code>,
-    with <code>|E| ≤ 6|t|</code>. A mode of <code>H</code> has a sharp energy and a flat position: the dark share on the
-    star page is what that sharpness leaves unresolved. The bar runs from a position eigenstate (<code>s = 0</code>, one
-    site, energy spread over the band) to one hopping mode (<code>s = 1</code>, energy sharp, position spread over the
-    ring). Drag either panel to turn both.</p>
+    hopping <code>H = −2t T°</code>, the spectral field of that pair. On each open axis
+    <code>T°</code> has eigenvalues <code>cos(πk/(d+1))</code>, <code>k = 1, …, d</code> (standing waves
+    <code>sin(jkπ/(d+1))</code>), so <code>H</code> has eigenvalues <code>−2t cos(πk/(d+1))</code>, and on the box
+    <code>E = −2t (cos(πa/(d<sub>x</sub>+1)) + cos(πb/(d<sub>y</sub>+1)) + cos(πc/(d<sub>z</sub>+1)))</code>,
+    with <code>|E| &lt; 6|t|</code>, never reached. A standing wave of <code>H</code> has a sharp energy and a spread position.
+    The bar runs from a position eigenstate at the end of the chain (<code>s = 0</code>, one
+    site, energy spread over the band) to one standing wave (<code>s = 1</code>, energy sharp, position spread over the
+    axis). Drag either panel to turn both.</p>
 
   <div class="bar">
     <div class="chips" role="group" aria-label="Tori">
-      <button class="chip" type="button" data-box="3,3,3">T³ = 3×3×3</button>
+      <button class="chip" type="button" data-box="3,3,3">3×3×3</button>
       <button class="chip" type="button" data-box="4,4,4">4×4×4</button>
       <button class="chip" type="button" data-box="10,10,10">10×10×10</button>
       <button class="chip" type="button" data-box="3,3,10">3×3×10</button>
@@ -141,79 +144,45 @@
   </div>
 
   <div class="grid">
-    <div class="card"><h2>The torus: the hopping state</h2><span class="hint">size |Ψ|² · colour phase</span>
-      <canvas id="box" aria-label="The torus with the hopping state on every site"></canvas></div>
+    <div class="card"><h2>The open box: the hopping state</h2><span class="hint">size |Ψ|² · colour phase</span>
+      <canvas id="box" aria-label="The open box with the hopping state on every site"></canvas></div>
     <div class="card"><h2>The spectral star</h2><span class="hint">⟨cos⟩ on each axis, spread of the cosine</span>
       <canvas id="star" aria-label="The three cosine expectations and their spreads"></canvas></div>
   </div>
 
-  <div class="card bandcard" id="hdblcard"><h2>The eight doublers, spectral side: hopping, Dirac and their sum</h2>
-    <span class="hint">follows the torus, the mode and Ψ(s) above · drag any panel to turn all</span>
-    <p class="sub">Everything here is the torus above, at the same time: its modes, the occupied mode (○), Ψ(s) (●, at
-      <code>⟨cos⟩</code> on each axis, at <code>⟨cos²⟩</code> in the squares) and the turn. Every mode <code>(a, b, c)</code> of the torus sits at <code>(cos θ<sub>a</sub>, cos θ<sub>b</sub>, cos θ<sub>c</sub>)</code>
-      in the cube of cosines. The hopping <code>E = −2t Σ cos</code> vanishes on a whole plane, <code>Σ cos = 0</code>. With the
-      Kogut–Susskind signs the three axes anticommute and the energy becomes a length,
-      <code>E = ±√(cos²θ<sub>a</sub> + cos²θ<sub>b</sub> + cos²θ<sub>c</sub> + m²)</code>: it vanishes at one point only, the origin,
-      where the eight doublers <code>(±π/2)³</code> sit. The square root turns the zero plane of the hopping into the zero point
-      of Dirac. Below, their sum: in the squares <code>(cos², cos², cos²)</code> the Dirac energy squared is the sum of the
-      three axes, <code>D² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code>. The fibre of 3 positions gives the mass
-      <code>½</code>.</p>
-    <div class="bar">
-      <label class="sl" style="min-width:260px">mass m<input type="range" id="hmass" min="0" max="1" step="0.01" value="0"><b id="vhmass">0.00</b></label>
-      <button class="act" type="button" id="hfiber" aria-pressed="false">+ fibre w (4D)</button>
-    </div>
-    <div class="dblgrid">
-      <div class="dblpane"><h3>Hopping: E = −2t Σ cos, zero on a plane</h3>
-        <canvas id="hhop" aria-label="The modes in the cube of cosines, coloured by the hopping energy"></canvas>
-        <div class="minis" id="nhop"></div></div>
-      <div class="dblpane"><h3>Dirac: E = ±√(Σ cos² + m²), zero at one point</h3>
-        <canvas id="hdir" aria-label="The modes in the cube of cosines, coloured by the Dirac energy"></canvas>
-        <div class="minis" id="ndir"></div></div>
-    </div>
-    <div class="dblpane" style="margin-top:12px"><h3>Sum: the squares, E² − m² = cos² + cos² + cos²</h3>
-      <canvas id="hsum" aria-label="The modes in the cube of squared cosines, with level planes of the Dirac energy"></canvas>
-      <div class="minis wide" id="nsum"></div></div>
-    <p class="sub" style="margin-top:8px">Lean (<code>nrs3-tritoro</code>): <code>TorusDirac3.dirac3_sq</code>
-      (<code>D<sub>m</sub>² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code> on <code>T³</code>, even sizes), the anticommutations
-      <code>Tx_Ay</code>, <code>Tx_Az</code>, <code>Ay_Az</code>, <code>eps_Tx</code>, <code>eps_Ay</code>, <code>eps_Az</code>, and
-      <code>dirac3_wave</code> (the eight waves <code>(±i)<sup>x</sup>(±i)<sup>y</sup>(±i)<sup>z</sup></code> are zero modes of
-      <code>D₀</code>, and the mass sends each to the opposite corner). The spectrum of each ring is the Lean
-      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre and its mass are numerical.</p>
-  </div>
-
-  <div class="card bandcard"><h2>The hopping band of every ring</h2>
-    <p class="sub">Each ring of <code>d</code> positions has hopping eigenvalues <code>−2t cos(2πm/d)</code>,
-      <code>m = 0, …, d − 1</code>. They fill <code>[−2|t|, 2|t|]</code> and touch both ends: <code>m = 0</code> gives
-      <code>−2t</code>, and for even <code>d</code> the alternating mode gives <code>+2t</code>. ○ the occupied mode ·
-      ● ⟨H⟩ of Ψ(s), with the spread <code>σ<sub>H</sub></code>. At <code>s = 0</code> the state is one site and
-      ⟨H⟩ = 0 with the spread open. At <code>s = 1</code> the dot sits on the mode and the spread closes.
-      Press Tour to stay on one torus, Hop to pause.</p>
+  <div class="card bandcard"><h2>The hopping band of every axis</h2>
+    <p class="sub">Each open axis of <code>d</code> positions has hopping eigenvalues <code>−2t cos(πk/(d+1))</code>,
+      <code>k = 1, …, d</code>. They are symmetric about 0 and stay strictly inside <code>(−2|t|, 2|t|)</code>: the
+      edge <code>2|t|</code> is the limit of the infinite chain, never reached by a finite one. ○ the occupied mode ·
+      ● ⟨H⟩ of Ψ(s), with the spread <code>σ<sub>H</sub></code>. At <code>s = 0</code> the state is one end site and
+      the spread is open. At <code>s = 1</code> the dot sits on the mode and the spread closes.
+      Press Tour to stay on one box, Hop to pause.</p>
     <canvas id="band" aria-label="Hopping eigenvalues of each axis"></canvas></div>
 
   <div class="card bandcard"><h2>The octahedron of the band</h2>
     <span class="hint">drag to turn · dashed: the band edge</span>
     <p class="sub">Put a vertex at <code>±1</code> on every axis: that octahedron is the whole cosine band,
-      <code>|λ| ≤ 1</code> on each ring, the same bound for every size (<code>TorusSpeed.abs_energy_le_one</code>).
-      The inner octahedron has vertices at the occupied <code>|cos(2πm/d)|</code>. On the canonical
-      <code>3 × 3 × 3</code> the modes are <code>1</code> and <code>−1/2</code>, so a single axis occupies either the
-      outer vertex or <code>1/2</code>. The star page draws <code>δ</code>, the unresolved share. This octahedron draws
+      <code>|λ| &lt; 1</code> on each open axis, the same bound for every size.
+      The inner octahedron has vertices at the occupied <code>|cos(πk/(d+1))|</code>. On the canonical
+      <code>3 × 3 × 3</code> the modes are <code>±1/√2</code> and <code>0</code>, so a single axis occupies either
+      <code>1/√2</code> or the centre. The star page draws <code>δ</code>, the unresolved share. This octahedron draws
       the resolved spectrum.</p>
     <div class="octagrid">
       <canvas id="octa" aria-label="Octahedron of the cosine band and of the occupied modes"></canvas>
-      <canvas id="delta" aria-label="Hopping dispersion of each ring"></canvas>
+      <canvas id="delta" aria-label="Hopping dispersion of each axis"></canvas>
     </div>
     <div class="octabadges" aria-live="polite">
       <div><span class="k">cos on x, y, z</span><span id="o-d">–</span></div>
       <div><span class="k">E = −2t Σ cos</span><span id="o-v">–</span></div>
       <div><span class="k">|E| / (6|t|)</span><span id="o-f">–</span></div>
-      <div><span class="k">σ<sub>H</sub> of the torus</span><span id="o-c">–</span></div>
+      <div><span class="k">σ<sub>H</sub> of the box</span><span id="o-c">–</span></div>
     </div></div>
 
   <div class="card bandcard"><h2>Energy spread against position spread</h2>
     <span class="hint">σ<sub>H</sub> against σ<sub>P</sub>, one panel per axis</span>
-    <p class="sub">The complement of the tension plot. As <code>s</code> runs from the site to the mode,
+    <p class="sub">The complement of the tension plot. As <code>s</code> runs from the end site to the standing wave,
       <code>σ<sub>H</sub></code> falls and <code>σ<sub>P</sub></code> rises. At <code>s = 1</code> the mode is an
-      eigenvector of <code>H</code>, so <code>σ<sub>H</sub> = 0</code> and the position fills the ring. At
+      eigenvector of <code>H</code>, so <code>σ<sub>H</sub> = 0</code> and the position fills the axis. At
       <code>s = 0</code> the site is an eigenvector of <code>P</code>, so <code>σ<sub>P</sub> = 0</code> and the
       energy fills the neighbours. The product stays positive in between: concentrating one observable opens the other.</p>
     <canvas id="speed" aria-label="Energy spread against position spread"></canvas></div>
@@ -226,23 +195,19 @@
   </div>
 
   <div class="tablewrap"><table aria-label="Hopping on each axis">
-    <thead><tr><th>axis</th><th>positions</th><th>m</th><th>cos(2πm/d)</th>
+    <thead><tr><th>axis</th><th>positions</th><th>m</th><th>cos(π(m+1)/(d+1))</th>
       <th>ε = −2t cos</th><th>⟨H⟩(s)</th><th>σ<sub>H</sub>(s)</th><th>σ<sub>P</sub>(s)</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
 
-  <p class="note">Exact in Lean for the closed transport, standard axioms only (<code>nrs3-tritoro</code>): the spectrum of
-    <code>T°</code> on a ring is <code>{cos(2πm/d)}</code> (<code>TorusSpectrum.eq_cos_of_eigenvector</code>,
-    <code>ring_mulVec_wave</code>), and on <code>T³</code> it is
-    <code>cos(2πa/d<sub>x</sub>) + cos(2πb/d<sub>y</sub>) + cos(2πc/d<sub>z</sub>)</code>
-    (<code>TorusSpectrum.eq_lam3_of_eigenvector</code>, <code>T3c_mulVec_wave3</code>), with
-    <code>|E| ≤ 1</code> on a ring and <code>|E| ≤ 3</code> on the torus
-    (<code>TorusSpeed.abs_energy_le_one</code>, <code>abs_energy_torus_le_three</code>). The hopping on this page is the
-    same matrix scaled, <code>H = −2t T°</code>, so its eigenvalues are <code>−2t</code> times those cosines and
-    <code>|E| ≤ 6|t|</code>. The numbers are computed in the browser from those cosines. The uncertainty of the same
-    torus, the angle <code>θ</code> and the dark share, is on <a href="index.html">the star page</a>.</p>
+  <p class="note">The numbers are computed in the browser from the matrix <code>H = −2t T°</code> on the open chain: the
+    spectrum of <code>T°</code> on one axis is <code>{cos(πk/(d+1))}</code>, <code>k = 1, …, d</code>, and on the box the sum of one
+    cosine per axis, so <code>|E| &lt; 6|t|</code>. Robertson's relation for the pair on the cube, for every
+    <code>AlgState</code>, is <code>robertson_det_cube_algState</code> (PhyslibAlpha, <code>Cube/AlgState.lean</code>, through
+    <code>robertson_det_of_algState</code> in <code>StateOrderUncertainty</code>). The closed torus, with its seam, its
+    doublers and the spectrum <code>cos(2πm/d)</code>, is the <code>nrs3-tritoro</code> variant and is not drawn here. The
+    uncertainty of the same box, the angle <code>θ</code> and the dark share, is on <a href="index.html">the star page</a>.</p>
 </main>
-<script src="hopping.js?v=20261020d"></script>
-<script src="hopping-doublers.js?v=20261022c"></script>
+<script src="hopping.js?v=20261029a"></script>
 </body>
 </html>

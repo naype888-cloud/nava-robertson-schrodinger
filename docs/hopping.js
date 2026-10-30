@@ -3,27 +3,27 @@
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const FAM = { regular: "--blue", two: "--violet", distinct: "--green" };
 
-  // H = −2 t T° on one ring. T° has 1/2 on each neighbour, so (H ψ)_j = −t (ψ_{j−1} + ψ_{j+1}).
+  // H = −2 t T° on one open axis of d positions (a chain of d − 1 links, no seam). T° has 1/2 on each
+  // neighbour, so (H ψ)_j = −t (ψ_{j−1} + ψ_{j+1}), with the missing neighbour at an end absent.
+  // The modes are the standing waves sin((j+1)(k+1)π/(d+1)), m = k, with cos(π(m+1)/(d+1)) strictly inside (−1, 1).
   const cosK = (d, m) => {
     const k = ((m % d) + d) % d;
-    return Math.cos((2 * Math.PI * k) / d);
+    return Math.cos((Math.PI * (k + 1)) / (d + 1));
   };
   const epsOf = (d, m, tHop) => -2 * tHop * cosK(d, m);
   function centred(d) {
     return Array.from({ length: d }, (_, j) => (2 * (j + 1) - (d + 1)) / (d - 1));
   }
 
-  // Ψ(s) on one axis: s = 0 is the site j = 0, s = 1 is the hopping mode m.
+  // Ψ(s) on one axis: s = 0 is the end site j = 0, s = 1 is the standing wave m.
   // The two vectors are superposed and renormalised. At the ends one of them has weight 0.
   function stateOf(d, m, s) {
     const phi = Math.max(0, Math.min(1, s)) * Math.PI / 2;
     const alpha = Math.cos(phi), beta = Math.sin(phi);
     const re = new Float64Array(d), im = new Float64Array(d);
-    const inv = 1 / Math.sqrt(d);
+    const amp = Math.sqrt(2 / (d + 1));
     for (let j = 0; j < d; j++) {
-      const ang = 2 * Math.PI * m * j / d;
-      re[j] = beta * inv * Math.cos(ang);
-      im[j] = beta * inv * Math.sin(ang);
+      re[j] = beta * amp * Math.sin((j + 1) * (((m % d) + d) % d + 1) * Math.PI / (d + 1));
     }
     re[0] += alpha;
     let n2 = 0;
@@ -38,9 +38,10 @@
     const p = centred(d);
     const Hr = new Float64Array(d), Hi = new Float64Array(d);
     for (let j = 0; j < d; j++) {
-      const a = (j + d - 1) % d, b = (j + 1) % d;
-      Hr[j] = -tHop * (v.re[a] + v.re[b]);
-      Hi[j] = -tHop * (v.im[a] + v.im[b]);
+      const lr = j > 0 ? v.re[j - 1] : 0, rr = j < d - 1 ? v.re[j + 1] : 0;
+      const li = j > 0 ? v.im[j - 1] : 0, ri = j < d - 1 ? v.im[j + 1] : 0;
+      Hr[j] = -tHop * (lr + rr);
+      Hi[j] = -tHop * (li + ri);
     }
     let mH = 0, mP = 0, h2 = 0, p2 = 0;
     for (let j = 0; j < d; j++) {
@@ -128,7 +129,7 @@
       g.beginPath(); g.arc(P[0], P[1], Math.max(1.2, rmax * Math.sqrt(pr) * P[3]), 0, 2 * Math.PI); g.fill();
     }
     g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
-    const where = s < 0.02 ? "one site" : s > 0.98 ? "hopping mode" : "between the site and the mode";
+    const where = s < 0.02 ? "one site" : s > 0.98 ? "standing wave" : "between the end site and the wave";
     g.fillText(`${box[0]} × ${box[1]} × ${box[2]} · ${where}`, 10, h - 10);
   }
 
@@ -248,21 +249,21 @@
       g.beginPath(); g.moveTo(L, Y(e)); g.lineTo(L + Wd, Y(e)); g.stroke();
       g.fillText(e.toFixed(1), 4, Y(e) + 4);
     }
-    g.fillText("m / d", L + Wd * 0.45, T + H + 18);
+    g.fillText("(m + 1) / (d + 1)", L + Wd * 0.45, T + H + 18);
     const cols = ["--blue", "--orange", "--green"];
     box.forEach((d, i) => {
       g.strokeStyle = css(cols[i]); g.lineWidth = 1.6; g.beginPath();
       for (let m = 0; m < d; m++) {
-        const x = X(m / d), y = Y(epsOf(d, m, tHop));
+        const x = X((m + 1) / (d + 1)), y = Y(epsOf(d, m, tHop));
         if (m) g.lineTo(x, y); else g.moveTo(x, y);
       }
       g.stroke();
-      const x = X((mode[i] % d) / d), y = Y(st[i].eps);
+      const x = X(((mode[i] % d) + 1) / (d + 1)), y = Y(st[i].eps);
       g.fillStyle = css(cols[i]); g.beginPath(); g.arc(x, y, 4.5, 0, 2 * Math.PI); g.fill();
     });
     const E = st.reduce((a, r) => a + r.eps, 0);
     g.fillStyle = css("--ink2"); g.font = "12px system-ui, sans-serif";
-    g.fillText(`mode energy ${E.toFixed(3)} · bound ±${(3 * edge).toFixed(2)}`, L, T + 12);
+    g.fillText(`mode energy ${E.toFixed(3)} · |E| < ${(3 * edge).toFixed(2)}`, L, T + 12);
   }
 
   function drawSpeed(st) {
@@ -297,7 +298,7 @@
     const f = $("b-fam"); f.textContent = names[fam]; f.style.color = css(FAM[fam]);
     $("b-orb").textContent = mode.map((m, i) => m % box[i]).join(", ");
     const E = st.reduce((a, r) => a + r.eps, 0);
-    $("b-sym").textContent = E.toFixed(4) + (box.every((d) => d === 3) && mode.every((m, i) => m % box[i] === 0) ? " = −6t" : "");
+    $("b-sym").textContent = E.toFixed(4) + "";
     const q = $("b-q");
     if (s > 0.98) { q.textContent = "energy sharp, position spread"; q.style.color = css("--blue"); }
     else if (s < 0.02) { q.textContent = "position sharp, energy spread"; q.style.color = css("--orange"); }
