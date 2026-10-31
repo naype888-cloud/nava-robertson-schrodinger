@@ -8,6 +8,7 @@ module
 public import NavaRobertsonCertificados.D23g_MinUncertaintyUpperBound
 public import NavaRobertsonCertificados.D43_NRSOctahedron
 public import NavaRobertsonCertificados.D44_VelocityBand
+public import NavaRobertsonCertificados.D44b_BandSentence
 public import NavaRobertsonCertificados.D45d_WidestBand
 public import NavaRobertsonCertificados.D46_ConeInBand
 public import NavaRobertsonCertificados.D49d_RobertsonDeterminantBand
@@ -37,6 +38,8 @@ minimum-uncertainty states of `H₄`, and its two exact Positivstellensatz certi
 minimum uncertainty.
 
 `D44`: the velocity band `Ϙ(d) = (v*(d), 1]` of forced defect and its width `ϙ(d) = 1 − v*(d)`.
+
+`D44b`: the band in one sentence: ceiling `1`, free zone up to `v*(d)`, and the toll in between.
 
 `D45b`–`D45d`: an interval checker for Stark packets, evaluated by the kernel, and with it
 `ϙ(d) ≤ 0.0728 < ϙ(4)` for every `d ≥ 5`: `d = 4` has the widest band.
