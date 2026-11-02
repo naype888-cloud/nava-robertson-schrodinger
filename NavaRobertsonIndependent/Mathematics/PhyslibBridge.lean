@@ -7,7 +7,7 @@ module
 
 public import NavaRobertsonIndependent.Mathematics.D21_ElementalNRSInequality
 public import NavaRobertsonIndependent.Mathematics.D23b_NearMaximalTensionGap
-public import PhyslibAlpha.AlgebraicFramework.HilbertSpace.State.VectorUncertainty
+public import PhyslibAlpha.ProbabilisticTheory.HilbertSpace.State.VectorUncertainty
 
 /-!
 # Bridge to physlib: `(T_d, P_d)` as an instance of `robertson_schrodinger`
@@ -28,7 +28,7 @@ coincide.
 
 @[expose] public noncomputable section
 
-open TransportPosition NRSInequality UnitalPositiveLinearMap SpectralExtremal
+open TransportPosition NRSInequality ProbabilisticTheory UnitalPositiveLinearMap SpectralExtremal
 open scoped selfAdjoint ComplexOrder InnerProductSpace
 
 namespace PhyslibBridge

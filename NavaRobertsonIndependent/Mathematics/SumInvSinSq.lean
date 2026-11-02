@@ -9,7 +9,9 @@ public import Mathlib.RingTheory.Polynomial.Chebyshev
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Basic
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema
 public import Mathlib.Algebra.Polynomial.Splits
+public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Comp
+public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Calculus.Deriv.Polynomial
 
 /-!
@@ -104,13 +106,13 @@ private theorem derivative_U_natCast_eval_neg_one (n : ℕ) :
   have hL : HasDerivAt (fun x : ℝ ↦ (U ℝ (n : ℤ)).eval (-x))
       (-(derivative (U ℝ (n : ℤ))).eval (-1)) 1 := by
     have h := (U ℝ (n : ℤ)).hasDerivAt (-1 : ℝ)
-    have hc := h.comp 1 (hasDerivAt_id' 1).neg
+    have hc := HasDerivAt.comp (1 : ℝ) h (HasDerivAt.neg (hasDerivAt_id' (1 : ℝ)))
     rw [mul_neg_one] at hc
     exact hc
   have hR : HasDerivAt
       (fun x : ℝ ↦ (-1 : ℝ) ^ n * (U ℝ (n : ℤ)).eval x)
       ((-1 : ℝ) ^ n * (derivative (U ℝ (n : ℤ))).eval 1) 1 :=
-    ((U ℝ (n : ℤ)).hasDerivAt (1 : ℝ)).const_mul _
+    HasDerivAt.const_mul _ ((U ℝ (n : ℤ)).hasDerivAt (1 : ℝ))
   have heq : HasDerivAt (fun x : ℝ ↦ (U ℝ (n : ℤ)).eval (-x))
       ((-1 : ℝ) ^ n * (derivative (U ℝ (n : ℤ))).eval 1) 1 :=
     hfun ▸ hR

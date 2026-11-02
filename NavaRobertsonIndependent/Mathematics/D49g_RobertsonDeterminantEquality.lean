@@ -11,7 +11,7 @@ public import NavaRobertsonIndependent.Mathematics.D49_RobertsonDeterminant
 # D49g — When Robertson 1934 is an equality
 
 `D49` proves `‖det B‖ ≤ det A` for `A` positive definite and `A ± B` positive semidefinite, by
-conjugating with the normalizer `T` of `A` (`T A Tᴴ = 1`): `K = T B Tᴴ` has its eigenvalues in
+conjugating with the whitener `T` of `A` (`T A Tᴴ = 1`): `K = T B Tᴴ` has its eigenvalues in
 `[−1, 1]` and `det B = det K · det A`. Equality forces every eigenvalue of `K` to be `±1`, so
 `K² = 1` and `(1 + K)(1 − K) = 0`, that is
 
@@ -44,8 +44,8 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 theorem PosDef.add_mul_inv_mul_sub_eq_zero {A B : Matrix n n ℂ} (hA : A.PosDef)
     (hB : B.IsHermitian) (h₁ : (A - B).PosSemidef) (h₂ : (A + B).PosSemidef)
     (heq : ‖B.det‖ = (A.det).re) : (A + B) * A⁻¹ * (A - B) = 0 := by
-  set T := hA.normalizer
-  have hT := hA.normalizer_mul_mul_conjTranspose
+  set T := hA.whitener
+  have hT := hA.whitener_mul_mul_conjTranspose
   set K := T * B * Tᴴ
   have hK : K.IsHermitian := by
     simp only [IsHermitian, K, conjTranspose_mul, conjTranspose_conjTranspose, hB.eq, mul_assoc]

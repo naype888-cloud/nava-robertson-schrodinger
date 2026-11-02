@@ -44,12 +44,12 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- A matrix `T` with `T A Tᴴ = 1` for a positive definite `A`: the inverse square roots of the
 eigenvalues of `A` times the adjoint of its eigenvector unitary. -/
-def PosDef.normalizer {A : Matrix n n ℂ} (hA : A.PosDef) : Matrix n n ℂ :=
+def PosDef.whitener {A : Matrix n n ℂ} (hA : A.PosDef) : Matrix n n ℂ :=
   diagonal (fun i => ((Real.sqrt (hA.1.eigenvalues i))⁻¹ : ℂ)) *
     star (hA.1.eigenvectorUnitary : Matrix n n ℂ)
 
-theorem PosDef.normalizer_mul_mul_conjTranspose {A : Matrix n n ℂ} (hA : A.PosDef) :
-    hA.normalizer * A * hA.normalizerᴴ = 1 := by
+theorem PosDef.whitener_mul_mul_conjTranspose {A : Matrix n n ℂ} (hA : A.PosDef) :
+    hA.whitener * A * hA.whitenerᴴ = 1 := by
   set U : Matrix n n ℂ := (hA.1.eigenvectorUnitary : Matrix n n ℂ)
   set α := hA.1.eigenvalues
   set D : Matrix n n ℂ := diagonal fun i => ((Real.sqrt (α i))⁻¹ : ℂ)
@@ -67,8 +67,8 @@ theorem PosDef.normalizer_mul_mul_conjTranspose {A : Matrix n n ℂ} (hA : A.Pos
       exact_mod_cast (Real.sqrt_pos.mpr (hA.eigenvalues_pos i)).ne'
     rw [← hs]
     field_simp
-  have hT : hA.normalizer = D * star U := rfl
-  have hTH : hA.normalizerᴴ = U * D := by
+  have hT : hA.whitener = D * star U := rfl
+  have hTH : hA.whitenerᴴ = U * D := by
     simp [hT, D, conjTranspose_mul, diagonal_conjTranspose, Pi.star_def, star_eq_conjTranspose]
   rw [hTH, hT, hAU]
   calc D * star U * (U * diagonal (fun i => (α i : ℂ)) * star U) * (U * D)
@@ -95,11 +95,11 @@ theorem IsHermitian.abs_eigenvalues_le_one {K : Matrix n n ℂ} (hK : K.IsHermit
   exact abs_le.mpr ⟨by linarith, by linarith⟩
 
 /-- If `A` is positive definite, `B` hermitian and `A − B`, `A + B` positive semidefinite, then
-`‖det B‖ ≤ re (det A)`: conjugating by the normalizer of `A` puts `B` between `−1` and `1`. -/
+`‖det B‖ ≤ re (det A)`: conjugating by the whitener of `A` puts `B` between `−1` and `1`. -/
 theorem PosDef.norm_det_le_re_det {A B : Matrix n n ℂ} (hA : A.PosDef) (hB : B.IsHermitian)
     (h₁ : (A - B).PosSemidef) (h₂ : (A + B).PosSemidef) : ‖B.det‖ ≤ (A.det).re := by
-  set T := hA.normalizer
-  have hT := hA.normalizer_mul_mul_conjTranspose
+  set T := hA.whitener
+  have hT := hA.whitener_mul_mul_conjTranspose
   set K := T * B * Tᴴ
   have hK : K.IsHermitian := by
     simp only [IsHermitian, K, conjTranspose_mul, conjTranspose_conjTranspose, hB.eq, mul_assoc]

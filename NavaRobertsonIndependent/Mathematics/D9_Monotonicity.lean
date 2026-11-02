@@ -5,6 +5,8 @@ Authors: Eduardo Nava-Hernandez
 -/
 module
 
+public import Mathlib.Analysis.Calculus.Deriv.MeanValue
+public import Mathlib.Analysis.Calculus.Deriv.Pow
 public import NavaRobertsonIndependent.Mathematics.D8_Szego
 
 /-!
@@ -370,7 +372,7 @@ private lemma hasDerivAt_coherenceSqAngle {x : ℝ}
         (3 * Real.cos x ^ 3)) x := by
   unfold coherenceSqAngle
   have htan : HasDerivAt Real.tan (1 / Real.cos x ^ 2) x := Real.hasDerivAt_tan hcos
-  have da := (hasDerivAt_const x (Real.pi ^ 2)).div ((hasDerivAt_id x).pow 2) (pow_ne_zero 2 hx)
+  have da := (hasDerivAt_const x (Real.pi ^ 2)).div (HasDerivAt.fun_pow (hasDerivAt_id x) 2) (pow_ne_zero 2 hx)
   have db := (hasDerivAt_const x (2 * Real.pi)).div (hasDerivAt_id x) hx
   have dab := da.sub db
   have dabc := dab.sub (hasDerivAt_const x (4 : ℝ))
