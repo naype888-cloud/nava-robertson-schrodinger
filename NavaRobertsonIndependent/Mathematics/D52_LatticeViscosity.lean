@@ -6,6 +6,10 @@ Authors: Eduardo Nava-Hernandez
 module
 public import NavaRobertsonIndependent.Mathematics.D51_LocalCurrent
 public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Mathlib.Analysis.CStarAlgebra.Matrix
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
+public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Isometric
 /-!
 # D52 — Viscosity on the lattice: the Laplacian of `A_d`
 
@@ -22,6 +26,7 @@ the same matrix.
 - `Lap_commutator_Pd` : `[L_d, P_d] = -ρ_d [T_d, P_d]`.
 - `Lap_quadratic` : `⟨x, L_d x⟩ = ½ ∑ A_{ij} |x_i - x_j|²`.
 - `Lap_posSemidef` : the viscosity dissipates.
+- `norm_exp_neg_Lap_le` : `‖e^{-t L_d}‖ ≤ 1` for `t ≥ 0`.
 -/
 @[expose] public noncomputable section
 open Matrix
@@ -155,5 +160,25 @@ theorem Lap_posSemidef (d : ℕ) : Matrix.PosSemidef (Lap d) := by
     have := Ad_nonneg (d := d) i j
     exact div_nonneg this (by norm_num)
   exact mul_nonneg h3 h2
+
+section Contraction
+
+open scoped Matrix.Norms.L2Operator MatrixOrder
+
+/-- **The evolution by the viscosity contracts**: `‖e^{-t L_d}‖ ≤ 1` for `t ≥ 0`. Pure Mathlib:
+the spectrum of `L_d ≥ 0` is nonnegative, and `e^{-t x} ≤ 1` there. -/
+theorem norm_exp_neg_Lap_le (d : ℕ) {t : ℝ} (ht : 0 ≤ t) :
+    ‖NormedSpace.exp ((-t) • Lap d)‖ ≤ 1 := by
+  have hsa : IsSelfAdjoint (Lap d) := Lap_isHermitian d
+  have hnn : 0 ≤ Lap d := Matrix.nonneg_iff_posSemidef.mpr (Lap_posSemidef d)
+  rw [← CFC.real_exp_eq_normedSpace_exp (a := (-t) • Lap d) ((IsSelfAdjoint.all (-t)).smul hsa)]
+  rw [← cfc_comp_smul (-t) Real.exp (Lap d)]
+  refine norm_cfc_le zero_le_one fun x hx => ?_
+  have hx0 : 0 ≤ x := spectrum_nonneg_of_nonneg hnn hx
+  simp only [Real.norm_eq_abs, smul_eq_mul, abs_of_pos (Real.exp_pos _)]
+  rw [← Real.exp_zero]
+  exact Real.exp_le_exp.mpr (by nlinarith)
+
+end Contraction
 
 end TransportPosition

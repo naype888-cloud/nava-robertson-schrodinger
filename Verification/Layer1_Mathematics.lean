@@ -175,3 +175,4 @@ open Lean
 #print axioms TransportPosition.Lap_commutator_Pd
 #print axioms TransportPosition.Lap_quadratic
 #print axioms TransportPosition.Lap_posSemidef
+#print axioms TransportPosition.norm_exp_neg_Lap_le
