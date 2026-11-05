@@ -70,6 +70,7 @@ public import NavaRobertsonIndependent.Mathematics.D49c_RobertsonDeterminantProd
 public import NavaRobertsonIndependent.Mathematics.D49g_RobertsonDeterminantEquality
 public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClosure
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
+public import NavaRobertsonIndependent.Mathematics.D51_LocalCurrent
 
 /-!
 # RS^N, RS^N³ and det|RS^N³
@@ -113,5 +114,8 @@ theorem.
   `d ∈ {2, 3}`.
 - `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|RS^N³ as
   `0 = 0`, with every tension zero; the trivial case of the equality step, far from the band.
+- `D51` : the local currents `K_{mn}` of `T_d` (Hermitian, antisymmetric), continuity
+  `i [T, |n⟩⟨n|] = ∑_m K_{mn}`, and the tension `i [T_d, P_d]` as the sum of the local currents
+  weighted by position (advection is transport).
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/

@@ -166,3 +166,7 @@ open Lean
 #print axioms RobertsonDeterminantProduct.robertson_det_maxCurrentCubeState_strict
 #print axioms Matrix.PosDef.add_mul_inv_mul_sub_eq_zero
 #print axioms TransportPosition.LieClosure.closure_iff
+#print axioms TransportPosition.continuity
+#print axioms TransportPosition.bondCurrent_isHermitian
+#print axioms TransportPosition.tension_eq_sum_bondCurrent
+#print axioms TransportPosition.tension_eq_half_sum_displacement
