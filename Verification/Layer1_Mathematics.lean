@@ -170,3 +170,8 @@ open Lean
 #print axioms TransportPosition.bondCurrent_isHermitian
 #print axioms TransportPosition.tension_eq_sum_bondCurrent
 #print axioms TransportPosition.tension_eq_half_sum_displacement
+#print axioms TransportPosition.Lap_isHermitian
+#print axioms TransportPosition.Lap_mulVec_one
+#print axioms TransportPosition.Lap_commutator_Pd
+#print axioms TransportPosition.Lap_quadratic
+#print axioms TransportPosition.Lap_posSemidef

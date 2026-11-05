@@ -71,6 +71,7 @@ public import NavaRobertsonIndependent.Mathematics.D49g_RobertsonDeterminantEqua
 public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClosure
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
 public import NavaRobertsonIndependent.Mathematics.D51_LocalCurrent
+public import NavaRobertsonIndependent.Mathematics.D52_LatticeViscosity
 
 /-!
 # RS^N, RS^N³ and det|RS^N³
@@ -117,5 +118,8 @@ theorem.
 - `D51` : the local currents `K_{mn}` of `T_d` (Hermitian, antisymmetric), continuity
   `i [T, |n⟩⟨n|] = ∑_m K_{mn}`, and the tension `i [T_d, P_d]` as the sum of the local currents
   weighted by position (advection is transport).
+- `D52` : viscosity on the lattice, the Laplacian `L_d = D_d - A_d`: Hermitian, zero on constants,
+  positive semidefinite (`⟨x, L_d x⟩ = ½ ∑ A_{ij} |x_i - x_j|²`), and `[L_d, P_d] = -ρ_d [T_d, P_d]`:
+  viscosity and advection bracket with the position by the same matrix.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/
