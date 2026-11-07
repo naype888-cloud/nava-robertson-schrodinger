@@ -5,6 +5,7 @@ Authors: Eduardo Nava-Hernandez
 -/
 module
 public import NavaRobertsonIndependent.Mathematics.D52_LatticeViscosity
+public import NavaRobertsonIndependent.Mathematics.D54_NonlinearCovariance
 /-!
 # D53 — Nonlinear Euler on the lattice: the quadratic transport conserves the kinetic energy
 
@@ -19,6 +20,7 @@ conserves the kinetic energy: `⟨v, N(v)⟩ = 0`, because `G` is antisymmetric.
 - `gradR_antisymm` : `G_d` is antisymmetric.
 - `eulerAdv_zero`, `eulerAdv_smul` : `N` is quadratic.
 - `energy_conserved` : `⟨v, N(v)⟩ = 0`.
+- `euler_covariance_bound` : the covariance bound of `D54` for `N`, where `N (c x) = c² N x`.
 -/
 @[expose] public noncomputable section
 open Matrix
@@ -81,5 +83,17 @@ theorem energy_conserved (d : ℕ) (v : Fin d → ℝ) : v ⬝ᵥ eulerAdv d v =
     ring
   simp only [eulerAdv, dotProduct_smul, dotProduct_add, h1, h2, smul_eq_mul]
   ring
+
+/-- **The covariance bound for the quadratic transport** (`D54`): since `N (c x) = c² N x`, for a
+functional `f` with `f x = 1` the covariance of `N` and any `B` is bounded by the distance of `B x`
+to its component along `x`, with `f (B x)²` in place of `f (B x)`:
+`|f(N(Bx)) - f(Bx)² f(Nx)| ≤ K ‖Bx - f(Bx) x‖`. -/
+theorem euler_covariance_bound (f : (Fin d → ℝ) →L[ℝ] ℝ) (B : (Fin d → ℝ) → (Fin d → ℝ))
+    (x : Fin d → ℝ) (hfx : f x = 1) {K : ℝ}
+    (hK : ∀ u w, ‖(f (eulerAdv d u) - f (eulerAdv d x) * f u) -
+        (f (eulerAdv d w) - f (eulerAdv d x) * f w)‖ ≤ K * ‖u - w‖) :
+    ‖f (eulerAdv d (B x)) - f (B x) ^ 2 * f (eulerAdv d x)‖ ≤ K * ‖B x - f (B x) • x‖ := by
+  have h := NonlinearCovariance.nonlinear_bound f (eulerAdv d) B x hfx hK
+  rwa [eulerAdv_smul, map_smul, smul_eq_mul] at h
 
 end TransportPosition

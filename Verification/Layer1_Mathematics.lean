@@ -180,3 +180,7 @@ open Lean
 #print axioms TransportPosition.gradR_map
 #print axioms TransportPosition.eulerAdv_smul
 #print axioms TransportPosition.energy_conserved
+#print axioms NonlinearCovariance.nonlinear_bound
+#print axioms NonlinearCovariance.covariance_bound_of_homogeneous
+#print axioms NonlinearCovariance.not_covariance_bound_sq
+#print axioms TransportPosition.euler_covariance_bound

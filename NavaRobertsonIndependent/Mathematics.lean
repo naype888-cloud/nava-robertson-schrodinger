@@ -72,6 +72,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
 public import NavaRobertsonIndependent.Mathematics.D51_LocalCurrent
 public import NavaRobertsonIndependent.Mathematics.D52_LatticeViscosity
+public import NavaRobertsonIndependent.Mathematics.D54_NonlinearCovariance
 public import NavaRobertsonIndependent.Mathematics.D53_LatticeEuler
 
 /-!
@@ -124,6 +125,10 @@ theorem.
   viscosity and advection bracket with the position by the same matrix.
 - `D53` : nonlinear Euler on the lattice: the gradient `G_d = [T_d, P_d]` is real and antisymmetric,
   the skew quadratic transport `N(v) = ⅓ (G (v ∘ v) + v ∘ G v)` is homogeneous of degree 2 and
-  conserves the kinetic energy `⟨v, N(v)⟩ = 0`.
+  conserves the kinetic energy `⟨v, N(v)⟩ = 0`; with `D54` its covariance bound reads
+  `|f(N(Bx)) - f(Bx)² f(Nx)| ≤ K ‖Bx - f(Bx) x‖`.
+- `D54` : the covariance bound for a nonlinear map: the Lipschitz estimate bounds
+  `|f(A(Bx)) - f(A(f(Bx) x))|`; it gives the usual covariance when `A (c x) = c A x`, and the
+  literal statement with `f(Ax) f(Bx)` fails for `A(u) = u²`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/
