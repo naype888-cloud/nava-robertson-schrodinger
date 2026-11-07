@@ -110,12 +110,14 @@
   <a class="theme" style="margin-right:8px;text-decoration:none" href="./">◂ T³, the canonical torus</a>
   <h1>RS^N³ — every box has its star</h1>
   <p class="lead">On the box <code>d<sub>x</sub> × d<sub>y</sub> × d<sub>z</sub></code> each axis carries the
-    pair transport <code>T</code> and position <code>P</code>. At the maximal current state of
-    the cube, the product of the maximal current states of the axes, their fluctuations open the angle
-    <code>θ<sub>RS^N</sub>(d)</code>: zero only with 2 or 3 sites, never zero from 4 on. The quantum lives on boxes with
-    4 or more sites on every axis; an axis with 2 or 3 sites is marked in red. It runs on its own:
-    the transport bar fills once, then a new random box, 4 to 25 sites per axis, with transport moving Ψ and the view turning.
-    Change the box and the star deforms. Drag either panel to turn both.</p>
+    pair transport <code>T</code> and position <code>P</code>. The 3D Cartesian lattice spans all <strong>8 octants</strong>
+    with coordinates from <code>−d<sub>a</sub> … d<sub>a</sub></code> on each axis, where <strong>all sites count, including site 0</strong> at the origin.
+    The <strong>Bloch zone [−3, 3]</strong> on all axes forms a 3D cross of 3×3 with infinitely high walls (the approaching barrier),
+    where fluctuations saturate and <code>θ = 0</code>. In all 8 octants, coordinates with <code>|coord| ≥ 4</code> open the quantum uncertainty angle
+    <code>θ<sub>RS^N</sub>(d) &gt; 0</code>. Change the box and the star deforms. Drag either panel to turn both.</p>
+  <p class="note">Geometry of the 8 octants and the Bloch cross: each axis has <code>2d<sub>a</sub> + 1</code> sites (from <code>−d<sub>a</sub></code> to <code>+d<sub>a</sub></code>, with 0 in the middle).
+    The central cross <code>[−3, 3]</code> on x, y, z encloses the 7³ = 343 Bloch sites with walls at ±3 extending to infinity.
+    Outside the cross, all 8 octants (+/+/+, −/+/+, +/−/+, etc.) host the quantum wavefunction Ψ(t) when axes reach 4 or more sites.</p>
 
   <div class="bar">
     <div class="chips" role="group" aria-label="Boxes">
@@ -132,9 +134,9 @@
     <button class="act" type="button" id="reset">t = 0</button>
   </div>
   <div class="sliders">
-    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="2" max="25" value="4"><b id="vx">4</b></label>
-    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="2" max="25" value="7"><b id="vy">7</b></label>
-    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="2" max="25" value="10"><b id="vz">10</b></label>
+    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="0" max="25" value="4"><b id="vx">4</b></label>
+    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="0" max="25" value="7"><b id="vy">7</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="0" max="25" value="10"><b id="vz">10</b></label>
     <label class="sl">t<input type="range" id="tt" min="0" max="40" step="0.05" value="0"><b id="vt">0.0</b></label>
   </div>
 

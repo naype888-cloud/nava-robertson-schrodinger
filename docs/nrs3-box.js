@@ -6,6 +6,10 @@
   const cache = {};
   function axis(d) {
     if (cache[d]) return cache[d];
+    if (d < 2) {  // no pair (T, P): 0 sites is empty, 1 site is a single point; nothing to transport, θ = 0
+      return (cache[d] = { d, rho: 1, p: Array(d).fill(0), U: d ? [[1]] : [], lam: Array(d).fill(0),
+        cr: d ? [1] : [], ci: d ? [0] : [], theta0: 0 });
+    }
     const rho = 2 * Math.cos(Math.PI / (d + 1));
     const p = Array.from({ length: d }, (_, j) => (2 * (j + 1) - (d + 1)) / (d - 1));
     const U = [], lam = [];
@@ -116,30 +120,72 @@
   function drawBox() {
     const [g, w, h] = setup($("box")), cx = w / 2, cy = h / 2 + 6, S = Math.min(w, h) * 0.36 * ZOOM.box;
     const A = box.map(axis), V = A.map((a) => evolve(a, t));
-    const m = Math.max(...box), s = 2 / (m - 1 || 1);
+    // the lattice is -N..N on every axis (the 0 is a site); only +/+/+ is seen, the other octants are drawn faint
+    const bloch = box.some(low), off = bloch ? 0 : 3;  // free box: its first site is (4,4,4), the origin of the valid region
+    const m = Math.max(3, ...box) + off, s = 1 / m;
     const prob = V.map((v) => Array.from(v.re, (r, j) => r * r + v.im[j] * v.im[j]));
     const phase = V.map((v) => Array.from(v.re, (r, j) => Math.atan2(v.im[j], r)));
     const pmax = prob.map((p) => Math.max(...p)).reduce((a, b) => a * b, 1);
-    // edges of the box
-    const hx = (box[0] - 1) * s / 2, hy = (box[1] - 1) * s / 2, hz = (box[2] - 1) * s / 2;
+    drawAxes(g, cx, cy, S, 1.08);
+    // the other 26 octants/planes: faint when the physics only sees +/+/+ (4 or more on every axis);
+    // solid when an axis has 0, 1, 2 or 3 sites (Bloch): then the whole Cartesian lattice counts, all 8 octants
+    const G = box.map((d) => {
+      const dd = d + off, n = bloch ? Math.min(d, 25) : Math.min(dd, 8), pos = Array.from({ length: n }, (_, k) => (Math.floor((k + 0.5) * dd / n) + 1) * s);
+      return [...pos.map((v) => -v).reverse(), 0, ...pos];
+    });
+    g.fillStyle = bloch ? css("--red") : css("--grid"); g.globalAlpha = bloch ? 0.6 : 1;
+    const gs = bloch ? 3 : 1.8;
+    for (const x of G[0]) for (const y of G[1]) for (const z of G[2]) {
+      if (bloch ? x !== 0 && y !== 0 && z !== 0 : Math.min(x, y, z) >= 4 * s - 1e-9) continue;  // Bloch: Ψ (mirrored) takes the off-plane sites
+      const P = proj(W([x, y, z]), cx, cy, S); g.fillRect(P[0] - gs / 2, P[1] - gs / 2, gs, gs);
+    }
+    g.globalAlpha = 1;
+    // edges of the seen box: octant +/+/+
+    const lo = (1 + off) * s, hx = (box[0] + off) * s, hy = (box[1] + off) * s, hz = (box[2] + off) * s;
     const C = [];
-    for (const a of [-hx, hx]) for (const b of [-hy, hy]) for (const c of [-hz, hz]) C.push([a, b, c]);
+    for (const a of [lo, hx]) for (const b of [lo, hy]) for (const c of [lo, hz]) C.push([a, b, c]);
     g.strokeStyle = css("--grid"); g.lineWidth = 1;
-    [[0, 1], [0, 2], [0, 4], [1, 3], [1, 5], [2, 3], [2, 6], [3, 7], [4, 5], [4, 6], [5, 7], [6, 7]].forEach(([i, j]) => {
+    if (box.every((d) => d > 0)) [[0, 1], [0, 2], [0, 4], [1, 3], [1, 5], [2, 3], [2, 6], [3, 7], [4, 5], [4, 6], [5, 7], [6, 7]].forEach(([i, j]) => {
       const p = proj(W(C[i]), cx, cy, S), q = proj(W(C[j]), cx, cy, S);
       g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
     });
     // draw at most 25 sites per axis
     const idx = box.map((d) => { const n = Math.min(d, 25); return Array.from({ length: n }, (_, k) => Math.floor((k + 0.5) * d / n)); });
     const pts = [];
+    const sg = bloch ? [-1, 1] : [1];  // Bloch: Ψ mirrored on all 8 octants
     for (const i of idx[0]) for (const j of idx[1]) for (const k of idx[2]) {
       const pr = prob[0][i] * prob[1][j] * prob[2][k] / pmax;
-      const P = proj(W([i * s - hx, j * s - hy, k * s - hz]), cx, cy, S);
-      pts.push([P, pr, phase[0][i] + phase[1][j] + phase[2][k]]);
+      for (const a of sg) for (const b of sg) for (const c of sg) {
+        const P = proj(W([a * (i + 1 + off) * s, b * (j + 1 + off) * s, c * (k + 1 + off) * s]), cx, cy, S);
+        pts.push([P, pr, phase[0][i] + phase[1][j] + phase[2][k]]);
+      }
     }
     pts.sort((a, b) => b[0][2] - a[0][2]);
+    // the bounds (cotas) on every axis: -3 and 3 close the saturating values 0..3, 4 opens the free ones; the geometry follows from them
+    {
+      // four walls in a cross (plan view |x| <= 3 or |y| <= 3), infinitely tall along z and infinitely long along the four arms
+      g.strokeStyle = css("--red"); g.lineWidth = 1.2; g.setLineDash([7, 5]); g.globalAlpha = 0.85;
+      const e = 3.5 * s, F = 40, plus = [[F, e], [e, e], [e, F], [-e, F], [-e, e], [-F, e], [-F, -e], [-e, -e], [-e, -F], [e, -F], [e, -e], [F, -e]];
+      const pj = (x, y, z) => proj(W([x, y, z]), cx, cy, S);
+      g.beginPath(); plus.forEach(([x, y], i) => { const q = pj(x, y, 0); i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); });
+      g.closePath(); g.stroke();
+      for (const [x, y] of plus) { const u = pj(x, y, -F), v = pj(x, y, F); g.beginPath(); g.moveTo(u[0], u[1]); g.lineTo(v[0], v[1]); g.stroke(); }
+      g.setLineDash([]); g.globalAlpha = 1;
+      g.font = "11px system-ui, sans-serif";
+      for (let ax = 0; ax < 3; ax++) for (const c of [-3, 3, 4]) {
+        const o = (ax + 1) % 3, tk = 0.035, mk = (off) => { const v = [0, 0, 0]; v[ax] = c * s; v[o] = off; return proj(W(v), cx, cy, S); };
+        const p = mk(-tk), q = mk(tk), lab = mk(tk * 1.6);
+        g.strokeStyle = css("--red"); g.lineWidth = 1.6; g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
+        g.fillStyle = css("--red"); g.fillText(`${"xyz"[ax]}=${c}`, lab[0] + 2, lab[1] + 4);
+      }
+    }
+    if (!bloch) {  // the valid origin (4,4,4): the corner of the free box, against the walls
+      const O = proj(W([4 * s, 4 * s, 4 * s]), cx, cy, S);
+      g.fillStyle = css("--red"); g.beginPath(); g.arc(O[0], O[1], 3.5, 0, 2 * Math.PI); g.fill();
+      g.font = "11px system-ui, sans-serif"; g.fillText("(4,4,4)", O[0] + 6, O[1] - 6);
+    }
     const dark = css("--bg").startsWith("#0") || css("--bg").startsWith("#1");
-    const rmax = Math.max(2, S * 2 / (Math.max(...idx.map((v) => v.length)) - 1 || 1) * 0.4);
+    const rmax = Math.max(2, S / (Math.max(...idx.map((v) => v.length)) || 1) * 0.8);
     for (const [P, pr, ph] of pts) {
       if (pr < 0.004) {
         g.fillStyle = css("--grid"); g.fillRect(P[0] - 0.8, P[1] - 0.8, 1.6, 1.6); continue;
@@ -149,11 +195,16 @@
       g.beginPath(); g.arc(P[0], P[1], Math.max(1.2, rmax * Math.sqrt(pr) * P[3]), 0, 2 * Math.PI); g.fill();
     }
     g.font = "12px system-ui, sans-serif"; g.fillStyle = css("--muted");
-    g.fillText(`${box[0]} × ${box[1]} × ${box[2]} = ${box[0] * box[1] * box[2]} sites`, 10, h - 10);
+    const tot = box.map((d) => 2 * d + 1).reduce((x, y) => x * y, 1);
+    g.fillText(bloch ? `Bloch: ${tot} sites in −N…N, Ψ mirrored on all 8 octants (0 included)` :
+      `+/+/+ seen: ${box[0]} × ${box[1]} × ${box[2]} = ${box[0] * box[1] * box[2]} sites`, 10, h - 28);
+    g.fillStyle = css("--red"); g.fillText("red: cotas −3, 3 | 4 · four walls in a cross, to ∞ · free box starts at (4,4,4)", 10, h - 46 - (box.some(low) ? 18 : 0));
+    g.fillStyle = css("--muted");
+    if (!bloch) g.fillText(`of ${tot} in −N…N (0 included) · other octants faint`, 10, h - 10);
     const bad = box.map((d, i) => (low(d) ? `${"xyz"[i]} = ${d}` : null)).filter(Boolean);
     if (bad.length) {
       g.fillStyle = css("--red"); g.font = "600 12px system-ui, sans-serif";
-      g.fillText(`✕ ${bad.join(", ")}: below 4 sites, no quantum`, 10, h - 28);
+      g.fillText(`✕ ${bad.join(", ")}: below 4 sites, no quantum`, 10, h - 46);
     }
   }
 
