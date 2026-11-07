@@ -176,3 +176,7 @@ open Lean
 #print axioms TransportPosition.Lap_quadratic
 #print axioms TransportPosition.Lap_posSemidef
 #print axioms TransportPosition.norm_exp_neg_Lap_le
+#print axioms TransportPosition.gradR_antisymm
+#print axioms TransportPosition.gradR_map
+#print axioms TransportPosition.eulerAdv_smul
+#print axioms TransportPosition.energy_conserved

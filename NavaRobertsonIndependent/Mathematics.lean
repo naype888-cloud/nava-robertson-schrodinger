@@ -72,6 +72,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
 public import NavaRobertsonIndependent.Mathematics.D51_LocalCurrent
 public import NavaRobertsonIndependent.Mathematics.D52_LatticeViscosity
+public import NavaRobertsonIndependent.Mathematics.D53_LatticeEuler
 
 /-!
 # RS^N, RS^N³ and det|RS^N³
@@ -121,5 +122,8 @@ theorem.
 - `D52` : viscosity on the lattice, the Laplacian `L_d = D_d - A_d`: Hermitian, zero on constants,
   positive semidefinite (`⟨x, L_d x⟩ = ½ ∑ A_{ij} |x_i - x_j|²`), and `[L_d, P_d] = -ρ_d [T_d, P_d]`:
   viscosity and advection bracket with the position by the same matrix.
+- `D53` : nonlinear Euler on the lattice: the gradient `G_d = [T_d, P_d]` is real and antisymmetric,
+  the skew quadratic transport `N(v) = ⅓ (G (v ∘ v) + v ∘ G v)` is homogeneous of degree 2 and
+  conserves the kinetic energy `⟨v, N(v)⟩ = 0`.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/
