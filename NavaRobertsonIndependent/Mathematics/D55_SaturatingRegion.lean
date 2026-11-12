@@ -14,6 +14,9 @@ On each axis `H_d = ℂ^d`, the Robertson bound for the pair `(T_d, P_d)` is rea
 equality exactly for `d ≤ 3`; from `d = 4` the defect is strictly positive. So the region
 that saturates is not one dimension but all of `2 ≤ d ≤ 3`, and its complement is `4 ≤ d`.
 
+The positive defect from `d = 4` is the mass gap of the fibre (`D56`): the same defect,
+`defectGram d = massSq d / (d − 1)²`.
+
 On the cube, an axis coordinate `v` with `|v| ≤ 3` lies in the saturating region. The box
 `[-3, 3]³` has `7³ = 343` sites.
 
