@@ -166,3 +166,13 @@ open Lean
 #print axioms RobertsonDeterminantProduct.robertson_det_maxCurrentCubeState_strict
 #print axioms Matrix.PosDef.add_mul_inv_mul_sub_eq_zero
 #print axioms TransportPosition.LieClosure.closure_iff
+#print axioms SaturatingRegion.defectGram_eq_zero_iff_le_three
+#print axioms SaturatingRegion.defectGram_pos_iff_four_le
+#print axioms SaturatingRegion.defectGram_dichotomy
+#print axioms SaturatingRegion.coordinate_saturates_iff
+#print axioms SaturatingRegion.card_core
+#print axioms MassNecessary.one_lt_CoherenceConstant_iff
+#print axioms MassNecessary.massNecessaryConditions_iff
+#print axioms MassNecessary.defectGram_eq_zero_of_not_massNecessary
+#print axioms MassNecessary.massSq_band_of_massNecessary
+#print axioms MassNecessary.defectGram_eq_massSq_of_massNecessary

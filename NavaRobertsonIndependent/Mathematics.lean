@@ -70,6 +70,8 @@ public import NavaRobertsonIndependent.Mathematics.D49c_RobertsonDeterminantProd
 public import NavaRobertsonIndependent.Mathematics.D49g_RobertsonDeterminantEquality
 public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClosure
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
+public import NavaRobertsonIndependent.Mathematics.D55_SaturatingRegion
+public import NavaRobertsonIndependent.Mathematics.D56_MassNecessaryConditions
 
 /-!
 # RS^N, RS^N³ and det|RS^N³
@@ -113,5 +115,9 @@ theorem.
   `d ∈ {2, 3}`.
 - `D49m` : the mirror state `J`, anticommuting with `T_d` and `P_d`: equality in det|RS^N³ as
   `0 = 0`, with every tension zero; the trivial case of the equality step, far from the band.
+- `D55` : the saturating region is `d ≤ 3` (defect `0` iff `d ≤ 3`, positive iff `4 ≤ d`); the box
+  `[-3, 3]³` has `343` sites.
+- `D56` : `c`, `ℓ > 0` and `C_N > 1` are necessary for mass and hold iff `4 ≤ d`; the defect of the fibre is the mass gap (`defectGram d = massSq d / (d − 1)²`); under them
+  `0 < massSq 4 ≤ massSq d < π²/3 − 3`. Not sufficient (the photon is a carrier).
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/
