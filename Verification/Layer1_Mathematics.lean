@@ -176,3 +176,7 @@ open Lean
 #print axioms MassNecessary.defectGram_eq_zero_of_not_massNecessary
 #print axioms MassNecessary.massSq_band_of_massNecessary
 #print axioms MassNecessary.defectGram_eq_massSq_of_massNecessary
+#print axioms StateDefect.basis_not_carrying_defect
+#print axioms StateDefect.massNecessary_not_sufficient
+#print axioms StateDefect.massive_four_le
+#print axioms StateDefect.massive_not_basis

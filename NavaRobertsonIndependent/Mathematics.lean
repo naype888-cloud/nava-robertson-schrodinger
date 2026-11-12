@@ -72,6 +72,7 @@ public import NavaRobertsonIndependent.Mathematics.D49i_TransportPositionLieClos
 public import NavaRobertsonIndependent.Mathematics.D49m_MirrorState
 public import NavaRobertsonIndependent.Mathematics.D55_SaturatingRegion
 public import NavaRobertsonIndependent.Mathematics.D56_MassNecessaryConditions
+public import NavaRobertsonIndependent.Mathematics.D57_StateCarriesDefect
 
 /-!
 # RS^N, RS^N³ and det|RS^N³
@@ -119,5 +120,8 @@ theorem.
   `[-3, 3]³` has `343` sites.
 - `D56` : `c`, `ℓ > 0` and `C_N > 1` are necessary for mass and hold iff `4 ≤ d`; the defect of the fibre is the mass gap (`defectGram d = massSq d / (d − 1)²`); under them
   `0 < massSq 4 ≤ massSq d < π²/3 − 3`. Not sufficient (the photon is a carrier).
+- `D57` : the fourth condition: the defect belongs to the state, not to the carrier. A basis vector
+  (the carrier) saturates in every `d`, so `D56`'s three conditions are not sufficient; a massive
+  state carries a positive Gram defect.
 - `PhyslibBridge` : `D21` is physlib's `robertson_schrodinger` at the maximal current state.
 -/
