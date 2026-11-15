@@ -35,6 +35,20 @@
 
 ---
 
+## 🌐 Introduction géométrique : le déplacement dans l'espace euclidien tridimensionnel
+
+Dans tout espace normé ou espace de Banach euclidien, deux points distincts sont séparés par une distance métrique. Pour franchir cette séparation et relier deux états, la dynamique exige nécessairement un opérateur de translation le long de l'axe unidimensionnel qui les sépare.
+
+La paire canonique (T_d, P_d) ne relève donc pas d'une combinatoire abstraite de graphes ni d'un modèle de réseau artificiel : elle constitue **la définition géométrique élémentaire de la position et du transport spatial**, échantillonnée à une résolution finie de d points sur l'intervalle [−1, 1].
+
+Dans l'espace physique tridimensionnel ℝ³ :
+* Le déplacement selon les trois directions indépendantes (X, Y, Z) s'obtient directement par le produit tensoriel des opérateurs de transport unidimensionnels le long de chaque axe.
+* Le cube ouvert d × d × d représente **le générateur irréductible du mouvement dans l'espace euclidien tridimensionnel**.
+* Les observables de transport associées à des axes orthogonaux commutent identiquement ([O_X, O_Y] = 0), assurant que dans l'espace purement tridimensionnel (d ≤ 3), l'inégalité d'incertitude de Robertson–Schrödinger sature exactement sans frottement géométrique interne (C_N(d) = 1).
+* Dès que l'on considère d ≥ 4 positions par coordonnée, la géométrie des opérateurs engendre un excès d'incertitude irréductible gouverné par la limite de Szegő (C_N(d) > 1).
+
+---
+
 ## ⚡ Résumé formel
 
 Ce dépôt formalise la théorie constructive de l'incertitude élémentaire dimensionnelle sur réseaux discrets finis :
