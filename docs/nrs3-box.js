@@ -32,7 +32,7 @@
     a.theta0 = stats(a, evolve(a, 0)).theta;
     return (cache[d] = a);
   }
-  // θ_NRS(d) = arccos(1/C) with the closed form of C² (CNava_sq_eq); equals axis(d).theta0
+  // θ_NRS(d) = arccos(1/C) with the closed form of C² (uncertaintyRatio_sq_eq); equals axis(d).theta0
   function thetaClosed(d) {
     if (d <= 3) return 0;
     const th = Math.PI / (d + 1);

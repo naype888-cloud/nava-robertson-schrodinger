@@ -55,7 +55,7 @@ particular at the cone speed, satisfy `det Σ > (t_x t_y t_z / 8)²`.
 
 `D49f`: maximal tension leaves no room for entanglement: with `|v| = 1` on `x`, `y`, `z` every
 state is a phase times the product of the maximal current states, and det|NRS³ holds with ratio
-`C_Nava(dx)² C_Nava(dy)² C_Nava(dz)²`, strict from `4` positions per axis.
+`C_N(dx)² C_N(dy)² C_N(dz)²`, strict from `4` positions per axis.
 
 `D49h`: equality in det|NRS³ with the three speeds in the band needs a relation
 `σ_x [T_x, P_x] Φ + σ_y [T_y, P_y] Φ + σ_z [T_z, P_z] Φ = 0` with `σ ≠ 0`.

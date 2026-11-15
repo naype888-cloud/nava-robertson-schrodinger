@@ -75,7 +75,7 @@ def act(sigma, s, d, z):
 
 
 def theta_nrs(d):
-    """θ_NRS(d) = arccos(1/C_Nava(d)) from the closed form of C_Nava² (D8)."""
+    """θ_NRS(d) = arccos(1/C_N(d)) from the closed form of C_N² (D8)."""
     if d <= 3:
         return 0.0
     n, th = d + 1, np.pi / (d + 1)
@@ -163,7 +163,7 @@ def fig_octahedral():
                  ha="left", fontsize=14, color=INK)
     fig.text(0.01, -0.02, "(a), (b): the 64-position cube 4 × 4 × 4 with T and P of D3 on each axis; "
              "a signed permutation sends (T, P) of axis i to (T, ±P) of axis σ i. "
-             "(c): closed form of C_Nava (D8); the defect is there on every axis with d ≥ 4, "
+             "(c): closed form of C_N (D8); the defect is there on every axis with d ≥ 4, "
              "its symmetry depends on which axes have equal length (48, 16, 8: D37h).",
              fontsize=8.5, color=MUTED)
     fig.tight_layout()

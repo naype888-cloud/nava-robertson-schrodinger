@@ -444,7 +444,7 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
     <div class="card">
       <span class="tag ok">demostrado · Physlib #1734 #1735 · git D8 D9</span>
       <h2>C<sub>N</sub>(N)</h2>
-      <p>Vale 1 en 2 y 3 sitios. Desde 4 crece estrictamente (D9, <code style="font-family:var(--mono)">CNava_lt_CNava</code>) sin tocar nunca C<sub>N</sub><sup>∞</sup> = √(π²/3 − 2) ≈ 1.13572 (D8, Szegő).</p>
+      <p>Vale 1 en 2 y 3 sitios. Desde 4 crece estrictamente (D9, <code style="font-family:var(--mono)">uncertaintyRatio_lt_uncertaintyRatio</code>) sin tocar nunca C<sub>N</sub><sup>∞</sup> = √(π²/3 − 2) ≈ 1.13572 (D8, Szegő).</p>
       <svg id="curve" viewBox="0 0 420 330" role="img" aria-label="C_N en función de N con su asíntota"></svg>
     </div>
   </section>
@@ -458,8 +458,8 @@ svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
           <li><b>RS^N</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality</code> (ElementalUncertainty.lean, #1723).</li>
           <li><b>RS^N³</b>, en la biblioteca Physlib: <code>nava_robertson_schrodinger_cube</code> (Cube.lean, #1725), estricto en los tres ejes desde 4 × 4 × 4.</li>
           <li>Saturación sólo en 2 y 3 sitios: <code>centeredGramDefect_maxCurrentState_eq_zero_iff</code> (#1718).</li>
-          <li>Cada eje del cubo lleva su C<sub>N</sub>: <code>CNava_alongX</code>/<code>Y</code>/<code>Z</code> (#1725).</li>
-          <li>Monotonía y techo: <code>CNava_lt_CNava</code>, <code>CNava_lt_sqrt_pi_sq_div_three_sub_two</code> (#1735).</li>
+          <li>Cada eje del cubo lleva su C<sub>N</sub>: <code>uncertaintyRatio_alongX</code>/<code>Y</code>/<code>Z</code> (#1725).</li>
+          <li>Monotonía y techo: <code>uncertaintyRatio_lt_uncertaintyRatio</code>, <code>uncertaintyRatio_lt_sqrt_pi_sq_div_three_sub_two</code> (#1735).</li>
           <li>Cociente de Mandelstam–Tamm = 1/C<sub>N</sub>²: <code>mandelstamTammRatio_maxCurrentState</code> (#1739).</li>
           <li>Ángulo RS^N, δ y 𝒱: <code>angleNRS_eq</code>, <code>volQuantum_lt_volQuantum_z</code> (PR local 9fd96397).</li>
           <li>Cono de incertidumbre: <code>speed_maxCurrentState</code>, <code>interval_eq_speed</code>, <code>timelike_maxCurrentState</code> (nrs3-uncertainty-cone/Cone.lean).</li>

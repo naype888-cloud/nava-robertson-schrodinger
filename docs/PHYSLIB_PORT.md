@@ -33,7 +33,7 @@ Noncommercial License. Status on 12 October 2026: 28 merged, 6 open.
 | #1709 | `…/TightBindingChain/Uncertainty` | 93 (refactor) | the uncertainty relation on the chain's own Hilbert space | — | merged |
 | #1716 | `…/TightBindingChain/MaxCurrentState` | 298 | maximal current state; `⟨H⟩ = E0`, `⟨X⟩ = a(N−1)/2`, `⟨⁅H, X⁆⟩ = −at cos(π/(N+1))` | `D5`, `D21` | merged |
 | #1718 | `…/TightBindingChain/Saturation` | 216 | Robertson–Schrödinger is an equality iff `N = 2, 3`, strict for `N ≥ 4` | `D23` | merged |
-| #1723 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `CNava ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | merged |
+| #1723 | `…/TightBindingChain/ElementalUncertainty` | 144 | `Cov = 0`; `Var H · Var X = (at cos)² + defect`; `uncertaintyRatio ≥ 1`, `= 1` iff `N = 2, 3`; `nava_robertson_schrodinger_elemental_dimensional_uncertainty_inequality` | `D21`, `D22` | merged |
 | #1717 | `…/FiniteTarget/ProductState` | 236 | product states: one-coordinate statistics are the factor's | `D37` | merged |
 | #1725 | `…/TightBindingChain/Cube` | 265 | the open cube; axes commute; `C_N` per axis; `nava_robertson_schrodinger_cube` | `D37` | merged |
 | #1711 | `…/TightBindingChain/MandelstamTamm` | 139 | `|⟨J⟩| ≤ 2 ΔH ΔX` (Mandelstam–Tamm), `⟨J⟩²/Var X ≤ 4 Var H` (Cramér–Rao) | `D41` | merged |
@@ -41,9 +41,9 @@ Noncommercial License. Status on 12 October 2026: 28 merged, 6 open.
 | #1724 | `…/TightBindingChain/SpeedLimit` | 218 | orthonormal basis of current eigenstates; `⟨J⟩ = 2at cos(π/(N+1))` in the maximal current state; `|⟨J⟩| ≤ 2|at| cos(π/(N+1))` in every state | `D38`, `D40` | merged |
 | #1745 | `…/TightBindingChain/VelocityBand` | 172 | minimum-uncertainty vectors are compact; the threshold `v*` is attained; forced defect in `Ϙ` | `D44` | merged |
 | #1746 | `…/TightBindingChain/VelocityBandWidth` | 266 | time reversal; `v* < maxCurrent` and `Ϙ ≠ ∅` for `N ≥ 4` | `D44`, `D46` | open |
-| #1732 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_N²` in closed form (`CNava_sq_eq`) | `D19`, `D20` | merged |
-| #1734 | `…/TightBindingChain/LongChainLimit` | 108 | `C_N → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_CNava`); the limit is `> 1` | `D8` | merged |
-| #1735 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_N` strictly increasing in `N` from four positions on (`CNava_lt_CNava`); `C_N < √(π²/3 − 2)` | `D9` | merged |
+| #1732 | `…/TightBindingChain/MaxCurrentVariances` | 249 | `Var H = 4t² sin²θ (N−1)/(N+1)`, `Var X = a²(((N+1)²+2)/12 − 1/(2 sin²θ))`, `θ = π/(N+1)`; `C_N²` in closed form (`uncertaintyRatio_sq_eq`) | `D19`, `D20` | merged |
+| #1734 | `…/TightBindingChain/LongChainLimit` | 108 | `C_N → √(π²/3 − 2)` along any family of chains with `N → ∞` (`tendsto_uncertaintyRatio`); the limit is `> 1` | `D8` | merged |
+| #1735 | `…/TightBindingChain/LongChainMonotonicity` | 297 | `C_N` strictly increasing in `N` from four positions on (`uncertaintyRatio_lt_uncertaintyRatio`); `C_N < √(π²/3 − 2)` | `D9` | merged |
 | #1730 | `ProbabilisticTheory/CStarAlgebra/Uncertainty` | +217 | Robertson 1934 for several observables: `Σ + iΩ` is a Gram matrix (`gram_centeredGNSVector`), `\|det Ω\| ≤ det Σ` for every state on a C*-algebra (`robertson_det`) | `D49` | merged |
 | #1742 | `…/TightBindingChain/Cube` (E–F) | +319 | the six observables `(H, X)` of the cube: `Ω` block diagonal in every state, `(⟨⁅H,X⁆⟩_x ⟨⁅H,X⁆⟩_y ⟨⁅H,X⁆⟩_z)² ≤ det Σ` (`robertson_det_cube`); at the maximal current state `det Σ = (C_N(x) C_N(y) C_N(z))² \|det Ω\|`, strict from `4 × 4 × 4` (`robertson_det_maxCurrentCubeState_strict`) | `D49b`, `D49c` | merged |
 | #1756 | `…/TightBindingChain/VolumetricQuantum` | 228 | RS^N angle `θ_NRS = arccos(1/C_N)`, `= 0` iff `N = 2, 3`, increasing, below `arccos(1/C_N^∞)`; `δ = C_N − 1`; volumetric quantum `δ(Nx)δ(Ny)δ(Nz)`, `= 0` iff an axis has 2 or 3 sites, strictly increasing on each axis | `D37b`, `D37e`, `D39` | merged |

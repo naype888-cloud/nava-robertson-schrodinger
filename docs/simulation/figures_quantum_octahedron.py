@@ -2,7 +2,7 @@
 
 Writes docs/figures/nrs_quantum_octahedron.png.
 
-Each axis with d positions carries the dimensional quantum δ(d) = C_Nava(d) − 1 (D25) and opens at
+Each axis with d positions carries the dimensional quantum δ(d) = C_N(d) − 1 (D25) and opens at
 θ_NRS(d) = arccos(1/(1 + δ(d))) (D37b). The octahedron of a box dx × dy × dz has its vertices at
 ±δ(dx), ±δ(dy), ±δ(dz) on the three axes: its volume is (4/3)·δ(dx)δ(dy)δ(dz) = (4/3)·𝒱, the
 volumetric quantum of D37e times 4/3.
@@ -12,10 +12,10 @@ the unattained one of d → ∞ (δ_∞ = C∞ − 1 on every axis, dashed).
 (c) how the deformations group: the three families of D37i.
 
 Proved in Lean (base repository): δ(d) = 0 iff d = 2, 3 (D25, dimQuantum_eq_zero_iff);
-θ_NRS(d) = arccos(1/C_Nava(d)) (D37b, angleNRS_eq); δ(4)³ ≤ 𝒱 < δ_∞³, strictly increasing in
+θ_NRS(d) = arccos(1/C_N(d)) (D37b, angleNRS_eq); δ(4)³ ≤ 𝒱 < δ_∞³, strictly increasing in
 each axis (D37e, volQuantum_certificate); every box with 4 or more positions keeps its quantum, in
 one of three families (D37i, quantum_never_erased, family_partition, card_orbit_*). Values are
-evaluated from the closed form of C_Nava² (D19, D20); the factor 4/3 is the volume of the
+evaluated from the closed form of C_N² (D19, D20); the factor 4/3 is the volume of the
 octahedron |x|/a + |y|/b + |z|/c ≤ 1.
 
 Run:  python3 docs/simulation/figures_quantum_octahedron.py
@@ -107,7 +107,7 @@ def fig_octahedron():
     bx.set_xticks(xs)
     bx.set_xticklabels(labels, fontsize=7.5, rotation=0)
     bx.set_ylim(0, 0.155)
-    bx.set_ylabel("δ(d) = C_Nava(d) − 1")
+    bx.set_ylabel("δ(d) = C_N(d) − 1")
     bx.set_title("(b) every axis: its own quantum and angle, between δ(4) and δ_∞",
                  loc="left", fontsize=11)
     for j, ((dx, dy, dz), col, _) in enumerate(BOXES):
@@ -132,11 +132,11 @@ def fig_octahedron():
             "δ(4)³ ≤ V < δ_∞³ (never erased).", fontsize=8.5, color=INK2, transform=cx.transAxes)
     cx.set_title("(c) how many deformations, and how they group (D37i)", loc="left", fontsize=11)
 
-    fig.suptitle("The octahedron of the NRS quantum: the same excess δ = C_Nava − 1 on every axis",
+    fig.suptitle("The octahedron of the NRS quantum: the same excess δ = C_N − 1 on every axis",
                  x=0.01, ha="left", fontsize=13, color=INK)
     fig.text(0.01, 0.01, "Lean: dimQuantum (D25), deltaInf (D8), angleNRS_eq (D37b), "
              "volQuantum_certificate (D37e), quantum_never_erased, family_partition, card_orbit_* "
-             "(D37i). Values from the closed form of C_Nava² (D19, D20).",
+             "(D37i). Values from the closed form of C_N² (D19, D20).",
              fontsize=8.5, color=MUTED)
     fig.tight_layout(rect=(0, 0.03, 1, 0.92))
     fig.savefig(OUT / "nrs_quantum_octahedron.png", facecolor=SURFACE)

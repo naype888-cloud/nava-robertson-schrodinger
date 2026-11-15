@@ -2,17 +2,17 @@
 
 Writes docs/figures/nrs_band.png.
 
-(a) C_Nava(d) from 1 (d = 2, 3, saturation) to its limit C∞ = √(π²/3 − 2) ≈ 1.13572, never
-reached; the excess C_Nava(d) − 1 over saturation grows to C∞ − 1 ≈ 0.13572.
-(b) the angle θ_NRS(d) = arccos(1/C_Nava(d)): 0 at d = 2, 3, a jump to θ_NRS(4) ≈ 7.435°, then
+(a) C_N(d) from 1 (d = 2, 3, saturation) to its limit C∞ = √(π²/3 − 2) ≈ 1.13572, never
+reached; the excess C_N(d) − 1 over saturation grows to C∞ − 1 ≈ 0.13572.
+(b) the angle θ_NRS(d) = arccos(1/C_N(d)): 0 at d = 2, 3, a jump to θ_NRS(4) ≈ 7.435°, then
 strictly increasing towards arccos(1/C∞) ≈ 28.298°, never reached.
 (c) the same angles as rays: every axis of every box with 4 or more positions opens inside the
 wedge [7.435°, 28.298°).
 
-Proved in Lean (base repository): θ_NRS(d) = arccos(1/C_Nava(d)) (D37b, angleNRS_eq); for
-d ≥ 4, 0 < θ_NRS(4) ≤ θ_NRS(d) < arccos(1/C∞) (D37b, angle_floor); C_Nava → C∞ (D8) and
+Proved in Lean (base repository): θ_NRS(d) = arccos(1/C_N(d)) (D37b, angleNRS_eq); for
+d ≥ 4, 0 < θ_NRS(4) ≤ θ_NRS(d) < arccos(1/C∞) (D37b, angle_floor); C_N → C∞ (D8) and
 strictly increasing from d = 4 on (D9). The values plotted are evaluated from the closed form
-of C_Nava² (D19, D20).
+of C_N² (D19, D20).
 
 Run:  python3 docs/simulation/figures_nrs_band.py
 """
@@ -71,9 +71,9 @@ def fig_band():
     ax.set_xlim(1.8, 1.2e4)
     ax.set_ylim(0.99, 1.155)
     ax.set_xlabel("positions on the axis  d")
-    ax.set_ylabel("C_Nava(d)")
+    ax.set_ylabel("C_N(d)")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.62), fontsize=8.5)
-    ax.set_title("(a) C_Nava: from 1 to C∞, never reached", loc="left", fontsize=11)
+    ax.set_title("(a) C_N: from 1 to C∞, never reached", loc="left", fontsize=11)
 
     t4 = float(theta(4))
     bx.axhspan(t4, TH_INF, color=BAND, lw=0)
@@ -116,10 +116,10 @@ def fig_band():
     cx.grid(color=GRID)
     cx.set_title("(c) every axis opens inside the wedge", loc="left", fontsize=11, pad=14)
 
-    fig.suptitle("The NRS quantum on one axis: 7.43° ≤ θ_NRS(d) < 28.30°, 1 < C_Nava(d) < 1.13572  (d ≥ 4)",
+    fig.suptitle("The NRS quantum on one axis: 7.43° ≤ θ_NRS(d) < 28.30°, 1 < C_N(d) < 1.13572  (d ≥ 4)",
                  x=0.01, ha="left", fontsize=12.5, color=INK)
     fig.text(0.01, 0.01, "Lean: angleNRS_eq, angle_floor (D37b); limit (D8) and strict monotonicity (D9). "
-             "Values from the closed form of C_Nava² (D19, D20).", fontsize=8.5, color=MUTED)
+             "Values from the closed form of C_N² (D19, D20).", fontsize=8.5, color=MUTED)
     fig.tight_layout(rect=(0, 0.03, 1, 1))
     fig.savefig(OUT / "nrs_band.png", facecolor=SURFACE)
     plt.close(fig)

@@ -46,14 +46,14 @@ NODES = {
     "16": (4, MID, "16\nMandelstam–Tamm,\nCramér–Rao", "local"),
     "11": (5, TOP, "11\nsaturation\niff N = 2, 3", "local"),
     "18": (5, MID, "18\nspeed limit\n|<J>| ≤ maxCurrent", "local"),
-    "12": (6, TOP, "12\nNRS: C_Nava ≥ 1,\n= 1 iff N = 2, 3", "local"),
+    "12": (6, TOP, "12\nNRS: C_N ≥ 1,\n= 1 iff N = 2, 3", "local"),
     "19": (6, MID, "19\nvelocity band Ϙ,\nforced defect", "local"),
     "15": (7, TOP, "15\nNRS³: the cube,\naxis by axis", "local"),
     "20": (7, MID, "20\nϘ open for N ≥ 4\n(time reversal)", "local"),
-    "21": (7, LOW, "21\nVar H, Var X,\nC_Nava² closed", "local"),
-    "17": (8, LANE, "17\nMT/CR ratio\n= 1/C_Nava²", "local"),
-    "22": (8, LOW, "22\nlimit\nC_Nava → C∞", "local"),
-    "23": (9, LOW, "23\nC_Nava strictly\nincreasing, < C∞", "local"),
+    "21": (7, LOW, "21\nVar H, Var X,\nC_N² closed", "local"),
+    "17": (8, LANE, "17\nMT/CR ratio\n= 1/C_N²", "local"),
+    "22": (8, LOW, "22\nlimit\nC_N → C∞", "local"),
+    "23": (9, LOW, "23\nC_N strictly\nincreasing, < C∞", "local"),
 }
 
 EDGES = [
@@ -149,7 +149,7 @@ def fig_ladder():
     ax.set_title("The Physlib port of NRS and NRS³: pull requests, dependencies and submission "
                  "waves (30 Sep 2026)", loc="left", fontsize=13.5, color=INK)
     fig.text(0.012, 0.012, "All on physlib's open tight binding chain (PhyslibAlpha): H, X and "
-             "the current J = i(HX − XH). Round C (21–23; D8, D9, D19, D20) is the seal: C_Nava "
+             "the current J = i(HX − XH). Round C (21–23; D8, D9, D19, D20) is the seal: C_N "
              "strictly increasing, below C∞.", fontsize=8.5, color=MUTED)
     fig.savefig(OUT / "physlib_port_ladder.png", bbox_inches="tight", facecolor=SURFACE)
     plt.close(fig)
@@ -175,7 +175,7 @@ def eigenstate(n, k):
 
 
 def defect(n, psi):
-    """Centered Gram defect of H and X, over the squared bracket ⟨J⟩²/4: C_Nava² − 1."""
+    """Centered Gram defect of H and X, over the squared bracket ⟨J⟩²/4: C_N² − 1."""
     h, x, jc = chain(n)
     m = lambda op: (psi.conj() @ op @ psi).real
     u, w = h @ psi - m(h) * psi, x @ psi - m(x) * psi
@@ -238,7 +238,7 @@ def fig_band():
     cx.plot(ns, dn, "x", ms=7, mew=1.6, color=BLUE, label="at ψ_N = Θψ₁")
     cx.plot([2, 3], d1[:2], "o", ms=9, color=INK2, mec=SURFACE, mew=1.5, zorder=5)
     cx.set_xlabel("positions  N")
-    cx.set_ylabel("defect / ⟨⁅H, X⁆⟩²  =  C_Nava² − 1")
+    cx.set_ylabel("defect / ⟨⁅H, X⁆⟩²  =  C_N² − 1")
     cx.set_title("(c) Same defect at both extremes:\nzero only at N = 2, 3 (PR 11)",
                  loc="left", fontsize=11)
     cx.legend(loc="lower right", fontsize=9)

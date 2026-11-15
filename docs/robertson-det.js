@@ -63,7 +63,7 @@
   const randomM = () => Array.from({ length: 6 }, () => { const s = 10 ** (3 * Math.random() - 1.5); return Array.from({ length: 6 }, () => s * gauss()); });
   const identity = () => Array.from({ length: 6 }, (_, i) => Array.from({ length: 6 }, (_, j) => (i === j ? 1 : 0)));
 
-  // closed form of C² (Lean: CNava_sq_eq), for the ticks of every box
+  // closed form of C² (Lean: uncertaintyRatio_sq_eq), for the ticks of every box
   function C2(N) {
     const th = Math.PI / (N + 1);
     return 2 * (N - 1) / ((N + 1) * Math.cos(th) ** 2) * (((N + 1) ** 2 + 2) / 6 * Math.sin(th) ** 2 - 1);

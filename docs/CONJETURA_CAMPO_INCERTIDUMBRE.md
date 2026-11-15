@@ -48,11 +48,11 @@ Sobre la cadena abierta de `d` posiciones, en el estado de corriente máxima:
 
 - `Var H · Var X = (a t cos(π/(d+1)))² + defecto`, con `Cov = 0`
   (`variance_mul_variance_maxCurrentState`, `covariance_maxCurrentState`, #1723).
-- `C_N(d) = 1` si y solo si `d = 2, 3` (`CNava_eq_one_iff`), y `C_N(d) > 1` desde `d = 4`
-  (`one_lt_CNava`). **El defecto es irreducible a partir de 4.**
-- `C_N` crece estrictamente con `d` (`CNava_lt_CNava`, #1735) y queda acotado,
-  `C_N(d) < C_N^∞ = √(π²/3 − 2)` (`CNava_lt_sqrt_pi_sq_div_three_sub_two`). `C_N^∞` es el límite
-  de Szegő (`tendsto_CNava`, #1734) y nunca se alcanza.
+- `C_N(d) = 1` si y solo si `d = 2, 3` (`uncertaintyRatio_eq_one_iff`), y `C_N(d) > 1` desde `d = 4`
+  (`one_lt_uncertaintyRatio`). **El defecto es irreducible a partir de 4.**
+- `C_N` crece estrictamente con `d` (`uncertaintyRatio_lt_uncertaintyRatio`, #1735) y queda acotado,
+  `C_N(d) < C_N^∞ = √(π²/3 − 2)` (`uncertaintyRatio_lt_sqrt_pi_sq_div_three_sub_two`). `C_N^∞` es el límite
+  de Szegő (`tendsto_uncertaintyRatio`, #1734) y nunca se alcanza.
 - El cuanto dimensional es `δ(d) = C_N(d) − 1`.
 
 ## 3. Las tres lecturas
