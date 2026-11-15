@@ -1,6 +1,6 @@
 > **The open cube, kept separate.** This file is the former main README: RS^N, RS^N³ and det|RS^N³ on
 > the *open* cube (`D0`–`D49t`) and the Physlib port of that chain. The main
-> [README](README.md) now leads with the three-torus `T³` (RS^N³·T³); nothing here was changed
+> [README](README.md) presents the same open cube as a landing page; nothing here was changed
 > except this note and the title.
 
 # RS^N, RS^N³ & det|RS^N³ — Nava–Robertson–Schrödinger Elemental Dimensional Uncertainty
