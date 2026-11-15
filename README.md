@@ -10,7 +10,7 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-vérifié-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
 [![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20ZFC-brightgreen.svg?style=flat-square)]()
 [![Physlib](https://img.shields.io/badge/Physlib-PRs%20Fusionnées-brightgreen.svg?style=flat-square)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud)
-[![Portail Interactif](https://img.shields.io/badge/Simulateur_3D-T³_%26_Cube-00e5ff.svg?style=for-the-badge&logo=three.js)](https://naype888-cloud.github.io/nava-robertson-schrodinger/)
+[![Portail Interactif](https://img.shields.io/badge/Simulateur_3D-Cube_NRS³-00e5ff.svg?style=for-the-badge&logo=three.js)](https://naype888-cloud.github.io/nava-robertson-schrodinger/)
 [![Explorateur de Boîte](https://img.shields.io/badge/Explorateur-Boîte_Ouverte_NRS³-8a2be2.svg?style=for-the-badge)](https://naype888-cloud.github.io/nava-robertson-schrodinger/box.html)
 
 </div>
@@ -159,7 +159,6 @@ Les prolongements thématiques spécialisés sont maintenus dans leurs dépôts 
 |:---|:---|
 | [**Physlib: PRs fusionnées**](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) | L'ensemble des résultats de la chaîne et du cube intégrés en amont |
 | [`nrs3-hopf`](https://github.com/naype888-cloud/nrs3-hopf) | Fibration de Hopf S³ → S² et géométrie spinorielle |
-| [`nrs3-tritoro`](https://github.com/naype888-cloud/nrs3-tritoro) | Formalisme sur le tri-tore périodique fermé T³ = x × y × z |
 | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temporelle orthogonale et efficacité de Cramér–Rao |
 | [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Coût de dissipation thermodynamique et limite de Carnot |
 | [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | Entropie d'horizon et paramètre de courbure |
