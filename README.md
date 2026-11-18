@@ -1,231 +1,245 @@
 <div align="center">
 
-# Incertitude élémentaire dimensionnelle : le cube NRS³ et la monotonie de C_N
-### Structure géométrique du cube discret, séparation tensorielle des axes et borne asymptotique de Szegő
+# RS<sup>N</sup> et RS<sup>N</sup>³ · L’incertitude élémentaire dimensionnelle
+### Pour la paire transport–position (T_d, P_d) sur le graphe chemin à d positions, Robertson–Schrödinger est une égalité exactement en d = 2, 3 et stricte dès d = 4, avec la constante C_N(d) qui croît vers √(π²/3 − 2) — sur la chaîne et sur le cube
 
 **Eduardo Nava Hernández**  
-*Vérification formelle certifiée en Lean 4 · 0 sorry · Physlib (PhyslibAlpha)*
+*Vérification formelle en Lean 4 · 0 sorry · Mathlib · Physlib*
 
-[![Lean 4](https://img.shields.io/badge/Lean_4-v4.33%20%2F%20v4.35-blue.svg?style=flat-square)](https://leanprover.github.io/)
-[![Mathlib](https://img.shields.io/badge/Mathlib-vérifié-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
-[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20ZFC-brightgreen.svg?style=flat-square)]()
-[![Physlib](https://img.shields.io/badge/Physlib-PRs%20Fusionnées-brightgreen.svg?style=flat-square)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud)
-[![Portail Interactif](https://img.shields.io/badge/Simulateur_3D-Cube_NRS³-00e5ff.svg?style=for-the-badge&logo=three.js)](https://naype888-cloud.github.io/nava-robertson-schrodinger/)
-[![Explorateur de Boîte](https://img.shields.io/badge/Explorateur-Boîte_Ouverte_NRS³-8a2be2.svg?style=for-the-badge)](https://naype888-cloud.github.io/nava-robertson-schrodinger/box.html)
+[![Lean 4](https://img.shields.io/badge/Lean_4-v4.34.0-blue.svg?style=flat-square)](https://leanprover.github.io/)
+[![Mathlib](https://img.shields.io/badge/Mathlib-v%C3%A9rifi%C3%A9-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
+[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry%20%7C%20152%20th%C3%A9or%C3%A8mes-brightgreen.svg?style=flat-square)](Verification/Layer1_Mathematics.lean)
+[![Physlib](https://img.shields.io/badge/Physlib-PRs%20fusionn%C3%A9es-7c5cd6.svg?style=flat-square)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud)
+[![Simulateur](https://img.shields.io/badge/Simulateur_3D-Cube_NRS³-00e5ff.svg?style=for-the-badge&logo=three.js)](https://naype888-cloud.github.io/nava-robertson-schrodinger/)
+[![Boîte](https://img.shields.io/badge/Explorateur-Boîte_ouverte_NRS³-8a2be2.svg?style=for-the-badge)](https://naype888-cloud.github.io/nava-robertson-schrodinger/box.html)
 
 </div>
 
 ---
 
-> ### 🏛️ Ce qui distingue le théorème et la paire canonique T_d : P_d
+> ### 🏛️ Le théorème : la relation de Nava–Robertson–Schrödinger
 >
-> La paire canonique transport-position (T_d, P_d) réalise la relation de Robertson–Schrödinger au premier pas permis par l'algèbre des opérateurs sur graphes finis.
+> Sur le graphe chemin à d positions, le transport T_d ne relie que des positions voisines et la position P_d est diagonale. Dans l’état de courant maximal, le produit des variances vaut exactement (c_d/2)²(1 + δ(d))², avec c_d = −2/(d − 1) et δ(d) = C_N(d) − 1. Ce qui distingue le théorème de Robertson–Schrödinger général : l’écart δ(d) est calculé en forme fermée, il est nul exactement pour d = 2, 3 et strictement positif dès d = 4.
 >
 > <div align="center">
-> <img src="assets/plaque_nrs_equation_protagoniste.png" alt="Plaque de l'équation protagoniste : T_d - P_d sur le cube ouvert" width="860">
+> <img src="assets/plaque_nrs_protagoniste.png" alt="Plaque protagoniste : la relation de Nava–Robertson–Schrödinger, la saturation en d = 2, 3, la croissance de C_N vers la racine de pi carré sur trois moins deux, et le cube" width="860">
 > </div>
 >
-> **1 · Saturation exacte en petite dimension.** Pour la chaîne unidimensionnelle et le cube tridimensionnel ouvert, le défaut de Gram s'annule identiquement si et seulement si d ≤ 3 (C_N(d) = 1).
+> **1 · Saturation exacte en d = 2, 3.** Cov(T_d, P_d)² + (c_d/2)² = Var T_d · Var P_d si et seulement si d = 2 ou d = 3 : c’est l’équation de Niven cos²(π/(d+1)) = (d − 1)/4.
 >
-> **2 · Rupture géométrique en dimension d ≥ 4.** Dès quatre positions par axe, la géométrie discrète impose un excès d'incertitude irréductible : C_N(d) > 1.
+> **2 · Rupture dès d = 4.** C_N(d) > 1, et l’inégalité est stricte en tout état de tension maximale.
 >
-> **3 · Séparation tensorielle stricte.** Les observables associées à des coordonnées distinctes commutent ([O_X, O_Y] = 0) sur le cube tridimensionnel à coordination Δ = 12.
+> **3 · Monotonie et borne de Szegő.** C_N est strictement croissante dès d = 4 et tend vers C_N^∞ = √(π²/3 − 2) ≈ 1,1357 sans l’atteindre.
 >
-> **4 · Monotonie analytique vers la limite de Szegő.** La suite des constantes C_N(d) est strictement croissante pour d ≥ 4 et converge vers la borne de Szegő C_N^∞ = √(π²/3 − 2) ≈ 1.289868.
-
----
-
-## 🌐 Fondement cinématique : le transport métrique, la résolution d et la clôture de Bravais
-
-### 1 · Absence de réseau matériel préalable : discrétisation de la résolution métrique d
-Dans l'espace euclidien continu ℝ³, il n'existe aucun maillage rigide, aucune grille discrète ni aucun réseau d'atomes d'espace préexistant dans le vide. L'espace physique de fond demeure rigoureusement ouvert et continu.
-
-Lorsque la dynamique relie deux positions distinctes, elle impose la définition d'un opérateur de translation transportant l'état le long de la séparation métrique, conjugué à l'opérateur de position coordonnée. La paire canonique (T_d, P_d) ne postule donc aucun découpage ontologique de l'espace : **ce qui est discrétisé, c'est la résolution métrique d du transport cinématique**, c'est-à-dire la dimension d de l'espace hilbertien ℋ_d sur lequel agit le générateur de translation.
-
-Dans l'espace tridimensionnel ℝ³, le déplacement selon les trois axes indépendants (X, Y, Z) s'obtient par produit tensoriel :
-ℋ_{d³} = ℋ_d^(x) ⊗ ℋ_d^(y) ⊗ ℋ_d^(z)
-
-Les observables de transport associées à des coordonnées orthogonales commutent identiquement ([O_X, O_Y] = 0), assurant l'indépendance cinématique stricte des degrés de liberté directionnels.
-
-### 2 · Réseaux de Bravais : la combinatoire des cycles de mouvement fermés
-Sous cette perspective cinématique, la nature des réseaux de Bravais se révèle sous son véritable jour mathématique :
-* **Un réseau de Bravais n'est pas un squelette statique de matière :** les 14 réseaux de Bravais et les 7 systèmes cristallins ne représentent pas des positions immobiles d'atomes dans un solide.
-* **C'est la classification complète des cycles de mouvement fermés :** ils constituent l'ensemble exhaustif de toutes les combinaisons possibles de générateurs de transport directionnels qui bouclent exactement sans défaut de phase holonome à travers le domaine tridimensionnel.
-* Les symétries cristallographiques de Bravais émergent directement des contraintes algébriques requises pour qu'une séquence de translations discrétisées dans le cube tridimensionnel se referme sur elle-même de manière unitaire et cohérente.
-
-### 3 · Le cube NRS³ : brique élémentaire et générateur universel
-Cette structure confère au cube ouvert d × d × d une double identité fondamentale :
-* **La brique élémentaire irréductible :** Pour d ≤ 3 (espace strictement tridimensionnel), l'inégalité de Robertson–Schrödinger sature exactement sans friction géométrique interne (C_N(d) = 1). Dès d ≥ 4 positions par axe, la géométrie non commutative impose un excès d'incertitude irréductible (C_N(d) > 1) gouverné par la limite analytique de Szegő. Aucune transition observable ne peut s'effectuer sous une résolution plus élémentaire que celle de cette cellule unitaire.
-* **Le générateur universel de la dynamique :** L'espace physique macroscopique n'est pas un conteneur passif assemblant des blocs juxtaposés. Toute évolution dynamique unitaire en trois dimensions étant une composition d'opérateurs de déplacement sur ℋ_{d³}, le cube NRS³ contient en germe l'algèbre complète de toute cinématique admissible. Il est simultanément la cellule minimale d'incertitude et la matrice algébrique de l'univers tout entier.
+> **4 · Le cube RS^N³.** Les observables d’axes différents commutent ; chaque axe sature exactement en 2 ou 3 positions, et la relation est stricte sur les trois axes dès 4 × 4 × 4.
 
 ---
 
 ## ⚡ Résumé formel
 
-Ce dépôt formalise la théorie constructive de l'incertitude élémentaire dimensionnelle sur réseaux discrets finis :
+Les 68 modules de [NavaRobertsonIndependent/Mathematics/](NavaRobertsonIndependent/Mathematics) (`D0` à `D57`) compilent sur Mathlib et Physlib ; [`Verification/Layer1_Mathematics.lean`](Verification/Layer1_Mathematics.lean) vérifie la clôture des imports et imprime les axiomes de 152 théorèmes principaux : seulement `propext`, `Classical.choice`, `Quot.sound`. Les certificats numériques (H₄, bandes de vitesse) sont dans la cible séparée [NavaRobertsonCertificados/](NavaRobertsonCertificados), vérifiée par [`Verification/Certificados.lean`](Verification/Certificados.lean).
 
-* La construction du cube tridimensionnel repose sur [`NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean`](NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean) (`prodAlong`, `liftAlong`).
-* L'orthogonalité des axes est établie dans [`NavaRobertsonIndependent/Mathematics/D37d_CubePythagoras.lean`](NavaRobertsonIndependent/Mathematics/D37d_CubePythagoras.lean) (`orthogonal_axes_xy`, `inner_prod3`).
-* L'angle intrinsèque est défini dans [`NavaRobertsonIndependent/Mathematics/D37b_NRSAngle.lean`](NavaRobertsonIndependent/Mathematics/D37b_NRSAngle.lean) (`angleNRS`).
-* Le quantum volumétrique est formalisé dans [`NavaRobertsonIndependent/Mathematics/D37e_VolumetricQuantum.lean`](NavaRobertsonIndependent/Mathematics/D37e_VolumetricQuantum.lean) (`volQuantum`).
-* La croissance stricte est certifiée dans [`NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean`](NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean) (`CoherenceConstant_strictMonoOn_ge_four`).
-* Le comportement asymptotique est établi dans [`NavaRobertsonIndependent/Mathematics/D8_Szego.lean`](NavaRobertsonIndependent/Mathematics/D8_Szego.lean) (`szego_limit_CoherenceConstant`).
+La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, graphe chemin, tension maximale, Fiedler, Niven, Szegő, monotonie, puis l’inégalité NRS et son instance `T_d : P_d` ; `D37` et `D49c` la portent sur le cube.
 
 ---
 
-## 📐 Chaîne déductive en six étapes
+## 📐 Chaîne déductive en huit étapes
 
-### Étape 1 : Paire canonique transport-position et saturation sur la chaîne
+<div align="center">
+<img src="assets/plaque_nrs_etapes.png" alt="Les huit étapes : Cauchy–Gram, graphe chemin, tension maximale, Niven, Szegő et monotonie, inégalité NRS, instance T_d : P_d, cube" width="860">
+</div>
 
-> **Proposition 1.1 (Saturation en dimension d ≤ 3).** Sur la chaîne ouverte à d positions, la constante d'incertitude vérifie C_N(d) = 1 si et seulement si d = 2 ou d = 3. Pour tout d ≥ 4, C_N(d) > 1.
+### Étape 1 : Cauchy–Gram et Robertson–Schrödinger
 
-*Module formel (saturation) :* [`NavaRobertsonIndependent/Mathematics/D20_GramStepCoherenceConstant.lean`](NavaRobertsonIndependent/Mathematics/D20_GramStepCoherenceConstant.lean) (`CoherenceConstant_eq_one_iff`).  
-*Module formel (inégalité) :* [`NavaRobertsonIndependent/Mathematics/D21_ElementalNRSInequality.lean`](NavaRobertsonIndependent/Mathematics/D21_ElementalNRSInequality.lean) (`CoherenceConstant_eq_one_add_geometricGap`, `maxCurrentState`).  
-*Physlib :* PR #1718, PR #1723.
+> **Proposition 1.1.** L’inégalité de Cauchy–Schwarz sur les vecteurs centrés Ãψ, B̃ψ donne Robertson–Schrödinger ; l’égalité a lieu si et seulement si le défaut de Gram ‖Ãψ‖²‖B̃ψ‖² − |⟨Ãψ, B̃ψ⟩|² est nul.
 
----
+<div align="center"><img src="assets/plaque_nrs_etape1.png" alt="Robertson–Schrödinger par Cauchy–Gram et l’égalité comme défaut de Gram nul" width="860"></div>
 
-### Étape 2 : Le cube tridimensionnel ouvert et commutation des axes
-
-> **Proposition 2.1 (Commutation des observables axiales).** Les opérateurs de position et de saut projetés le long d'axes directionnels orthogonaux commutent identiquement sur l'espace produit tensoriel.
-
-*Module formel (cube) :* [`NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean`](NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean) (`prodAlong`, `liftAlong`, `inner_prodAlong`).  
-*Module formel (orthogonalité) :* [`NavaRobertsonIndependent/Mathematics/D37d_CubePythagoras.lean`](NavaRobertsonIndependent/Mathematics/D37d_CubePythagoras.lean) (`orthogonal_axes_xy`, `orthogonal_axes_xz`, `inner_prod3`).  
-*Physlib :* PR #1699, PR #1725, PR #1986.
+*Module formel :* [`D1_CauchyGramInequality.lean`](NavaRobertsonIndependent/Mathematics/D1_CauchyGramInequality.lean) (`gramDefectC_nonneg`, `robertsonSchrodinger_from_gram`, `robertsonSchrodinger_saturated_iff_gram_zero`).  
+*Module formel :* [`D2_Robertson.lean`](NavaRobertsonIndependent/Mathematics/D2_Robertson.lean) (`schrodingerFloor_le_mul`).
 
 ---
 
-### Étape 3 : Décomposition spectrale et fibres directionnelles
+### Étape 2 : Le graphe chemin
 
-> **Proposition 3.1 (Décomposition du spectre tensoriel).** Toute fonction propre de transport sur le cube se décompose en produit d'états propres unidimensionnels, avec contrôle uniforme de tension spectrale.
+> **Proposition 2.1.** Les pas minimaux entre positions sont exactement les arêtes de `pathGraph d` ; le transport T_d n’agit que sur ces arêtes et la position P_d est diagonale. La localité ordonnée et la complétude forcent le graphe à être le chemin.
 
-*Module formel (spectre) :* [`NavaRobertsonIndependent/Mathematics/D37c_CubeSpectrum.lean`](NavaRobertsonIndependent/Mathematics/D37c_CubeSpectrum.lean) (`eigenvector_lift`, `fiber_tension`, `tension_lift_le`).  
-*Physlib :* PR #1717, PR #1725.
+<div align="center"><img src="assets/plaque_nrs_etape2.png" alt="Les pas minimaux sont les arêtes du graphe chemin ; T_d sur les arêtes, P_d diagonale" width="860"></div>
 
----
-
-### Étape 4 : L'angle d'incertitude et le quantum volumétrique
-
-> **Proposition 4.1 (Positivité du quantum volumétrique).** L'angle θ_NRS(d) = arccos(1/C_N(d)) est nul si et seulement si d ≤ 3. Le volume du tenseur de déformation volQuantum(dx, dy, dz) est strictement positif dès que chaque coordonnée satisfait d ≥ 4.
-
-*Module formel (angle) :* [`NavaRobertsonIndependent/Mathematics/D37b_NRSAngle.lean`](NavaRobertsonIndependent/Mathematics/D37b_NRSAngle.lean) (`angleNRS`, `angleNRS_eq`, `angleNRS_eq_zero_iff`, `angleNRS_pos`).  
-*Module formel (volume) :* [`NavaRobertsonIndependent/Mathematics/D37e_VolumetricQuantum.lean`](NavaRobertsonIndependent/Mathematics/D37e_VolumetricQuantum.lean) (`volQuantum`, `volQuantum_nonneg`, `volQuantum_eq_zero_iff`, `volQuantum_pos`, `volQuantum_floor`).  
-*Physlib :* PR #1756.
+*Module formel :* [`D3_PathGraph.lean`](NavaRobertsonIndependent/Mathematics/D3_PathGraph.lean) (`minStep_iff_adj`, `Td_eq_zero_of_not_adj`, `Pd_eq_zero_offdiag`, `graph_eq_pathGraph`).
 
 ---
 
-### Étape 5 : Symétrie octaédrique et classification des déformations
+### Étape 3 : La tension maximale et Fiedler
 
-> **Proposition 5.1 (Partition orbitale des boîtes finies).** Le groupe octaédrique permute les directions du cube en préservant la norme d'état. L'espace des boîtes finies se partitionne en trois familles géométriques disjointes (régulières, deux côtés égaux, ou trois côtés distincts).
+> **Proposition 3.1.** Les modes sinus donnent tout le spectre 2 cos(kπ/(d+1)) de la matrice d’adjacence A_d. La tension K_d = i[T_d, P_d] est non nulle pour d ≥ 2 ; son rayon spectral 2/(d − 1) est atteint par l’état de courant maximal, qui n’a aucune coordonnée nulle.
 
-*Module formel (symétrie) :* [`NavaRobertsonIndependent/Mathematics/D37h_OctahedralSymmetry.lean`](NavaRobertsonIndependent/Mathematics/D37h_OctahedralSymmetry.lean) (`permState`, `inner_permState`).  
-*Module formel (familles) :* [`NavaRobertsonIndependent/Mathematics/D37i_BoxFamilies.lean`](NavaRobertsonIndependent/Mathematics/D37i_BoxFamilies.lean) (`family_partition`, `axisStab`, `IsRegular`, `IsTwoEqual`, `IsDistinct`).
+<div align="center"><img src="assets/plaque_nrs_etape3.png" alt="Spectre du graphe chemin, tension non nulle et rayon spectral deux sur d moins un" width="860"></div>
 
----
-
-### Étape 6 : Monotonie analytique stricte et asymptote de Szegő
-
-> **Proposition 6.1 (Croissance stricte et borne supérieure).** La constante C_N(d) est strictement croissante en d pour tout d ≥ 4, et converge vers C_N^∞ = √(π²/3 − 2).
-
-*Module formel (monotonie) :* [`NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean`](NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean) (`CoherenceConstantSq_strictMonoOn_ge_four`, `CoherenceConstant_strictMonoOn_ge_four`, `geometricGap_strictMonoOn_ge_four`, `CoherenceConstant_lt_CoherenceConstantInf`).  
-*Module formel (limite) :* [`NavaRobertsonIndependent/Mathematics/D8_Szego.lean`](NavaRobertsonIndependent/Mathematics/D8_Szego.lean) (`CoherenceConstantSq_closed_form`, `tendsto_CoherenceConstantSq`, `szego_limit_CoherenceConstant`).  
-*Physlib :* PR #1732, PR #1734, PR #1735.
+*Module formel :* [`D5_MaximalTension.lean`](NavaRobertsonIndependent/Mathematics/D5_MaximalTension.lean) (`extremalState_attains_specRadius`, `fiedlerVec_apply_ne_zero`, `KdOp_ne_zero`).  
+*Module formel :* [`D6_Fiedler.lean`](NavaRobertsonIndependent/Mathematics/D6_Fiedler.lean) (`eigenvalueAd_exhausts_spectrum`, `KdOp_fiedlerVec`, `specRadius_KdOp_eq_step`).
 
 ---
 
-## 🔬 Tableau des contributions Physlib fusionnées
+### Étape 4 : Niven
 
-| PR Physlib | Fichier amont (`PhyslibAlpha/…`) | Énoncé formel principal | Module local | Statut |
-|:---:|:---|:---|:---:|:---:|
-| **#1699** | `FiniteTarget/Product` | Commutation des opérateurs entre coordonnées distinctes | `D37` | **MERGED** |
-| **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ssi N = 2, 3 | `D21` | **MERGED** |
-| **#1723** | `TightBindingChain/ElementalUncertainty` | Forme fermée du produit de variance et défaut | `D21` | **MERGED** |
-| **#1717** | `FiniteTarget/ProductState` | Statistiques coordonnées sur états produits | `D37` | **MERGED** |
-| **#1725** | `TightBindingChain/Cube` | Commutation des axes et inégalité sur le cube | `D37` | **MERGED** |
-| **#1732** | `TightBindingChain/MaxCurrentVariances` | Expression fermée exacte de C_N² | `D20` | **MERGED** |
-| **#1734** | `TightBindingChain/LongChainLimit` | Convergence vers la limite de Szegő √(π²/3 − 2) | `D8` | **MERGED** |
-| **#1735** | `TightBindingChain/LongChainMonotonicity` | Monotonie stricte de C_N à partir de 4 positions | `D9` | **MERGED** |
-| **#1756** | `TightBindingChain/VolumetricQuantum` | Angle θ_NRS et quantum volumétrique non nul | `D37b`, `D37e` | **MERGED** |
-| **#1986** | `TightBindingChain/Cube` | Commutation stricte des observables axiales | `D37` | **MERGED** |
-| **#1987** | `TightBindingChain/Cube` | Coordination combinatoire Δ = 12 du réseau | `D37` | **MERGED** |
+> **Proposition 4.1.** cos²(π/(d+1)) = (d − 1)/4 si et seulement si d = 2 ou d = 3 ; il n’y a pas de saturation pour d ≥ 4.
+
+<div align="center"><img src="assets/plaque_nrs_etape4.png" alt="L’équation de Niven : cosinus carré de pi sur d plus un égale d moins un sur quatre si et seulement si d vaut 2 ou 3" width="860"></div>
+
+*Module formel :* [`D7_Niven.lean`](NavaRobertsonIndependent/Mathematics/D7_Niven.lean) (`saturation_iff`, `not_saturated_of_four_le`).
 
 ---
 
-## 🏛️ Le Mosaïque des développements satellites
+### Étape 5 : Szegő et la monotonie
 
-Les prolongements thématiques spécialisés sont maintenus dans leurs dépôts respectifs, chacun doté de sa propre suite de preuves Lean 4 :
+> **Proposition 5.1.** C_N(d)² a une forme fermée en θ_d = π/(d+1) ; C_N(d) tend vers C_N^∞ = √(π²/3 − 2), avec δ_∞ = C_N^∞ − 1 > 0. Pour d ≥ 4, C_N est strictement croissante et 1 < C_N(d) < C_N^∞.
 
-| Dépôt | Thématique et objet central |
+<div align="center"><img src="assets/plaque_nrs_etape5.png" alt="Forme fermée de C_N au carré, limite de Szegő et croissance stricte dès d = 4" width="860"></div>
+
+*Module formel :* [`D8_Szego.lean`](NavaRobertsonIndependent/Mathematics/D8_Szego.lean) (`tendsto_CoherenceConstant`, `deltaInf_pos`, `geometricGap_pos_of_four_le`).  
+*Module formel :* [`D9_Monotonicity.lean`](NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean) (`CoherenceConstant_strictMonoOn_ge_four`, `CoherenceConstant_lt_CoherenceConstantInf`, `geometricGap_lt_deltaInf`).
+
+---
+
+### Étape 6 : L’inégalité NRS
+
+> **Théorème 6.1.** Dans l’état de courant maximal, Var T_d · Var P_d = (c_d/2)²(1 + δ(d))², et le défaut de Gram vaut (C_N(d)² − 1)/(d − 1)². L’égalité Cov² + (c_d/2)² = Var T_d · Var P_d a lieu si et seulement si d = 2 ou d = 3 ; pour d ≥ 4 l’inégalité est stricte, en tout état de tension maximale.
+
+<div align="center"><img src="assets/plaque_nrs_etape6.png" alt="La relation NRS, le défaut de Gram, la saturation en d = 2, 3 et la rupture dès d = 4" width="860"></div>
+
+*Module formel :* [`D20_GramStepCoherenceConstant.lean`](NavaRobertsonIndependent/Mathematics/D20_GramStepCoherenceConstant.lean) (`gramStep_product`, `gramStep_gram`).  
+*Module formel :* [`D21_ElementalNRSInequality.lean`](NavaRobertsonIndependent/Mathematics/D21_ElementalNRSInequality.lean) (`variance_mul_variance`, `saturation_iff`, `strict_inequality`, `strict_inequality_of_maxTension`).
+
+---
+
+### Étape 7 : L’instance T_d : P_d et les vecteurs propres
+
+> **Proposition 7.1.** L’instance position–transport sur T_d : P_d a un défaut strictement positif dès d = 4. Un vecteur propre de A − iλB (λ réel) sature Robertson–Schrödinger, mais pour d ≥ 4 aucun vecteur propre de T_d − iλP_d n’a la tension maximale ; dès que ⟨K_d⟩ ≠ 0, Var T_d · Var P_d ≥ ⟨K_d⟩²/4 > 0.
+
+<div align="center"><img src="assets/plaque_nrs_etape7.png" alt="Saturation des vecteurs propres, absence de tension maximale pour d ≥ 4 et borne positive" width="860"></div>
+
+*Module formel :* [`D22_TransportPositionInstanceTdPd.lean`](NavaRobertsonIndependent/Mathematics/D22_TransportPositionInstanceTdPd.lean) (`positionTransportTdPd`, `defect_pos_TdPd`).  
+*Module formel :* [`D23_EigenvectorSaturation.lean`](NavaRobertsonIndependent/Mathematics/D23_EigenvectorSaturation.lean) (`saturation_of_eigenvector`, `eigenvector_not_maxTension`, `variance_mul_variance_pos`).
+
+---
+
+### Étape 8 : Le cube RS^N³
+
+> **Théorème 8.1.** Sur le cube Hd_x ⊗ Hd_y ⊗ Hd_z, les observables d’axes différents commutent. Dans l’état de courant maximal du cube, chaque axe sature si et seulement s’il a 2 ou 3 positions, et la relation est stricte sur les trois axes dès d_x, d_y, d_z ≥ 4. Le déterminant de covariance des six observables vaut (C_N(d_x) C_N(d_y) C_N(d_z))² (t_x t_y t_z / 8)², où t est la tension de chaque axe ; l’angle NRS vérifie cos θ_NRS(d) = 1/C_N(d), et le quantum volumétrique est δ(d_x) δ(d_y) δ(d_z).
+
+<div align="center"><img src="assets/plaque_nrs_etape8.png" alt="Commutation des axes, saturation par axe, déterminant de covariance du cube, angle NRS et quantum volumétrique" width="860"></div>
+
+*Module formel :* [`D37_PathGraph3D.lean`](NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean) (`commutator_axes_xy`, `saturation_cube`, `strict_cube`).  
+*Module formel :* [`D49c_RobertsonDeterminantProduct.lean`](NavaRobertsonIndependent/Mathematics/D49c_RobertsonDeterminantProduct.lean) (`det_covMatrix_maxCurrentCubeState`, `robertson_det_maxCurrentCubeState_strict`).  
+*Module formel :* [`D37b_NRSAngle.lean`](NavaRobertsonIndependent/Mathematics/D37b_NRSAngle.lean) (`cos_angleNRS`, `angleNRS_eq_zero_iff`).  
+*Module formel :* [`D37e_VolumetricQuantum.lean`](NavaRobertsonIndependent/Mathematics/D37e_VolumetricQuantum.lean) (`volQuantum`).
+
+---
+
+## 🧭 Au-delà de la chaîne
+
+Les autres modules du dépôt, chacun sous le titre de son propre fichier :
+
+| Module | Titre |
 |:---|:---|
-| [**Physlib: PRs fusionnées**](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) | L'ensemble des résultats de la chaîne et du cube intégrés en amont |
-| [`nrs3-hopf`](https://github.com/naype888-cloud/nrs3-hopf) | Fibration de Hopf S³ → S² et géométrie spinorielle |
-| [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temporelle orthogonale et efficacité de Cramér–Rao |
-| [`nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Coût de dissipation thermodynamique et limite de Carnot |
-| [`nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | Entropie d'horizon et paramètre de courbure |
-| [`nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Temps caractéristique de réduction quantique |
-| [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) | Matrices de spin de Pauli et représentations de Clifford |
-| [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Géométrie de Minkowski induite par la matrice de Gram |
-| [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) | Quantification discrète selon Poincaré (1912) |
-| [`nrs3-defect-curvature`](https://github.com/naype888-cloud/nrs3-defect-curvature) | Quanta de courbure sur surfaces de Riemann fermées |
-| [`nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Spectre d'aire et géométrie quantique à boucles |
-| [`nrs3-dark`](https://github.com/naype888-cloud/nrs3-dark) | Part non résolue par la lumière et fraction volumétrique |
-| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | Le cube ouvert multidimensionnel généralisé |
+| [D10](NavaRobertsonIndependent/Mathematics/D10_Certificate.lean) | Certificat conjoint : Fiedler, Niven, Szegő sur H_d |
+| [D23f](NavaRobertsonIndependent/Mathematics/D23f_MinUncertaintyTensionFour.lean) | Un état d’incertitude minimale de H₄ de tension 1/φ |
+| [D24](NavaRobertsonIndependent/Mathematics/D24_GapFourAsymptote.lean) | L’écart entre `d = 4` et la limite de Szegő |
+| [D25](NavaRobertsonIndependent/Mathematics/D25_DimensionalQuantum.lean) | Le quantum dimensionnel |
+| [D28](NavaRobertsonIndependent/Mathematics/D28_BakryEmeryCurvature.lean), [D28b](NavaRobertsonIndependent/Mathematics/D28b_OllivierCurvature.lean) | Courbures de Bakry–Émery (`CD(0, 2)`, optimale) et d’Ollivier–Ricci du chemin |
+| [D37c](NavaRobertsonIndependent/Mathematics/D37c_CubeSpectrum.lean) | Le spectre du cube, axe par axe |
+| [D37f](NavaRobertsonIndependent/Mathematics/D37f_LightCone.lean), [D37g](NavaRobertsonIndependent/Mathematics/D37g_LiebRobinson.lean) | Le cône de lumière du transport ; borne de Lieb–Robinson |
+| [D40](NavaRobertsonIndependent/Mathematics/D40_SpeedLimitUncertainty.lean), [D41](NavaRobertsonIndependent/Mathematics/D41_MandelstamTammCramerRao.lean) | La vitesse limite exclut l’incertitude minimale ; Mandelstam–Tamm et Cramér–Rao sur `T_d : P_d` |
+| [D49](NavaRobertsonIndependent/Mathematics/D49_RobertsonDeterminant.lean), [D49g](NavaRobertsonIndependent/Mathematics/D49g_RobertsonDeterminantEquality.lean) | Robertson 1934 pour plusieurs observables, et son cas d’égalité |
+| [D16c](NavaRobertsonIndependent/Mathematics/D16c_DefectExcitation.lean) … [D16i](NavaRobertsonIndependent/Mathematics/D16i_CutHorizon.lean) | Le défaut transporté : excitation, cycles des liens non locaux, entropie et horizon d’une coupe |
+| [D26a](NavaRobertsonIndependent/Mathematics/D26a_OmegaFromPi.lean) | `g_s e^{−1/C_N^∞}` à partir de `π`, avec un encadrement rationnel |
+
+Le pont avec Physlib est [`PhyslibBridge.lean`](NavaRobertsonIndependent/Mathematics/PhyslibBridge.lean) (`robertson_schrodinger_eq_D21`).
+
+---
+
+## 🔬 Contributions Physlib fusionnées
+
+| PR Physlib | Fichier amont (`PhyslibAlpha/…`) | Énoncé formel principal | Module local |
+|:---:|:---|:---|:---:|
+| **#2096** | `TightBindingChain/Open/Basic` | La chaîne ouverte est le saut de `pathGraph` | `D3` |
+| **#1716** | `TightBindingChain/MaxCurrentState` | L’état de courant maximal | `D5` |
+| **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ⟺ N = 2, 3 | `D21` |
+| **#1723** | `TightBindingChain/ElementalUncertainty` | Produit des variances et défaut | `D21` |
+| **#1732** | `TightBindingChain/MaxCurrentVariances` | Forme fermée de C_N² | `D20` |
+| **#1734** | `TightBindingChain/LongChainLimit` | C_N → √(π²/3 − 2) | `D8` |
+| **#1735** | `TightBindingChain/LongChainMonotonicity` | Monotonie stricte de C_N dès 4 positions | `D9` |
+| **#1699**, **#1717** | `FiniteTarget/Product`, `ProductState` | Opérateurs sur une coordonnée, états produits | `D37` |
+| **#1725** | `TightBindingChain/Cube` | Le cube ouvert, axes qui commutent | `D37` |
+| **#1742** | `TightBindingChain/Cube` (E–F) | Déterminant de Robertson du cube | `D49c` |
+| **#1756** | `TightBindingChain/VolumetricQuantum` | Angle NRS et quantum volumétrique | `D37b`, `D37e` |
+| **#1986** | `TightBindingChain/Cube/AxisCommutation` | Deux observables commutent ⟺ axes différents | `D37` |
+
+La liste complète, chemin par chemin, est dans [lean4-commits](https://github.com/naype888-cloud/lean4-commits).
+
+---
+
+## 🏛️ La mosaïque
+
+| Dépôt | Objet |
+|:---|:---|
+| [lean4-commits](https://github.com/naype888-cloud/lean4-commits) | Tout le travail en Lean 4 : les huit chemins fusionnés dans Physlib |
+| [nrs3-tightbinding](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique |
+| [nrs3-cristales](https://github.com/naype888-cloud/nrs3-cristales) | Symétrie, spectre et le pas d’axe : fcc et bcc |
+| [nrs3-hidrogeno](https://github.com/naype888-cloud/nrs3-hidrogeno) | L’atome d’hydrogène sur les sites entiers du cube |
+| [nrs3-uncertainty-cone](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | La matrice de Gram d’une paire conjuguée est un quadrivecteur de Minkowski |
+| [nrs3-mandelstam-tamm-cramer-rao](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temps–énergie et Cramér–Rao |
+| [nrs3-pauli-dirac](https://github.com/naype888-cloud/nrs3-pauli-dirac) | Exclusion, matrices de spin et matrices gamma |
+| [nrs3-hopf](https://github.com/naype888-cloud/nrs3-hopf) | La boîte à quatre axes, une fibre fermée sur le cube ouvert |
+| [nrs3-landauer-carnot](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Landauer et Carnot |
+| [nrs3-poincare](https://github.com/naype888-cloud/nrs3-poincare) | La loi de Planck force des niveaux discrets |
+| [nrs3-defect-curvature](https://github.com/naype888-cloud/nrs3-defect-curvature) | Chaque lien non local ferme un cycle avec un quantum |
+| [nrs3-de-sitter](https://github.com/naype888-cloud/nrs3-de-sitter) | Entropie d’horizon et constante cosmologique |
+| [nrs3-dark](https://github.com/naype888-cloud/nrs3-dark) | `1 − Ω_b`, l’intérieur du quantum volumétrique |
+| [nrs3-penrose](https://github.com/naype888-cloud/nrs3-penrose), [nrs3-rovelli-lqg](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Propositions |
 
 ---
 
 ## ⏱️ Chronologie historique (1911–1945)
 
-La formalisation résout avec les outils de la théorie des opérateurs une problématique issue de l'ère Solvay :
-
-| Année | Événement historique | Dépôt associé |
+| Année | Événement | Ici |
 |:---:|:---|:---:|
-| **1911** | Premier congrès Solvay : radiation et quanta | — |
-| **1911–12** | Poincaré : la loi de Planck impose des niveaux discrets | [`nrs3-poincare`](https://github.com/naype888-cloud/nrs3-poincare) |
-| **1915–20** | Szegő : théorèmes limites pour matrices de Toeplitz | **Dépôt central (`D8`)** |
-| **1925–27** | Pauli : principe d'exclusion et matrices de spin | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| **1927** | Relations d'incertitude de Heisenberg | — |
-| **1928** | Dirac : matrices gamma 4 × 4 | [`nrs3-pauli-dirac`](https://github.com/naype888-cloud/nrs3-pauli-dirac) |
-| **1929** | van der Waerden : spineurs et représentations de Lorentz | [`nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) |
-| **1929–30** | Robertson et Schrödinger : inégalité avec terme de covariance | **Dépôt central (`D2`)** |
-| **1934** | Robertson : déterminant d'indétermination multi-observables | **Dépôt central (`D49`)** |
-| **1945–46** | Mandelstam et Tamm : borne temps-énergie quantique | [`nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) |
+| **1915–20** | Szegő : théorèmes limites des matrices de Toeplitz | `D8` |
+| **1927** | Heisenberg : relations d’incertitude | — |
+| **1929–30** | Robertson et Schrödinger : l’inégalité avec covariance | `D1`, `D2` |
+| **1934** | Robertson : le déterminant pour plusieurs observables | `D49`, `D49c` |
+| **1945–46** | Mandelstam et Tamm : la borne temps–énergie | `D41` |
+
+**Antécédents et outils hors de la fenêtre.** Fiedler (1973), Niven (1956), Lean 4, Mathlib et Physlib.
 
 ---
 
-## 🛠️ Reproduction et vérification formelle en Lean 4
-
-Pour compiler et vérifier l'ensemble des modules formels de ce dépôt :
+## 🛠️ Compilation et certification
 
 ```bash
-# Vérification d'un fichier du corpus
-lake env lean NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean
-
-# Compilation du paquet standard
 lake build
+lake env lean Verification/Layer1_Mathematics.lean
+lake build NavaRobertsonCertificados && lake env lean Verification/Certificados.lean
 ```
-
-### Base axiomatique standard
-
-Tous les théorèmes compilent strictement sous les axiomes standards de ZFC reconnus par le noyau de Lean 4 et Mathlib :
 
 ```text
 [propext, Classical.choice, Quot.sound]
 ```
 
-* **0 `sorry`** dans l'intégralité des modules D0 à D37i et D9 (Monotonicity).
-* Aucun axiome additionnel non vérifié.
+* **0 `sorry`** ; 152 théorèmes principaux imprimés par la vérification, aucun axiome propre.
 
 ---
 
 ## 📜 Licence
 
-[NRS Noncommercial License 1.0.0](LICENSE) — Libre pour tout usage non commercial, académique et humanitaire, ainsi que pour intégration dans des bibliothèques ouvertes de vérification formelle (Mathlib, Physlib, Lean 4). Voir [LICENSE](LICENSE) pour toute utilisation commerciale.
+[NRS Noncommercial License 1.0.0](LICENSE) — libre pour tout usage non commercial, académique et humanitaire, et pour l’intégration dans des bibliothèques ouvertes de vérification formelle (Mathlib, Physlib, Lean 4).
 
 ---
 
 <div align="center">
 
-### 📐 *« L'inégalité de Robertson–Schrödinger est saturée en d ≤ 3 ; le cube discret en d ≥ 4 impose un excès d'incertitude irréductible gouverné par la limite de Szegő. »*
+### 📐 *« Robertson–Schrödinger sur T_d : P_d est une égalité exactement en d = 2, 3 ; dès d = 4 l’excès δ(d) = C_N(d) − 1 est strictement positif, croît, et reste sous la borne de Szegő. »*
 
 **Eduardo Nava Hernández** · [naype888-cloud](https://github.com/naype888-cloud)
 
