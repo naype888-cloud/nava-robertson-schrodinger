@@ -144,16 +144,16 @@ Les autres modules du dépôt, chacun sous le titre de son propre fichier :
 | Module | Titre |
 |:---|:---|
 | [D10](NavaRobertsonIndependent/Mathematics/D10_Certificate.lean) | Certificat conjoint : Fiedler, Niven, Szegő sur H_d |
+| [D16c](NavaRobertsonIndependent/Mathematics/D16c_DefectExcitation.lean) … [D16i](NavaRobertsonIndependent/Mathematics/D16i_CutHorizon.lean) | Le défaut transporté : excitation, cycles des liens non locaux, entropie et horizon d’une coupe |
 | [D23f](NavaRobertsonIndependent/Mathematics/D23f_MinUncertaintyTensionFour.lean) | Un état d’incertitude minimale de H₄ de tension 1/φ |
 | [D24](NavaRobertsonIndependent/Mathematics/D24_GapFourAsymptote.lean) | L’écart entre `d = 4` et la limite de Szegő |
 | [D25](NavaRobertsonIndependent/Mathematics/D25_DimensionalQuantum.lean) | Le quantum dimensionnel |
+| [D26a](NavaRobertsonIndependent/Mathematics/D26a_OmegaFromPi.lean) | `g_s e^{−1/C_N^∞}` à partir de `π`, avec un encadrement rationnel |
 | [D28](NavaRobertsonIndependent/Mathematics/D28_BakryEmeryCurvature.lean), [D28b](NavaRobertsonIndependent/Mathematics/D28b_OllivierCurvature.lean) | Courbures de Bakry–Émery (`CD(0, 2)`, optimale) et d’Ollivier–Ricci du chemin |
 | [D37c](NavaRobertsonIndependent/Mathematics/D37c_CubeSpectrum.lean) | Le spectre du cube, axe par axe |
 | [D37f](NavaRobertsonIndependent/Mathematics/D37f_LightCone.lean), [D37g](NavaRobertsonIndependent/Mathematics/D37g_LiebRobinson.lean) | Le cône de lumière du transport ; borne de Lieb–Robinson |
 | [D40](NavaRobertsonIndependent/Mathematics/D40_SpeedLimitUncertainty.lean), [D41](NavaRobertsonIndependent/Mathematics/D41_MandelstamTammCramerRao.lean) | La vitesse limite exclut l’incertitude minimale ; Mandelstam–Tamm et Cramér–Rao sur `T_d : P_d` |
 | [D49](NavaRobertsonIndependent/Mathematics/D49_RobertsonDeterminant.lean), [D49g](NavaRobertsonIndependent/Mathematics/D49g_RobertsonDeterminantEquality.lean) | Robertson 1934 pour plusieurs observables, et son cas d’égalité |
-| [D16c](NavaRobertsonIndependent/Mathematics/D16c_DefectExcitation.lean) … [D16i](NavaRobertsonIndependent/Mathematics/D16i_CutHorizon.lean) | Le défaut transporté : excitation, cycles des liens non locaux, entropie et horizon d’une coupe |
-| [D26a](NavaRobertsonIndependent/Mathematics/D26a_OmegaFromPi.lean) | `g_s e^{−1/C_N^∞}` à partir de `π`, avec un encadrement rationnel |
 
 Le pont avec Physlib est [`PhyslibBridge.lean`](NavaRobertsonIndependent/Mathematics/PhyslibBridge.lean) (`robertson_schrodinger_eq_D21`).
 
@@ -165,16 +165,16 @@ Le pont avec Physlib est [`PhyslibBridge.lean`](NavaRobertsonIndependent/Mathema
 |:---:|:---|:---|:---:|
 | **#2096** | `TightBindingChain/Open/Basic` | La chaîne ouverte est le saut de `pathGraph` | `D3` |
 | **#1716** | `TightBindingChain/MaxCurrentState` | L’état de courant maximal | `D5` |
-| **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ⟺ N = 2, 3 | `D21` |
-| **#1723** | `TightBindingChain/ElementalUncertainty` | Produit des variances et défaut | `D21` |
-| **#1732** | `TightBindingChain/MaxCurrentVariances` | Forme fermée de C_N² | `D20` |
 | **#1734** | `TightBindingChain/LongChainLimit` | C_N → √(π²/3 − 2) | `D8` |
 | **#1735** | `TightBindingChain/LongChainMonotonicity` | Monotonie stricte de C_N dès 4 positions | `D9` |
+| **#1732** | `TightBindingChain/MaxCurrentVariances` | Forme fermée de C_N² | `D20` |
+| **#1718** | `TightBindingChain/Saturation` | Égalité de Robertson–Schrödinger ⟺ N = 2, 3 | `D21` |
+| **#1723** | `TightBindingChain/ElementalUncertainty` | Produit des variances et défaut | `D21` |
 | **#1699**, **#1717** | `FiniteTarget/Product`, `ProductState` | Opérateurs sur une coordonnée, états produits | `D37` |
 | **#1725** | `TightBindingChain/Cube` | Le cube ouvert, axes qui commutent | `D37` |
-| **#1742** | `TightBindingChain/Cube` (E–F) | Déterminant de Robertson du cube | `D49c` |
-| **#1756** | `TightBindingChain/VolumetricQuantum` | Angle NRS et quantum volumétrique | `D37b`, `D37e` |
 | **#1986** | `TightBindingChain/Cube/AxisCommutation` | Deux observables commutent ⟺ axes différents | `D37` |
+| **#1756** | `TightBindingChain/VolumetricQuantum` | Angle NRS et quantum volumétrique | `D37b`, `D37e` |
+| **#1742** | `TightBindingChain/Cube` (E–F) | Déterminant de Robertson du cube | `D49c` |
 
 La liste complète, chemin par chemin, est dans [lean4-commits](https://github.com/naype888-cloud/lean4-commits).
 
@@ -211,7 +211,7 @@ La liste complète, chemin par chemin, est dans [lean4-commits](https://github.c
 | **1934** | Robertson : le déterminant pour plusieurs observables | `D49`, `D49c` |
 | **1945–46** | Mandelstam et Tamm : la borne temps–énergie | `D41` |
 
-**Antécédents et outils hors de la fenêtre.** Fiedler (1973), Niven (1956), Lean 4, Mathlib et Physlib.
+**Antécédents et outils hors de la fenêtre.** Niven (1956), Fiedler (1973), Lean 4, Mathlib et Physlib.
 
 ---
 
