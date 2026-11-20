@@ -22,7 +22,7 @@
 > Sur le graphe chemin à d positions, le transport T_d ne relie que des positions voisines et la position P_d est diagonale. Dans l’état de courant maximal, le produit des variances vaut exactement (c_d/2)²(1 + δ(d))², avec c_d = −2/(d − 1) et δ(d) = C_N(d) − 1. Ce qui distingue le théorème de Robertson–Schrödinger général : l’écart δ(d) est calculé en forme fermée, il est nul exactement pour d = 2, 3 et strictement positif dès d = 4.
 >
 > <div align="center">
-> <img src="assets/plaque_nrs_protagoniste.png" alt="Plaque protagoniste : la relation de Nava–Robertson–Schrödinger, la saturation en d = 2, 3, la croissance de C_N vers la racine de pi carré sur trois moins deux, et le cube" width="860">
+> <picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_protagoniste.png"><img src="assets/claro/plaque_nrs_protagoniste.png" alt="Plaque protagoniste : la relation de Nava–Robertson–Schrödinger, la saturation en d = 2, 3, la croissance de C_N vers la racine de pi carré sur trois moins deux, et le cube" width="860"></picture>
 > </div>
 >
 > **1 · Saturation exacte en d = 2, 3.** Cov(T_d, P_d)² + (c_d/2)² = Var T_d · Var P_d si et seulement si d = 2 ou d = 3 : c’est l’équation de Niven cos²(π/(d+1)) = (d − 1)/4.
@@ -46,14 +46,14 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 ## 📐 Chaîne déductive en huit étapes
 
 <div align="center">
-<img src="assets/plaque_nrs_etapes.png" alt="Les huit étapes : Cauchy–Gram, graphe chemin, tension maximale, Niven, Szegő et monotonie, inégalité NRS, instance T_d : P_d, cube" width="860">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etapes.png"><img src="assets/claro/plaque_nrs_etapes.png" alt="Les huit étapes : Cauchy–Gram, graphe chemin, tension maximale, Niven, Szegő et monotonie, inégalité NRS, instance T_d : P_d, cube" width="860"></picture>
 </div>
 
 ### Étape 1 : Cauchy–Gram et Robertson–Schrödinger
 
 > **Proposition 1.1.** L’inégalité de Cauchy–Schwarz sur les vecteurs centrés Ãψ, B̃ψ donne Robertson–Schrödinger ; l’égalité a lieu si et seulement si le défaut de Gram ‖Ãψ‖²‖B̃ψ‖² − |⟨Ãψ, B̃ψ⟩|² est nul.
 
-<div align="center"><img src="assets/plaque_nrs_etape1.png" alt="Robertson–Schrödinger par Cauchy–Gram et l’égalité comme défaut de Gram nul" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape1.png"><img src="assets/claro/plaque_nrs_etape1.png" alt="Robertson–Schrödinger par Cauchy–Gram et l’égalité comme défaut de Gram nul" width="860"></picture></div>
 
 *Module formel :* [`D1_CauchyGramInequality.lean`](NavaRobertsonIndependent/Mathematics/D1_CauchyGramInequality.lean) (`gramDefectC_nonneg`, `robertsonSchrodinger_from_gram`, `robertsonSchrodinger_saturated_iff_gram_zero`).  
 *Module formel :* [`D2_Robertson.lean`](NavaRobertsonIndependent/Mathematics/D2_Robertson.lean) (`schrodingerFloor_le_mul`).
@@ -64,7 +64,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Proposition 2.1.** Les pas minimaux entre positions sont exactement les arêtes de `pathGraph d` ; le transport T_d n’agit que sur ces arêtes et la position P_d est diagonale. La localité ordonnée et la complétude forcent le graphe à être le chemin.
 
-<div align="center"><img src="assets/plaque_nrs_etape2.png" alt="Les pas minimaux sont les arêtes du graphe chemin ; T_d sur les arêtes, P_d diagonale" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape2.png"><img src="assets/claro/plaque_nrs_etape2.png" alt="Les pas minimaux sont les arêtes du graphe chemin ; T_d sur les arêtes, P_d diagonale" width="860"></picture></div>
 
 *Module formel :* [`D3_PathGraph.lean`](NavaRobertsonIndependent/Mathematics/D3_PathGraph.lean) (`minStep_iff_adj`, `Td_eq_zero_of_not_adj`, `Pd_eq_zero_offdiag`, `graph_eq_pathGraph`).
 
@@ -74,7 +74,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Proposition 3.1.** Les modes sinus donnent tout le spectre 2 cos(kπ/(d+1)) de la matrice d’adjacence A_d. La tension K_d = i[T_d, P_d] est non nulle pour d ≥ 2 ; son rayon spectral 2/(d − 1) est atteint par l’état de courant maximal, qui n’a aucune coordonnée nulle.
 
-<div align="center"><img src="assets/plaque_nrs_etape3.png" alt="Spectre du graphe chemin, tension non nulle et rayon spectral deux sur d moins un" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape3.png"><img src="assets/claro/plaque_nrs_etape3.png" alt="Spectre du graphe chemin, tension non nulle et rayon spectral deux sur d moins un" width="860"></picture></div>
 
 *Module formel :* [`D5_MaximalTension.lean`](NavaRobertsonIndependent/Mathematics/D5_MaximalTension.lean) (`extremalState_attains_specRadius`, `fiedlerVec_apply_ne_zero`, `KdOp_ne_zero`).  
 *Module formel :* [`D6_Fiedler.lean`](NavaRobertsonIndependent/Mathematics/D6_Fiedler.lean) (`eigenvalueAd_exhausts_spectrum`, `KdOp_fiedlerVec`, `specRadius_KdOp_eq_step`).
@@ -85,7 +85,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Proposition 4.1.** cos²(π/(d+1)) = (d − 1)/4 si et seulement si d = 2 ou d = 3 ; il n’y a pas de saturation pour d ≥ 4.
 
-<div align="center"><img src="assets/plaque_nrs_etape4.png" alt="L’équation de Niven : cosinus carré de pi sur d plus un égale d moins un sur quatre si et seulement si d vaut 2 ou 3" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape4.png"><img src="assets/claro/plaque_nrs_etape4.png" alt="L’équation de Niven : cosinus carré de pi sur d plus un égale d moins un sur quatre si et seulement si d vaut 2 ou 3" width="860"></picture></div>
 
 *Module formel :* [`D7_Niven.lean`](NavaRobertsonIndependent/Mathematics/D7_Niven.lean) (`saturation_iff`, `not_saturated_of_four_le`).
 
@@ -95,7 +95,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Proposition 5.1.** C_N(d)² a une forme fermée en θ_d = π/(d+1) ; C_N(d) tend vers C_N^∞ = √(π²/3 − 2), avec δ_∞ = C_N^∞ − 1 > 0. Pour d ≥ 4, C_N est strictement croissante et 1 < C_N(d) < C_N^∞.
 
-<div align="center"><img src="assets/plaque_nrs_etape5.png" alt="Forme fermée de C_N au carré, limite de Szegő et croissance stricte dès d = 4" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape5.png"><img src="assets/claro/plaque_nrs_etape5.png" alt="Forme fermée de C_N au carré, limite de Szegő et croissance stricte dès d = 4" width="860"></picture></div>
 
 *Module formel :* [`D8_Szego.lean`](NavaRobertsonIndependent/Mathematics/D8_Szego.lean) (`tendsto_CoherenceConstant`, `deltaInf_pos`, `geometricGap_pos_of_four_le`).  
 *Module formel :* [`D9_Monotonicity.lean`](NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean) (`CoherenceConstant_strictMonoOn_ge_four`, `CoherenceConstant_lt_CoherenceConstantInf`, `geometricGap_lt_deltaInf`).
@@ -106,7 +106,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Théorème 6.1.** Dans l’état de courant maximal, Var T_d · Var P_d = (c_d/2)²(1 + δ(d))², et le défaut de Gram vaut (C_N(d)² − 1)/(d − 1)². L’égalité Cov² + (c_d/2)² = Var T_d · Var P_d a lieu si et seulement si d = 2 ou d = 3 ; pour d ≥ 4 l’inégalité est stricte, en tout état de tension maximale.
 
-<div align="center"><img src="assets/plaque_nrs_etape6.png" alt="La relation NRS, le défaut de Gram, la saturation en d = 2, 3 et la rupture dès d = 4" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape6.png"><img src="assets/claro/plaque_nrs_etape6.png" alt="La relation NRS, le défaut de Gram, la saturation en d = 2, 3 et la rupture dès d = 4" width="860"></picture></div>
 
 *Module formel :* [`D20_GramStepCoherenceConstant.lean`](NavaRobertsonIndependent/Mathematics/D20_GramStepCoherenceConstant.lean) (`gramStep_product`, `gramStep_gram`).  
 *Module formel :* [`D21_ElementalNRSInequality.lean`](NavaRobertsonIndependent/Mathematics/D21_ElementalNRSInequality.lean) (`variance_mul_variance`, `saturation_iff`, `strict_inequality`, `strict_inequality_of_maxTension`).
@@ -117,7 +117,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Proposition 7.1.** L’instance position–transport sur T_d : P_d a un défaut strictement positif dès d = 4. Un vecteur propre de A − iλB (λ réel) sature Robertson–Schrödinger, mais pour d ≥ 4 aucun vecteur propre de T_d − iλP_d n’a la tension maximale ; dès que ⟨K_d⟩ ≠ 0, Var T_d · Var P_d ≥ ⟨K_d⟩²/4 > 0.
 
-<div align="center"><img src="assets/plaque_nrs_etape7.png" alt="Saturation des vecteurs propres, absence de tension maximale pour d ≥ 4 et borne positive" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape7.png"><img src="assets/claro/plaque_nrs_etape7.png" alt="Saturation des vecteurs propres, absence de tension maximale pour d ≥ 4 et borne positive" width="860"></picture></div>
 
 *Module formel :* [`D22_TransportPositionInstanceTdPd.lean`](NavaRobertsonIndependent/Mathematics/D22_TransportPositionInstanceTdPd.lean) (`positionTransportTdPd`, `defect_pos_TdPd`).  
 *Module formel :* [`D23_EigenvectorSaturation.lean`](NavaRobertsonIndependent/Mathematics/D23_EigenvectorSaturation.lean) (`saturation_of_eigenvector`, `eigenvector_not_maxTension`, `variance_mul_variance_pos`).
@@ -128,7 +128,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 > **Théorème 8.1.** Sur le cube Hd_x ⊗ Hd_y ⊗ Hd_z, les observables d’axes différents commutent. Dans l’état de courant maximal du cube, chaque axe sature si et seulement s’il a 2 ou 3 positions, et la relation est stricte sur les trois axes dès d_x, d_y, d_z ≥ 4. Le déterminant de covariance des six observables vaut (C_N(d_x) C_N(d_y) C_N(d_z))² (t_x t_y t_z / 8)², où t est la tension de chaque axe ; l’angle NRS vérifie cos θ_NRS(d) = 1/C_N(d), et le quantum volumétrique est δ(d_x) δ(d_y) δ(d_z).
 
-<div align="center"><img src="assets/plaque_nrs_etape8.png" alt="Commutation des axes, saturation par axe, déterminant de covariance du cube, angle NRS et quantum volumétrique" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_nrs_etape8.png"><img src="assets/claro/plaque_nrs_etape8.png" alt="Commutation des axes, saturation par axe, déterminant de covariance du cube, angle NRS et quantum volumétrique" width="860"></picture></div>
 
 *Module formel :* [`D37_PathGraph3D.lean`](NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean) (`commutator_axes_xy`, `saturation_cube`, `strict_cube`).  
 *Module formel :* [`D49c_RobertsonDeterminantProduct.lean`](NavaRobertsonIndependent/Mathematics/D49c_RobertsonDeterminantProduct.lean) (`det_covMatrix_maxCurrentCubeState`, `robertson_det_maxCurrentCubeState_strict`).  
