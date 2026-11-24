@@ -1,3 +1,5 @@
+<div lang="fr">
+
 <div align="center">
 
 # RS<sup>N</sup> et RS<sup>N</sup>³ · L’incertitude élémentaire dimensionnelle
@@ -180,25 +182,44 @@ La liste complète, chemin par chemin, est dans [lean4-commits](https://github.c
 
 ---
 
+## 📚 Catalogue des modules Lean
+
+| Module | Déclaration principale | Signification | `sorry` |
+|:---|:---|:---|:---:|
+| [`D1_CauchyGramInequality.lean`](NavaRobertsonIndependent/Mathematics/D1_CauchyGramInequality.lean) | `robertsonSchrodinger_from_gram` | Robertson–Schrödinger par Cauchy–Gram | 0 |
+| [`D3_PathGraph.lean`](NavaRobertsonIndependent/Mathematics/D3_PathGraph.lean) | `graph_eq_pathGraph` | Localité et complétude forcent le graphe chemin | 0 |
+| [`D6_Fiedler.lean`](NavaRobertsonIndependent/Mathematics/D6_Fiedler.lean) | `specRadius_KdOp_eq_step` | Spectre du graphe chemin et rayon spectral `2/(d − 1)` | 0 |
+| [`D7_Niven.lean`](NavaRobertsonIndependent/Mathematics/D7_Niven.lean) | `saturation_iff` | Équation de Niven : saturation ⟺ `d = 2` ou `d = 3` | 0 |
+| [`D8_Szego.lean`](NavaRobertsonIndependent/Mathematics/D8_Szego.lean) | `tendsto_CoherenceConstant` | Limite universelle `C_N(d) → √(π²/3 − 2)` | 0 |
+| [`D9_Monotonicity.lean`](NavaRobertsonIndependent/Mathematics/D9_Monotonicity.lean) | `CoherenceConstant_strictMonoOn_ge_four` | Croissance stricte dès `d = 4` | 0 |
+| [`D21_ElementalNRSInequality.lean`](NavaRobertsonIndependent/Mathematics/D21_ElementalNRSInequality.lean) | `strict_inequality_of_maxTension` | Inégalité NRS stricte dès `d = 4` | 0 |
+| [`D22_TransportPositionInstanceTdPd.lean`](NavaRobertsonIndependent/Mathematics/D22_TransportPositionInstanceTdPd.lean) | `defect_pos_TdPd` | Défaut positif sur l’instance `T_d : P_d` | 0 |
+| [`D37_PathGraph3D.lean`](NavaRobertsonIndependent/Mathematics/D37_PathGraph3D.lean) | `strict_cube` | Cube `RS^N³` strict dès `4 × 4 × 4` | 0 |
+| [`D49c_RobertsonDeterminantProduct.lean`](NavaRobertsonIndependent/Mathematics/D49c_RobertsonDeterminantProduct.lean) | `robertson_det_maxCurrentCubeState_strict` | Déterminant de Robertson strict sur le cube | 0 |
+| [`Verification/Layer1_Mathematics.lean`](Verification/Layer1_Mathematics.lean) | `#print axioms` | 152 théorèmes sous `[propext, Classical.choice, Quot.sound]` | 0 |
+
+---
+
 ## 🏛️ La mosaïque
 
 | Dépôt | Objet |
 |:---|:---|
-| [lean4-commits](https://github.com/naype888-cloud/lean4-commits) | Tout le travail en Lean 4 : les huit chemins fusionnés dans Physlib |
-| [nrs3-tightbinding](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique |
-| [nrs3-cristales](https://github.com/naype888-cloud/nrs3-cristales) | Symétrie, spectre et le pas d’axe : fcc et bcc |
-| [nrs3-hidrogeno](https://github.com/naype888-cloud/nrs3-hidrogeno) | L’atome d’hydrogène sur les sites entiers du cube |
-| [nrs3-uncertainty-cone](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | La matrice de Gram d’une paire conjuguée est un quadrivecteur de Minkowski |
-| [nrs3-mandelstam-tamm-cramer-rao](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Borne temps–énergie et Cramér–Rao |
-| [nrs3-pauli-dirac](https://github.com/naype888-cloud/nrs3-pauli-dirac) | Exclusion, matrices de spin et matrices gamma |
-| [nrs3-hopf](https://github.com/naype888-cloud/nrs3-hopf) | La boîte à quatre axes, une fibre fermée sur le cube ouvert |
-| [nrs3-landauer-carnot](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Landauer et Carnot |
-| [nrs3-poincare](https://github.com/naype888-cloud/nrs3-poincare) | La loi de Planck force des niveaux discrets |
-| [nrs3-defect-curvature](https://github.com/naype888-cloud/nrs3-defect-curvature) | Chaque lien non local ferme un cycle avec un quantum |
-| [nrs3-de-sitter](https://github.com/naype888-cloud/nrs3-de-sitter) | Entropie d’horizon et constante cosmologique |
-| [nrs3-dark](https://github.com/naype888-cloud/nrs3-dark) | `1 − Ω_b`, l’intérieur du quantum volumétrique |
-| [nrs3-penrose](https://github.com/naype888-cloud/nrs3-penrose), [nrs3-rovelli-lqg](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Propositions |
-
+| [`00 · bacqm-substrate`](https://github.com/naype888-cloud/bacqm-systems) | Substrat matériel & moteur du noyau Linux : modules de mémoire dynamiques en temps réel |
+| [**01 · nava-robertson-schrodinger**](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Le canon : l'incertitude élémentaire dimensionnelle sur le cube ouvert, ℂᵈ ⊗ ℂᵈ ⊗ ℂᵈ *(ce dépôt)* |
+| [`02 · Proper-Time-General-Relativity`](https://github.com/naype888-cloud/Proper-Time-General-Relativity) | Le temps compte les pas : τ = 1/(φ|t|) à quatre sites ; masse effective, équivalence, gravitation |
+| [`03 · nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Mandelstam–Tamm et Cramér–Rao : aucun état n'est orthogonal à lui-même avant πħ/(2ΔE) |
+| [`04 · YM-By-Perelmans-surgery-method`](https://github.com/naype888-cloud/YM-By-Perelmans-surgery-method) | Yang–Mills sur réseau : loi d'aire uniforme, matrice de transfert, défaut de fibre (0 sorry) |
+| [`05 · nrs3-tightbinding`](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique (H–Og), un cube 3D par élément |
+| [`06 · nrs3-cristales`](https://github.com/naype888-cloud/nrs3-cristales) | Cristaux : la symétrie donne la forme de Σ et Ω, le spectre donne la taille |
+| [`07 · nrs3-completude`](https://github.com/naype888-cloud/nrs3-completude) | Complétude constructive et limites spectrales par Robertson–Fiedler–Niven–Szegő |
+| [`08 · nrs3-golab`](https://github.com/naype888-cloud/nrs3-golab) | Gołąb, les deux extrêmes : π = 3 (hexagone), 4 (carré) ; produit scalaire → π exact ; stabilité en d = 3 |
+| [`09 · nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | Cosmologie de Sitter : rayon d'horizon L_dS, constante cosmologique positive et courbure |
+| [`10 · nrs3-bekenstein`](https://github.com/naype888-cloud/nrs3-bekenstein) | Thermodynamique des trous noirs : frontière à bits, entropie de Bekenstein–Hawking saturée |
+| [`11 · nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Limite de Landauer et cycle de Carnot : coût d'effacement d'un bit et dissipation minimale |
+| [`12 · nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Effondrement gravitationnel de Diósi–Penrose : temps de décohérence par auto-énergie |
+| [`13 · nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Gravité quantique à boucles : spectre d'aire discrète, opérateur de surface et saturation de spin |
+| [`14 · nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Cône de lumière futur et cercle de Minkowski : structure causale sous revêtement SL(2, ℂ) |
+| [`15 · lean4-commits`](https://github.com/naype888-cloud/lean4-commits) | 53 PRs fusionnées dans leanprover-community/physlib : catalogue de preuves formelles, 0 sorry, ZFC |
 ---
 
 ## ⏱️ Chronologie historique (1911–1945)
@@ -242,5 +263,7 @@ lake build NavaRobertsonCertificados && lake env lean Verification/Certificados.
 ### 📐 *« Robertson–Schrödinger sur T_d : P_d est une égalité exactement en d = 2, 3 ; dès d = 4 l’excès δ(d) = C_N(d) − 1 est strictement positif, croît, et reste sous la borne de Szegő. »*
 
 **Eduardo Nava Hernández** · [naype888-cloud](https://github.com/naype888-cloud)
+
+</div>
 
 </div>
