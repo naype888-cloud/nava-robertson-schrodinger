@@ -126,7 +126,7 @@ La chaîne est celle des fichiers `D1` → `D23` : Cauchy–Gram, Robertson, gra
 
 ---
 
-### Étape 8 : Le cube RS^N³
+### Étape 8 : Le cube RS<sup>N</sup>³
 
 > **Théorème 8.1.** Sur le cube Hd_x ⊗ Hd_y ⊗ Hd_z, les observables d’axes différents commutent. Dans l’état de courant maximal du cube, chaque axe sature si et seulement s’il a 2 ou 3 positions, et la relation est stricte sur les trois axes dès d_x, d_y, d_z ≥ 4. Le déterminant de covariance des six observables vaut (C_N(d_x) C_N(d_y) C_N(d_z))² (t_x t_y t_z / 8)², où t est la tension de chaque axe ; l’angle NRS vérifie cos θ_NRS(d) = 1/C_N(d), et le quantum volumétrique est δ(d_x) δ(d_y) δ(d_z).
 
