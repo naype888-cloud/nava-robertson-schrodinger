@@ -2,7 +2,8 @@
 
 <div align="center">
 
-# RS<sup>N</sup> et RS<sup>N</sup>³ · L’incertitude élémentaire dimensionnelle
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/titre_nrs.png"><img src="assets/claro/titre_nrs.png" alt="RS^N et RS^N³ · L’incertitude élémentaire dimensionnelle" width="860"></picture>
+**"RS<sup>N</sup> et RS<sup>N</sup>³ · L’incertitude élémentaire dimensionnelle"**
 ### Pour la paire transport–position (T_d, P_d) sur le graphe chemin à d positions, Robertson–Schrödinger est une égalité exactement en d = 2, 3 et stricte dès d = 4, avec la constante C_N(d) qui croît vers √(π²/3 − 2) — sur la chaîne et sur le cube
 
 **Eduardo Nava Hernández**  
